@@ -21,7 +21,7 @@ A powerful AI agent template built with LlamaIndex that demonstrates how to crea
 ## Tech Stack
 
 - Agno framework for AI agent development
-- Nebius AI's for running LLMs.  We are using `Qwen/Qwen3-30B-A3B` reasoning model 
+- Nebius AI's for running LLMs.  We are using `openai/gpt-oss-20b` reasoning model 
 - HackerNews Tool from Agno
 
 ## Prerequisites

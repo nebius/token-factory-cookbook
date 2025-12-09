@@ -36,7 +36,7 @@ def convert_to_currency(currency: str, amount: float) -> float:
 
 llm = LiteLlm(
     ## Choose a model from the list of available models in the Nebius Token Factory
-    model="nebius/Qwen/Qwen3-30B-A3B",
+    model="nebius/openai/gpt-oss-20b",
     # model="nebius/meta-llama/Llama-3.3-70B-Instruct",
     # model="nebius/deepseek-ai/DeepSeek-R1-0528",
     # model="nebius/Qwen/Qwen3-235B-A22B",
