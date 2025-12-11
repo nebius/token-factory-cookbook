@@ -13,9 +13,10 @@ This cookbook respository is a collection of guides and examples for working wit
 
 - [Events](community/events.md) supported by Nebius AI.
 - [Community contributions](community/README.md)
+- [Post training examples](post-training/)
 - [Distillation guide](distillation/distillation-1/)
-- [Create fun images using LORA adapters](lora/lora-1/README.md)
-- [Fun benchmark "pelican riding a bicycle"](fun/pelican-riding-bicycle/)
+<!-- - [Create fun images using LORA adapters](lora/lora-1/README.md) -->
+<!-- - [Fun benchmark "pelican riding a bicycle"](fun/pelican-riding-bicycle/) -->
 - [Cool Apps / Demos](apps/README.md)
 
 ---
@@ -106,9 +107,15 @@ We have numerous  agent examples: from [starter agents](agents/README.md#-starte
 
 ## Observability
 
-## MCP
+## MCP  -->
 
-## Finetuning -->
+## 🛠️ Post training
+
+Post-training allows you to customize and improve pre-trained language models for your specific use cases through fine-tuning and other optimization methods
+
+[View post training examples](post-training/)
+
+
 
 ## 🫗 Distillation
 
