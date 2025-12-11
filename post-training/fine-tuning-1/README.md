@@ -8,8 +8,8 @@ In this tutorial, we demonstrate how to perform post-training / fine-tuning usin
   - [3 - Create .env file](#3---create-env-file)
   - [4 - Running the code](#4---running-the-code)
   - [5 - Fine tuning](#5---fine-tuning)
-  - [6 - Your distilled model in Nebius Token Factory](#6---your-distilled-model-in-nebius-token-factory)
-  - [7 - Using your fine-tuned model](#7---using-your-fine-tuned-model)
+  - [6 - Your fine-tuned model in Nebius Token Factory](#6---your-fine-tuned-model-in-nebius-token-factory)
+  - [7 - Using your fine-tuned model in Playground](#7---using-your-fine-tuned-model-in-playground)
   - [8 - Use the fine-tuned model using an API](#8---use-the-fine-tuned-model-using-an-api)
   - [References](#references)
   - [Dev Notes](#dev-notes)
@@ -95,13 +95,13 @@ You can see fine tuning jobs' status on the [post training dashboard](https://to
 
 
 
-## 6 - Your distilled model in Nebius Token Factory
+## 6 - Your fine-tuned model in Nebius Token Factory
 
-Find your distilled models in **models --> private** section
+Find your fine-tuned models in **models --> private** section
 
 ![](images/fine-tuning-models.png)
 
-## 7 - Using your fine-tuned model
+## 7 - Using your fine-tuned model in Playground
 
 Try your new shiny model in the playground!
 
