@@ -1,0 +1,4 @@
+data/
+cache/
+*.out
+model-checkpoints/
