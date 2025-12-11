@@ -2,9 +2,10 @@
 
 In this tutorial, we demonstrate how to perform post-training / fine-tuning using **Nebius Token Factory** 
 
+
 - [Fine Tuning Example](#fine-tuning-example)
   - [1. Get the code](#1-get-the-code)
-  - [2. Install dependencies](#2-install-dependencies)
+  - [2. Install dependencies (If running locally)](#2-install-dependencies-if-running-locally)
   - [3 - Create .env file](#3---create-env-file)
   - [4 - Running the code](#4---running-the-code)
   - [5 - Fine tuning](#5---fine-tuning)
@@ -17,12 +18,18 @@ In this tutorial, we demonstrate how to perform post-training / fine-tuning usin
 
 ## 1. Get the code
 
+Code: [fine_tune_llama.ipynb](fine_tune_llama.ipynb)
+
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/nebius/token-factory-cookbook/blob/main/post-training/fine-tuning-1/fine_tune_llama.ipynb) - run without any local setup!
+
 ```bash
 git   clone    https://github.com/nebius/token-factory-cookbook/
 cd    post-training/fine-tuning-1
 ```
 
-## 2. Install dependencies
+
+
+## 2. Install dependencies (If running locally)
 
 **If using `uv` (preferred)**
 
