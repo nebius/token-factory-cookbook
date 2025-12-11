@@ -94,7 +94,7 @@ We have numerous  agent examples: from [starter agents](agents/README.md#-starte
 
 ---
 
-## ⚒️ Function / Tool Calling
+## 🔧 Function / Tool Calling
 
 | Example                             | Description                                         | Tech Stack                         |
 |-------------------------------------|-----------------------------------------------------|------------------------------------|
