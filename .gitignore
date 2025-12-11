@@ -8,3 +8,4 @@ __pycache__/
 tmp/
 *.out
 .virtual_documents/
+.DS_Store
