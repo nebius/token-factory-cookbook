@@ -81,7 +81,7 @@ NEBIUS_API_KEY=your_api_key_here
 **Using `uv`**
 
 ```bash
-uv run --with jupyter jupyter lab
+uv run --with jupyter jupyter lab fine_tune_llama.ipynb
 ```
 
 Using standard python/pip
