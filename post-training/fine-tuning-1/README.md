@@ -92,14 +92,11 @@ jupyter lab
 
 ## 5 - Fine tuning
 
-The fine tuned model will be saved into `models` directory.
-
-Run this notebook:  [2_training.ipynb](2_training.ipynb)
-
 You can see fine tuning jobs' status on the [post training dashboard](https://tokenfactory.nebius.com/post-training) 
 
 ![](images/fine-tuning-job.png)
 
+The fine tuned model will be saved locally into  `models-checkpoints` directory.
 
 
 ## 6 - Your fine-tuned model in Nebius Token Factory
