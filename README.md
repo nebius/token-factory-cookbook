@@ -11,6 +11,7 @@ This cookbook respository is a collection of guides and examples for working wit
 
 ## 😎 Featured
 
+- [Builder Hour](builder-hour/README.md)
 - [Events](community/events.md) supported by Nebius AI.
 - [Community contributions](community/README.md)
 - [Post training examples](post-training/)
@@ -47,6 +48,12 @@ Access Token Factory using various APIs.
 &nbsp;  • &nbsp;  [LiteLLM](api/api_litellm.ipynb)
 &nbsp;  • &nbsp;  [ai-suite](api/api_aisuite.ipynb)
 &nbsp;  • &nbsp;  [llama-index](api/api_llamaindex.ipynb)
+
+---
+
+## 🔧 [Builder Hour](builder-hour/README.md)
+
+Network, learn and build with fellow builders.
 
 ---
 
