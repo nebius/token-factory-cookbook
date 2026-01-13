@@ -1,5 +1,8 @@
 #!/bin/bash
-# sudo apt install  imagemagic inkscape librsvg2-bin
+## On Linux
+## 		sudo apt install  imagemagic inkscape librsvg2-bin
+## On MacOS (with Homebrew)
+##		brew install  imagemagick inkscape librsvg
 
 
 ## convert SVG files (passed as arguments) to PNG
@@ -10,7 +13,9 @@ fi
 
 for file in "$@"; do
 	if [[ -f "$file" && "$file" == *.svg ]]; then
-		inkscape --export-type=png "$file"
+		# inkscape --export-type=png "$file"
+		# magick -background none -density 300 "$file" "images/$(basename "$file" .svg).png"
+		magick -background none "$file" "images/$(basename "$file" .svg).png"
 	else
 		echo "Skipping $file (not an SVG file)"
 	fi
@@ -32,7 +37,7 @@ done
 
 for file in "${generated_pngs[@]}"; do
 	out_file="$annotated_dir/$(basename "$file")"
-	convert "$file" \
+	magick "$file" \
 		-font Arial -pointsize 18 -fill black -stroke none \
 		-gravity NorthEast -annotate +10+10 "${file##*/}" \
 		"$out_file"

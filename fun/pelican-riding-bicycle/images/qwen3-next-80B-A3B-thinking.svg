@@ -1,0 +1,25 @@
+<svg width="400" height="300" xmlns="http://www.w3.org/2000/svg">
+  <!-- Bicycle -->
+  <circle cx="100" cy="200" r="30" fill="black"/>
+  <circle cx="200" cy="200" r="30" fill="black"/>
+  <path d="M 100 200 L 150 150 L 200 200 Z" fill="none" stroke="#555" stroke-width="3"/>
+  <rect x="140" y="150" width="20" height="10" fill="#8B4513" rx="2"/>
+  <path d="M 100 150 L 100 130 M 100 130 L 80 130 M 100 130 L 120 130" stroke="#555" stroke-width="2"/>
+  <circle cx="140" cy="190" r="5" fill="#333"/>
+  <circle cx="160" cy="190" r="5" fill="#333"/>
+  
+  <!-- Pelican -->
+  <ellipse cx="150" cy="140" rx="20" ry="15" fill="white"/>
+  <ellipse cx="150" cy="120" rx="10" ry="8" fill="white"/>
+  <path d="M 150 120 L 170 110 L 160 100 Z" fill="#FFD700"/>
+  <rect x="150" y="125" width="20" height="15" rx="3" fill="#FFA500"/>
+  <line x1="150" y1="140" x2="150" y2="170" stroke="#333" stroke-width="2"/>
+  <line x1="150" y1="170" x2="140" y2="190" stroke="#333" stroke-width="2"/>
+  <line x1="150" y1="170" x2="160" y2="190" stroke="#333" stroke-width="2"/>
+  <circle cx="140" cy="190" r="4" fill="#FFD700"/>
+  <circle cx="160" cy="190" r="4" fill="#FFD700"/>
+  <ellipse cx="135" cy="140" rx="10" ry="5" fill="white" transform="rotate(-15 135 140)"/>
+  <ellipse cx="165" cy="140" rx="10" ry="5" fill="white" transform="rotate(15 165 140)"/>
+  <circle cx="145" cy="120" r="2" fill="black"/>
+  <circle cx="155" cy="120" r="2" fill="black"/>
+</svg>
