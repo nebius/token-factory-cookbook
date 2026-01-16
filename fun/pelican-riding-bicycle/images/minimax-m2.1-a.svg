@@ -1,0 +1,79 @@
+<svg width="500" height="400" viewBox="0 0 500 400" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background: Simple Road -->
+  <rect x="0" y="0" width="500" height="400" fill="#f0f8ff" />
+  <rect x="0" y="320" width="500" height="80" fill="#e0e0e0" />
+  <line x1="50" y1="360" x2="450" y2="360" stroke="#d0d0d0" stroke-width="5" stroke-dasharray="20,15" />
+
+  <!-- Bicycle -->
+  <g id="bicycle">
+    <!-- Wheels -->
+    <circle cx="120" cy="300" r="50" fill="none" stroke="#333" stroke-width="8" />
+    <circle cx="120" cy="300" r="45" fill="none" stroke="#ddd" stroke-width="2" />
+    <line x1="120" y1="250" x2="120" y2="350" stroke="#ddd" stroke-width="2" />
+    <line x1="70" y1="300" x2="170" y2="300" stroke="#ddd" stroke-width="2" />
+
+    <circle cx="380" cy="300" r="50" fill="none" stroke="#333" stroke-width="8" />
+    <circle cx="380" cy="300" r="45" fill="none" stroke="#ddd" stroke-width="2" />
+    <line x1="380" y1="250" x2="380" y2="350" stroke="#ddd" stroke-width="2" />
+    <line x1="330" y1="300" x2="430" y2="300" stroke="#ddd" stroke-width="2" />
+
+    <!-- Frame -->
+    <path d="M 120 300 L 250 300 L 180 190 L 120 300" fill="none" stroke="#e74c3c" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/>
+    <path d="M 250 300 L 350 160 L 380 300" fill="none" stroke="#e74c3c" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/>
+    
+    <!-- Crank & Chainring -->
+    <circle cx="250" cy="300" r="15" fill="#95a5a6" />
+    <circle cx="250" cy="300" r="5" fill="#555" />
+    
+    <!-- Seat -->
+    <path d="M 160 190 L 200 190 Q 205 190 200 180 L 160 180 Z" fill="#333" />
+    
+    <!-- Handlebars -->
+    <path d="M 350 160 L 340 140 Q 330 120 300 130" fill="none" stroke="#333" stroke-width="6" stroke-linecap="round" />
+  </g>
+
+  <!-- Pelican -->
+  <g id="pelican">
+    <!-- Far Leg (Behind bike) -->
+    <path d="M 230 250 L 250 300 L 235 315" fill="none" stroke="#ff9900" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+    <!-- Webbed Foot -->
+    <path d="M 235 315 L 245 325 M 235 315 L 225 325 M 235 315 L 235 325" stroke="#ff9900" stroke-width="4" />
+
+    <!-- Body -->
+    <ellipse cx="200" cy="220" rx="50" ry="60" fill="#ffffff" stroke="#333" stroke-width="2" />
+    
+    <!-- Tail -->
+    <path d="M 150 220 L 120 210 L 120 230 Z" fill="#ffffff" stroke="#333" stroke-width="2" />
+
+    <!-- Near Leg -->
+    <path d="M 210 260 L 250 300" fill="none" stroke="#ff9900" stroke-width="8" stroke-linecap="round" />
+    <!-- Pedal -->
+    <rect x="242" y="295" width="16" height="8" fill="#333" />
+    <path d="M 235 315 L 265 315 L 265 325 L 235 325 Z" fill="#ff9900" />
+
+    <!-- Neck -->
+    <path d="M 200 170 Q 190 140 210 110" fill="none" stroke="#ffffff" stroke-width="35" stroke-linecap="round" />
+    <path d="M 200 170 Q 190 140 210 110" fill="none" stroke="#333" stroke-width="2" stroke-opacity="0.3" /> <!-- Outline for neck definition -->
+
+    <!-- Head -->
+    <circle cx="215" cy="100" r="30" fill="#ffffff" stroke="#333" stroke-width="2" />
+
+    <!-- Beak (The most important part) -->
+    <path d="M 240 90 L 340 90 Q 350 90 345 100 L 240 100 Z" fill="#f1c40f" stroke="#333" stroke-width="2" />
+    <!-- Pouch -->
+    <path d="M 240 100 Q 260 180 320 130 L 340 90" fill="#ffcc66" stroke="#333" stroke-width="2" />
+    
+    <!-- Eye -->
+    <circle cx="225" cy="95" r="4" fill="#000" />
+    <circle cx="227" cy="93" r="1.5" fill="#fff" />
+
+    <!-- Wing (Acting as arm holding bars) -->
+    <path d="M 190 200 Q 240 190 290 150" fill="none" stroke="#ffffff" stroke-width="20" stroke-linecap="round" />
+    <path d="M 190 200 Q 240 190 290 150" fill="none" stroke="#333" stroke-width="2" stroke-dasharray="5,5" opacity="0.5" /> <!-- Wing detail -->
+    <!-- Wing Tip/Feathers -->
+    <path d="M 280 140 L 300 130 L 295 150" fill="#ffffff" stroke="#333" stroke-width="2" />
+    
+    <!-- Beak Grip on Bars -->
+    <path d="M 335 125 L 310 135" stroke="#f1c40f" stroke-width="4" stroke-linecap="round" opacity="0.8" />
+  </g>
+</svg>
