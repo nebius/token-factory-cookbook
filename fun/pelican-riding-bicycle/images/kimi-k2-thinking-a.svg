@@ -1,0 +1,123 @@
+
+   <svg width="800" height="600" viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
+       <!-- Sky background -->
+       <defs>
+           <linearGradient id="skyGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+               <stop offset="0%" style="stop-color:#87CEEB;stop-opacity:1" />
+               <stop offset="100%" style="stop-color:#E0F6FF;stop-opacity:1" />
+           </linearGradient>
+           <linearGradient id="cloudGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+               <stop offset="0%" style="stop-color:#ffffff;stop-opacity:1" />
+               <stop offset="100%" style="stop-color:#f0f8ff;stop-opacity:1" />
+           </linearGradient>
+       </defs>
+       
+       <!-- Background -->
+       <rect width="800" height="600" fill="url(#skyGradient)"/>
+       
+       <!-- Ground -->
+       <ellipse cx="400" cy="520" rx="350" ry="40" fill="#90EE90" opacity="0.3"/>
+       
+       <!-- Clouds -->
+       <g opacity="0.7">
+           <circle cx="150" cy="80" r="25" fill="url(#cloudGradient)"/>
+           <circle cx="180" cy="80" r="30" fill="url(#cloudGradient)"/>
+           <circle cx="210" cy="80" r="25" fill="url(#cloudGradient)"/>
+           <circle cx="600" cy="120" r="20" fill="url(#cloudGradient)"/>
+           <circle cx="620" cy="120" r="25" fill="url(#cloudGradient)"/>
+           <circle cx="640" cy="120" r="20" fill="url(#cloudGradient)"/>
+       </g>
+       
+       <!-- Bicycle -->
+       <g id="bicycle" transform="translate(300, 350)">
+           <!-- Back wheel -->
+           <circle cx="0" cy="0" r="60" fill="none" stroke="#333" stroke-width="4"/>
+           <circle cx="0" cy="0" r="45" fill="none" stroke="#666" stroke-width="2"/>
+           <circle cx="0" cy="0" r="15" fill="#999"/>
+           
+           <!-- Front wheel -->
+           <circle cx="150" cy="0" r="60" fill="none" stroke="#333" stroke-width="4"/>
+           <circle cx="150" cy="0" r="45" fill="none" stroke="#666" stroke-width="2"/>
+           <circle cx="150" cy="0" r="15" fill="#999"/>
+           
+           <!-- Frame -->
+           <path d="M 0 0 L 150 0 L 120 -80 L 30 -80 L 0 0" fill="none" stroke="#FF6347" stroke-width="4"/>
+           <path d="M 30 -80 L 0 0" fill="none" stroke="#FF6347" stroke-width="4"/>
+           <path d="M 120 -80 L 150 0" fill="none" stroke="#FF6347" stroke-width="4"/>
+           
+           <!-- Seat post -->
+           <line x1="75" y1="-40" x2="75" y2="-100" stroke="#FF6347" stroke-width="4"/>
+           
+           <!-- Handlebars -->
+           <line x1="150" y1="-40" x2="150" y2="-100" stroke="#FF6347" stroke-width="4"/>
+           <line x1="135" y1="-100" x2="165" y2="-100" stroke="#333" stroke-width="4"/>
+           
+           <!-- Pedals -->
+           <circle cx="75" cy="0" r="8" fill="#666"/>
+           <rect x="85" y="-3" width="25" height="6" fill="#333" rx="2"/>
+           <rect x="35" y="-3" width="25" height="6" fill="#333" rx="2"/>
+       </g>
+       
+       <!-- Pelican -->
+       <g id="pelican" transform="translate(380, 250)">
+           <!-- Body -->
+           <ellipse cx="0" cy="0" rx="50" ry="35" fill="white" stroke="#333" stroke-width="2"/>
+           
+           <!-- Neck -->
+           <path d="M -30 -25 Q -50 -50 -45 -80" fill="none" stroke="#333" stroke-width="8" stroke-linecap="round"/>
+           
+           <!-- Head -->
+           <circle cx="-45" cy="-85" r="15" fill="white" stroke="#333" stroke-width="2"/>
+           
+           <!-- Beak -->
+           <polygon points="-60,-85 -85,-80 -85,-90" fill="#FF8C00" stroke="#333" stroke-width="1"/>
+           <polygon points="-60,-85 -85,-85 -85,-95" fill="#FFA500" stroke="#333" stroke-width="1"/>
+           
+           <!-- Eye -->
+           <circle cx="-50" cy="-90" r="3" fill="black"/>
+           <circle cx="-49" cy="-91" r="1" fill="white"/>
+           
+           <!-- Wing -->
+           <path d="M 10 0 Q 40 -20 45 -35 Q 40 -30 35 -25 Q 30 -20 25 -15 Q 20 -10 15 -5 Q 10 0 10 0" 
+                 fill="#DCDCDC" stroke="#333" stroke-width="2"/>
+           
+           <!-- Tail -->
+           <path d="M 40 10 Q 55 15 60 20 Q 55 25 45 22 Q 40 18 40 10" 
+                 fill="#DCDCDC" stroke="#333" stroke-width="2"/>
+           
+           <!-- Legs positioned on pedals -->
+           <g id="legs">
+               <!-- Left leg on front pedal -->
+               <path d="M -10 25 L -5 50 L 10 55" stroke="#FF6347" stroke-width="6" stroke-linecap="round" fill="none"/>
+               <circle cx="10" cy="55" r="4" fill="#FF6347"/>
+               
+               <!-- Right leg on back pedal -->
+               <path d="M 10 25 L 15 50 L 0 55" stroke="#FF6347" stroke-width="6" stroke-linecap="round" fill="none"/>
+               <circle cx="0" cy="55" r="4" fill="#FF6347"/>
+           </g>
+           
+           <!-- Feet on pedals -->
+           <ellipse cx="8" cy="58" rx="6" ry="3" fill="#FF6347"/>
+           <ellipse cx="-2" cy="58" rx="6" ry="3" fill="#FF6347"/>
+       </g>
+       
+       <!-- Speed lines to show motion -->
+       <g id="motion-lines" opacity="0.5">
+           <line x1="-50" y1="300" x2="-100" y2="300" stroke="#333" stroke-width="3" stroke-linecap="round"/>
+           <line x1="-30" y1="320" x2="-80" y2="320" stroke="#333" stroke-width="3" stroke-linecap="round"/>
+           <line x1="-40" y1="340" x2="-90" y2="340" stroke="#333" stroke-width="3" stroke-linecap="round"/>
+       </g>
+       
+       <!-- Sun -->
+       <circle cx="700" cy="100" r="40" fill="#FFD700" opacity="0.8"/>
+       
+       <!-- Grass details -->
+       <g id="grass" opacity="0.4">
+           <path d="M 100 500 Q 95 490 100 480" stroke="#228B22" stroke-width="2" fill="none"/>
+           <path d="M 120 500 Q 115 490 120 480" stroke="#228B22" stroke-width="2" fill="none"/>
+           <path d="M 140 500 Q 135 490 140 480" stroke="#228B22" stroke-width="2" fill="none"/>
+           <path d="M 600 500 Q 595 490 600 480" stroke="#228B22" stroke-width="2" fill="none"/>
+           <path d="M 620 500 Q 615 490 620 480" stroke="#228B22" stroke-width="2" fill="none"/>
+           <path d="M 640 500 Q 635 490 640 480" stroke="#228B22" stroke-width="2" fill="none"/>
+       </g>
+   </svg>

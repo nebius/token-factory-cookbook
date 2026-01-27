@@ -1,0 +1,83 @@
+<svg width="500" height="400" viewBox="0 0 500 400" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect x="0" y="0" width="500" height="400" fill="#87CEEB" />
+  <rect x="0" y="320" width="500" height="80" fill="#7CFC00" />
+  <line x1="0" y1="360" x2="500" y2="360" stroke="#555" stroke-width="2" />
+
+  <!-- Bicycle -->
+  <g id="bicycle">
+    <!-- Wheels -->
+    <g id="rear-wheel">
+      <circle cx="150" cy="300" r="45" fill="none" stroke="#333" stroke-width="8" />
+      <circle cx="150" cy="300" r="40" fill="none" stroke="#ddd" stroke-width="2" />
+      <line x1="150" y1="255" x2="150" y2="345" stroke="#ddd" stroke-width="2" />
+      <line x1="105" y1="300" x2="195" y2="300" stroke="#ddd" stroke-width="2" />
+    </g>
+    <g id="front-wheel">
+      <circle cx="380" cy="300" r="45" fill="none" stroke="#333" stroke-width="8" />
+      <circle cx="380" cy="300" r="40" fill="none" stroke="#ddd" stroke-width="2" />
+      <line x1="380" y1="255" x2="380" y2="345" stroke="#ddd" stroke-width="2" />
+      <line x1="335" y1="300" x2="425" y2="300" stroke="#ddd" stroke-width="2" />
+    </g>
+
+    <!-- Frame -->
+    <path d="M 150 300 L 250 300 L 190 210 L 150 300" fill="none" stroke="#e74c3c" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/>
+    <path d="M 250 300 L 350 190 L 380 300" fill="none" stroke="#e74c3c" stroke-width="6" stroke-linejoin="round" stroke-linecap="round"/>
+    
+    <!-- Crank & Chainring -->
+    <circle cx="250" cy="300" r="12" fill="#95a5a6" />
+    <circle cx="250" cy="300" r="4" fill="#333" />
+    
+    <!-- Seat -->
+    <path d="M 170 210 L 210 210 Q 215 210 210 200 L 170 200 Z" fill="#333" />
+    
+    <!-- Handlebars -->
+    <path d="M 350 190 L 345 170 Q 340 150 310 160" fill="none" stroke="#333" stroke-width="6" stroke-linecap="round" />
+  </g>
+
+  <!-- Pelican -->
+  <g id="pelican">
+    <!-- Far Leg -->
+    <path d="M 230 260 L 250 300 L 235 315" fill="none" stroke="#ff9900" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+    <!-- Far Foot on Pedal -->
+    <path d="M 235 315 L 245 325 M 235 315 L 225 325 M 235 315 L 235 325" stroke="#ff9900" stroke-width="4" />
+
+    <!-- Tail -->
+    <path d="M 130 240 L 110 230 L 110 250 Z" fill="#ffffff" stroke="#333" stroke-width="2" />
+
+    <!-- Body -->
+    <ellipse cx="200" cy="230" rx="55" ry="65" fill="#ffffff" stroke="#333" stroke-width="2" />
+    
+    <!-- Wing (Acting as arm) -->
+    <path d="M 190 210 Q 240 190 290 160" fill="none" stroke="#ffffff" stroke-width="25" stroke-linecap="round" />
+    <path d="M 190 210 Q 240 190 290 160" fill="none" stroke="#333" stroke-width="1" stroke-dasharray="5,5" opacity="0.5" />
+    <!-- Wing Tips/Feathers -->
+    <path d="M 280 145 L 305 135 L 300 160" fill="#ffffff" stroke="#333" stroke-width="2" />
+
+    <!-- Neck -->
+    <path d="M 200 180 Q 210 140 240 110" fill="none" stroke="#ffffff" stroke-width="40" stroke-linecap="round" />
+    <path d="M 200 180 Q 210 140 240 110" fill="none" stroke="#333" stroke-width="1" opacity="0.3" />
+
+    <!-- Head -->
+    <circle cx="240" cy="100" r="32" fill="#ffffff" stroke="#333" stroke-width="2" />
+
+    <!-- Beak -->
+    <path d="M 265 90 L 360 90 Q 370 90 365 100 L 265 100 Z" fill="#f1c40f" stroke="#333" stroke-width="2" />
+    <!-- Pouch -->
+    <path d="M 265 100 Q 280 180 340 130 L 365 100" fill="#ffcc66" stroke="#333" stroke-width="2" />
+    
+    <!-- Eye -->
+    <circle cx="250" cy="95" r="5" fill="#000" />
+    <circle cx="252" cy="93" r="2" fill="#fff" />
+
+    <!-- Near Leg -->
+    <path d="M 220 270 L 250 300" fill="none" stroke="#ff9900" stroke-width="8" stroke-linecap="round" />
+    <!-- Near Pedal -->
+    <rect x="242" y="295" width="16" height="8" fill="#333" rx="2" />
+    <!-- Near Foot -->
+    <path d="M 230 320 L 270 320 L 270 330 L 230 330 Z" fill="#ff9900" stroke="#333" stroke-width="2" />
+    
+    <!-- Beak Grip on Bars (Comical detail) -->
+    <path d="M 345 125 L 320 135" stroke="#f1c40f" stroke-width="6" stroke-linecap="round" opacity="0.9" />
+  </g>
+</svg>
