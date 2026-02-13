@@ -17,7 +17,10 @@ See the screenshots below.
 <img src="token-factory-2.png" width="45%">
 
 
-You can view SVG file using any browser and modern graphic programs.
+You can view SVG file 
+- at [svgviewer.dev](https://www.svgviewer.dev/) (and can  convert to PNG ..etc)
+- open in any modern browser 
+- and modern graphic programs.
 
 ## Generated Images
 

@@ -72,5 +72,5 @@ if [[ -n "$layout" ]]; then
     fi
 else
     # Default: vertical append
-    convert "${valid_inputs[@]}" -append "$output"
+    magick "${valid_inputs[@]}" -append "$output"
 fi
