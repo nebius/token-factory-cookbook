@@ -1,6 +1,7 @@
 agno
 duckduckgo-search
 ddgs
+tavily-python
 openai
 python-dotenv
 pypdf
