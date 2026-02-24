@@ -8,4 +8,5 @@ dependencies = [
     "pydantic-ai>=0.4.2",
     "pydantic-ai-slim[duckduckgo]>=0.4.2",
     "python-dotenv>=1.1.1",
+    "tavily-python",
 ]
