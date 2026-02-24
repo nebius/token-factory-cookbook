@@ -6,6 +6,7 @@ readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
     "exa-py",
+    "tavily-python",
     "httpx",
     "keywordsai",
     "langchain",
