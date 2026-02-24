@@ -1,3 +1,4 @@
-pydantic_ai 
+pydantic_ai
 pydantic-ai-slim[duckduckgo]
 python-dotenv
+tavily-python
