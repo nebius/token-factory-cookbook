@@ -21,7 +21,11 @@ class Config:
     
     # External APIs
     EXA_API_KEY = os.getenv("EXA_API_KEY")
+    TAVILY_API_KEY = os.getenv("TAVILY_API_KEY")
     KEYWORDS_AI_API_KEY = os.getenv("KEYWORDS_AI_API_KEY", "")
+
+    # Search provider selector: "exa" (default) or "tavily"
+    SEARCH_PROVIDER = os.getenv("SEARCH_PROVIDER", "exa")
     
     # Weaviate Configuration
     WEAVIATE_URL = os.getenv("WEAVIATE_URL")
