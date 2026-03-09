@@ -1,6 +1,6 @@
 # Setting up Dev Environment
 
-Each project in this repo will have their own setup guide.  This will setup a basic python environment.
+Each project in this repo will have their own getting started.  This will setup a basic python environment.
 
 ## 1 - Clone the repo
 

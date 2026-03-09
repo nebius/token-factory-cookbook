@@ -11,6 +11,7 @@ This cookbook respository is a collection of guides and examples for working wit
 
 ## 😎 Featured
 
+- [Token Factory Workshop](workshops/token-factory-workshop/README.md)
 - [Builder Hour](builder-hour/README.md)
 - [Events](community/events.md) supported by Nebius AI.
 - [Community contributions](community/README.md)
@@ -27,7 +28,7 @@ This cookbook respository is a collection of guides and examples for working wit
 1. Prerequisites:
    - You’ll need a Nebius Token Factory account and API key. Sign up for free [here](https://tokenfactory.nebius.com/).
    - Python runtime (local, Google Colab etc.)
-2. Follow the [setup guide](setup-dev-env.md)
+2. Follow the [getting started](getting-started.md)
 3. Follow project-specific instructions**
 
 ---
@@ -131,6 +132,10 @@ Post-training allows you to customize and improve pre-trained language models fo
 | [Distillation 1](distillation/distillation-1/)  | Example of a distilled model to do grammer check   | Nebius AI | 
 
 <!-- ## LORA -->
+
+## Workshops
+
+- [Token Fastory Workshop](workshops/token-factory-workshop/README.md)
 
 ---
 
