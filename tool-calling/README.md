@@ -62,5 +62,6 @@ Restart vscode so it will refresh available kernels.  Then select it and run it.
 
 | Example                             | Description                                         | Tech Stack                         |
 |-------------------------------------|-----------------------------------------------------|------------------------------------|
-| [simple function calling example 1](function_calling_1.ipynb) | Demonstrates how to call functions                          | Nebius AI     |
+| [simple function calling example](function_calling_1.ipynb) | Demonstrates how to call functions                          | Nebius AI     |
+| [Tavily tool calling example](tavily_tool_calling.ipynb) | Demonstrates how to implement research agent with Tavily search                          | Nebius AI, Tavily search    |
 
