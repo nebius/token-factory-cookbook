@@ -2,7 +2,7 @@
 
 Next, we capture **real-world usage data** to improve model performance.
 
-![](images/coninious-ai-loop.png)
+<img src="images/coninious-ai-loop.png" width="400px">
 
 ## Datalab
 
@@ -17,7 +17,8 @@ With datalab, you can:
 
 [datalab documentation](https://docs.tokenfactory.nebius.com/data-lab/overview)
 
-![](images/data-lab-1.png)
+<img src="images/data-lab-1.png" width="400px">
+
 
 ## Exercise 1: Collect inference logs
 
