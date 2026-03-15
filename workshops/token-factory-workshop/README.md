@@ -23,6 +23,7 @@
 Before starting the workshop, make sure you have:
 
 * A **[Nebius Token Factory](https://tokenfactory.nebius.com/)** account
+* (optinal) 🎁 credits.  [Use this link](https://nebius.com/promo-code?utm_promo_event_code=2026-03-hackathon-nebius-build-sf) - activation code will be provided at the event
 
 ---
 
@@ -124,6 +125,7 @@ A few experimental and creative examples to explore what else is possible.
 
 - [Token Factory cookbook](https://github.com/nebius/token-factory-cookbook/) - lots of examples
 - [dev.nebius.com](https://dev.nebius.com/): Hub or nebius developer resources
+- [awesome ai apps](https://github.com/Arindam200/awesome-ai-apps/) - a great repo with lots of examples with Nebius Token Factory
 
 ---
 
