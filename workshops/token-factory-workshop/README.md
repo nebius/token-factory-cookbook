@@ -2,9 +2,20 @@
 
 ## 🔗 `bit.ly/4cCCNzV`
 
+<kbd>
 <img src="qrcode-workshop.png" width="300px">
+</kbd>
 
 ---
+
+## Pointers
+
+- Workshop run file (this one): `bit.ly/4cCCNzV`
+- slides (coming)
+- community and support @ Nebius Discord
+  - [join link](https://discord.gg/sJvzdEDr)
+  - [Nebius.Build.SF hackathon channel](https://discord.com/channels/1222156136380235877/1479546242307588276) - questions, finding teams ...etc
+  - [Token Factory support](https://discord.com/channels/1222156136380235877/1387298727835861113)
 
 ## Prerequisites
 
@@ -18,8 +29,9 @@ Before starting the workshop, make sure you have:
 
 ### Building Production-Grade AI Applications
 
+<kbd>
 <img src="images/coninious-ai-loop.png" style="float:right;" width="300px">
-
+</kbd>
 
 Modern AI applications improve continuously through a **production feedback loop**:
 
