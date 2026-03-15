@@ -93,6 +93,8 @@ Learn how to adapt models for our specific use cases.
 
 Deploy trained models and monitor their performance in real time.
 
+[dedicated end points](dedicated-endpoints.md)
+
 ---
 
 ## 5 - Integration with Coding Agents
