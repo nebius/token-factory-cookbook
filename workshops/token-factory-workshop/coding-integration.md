@@ -8,13 +8,15 @@ Prerequisites
 
 1. [Install Cursor](https://cursor.com/) for your platform.
 
-2. Follow [these instructions](https://x.com/nebiustf/status/1960370576385786076)
+2. Follow [these instructions](https://youtu.be/seVfmwIqQkI)
 
 ## Claude Code ##
 
 1. [Install Claude Code](https://docs.claude.com/en/docs/claude-code) for your platform.
 
-2. Install claude-code-router
+2. Follow [these instructions](https://youtu.be/seVfmwIqQkI?si=yDfdyNE6zYoN8sZK)
+   
+Install claude-code-router
 ```bash
    # macOS
    brew install claude-code-router
@@ -23,7 +25,7 @@ Prerequisites
    npm install -g @musistudio/claude-code-router
 ```
 
-3. Create `~/.claude-code-router/config.json`
+Create `~/.claude-code-router/config.json`
 ```bash
 mkdir -p ~/.claude-code-router
 nano ~/.claude-code-router/config.json
@@ -50,7 +52,7 @@ nano ~/.claude-code-router/config.json
    }
 ```
 
-4. Update `~/.claude/settings.json`
+Update `~/.claude/settings.json`
 ```bash
 nano ~/.claude/settings.json
 ```
@@ -63,12 +65,12 @@ nano ~/.claude/settings.json
    }
 ```
 
-5. Start the router (keep this terminal open)
+Start the router (keep this terminal open)
 ```bash
    ccr start
 ```
 
-6. Open a new terminal and run Claude Code
+Open a new terminal and run Claude Code
 ```bash
    claude
 ```
@@ -79,3 +81,9 @@ To switch back to the default Anthropic API:
 ccr stop
 ```
 Then set `~/.claude/settings.json` back to `{}` and restart Claude Code.
+
+## Cline ##
+
+1. [Install Cline](https://cursor.com/](https://cline.bot/) for your platform.
+
+2. Follow [these instructions](youtube.com/watch?time_continue=7&v=GN85QSUzkD4&embeds_referring_euri=https%3A%2F%2Fdocs.tokenfactory.nebius.com%2F&source_ve_path=MjM4NTE)
