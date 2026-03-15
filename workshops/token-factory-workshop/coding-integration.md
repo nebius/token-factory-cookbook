@@ -52,7 +52,7 @@ nano ~/.claude-code-router/config.json
 
 4. Update `~/.claude/settings.json`
 ```bash
-nano ~/.claude-code-router/config.json
+nano ~/.claude/settings.json
 ```
 ```
    {
