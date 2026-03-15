@@ -39,7 +39,7 @@ nano ~/.claude-code-router/config.json
          "name": "nebius",
          "api_base_url": "https://api.tokenfactory.nebius.com/v1/chat/completions",
          "api_key": "YOUR_NEBIUS_API_KEY",
-         "models": ["zai-org/GLM-5", "zai-org/GLM-4.5-Air"]
+         "models": ["MODEL_NAME"]
        }
      ],
      "Router": {
@@ -51,7 +51,10 @@ nano ~/.claude-code-router/config.json
 ```
 
 4. Update `~/.claude/settings.json`
-```json
+```bash
+nano ~/.claude-code-router/config.json
+```
+```
    {
      "env": {
        "ANTHROPIC_AUTH_TOKEN": "anything",
