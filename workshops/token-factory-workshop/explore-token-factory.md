@@ -18,7 +18,7 @@ Login to your [Nebius Token Factory](https://tokenfactory.nebius.com/) account
 - Filter models by type 'text to text' ...etc
 
 <kbd>
-![](images/models-1.png)
+<img src="images/models-1.png">
 </kbd>
 
 
@@ -70,4 +70,10 @@ Clues:
 - Chloe does not own the scooter.
 
 Who owns which vehicle?
+```
+
+**prompt-3(fun): test reasoning models**
+
+```text
+I need to wash my car.  The car wash is only 50 meters away.  Should I drive or walk?
 ```
