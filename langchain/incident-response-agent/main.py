@@ -126,6 +126,15 @@ def run_agent(alert: dict[str, Any]) -> IncidentPlan:
             return plan
         for call in response.tool_calls:
             tool_name = call["name"]
+            if tool_name not in tool_map:
+                allowed = ", ".join(tool_map)
+                messages.append(
+                    ToolMessage(
+                        content=f"Unknown tool '{tool_name}'. Choose only one of these tools: {allowed}.",
+                        tool_call_id=call["id"],
+                    )
+                )
+                continue
             output = tool_map[tool_name].invoke(call["args"])
             audit.append(f"{tool_name}({call['args']})")
             messages.append(ToolMessage(content=output, tool_call_id=call["id"]))

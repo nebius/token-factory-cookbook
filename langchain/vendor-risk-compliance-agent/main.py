@@ -124,7 +124,17 @@ def run_agent(questionnaire: dict[str, Any]) -> VendorRiskReview:
             result.audit_trail = result.audit_trail + audit
             return result
         for call in response.tool_calls:
-            output = tools[call["name"]].invoke(call["args"])
+            tool_name = call["name"]
+            if tool_name not in tools:
+                allowed = ", ".join(tools)
+                messages.append(
+                    ToolMessage(
+                        content=f"Unknown tool '{tool_name}'. Choose only one of these tools: {allowed}.",
+                        tool_call_id=call["id"],
+                    )
+                )
+                continue
+            output = tools[tool_name].invoke(call["args"])
             audit.append(f"{call['name']}({call['args']})")
             messages.append(ToolMessage(content=output, tool_call_id=call["id"]))
     raise RuntimeError("Agent did not converge after tool loop.")

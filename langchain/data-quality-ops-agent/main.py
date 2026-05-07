@@ -69,14 +69,19 @@ def describe_schema() -> str:
 @tool
 def run_readonly_sql(sql: str) -> str:
     """Run a read-only SELECT query against the local ops database."""
-    normalized = sql.strip().lower()
-    if not normalized.startswith("select"):
+    normalized = sql.strip()
+    lowered = normalized.lower()
+    if ";" in normalized:
+        return "Rejected: multiple statements are not allowed."
+    if "--" in normalized or "/*" in normalized or "*/" in normalized:
+        return "Rejected: SQL comments are not allowed."
+    if not re.match(r"^\s*select\b", lowered):
         return "Rejected: only SELECT queries are allowed."
-    forbidden = ["insert", "update", "delete", "drop", "alter", "attach", "pragma"]
-    if any(f" {word} " in f" {normalized} " for word in forbidden):
+    forbidden = r"\b(insert|update|delete|drop|alter|attach|pragma|create|replace|vacuum)\b"
+    if re.search(forbidden, lowered):
         return "Rejected: query contains a forbidden SQL keyword."
     ensure_db()
-    conn = sqlite3.connect(DB_PATH)
+    conn = sqlite3.connect(f"file:{DB_PATH}?mode=ro", uri=True)
     conn.row_factory = sqlite3.Row
     try:
         rows = [dict(row) for row in conn.execute(sql).fetchmany(50)]
@@ -157,7 +162,17 @@ def run_agent(question: str) -> DataOpsReport:
             result.audit_trail = result.audit_trail + audit
             return result
         for call in response.tool_calls:
-            output = tools[call["name"]].invoke(call["args"])
+            tool_name = call["name"]
+            if tool_name not in tools:
+                allowed = ", ".join(tools)
+                messages.append(
+                    ToolMessage(
+                        content=f"Unknown tool '{tool_name}'. Choose only one of these tools: {allowed}.",
+                        tool_call_id=call["id"],
+                    )
+                )
+                continue
+            output = tools[tool_name].invoke(call["args"])
             audit.append(f"{call['name']}({call['args']})")
             messages.append(ToolMessage(content=output, tool_call_id=call["id"]))
     raise RuntimeError("Agent did not converge after tool loop.")

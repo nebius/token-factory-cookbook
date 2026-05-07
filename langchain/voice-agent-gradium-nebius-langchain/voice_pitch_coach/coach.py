@@ -55,9 +55,8 @@ Analyze this turn and continue the voice-coaching conversation."""
 
 class NebiusPitchCoach:
     def __init__(self, api_key: str, model: str) -> None:
-        # Nebius exposes an OpenAI-compatible API. Using ChatOpenAI here avoids
-        # a current langchain-nebius client construction issue while preserving
-        # the LangChain prompt/model flow.
+        # Nebius exposes an OpenAI-compatible API, so ChatOpenAI keeps the
+        # LangChain prompt/model flow while targeting Nebius.
         self.llm = ChatOpenAI(
             api_key=api_key,
             base_url="https://api.studio.nebius.ai/v1/",
