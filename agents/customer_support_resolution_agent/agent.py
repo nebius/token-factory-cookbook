@@ -5,14 +5,12 @@ import os
 
 from dotenv import load_dotenv
 from langchain.agents import create_agent
-from langchain_openai import ChatOpenAI
-from pydantic import SecretStr
+from langchain_nebius import ChatNebius
 
 from tools import ALL_TOOLS
 
 load_dotenv()
 
-NEBIUS_BASE_URL = "https://api.tokenfactory.nebius.com/v1/"
 DEFAULT_MODEL = os.getenv("NEBIUS_MODEL", "Qwen/Qwen3-30B-A3B")
 
 SYSTEM_PROMPT = """You are NimbusCart's customer support resolution agent.
@@ -52,10 +50,9 @@ Rules:
 
 
 def build_agent(verbose: bool = True):
-    llm = ChatOpenAI(
+    llm = ChatNebius(
         model=DEFAULT_MODEL,
-        base_url=NEBIUS_BASE_URL,
-        api_key=SecretStr(os.environ["NEBIUS_API_KEY"]),
+        api_key=os.environ["NEBIUS_API_KEY"],
         temperature=0.2,
     )
     return create_agent(

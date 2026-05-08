@@ -13,9 +13,8 @@ from pathlib import Path
 
 from dotenv import load_dotenv
 from langchain_community.vectorstores import FAISS
-from langchain_openai import OpenAIEmbeddings
+from langchain_nebius import NebiusEmbeddings
 from langchain_text_splitters import MarkdownTextSplitter
-from pydantic import SecretStr
 
 load_dotenv()
 
@@ -23,16 +22,13 @@ ROOT = Path(__file__).parent
 DATA_DIR = ROOT / "data"
 INDEX_DIR = ROOT / "kb_index"
 
-NEBIUS_BASE_URL = "https://api.tokenfactory.nebius.com/v1/"
 EMBED_MODEL = "Qwen/Qwen3-Embedding-8B"
 
 
-def get_embeddings() -> OpenAIEmbeddings:
-    return OpenAIEmbeddings(
+def get_embeddings() -> NebiusEmbeddings:
+    return NebiusEmbeddings(
         model=EMBED_MODEL,
-        base_url=NEBIUS_BASE_URL,
-        api_key=SecretStr(os.environ["NEBIUS_API_KEY"]),
-        check_embedding_ctx_length=False,
+        api_key=os.environ["NEBIUS_API_KEY"],
     )
 
 
@@ -64,7 +60,9 @@ def load_index() -> FAISS:
             f"Knowledge base not found at {INDEX_DIR}. Run `python ingest.py` first."
         )
     return FAISS.load_local(
-        str(INDEX_DIR), get_embeddings(), allow_dangerous_deserialization=True
+        str(INDEX_DIR),
+        get_embeddings(),
+        allow_dangerous_deserialization=True,
     )
 
 
