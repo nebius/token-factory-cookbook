@@ -9,3 +9,5 @@ tmp/
 *.out
 .virtual_documents/
 .DS_Store
+agents/customer_support_resolution_agent/kb_index/
+.gstack/

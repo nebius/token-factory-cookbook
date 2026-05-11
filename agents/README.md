@@ -12,6 +12,7 @@ Jump to:
     - [CrewAI](#crewai)
     - [Google ADK (Agent Development Kit)](#google-adk-agent-development-kit)
     - [Agno](#agno)
+    - [LangChain](#langchain)
     - [Llama-index](#llama-index)
     - [Pydantic AI](#pydantic-ai)
     - [Strands Agents](#strands-agents)
@@ -40,6 +41,9 @@ Jump to:
 | Agent                                     | Descripton                                              | Tech Stack                        |
 | ----------------------------------------- | ------------------------------------------------------- | --------------------------------- |
 | [Agno multi agent](agno-agents-examples/) | Multiple agents working together to do finance research | Agno + Duckduckgo + Yahoo Finance |
+| [Customer Support Resolution Agent](customer_support_resolution_agent/) | Resolve support questions with order lookup, policy RAG, and human ticket escalation | LangChain + Nebius + FAISS + Streamlit |
+| [LangChain Data Agent PoC](langchain_data_agent_poc/) | Ask natural language questions over sample business data with safe SQL and charts | LangChain + LangGraph + Nebius + SQLite + Streamlit |
+| [Nebius Travel Planner](nebius_travel_planner/) | Build grounded itineraries with weather, web research, budgets, currency conversion, and packing prep | LangChain + Nebius + Streamlit |
 
 ## Agents by Framework
 
@@ -62,6 +66,14 @@ Jump to:
 | [Agno Hacker News Agent](agno-hacker-news-agent/) | Analyze hacker news                                     | AgnoAI                            |
 | [Agno websearch agent](agno-agents-examples/)     | Use web search to do research                           | Agno + Duckduckgo                 |
 | [Agno multi agent](agno-agents-examples/)         | Multiple agents working together to do finance research | Agno + Duckduckgo + Yahoo Finance |
+
+### [LangChain](https://www.langchain.com/)
+
+| Agent | Descripton | Tech Stack |
+| ----- | ---------- | ---------- |
+| [Customer Support Resolution Agent](customer_support_resolution_agent/) | Resolve support questions with order lookup, policy RAG, and human ticket escalation | LangChain + Nebius + FAISS + Streamlit |
+| [LangChain Data Agent PoC](langchain_data_agent_poc/) | Ask natural language questions over sample business data with safe SQL and charts | LangChain + LangGraph + Nebius + SQLite + Streamlit |
+| [Nebius Travel Planner](nebius_travel_planner/) | Build grounded itineraries with weather, web research, budgets, currency conversion, and packing prep | LangChain + Nebius + Streamlit |
 
 ### [Llama-index](https://www.llamaindex.ai/)
 

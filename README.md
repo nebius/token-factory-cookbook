@@ -95,6 +95,7 @@ We have numerous  agent examples: from [starter agents](agents/README.md#-starte
 **Featured AI Agent frameworks:**  
 [<img src="images/crewai-icon.svg" width="20" height="20"> CrewAI](agents/README.md#crewai)
 &nbsp;  • &nbsp; [<img src="images/agno-icon.png" width="20" height="20"> Agno](agents/README.md#agno)
+&nbsp;  • &nbsp; [LangChain](agents/README.md#langchain)
 &nbsp;  • &nbsp; [<img src="images/google-adk-icon.png" width="20" height="20"> Google ADK](agents/README.md#google-adk-agent-development-kit)
 &nbsp;  • &nbsp; [<img src="images/llama-index-icon.jpeg" width="20" height="20"> Llama-index](agents/README.md#llama-index)
 &nbsp;  • &nbsp; [<img src="images/pydantic-icon.png" width="20" height="20"> Pydantic](agents/README.md#pydantic-ai)
