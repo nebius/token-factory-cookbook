@@ -41,25 +41,31 @@ Jump to:
 | Agent                                     | Descripton                                              | Tech Stack                        |
 | ----------------------------------------- | ------------------------------------------------------- | --------------------------------- |
 | [Agno multi agent](agno-agents-examples/) | Multiple agents working together to do finance research | Agno + Duckduckgo + Yahoo Finance |
-| [Customer Support Resolution Agent](customer_support_resolution_agent/) | Resolve support questions with order lookup, policy RAG, and human ticket escalation | LangChain + Nebius + FAISS + Streamlit |
-| [LangChain Data Agent PoC](langchain_data_agent_poc/) | Ask natural language questions over sample business data with safe SQL and charts | LangChain + LangGraph + Nebius + SQLite + Streamlit |
-| [Nebius Travel Planner](nebius_travel_planner/) | Build grounded itineraries with weather, web research, budgets, currency conversion, and packing prep | LangChain + Nebius + Streamlit |
+| [Customer Support Resolution Agent](langchain/customer_support_resolution_agent/) | Resolve support questions with order lookup, policy RAG, and human ticket escalation | LangChain + Nebius TF + FAISS + Streamlit |
+| [LangChain Data Agent PoC](langchain/langchain_data_agent_poc/) | Ask natural language questions over sample business data with safe SQL and charts | LangChain + LangGraph + Nebius TF + SQLite + Streamlit |
+| [Nebius Travel Planner](langchain/nebius_travel_planner/) | Build grounded itineraries with weather, web research, budgets, currency conversion, and packing prep | LangChain + Nebius TF + Streamlit |
 
 ## Agents by Framework
 
-### [CrewAI](https://www.crewai.com/)
+### CrewAI
+
+https://www.crewai.com/
 
 | Agent                                           | Descripton            | Tech Stack |
 | ----------------------------------------------- | --------------------- | ---------- |
 | [CrewAI Research agent](crewai-research-agent/) | CrewAI research agent | CrewAI     |
 
-### [Google ADK (Agent Development Kit)](https://google.github.io/adk-docs/)
+### Google ADK (Agent Development Kit)
+
+https://google.github.io/adk-docs/
 
 | Agent                                                     | Descripton             | Tech Stack |
 | --------------------------------------------------------- | ---------------------- | ---------- |
 | [Google ADK Tool calling agent](google-adk-tool-calling/) | Function calling agent | Google ADK |
 
-### [Agno](https://www.agno.com/)
+### Agno
+
+https://www.agno.com/
 
 | Agent                                             | Descripton                                              | Tech Stack                        |
 | ------------------------------------------------- | ------------------------------------------------------- | --------------------------------- |
@@ -69,39 +75,50 @@ Jump to:
 
 ### LangChain
 
-[Langchain docs](https://docs.langchain.com/)
+https://docs.langchain.com/
 
-More  Langchain examples in [langchain](langchain/) folder.
+More LangChain examples in the [langchain](langchain/) folder.
 
-| Agent | Descripton | Tech Stack |
-| ----- | ---------- | ---------- |
-| [Customer Support Resolution Agent](langchain/customer_support_resolution_agent/) | Resolve support questions with order lookup, policy RAG, and human ticket escalation | LangChain + Nebius + FAISS + Streamlit |
-| [LangChain Data Agent PoC](langchain/langchain_data_agent_poc/) | Ask natural language questions over sample business data with safe SQL and charts | LangChain + LangGraph + Nebius + SQLite + Streamlit |
-| [Nebius Travel Planner](langchain/nebius_travel_planner/) | Build grounded itineraries with weather, web research, budgets, currency conversion, and packing prep | LangChain + Nebius + Streamlit |
-
-[More examples](langchain/)
+| Agent | Description | Tech Stack |
+| ----- | ----------- | ---------- |
+| [Customer Support Resolution Agent](langchain/customer_support_resolution_agent/) | Resolve support questions with order lookup, policy RAG, and human ticket escalation | LangChain + Nebius TF + FAISS + Streamlit |
+| [Customer Support Resolution Agent (v2)](langchain/customer-support-resolution-agent/) | CX ticket resolution with KB search, order lookup, and policy-grounded draft responses | LangChain + Nebius TF |
+| [LangChain Data Agent PoC](langchain/langchain_data_agent_poc/) | Natural-language queries over business data with safe read-only SQL and chart suggestions | LangChain + LangGraph + Nebius TF + SQLGlot + Streamlit |
+| [Nebius Travel Planner](langchain/nebius_travel_planner/) | Build grounded itineraries with weather, web research, budgets, and currency conversion | LangChain + Nebius TF + Streamlit |
+| [Voice Agent with Gradium](langchain/voice-agent-gradium-nebius-langchain/) | Conversational pitch and public-speaking coach with browser voice turns | LangChain + Nebius TF + Gradium STT/TTS + FastAPI |
+| [Incident Response Agent](langchain/incident-response-agent/) | SRE incident triage with log search, runbook lookup, and typed mitigation plans | LangChain + Nebius TF |
+| [Vendor Risk Compliance Agent](langchain/vendor-risk-compliance-agent/) | Vendor questionnaire review producing risk registers from contract evidence | LangChain + Nebius TF |
+| [Data Quality Ops Agent](langchain/data-quality-ops-agent/) | Data pipeline investigation with guarded read-only SQL and quality reports | LangChain + Nebius TF |
 
 ---
 
-### [Llama-index](https://www.llamaindex.ai/)
+### Llama-index
+
+https://www.llamaindex.ai/
 
 | Agent                                            | Descripton                    | Tech Stack  |
 | ------------------------------------------------ | ----------------------------- | ----------- |
 | [Llama-index task timer](llamaindex-task-timer/) | Calculate time spent on tasks | Llama-index |
 
-### [Pydantic AI](https://ai.pydantic.dev/)
+### Pydantic AI
+
+https://ai.pydantic.dev/
 
 | Agent                                             | Descripton                   | Tech Stack            |
 | ------------------------------------------------- | ---------------------------- | --------------------- |
 | [Pydantic weather agent](pydantic-weather-agent/) | Get weather info in realtime | Pydantic + Duckduckgo |
 
-### [Strands Agent](https://strandsagents.com/latest/)
+### Strands Agent
+
+https://strandsagents.com/latest/
 
 | Agent                                                   | Descripton        | Tech Stack      |
 | ------------------------------------------------------- | ----------------- | --------------- |
 | [AWS Strands Weather Agent](aws-strands-weather-agent/) | Weather assistant | AWS Strands SDK |
 
-### [Camel AI](https://www.camel-ai.org/)
+### Camel AI
+
+https://www.camel-ai.org/
 
 | Agent                    | Description                                                         | Tech Stack |
 | ------------------------ | ------------------------------------------------------------------- | ---------- |
