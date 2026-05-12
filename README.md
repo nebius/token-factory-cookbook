@@ -37,7 +37,7 @@ A collection of guides and examples for building intelligent applications with o
 
 - [Token Factory Workshop](workshops/token-factory-workshop/README.md)
 - [Builder Hour](builder-hour/README.md) &nbsp;•&nbsp; [Events](community/events.md) supported by Nebius AI
-- [LangChain examples](agents/langchain/README.md)
+- [LangChain deep agent examples](agents/langchain/README.md)
 - [Community contributions](community/README.md)
 - [Post training examples](post-training/)
 - [Distillation guide](distillation/distillation-1/)

@@ -6,6 +6,16 @@ Production-ready LangChain agent examples powered by [Nebius TF Token Factory](h
 
 (*Nebius TF = Nebius Token Factory*)
 
+### 😎 Deep Agents Examples
+
+| Agent | Description | Tech Stack |
+| ----- | ----------- | ---------- |
+| [Deep Agent Example 1](deep-agent-example-1/) | Deep research agent with planning, virtual file system, and a research sub-agent using DuckDuckGo web search | LangChain deepagents · Nebius TF · DuckDuckGo |
+| [Deep Agent Example 2](deep-agent-example-2/) | A Tavily-powered web research variant | LangChain deepagents · Nebius TF · Tavily |
+
+
+### More Agent examples
+
 | Agent | Description | Tech Stack |
 | ----- | ----------- | ---------- |
 | [Customer Support Resolution Agent](customer_support_resolution_agent/) | Resolves support questions with order lookup, policy RAG, and human ticket escalation | LangChain · LangGraph · Nebius TF · FAISS · Streamlit |
@@ -16,6 +26,7 @@ Production-ready LangChain agent examples powered by [Nebius TF Token Factory](h
 | [Incident Response Agent](incident-response-agent/) | SRE incident triage via tool-driven log search, runbook lookup, deploy correlation, and typed mitigation plans | LangChain · Nebius TF · Pydantic |
 | [Vendor Risk Compliance Agent](vendor-risk-compliance-agent/) | Inspects vendor questionnaires and produces risk registers grounded in internal controls and contract evidence | LangChain · Nebius TF · Pydantic |
 | [Data Quality Ops Agent](data-quality-ops-agent/) | Investigates data pipeline issues with guarded read-only SQL, schema discovery, and reproducible quality reports | LangChain · Nebius TF · SQLite · Pydantic |
+
 
 ## Common Patterns
 
