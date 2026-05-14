@@ -1,7 +1,5 @@
 # GLM-5
 
-> ⭐ If you find this repo useful, give it a star! You'll be notified of new updates and help others discover it too — thank you!
-
 ---
 
 ## Table of Contents

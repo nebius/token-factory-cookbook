@@ -1,7 +1,5 @@
 # Qwen3.5-397B-A17B
 
-> ⭐ If you find this repo useful, give it a star! You'll be notified of new updates and help others discover it too — thank you!
-
 ---
 
 ## Table of Contents

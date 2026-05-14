@@ -1,7 +1,5 @@
 # Nemotron-3-Super-120B-A12B
 
-> ⭐ If you find this repo useful, give it a star! You'll be notified of new updates and help others discover it too — thank you!
-
 ---
 
 ## Table of Contents
