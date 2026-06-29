@@ -6,7 +6,7 @@ const CANVAS_HEIGHT = GRID_SIZE * CELL_SIZE;
 const NUM_FRUITS = 3; // Number of fruits on board
 
 // Timing and Retry Constants
-const LLM_TIMEOUT_MS = 100000; // 100 second timeout for LLM responses
+const LLM_TIMEOUT_MS = 30000; // 30 second timeout for LLM responses
 const API_RETRY_DELAY_MS = 2000; // 2 second delay between API retries
 const MAX_API_RETRIES = 10; // Max retry attempts for non-429 errors
 const MAX_429_RETRIES = 3; // Max retry attempts specifically for 429 rate limit errors
