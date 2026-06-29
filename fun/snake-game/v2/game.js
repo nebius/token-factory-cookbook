@@ -25,6 +25,8 @@ const LLM_FULL_GRID_VIEW = false;
 let VIEW_RADIUS = 5; // Initialized to 5 as requested, can be changed from UI
 // If true, provides a list of safe moves in the prompt (helps LLM avoid collisions)
 let collisionAvoidanceEnabled = true;
+// If true, lets the model "think"/reason before answering (chat_template_kwargs.enable_thinking)
+let thinkingModeEnabled = false;
 
 // LLM System Prompt
 const SYSTEM_PROMPT1 = `You are a snake game AI with LIMITED VISIBILITY. Your goal: SURVIVE longer than your opponent while strategically eating fruits to grow. Respond INSTANTLY with ONLY ONE WORD: up, down, left, or right. NO thinking, NO explanation, NO extra text.
@@ -136,6 +138,7 @@ const pauseBtn = document.getElementById('pause-btn');
 const restartBtn = document.getElementById('restart-btn');
 const debugCheckbox = document.getElementById('debug-checkbox');
 const collisionAvoidanceCheckbox = document.getElementById('collision-avoidance-checkbox');
+const thinkingModeCheckbox = document.getElementById('thinking-mode-checkbox');
 const loopCheckbox = document.getElementById('loop-checkbox');
 const viewRadiusInput = document.getElementById('view-radius-input');
 const logContent = document.getElementById('log-content');
@@ -309,6 +312,10 @@ if (debugCheckbox) {
 
 if (collisionAvoidanceCheckbox) {
     addTrackedEventListener(collisionAvoidanceCheckbox, 'change', toggleCollisionAvoidance);
+}
+
+if (thinkingModeCheckbox) {
+    addTrackedEventListener(thinkingModeCheckbox, 'change', toggleThinkingMode);
 }
 
 if (loopCheckbox) {
@@ -2116,7 +2123,12 @@ async function getLLMDirection(playerNum, maxTokens = null) {
                     content: prompt
                 }
             ],
-            temperature: 0
+            temperature: 0,
+            // Toggle model "thinking" mode via the Options UI (e.g. GLM-5.x).
+            // Harmless for models that don't recognize chat_template_kwargs.
+            chat_template_kwargs: {
+                enable_thinking: thinkingModeEnabled
+            }
         };
 
         // Conditionally add max_tokens based on the parameter
@@ -3145,6 +3157,19 @@ function toggleCollisionAvoidance() {
     }
     addLog(`${collisionAvoidanceEnabled ? '🛡️ Collision avoidance enabled' : '🚫 Collision avoidance disabled'}`, 1);
     addLog(`${collisionAvoidanceEnabled ? '🛡️ Collision avoidance enabled' : '🚫 Collision avoidance disabled'}`, 2);
+}
+
+// Toggle model reasoning (thinking) mode — changes take effect immediately (next API call)
+function toggleThinkingMode() {
+    thinkingModeEnabled = thinkingModeCheckbox.checked;
+    if (gameState.debugMode) {
+        console.log(`Model reasoning (thinking): ${thinkingModeEnabled ? 'enabled' : 'disabled'}`);
+    }
+    const msg = thinkingModeEnabled
+        ? '🧠 Model reasoning enabled (thinking on, may be slower)'
+        : '🚫 Model reasoning disabled (thinking off)';
+    addLog(msg, 1);
+    addLog(msg, 2);
 }
 
 // Toggle loop mode

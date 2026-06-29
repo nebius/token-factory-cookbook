@@ -37,7 +37,7 @@ snake-battle/
 ### LLM Integration
 
 - **Endpoints:** `GET {apiUrl}models` (load; tries `?verbose=true` first for modality metadata, falls back to plain `/models`); `POST {apiUrl}chat/completions` (decisions).
-- **Request body:** `{ model, messages:[{system}, {user}], temperature: 0 }` plus `max_tokens` only when non-null.
+- **Request body:** `{ model, messages:[{system}, {user}], temperature: 0, chat_template_kwargs: { enable_thinking } }` plus `max_tokens` only when non-null. `enable_thinking` mirrors the **Model Reasoning** Options toggle (`thinkingModeEnabled`, default `false`); setting it `false` disables model "thinking" mode (e.g. GLM-5.x) so only the direction answer comes back — harmless for models that don't recognize `chat_template_kwargs`. The benchmark Speed Test sends the same value for apples-to-apples comparison.
 - **System prompt** (`SYSTEM_PROMPT1`): survival goal + instructions to respond with ONLY `up`/`down`/`left`/`right`, no thinking; a `{VISIBILITY_SIZE}` placeholder is replaced with `VIEW_RADIUS * 2 + 1`.
 - **Board state prompt** (`getBoardState`): player color/length/head pos, enemy info, all fruits with value/distance/value-per-distance, closest fruit + length advantage, high-value targets, ASCII board view centered on head (full 30×30 OR `(VIEW_RADIUS*2+1)` square with wrap; legend `@`=head `★`=fruit `R/r`/`B/b`=bodies `.`=empty), per-direction danger checks, and — if `collisionAvoidanceEnabled` — a `Safe moves:` line with a preferred direction toward the closest fruit.
 - **Content stripping:** regex `/<(thinking|think|thought|reasoning)>[\s\S]*?<\/\1>/gi` removes thinking tags before parsing the direction.
@@ -112,7 +112,7 @@ Two-column flex (`main-container`, `.left-pane` + `.right-pane`): a **left confi
 ### Left pane (config / controls)
 - **API URL** (`#api-url`, pre-filled Nebius), **API Key** (password), **⚡ Load Models** button + spinner/error.
 - **Searchable model dropdowns** (`.searchable-dropdown`): `.model-search-input` + `.dropdown-options` for P1 and P2 (type-to-filter, case-insensitive, selects first match; invalid free-text reverts on blur). Player labels `🔴 Player 1 (Red Snake)` / `🔵 Player 2 (Blue Snake)`.
-- **Options section** (`#options-section`, collapsible, starts collapsed): Visibility Radius input (1–30, default 5), Collision Avoidance checkbox (on by default), Debug Mode checkbox.
+- **Options section** (`#options-section`, collapsible, starts collapsed): Visibility Radius input (1–30, default 5), Collision Avoidance checkbox (on by default), Debug Mode checkbox, Model Reasoning checkbox (off by default — toggles `chat_template_kwargs.enable_thinking`).
 - **Extra section** (`#extra-section`, collapsible, starts collapsed): ⚡ Speed Test, 📈 Show Results, Sort by Name / by Speed buttons.
 - **Control bar**: Start Battle, Pause ⏸️, Restart 🔄, and Loop-mode checkbox (on by default) — all in the left pane, not on the game screen.
 - Collapse toggles animate `max-height`/opacity via `.collapsed` class.
@@ -165,6 +165,7 @@ P1 - #45: 💥 HEAD-ON COLLISION!
 | Player 1 / 2 Model | first / second available | — | Searchable dropdown |
 | Debug Mode | off | on/off | Console logging, masked auth |
 | Collision Avoidance | on | on/off | Hints + auto safe-move override |
+| Model Reasoning | off | on/off | `chat_template_kwargs.enable_thinking` in API calls (e.g. GLM-5.x thinking mode). Dynamic — next move uses new setting. Also drives the Speed Test. |
 | Visibility Radius | 5 | 1–30 | Snake vision radius in cells (30 = full grid) |
 | Loop Mode | on | on/off | Auto-restart with 5s countdown |
 

@@ -283,13 +283,13 @@ class ModelBenchmark {
         }
     }
 
-    async benchmarkModel(apiUrl, apiKey, modelName, testCount = ModelBenchmark.TEST_COUNT) {
+    async benchmarkModel(apiUrl, apiKey, modelName, testCount = ModelBenchmark.TEST_COUNT, thinkingEnabled = false) {
         console.log(`\n🚀 Starting benchmark for model: ${this.getDisplayName(modelName)}`);
         console.log(`   Running ${ModelBenchmark.TEST_COUNT} parallel test requests...`);
 
         const results = [];
         const requests = Array.from({ length: testCount }, (_, i) =>
-            this.performUUIDRequest(apiUrl, apiKey, modelName, i)
+            this.performUUIDRequest(apiUrl, apiKey, modelName, i, thinkingEnabled)
         );
 
         const requestResults = await Promise.all(requests);
@@ -367,7 +367,7 @@ class ModelBenchmark {
         return result;
     }
 
-    async performUUIDRequest(apiUrl, apiKey, modelName, index) {
+    async performUUIDRequest(apiUrl, apiKey, modelName, index, thinkingEnabled = false) {
         try {
             // Fallback for crypto.randomUUID() in older browsers
             const generateUUID = () => {
@@ -414,7 +414,12 @@ class ModelBenchmark {
                                 { role: 'system', content: systemPrompt },
                                 { role: 'user', content: userPrompt }
                             ],
-                            temperature: 0.1
+                            temperature: 0.1,
+                            // Respect the UI "Model Reasoning" toggle so speed
+                            // tests can compare thinking on vs off.
+                            chat_template_kwargs: {
+                                enable_thinking: thinkingEnabled
+                            }
                         })
                     }),
                     timeoutPromise
@@ -614,6 +619,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const apiUrl = document.getElementById('api-url').value;
             const apiKey = document.getElementById('api-key').value;
+            // Mirror the Options toggle so speed tests compare the same setting used in-game
+            const thinkingEnabled = document.getElementById('thinking-mode-checkbox')?.checked ?? false;
 
             if (!apiUrl || !apiKey) {
                 console.error('❌ Please provide API URL and API key');
@@ -647,7 +654,7 @@ document.addEventListener('DOMContentLoaded', () => {
             try {
                 // Benchmark all models in parallel
                 const benchmarkPromises = availableModels.map(model =>
-                    benchmark.benchmarkModel(apiUrl, apiKey, model.id, 10)
+                    benchmark.benchmarkModel(apiUrl, apiKey, model.id, 10, thinkingEnabled)
                 );
 
                 await Promise.allSettled(benchmarkPromises);
