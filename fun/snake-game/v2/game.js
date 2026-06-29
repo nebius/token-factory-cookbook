@@ -16,6 +16,11 @@ const MAX_CONSECUTIVE_FAILURES = 3; // Max consecutive failures before forfeitin
 // Animation and Effects Constants
 const SYSTEM_FONT = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif';
 
+// Max <p> entries kept in the game log DOM. Older entries are trimmed from the
+// top as new ones are added, so a long single game (or a resumed loop session)
+// can't accumulate unbounded nodes. Reset on restart/loop round still wipes all.
+const MAX_LOG_ENTRIES = 100;
+
 // LLM Configuration
 // If true, passes the full GRID_SIZE x GRID_SIZE board to the LLM
 // Visibility Control System
@@ -1047,6 +1052,13 @@ function addLog(message, playerNum = null, forceLog = false) {
     }
 
     logContent.appendChild(p);
+
+    // Cap log size: drop oldest entries beyond MAX_LOG_ENTRIES.
+    // We trim in a while-loop (not once) in case MAX_LOG_ENTRIES was lowered;
+    // for the normal +1 case this runs a single iteration.
+    while (logContent.children.length > MAX_LOG_ENTRIES) {
+        logContent.removeChild(logContent.firstChild);
+    }
 
     // Auto-scroll only if we were at the bottom before adding content
     if (shouldScroll) {
