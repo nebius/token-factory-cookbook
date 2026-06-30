@@ -3,7 +3,11 @@ class ModelBenchmark {
     static TEST_COUNT = 10;
     static PURE_SPEED_TEST_COUNT = 10;
     static PURE_SPEED_PROMPT = "Hi";
-    static TIMEOUT_MS = 100000; // 100 second timeout
+    // Per-request timeout. Generous enough for slow/thinking models on the
+    // harder Bench 2 (UUID retrieval) task, but still bounds a hung model so
+    // one phase can't stall ~100s. A request exceeding this returns a timeout
+    // failure, lowering the model's success rate toward a ❌ FAIL.
+    static TIMEOUT_MS = 45000;
     static PASS_RATE_THRESHOLD = 80;
     static NUM_UUIDS = 20;
     static TRIM_LOW_COUNT = 2;
@@ -24,8 +28,13 @@ class ModelBenchmark {
         { key: 'requests',       label: 'Requests',     type: 'requests' }
     ];
 
-    // Shown as the active sort indicator before the user clicks a header.
-    // Matches the default ordering (passing models by median, fastest first).
+    // The default ordering (used until the user clicks a header) is the
+    // pass-bucketed ranking in _defaultSortedResults: passing models first
+    // by ascending median, then failing models by descending success rate.
+    // Because the passing block IS a single-key median-ascending sort (and
+    // failed rows always sink with '-' regardless of column), we show a ▲ on
+    // Median by default. First click on Median flips it to desc; a fresh
+    // column starts asc.
     static DEFAULT_SORT_COLUMN = 'medianLatency';
     static DEFAULT_SORT_DIRECTION = 'asc';
 
@@ -441,7 +450,8 @@ class ModelBenchmark {
 
         const prev = this.sortState[benchId];
         // Treat the displayed default sort as the starting baseline so the
-        // first click on it flips to descending (matches the visible ▲).
+        // first click on the default column (Median) flips it to desc, and a
+        // fresh column starts asc. Re-clicking the same column toggles.
         const baseCol = prev ? prev.column : ModelBenchmark.DEFAULT_SORT_COLUMN;
         const baseDir = prev ? prev.direction : ModelBenchmark.DEFAULT_SORT_DIRECTION;
         let direction;
@@ -528,7 +538,16 @@ class ModelBenchmark {
         if (!col) return this._defaultSortedResults(results);
 
         const dir = direction === 'desc' ? -1 : 1;
+        const isFailed = r => parseFloat(r.successRate) < ModelBenchmark.PASS_RATE_THRESHOLD;
         return [...results].sort((a, b) => {
+            // Failed models have no valid numbers — always sink to the bottom,
+            // regardless of sort column or direction. They keep their original
+            // relative order (stable) below the passing models.
+            const aFailed = isFailed(a);
+            const bFailed = isFailed(b);
+            if (aFailed !== bFailed) return aFailed ? 1 : -1;
+            if (aFailed && bFailed) return 0;
+
             const av = this._sortValue(a, col);
             const bv = this._sortValue(b, col);
             if (av < bv) return -1 * dir;
@@ -554,8 +573,8 @@ class ModelBenchmark {
         const totalFailed = results.length - totalPassed;
 
         // Build <th> cells: Rank (non-sortable), then the registry columns.
-        // When the user hasn't sorted yet, show the default sort as active
-        // so the indicator reflects the displayed ordering.
+        // Show the default Median ▲ as active until the user clicks a header —
+        // the default ordering's passing block IS median-ascending.
         const activeCol = state ? state.column : ModelBenchmark.DEFAULT_SORT_COLUMN;
         const activeDir = state ? state.direction : ModelBenchmark.DEFAULT_SORT_DIRECTION;
 
@@ -603,14 +622,21 @@ class ModelBenchmark {
                 successClass = 'benchmark-success-medium';
             }
 
+            // Failed models have no valid latency data — show '-' instead of
+            // the meaningless '0ms' so the row reads as "no valid number".
+            const latCell = failed ? '-' : `${this.formatNumber(result.medianLatency)}ms`;
+            const avgCell = failed ? '-' : `${this.formatNumber(result.averageLatency)}ms`;
+            const minCell = failed ? '-' : `${this.formatNumber(result.minLatency)}ms`;
+            const maxCell = failed ? '-' : `${this.formatNumber(result.maxLatency)}ms`;
+
             tableHTML += `
                 <tr>
                     <td><span class="benchmark-rank">${rank}</span></td>
                     <td class="benchmark-model-cell">${this.getDisplayName(result.model)}</td>
-                    <td class="${latencyClass}">${this.formatNumber(result.medianLatency)}ms</td>
-                    <td>${this.formatNumber(result.averageLatency)}ms</td>
-                    <td>${this.formatNumber(result.minLatency)}ms</td>
-                    <td>${this.formatNumber(result.maxLatency)}ms</td>
+                    <td class="${failed ? '' : latencyClass}">${latCell}</td>
+                    <td>${avgCell}</td>
+                    <td>${minCell}</td>
+                    <td>${maxCell}</td>
                     <td class="${successClass}">${result.successRate}%</td>
                     <td>${result.successfulRequests}/${result.totalRequests}</td>
                 </tr>
@@ -670,16 +696,50 @@ class ModelBenchmark {
         });
 
         if (results.length === 0) {
-            console.log(`   ❌ No successful requests for ${modelName}`);
-            return null;
+            console.log(`   ❌ No successful requests for ${modelName} (timeout or errors)`);
+            const failedResult = {
+                model: modelName,
+                averageLatency: '0',
+                medianLatency: '0',
+                minLatency: '0',
+                maxLatency: '0',
+                successRate: '0.0',
+                correctAnswers: 0,
+                successfulRequests: 0,
+                totalRequests: testCount,
+                allLatencies: [],
+                note: 'No successful requests (timeout or errors)'
+            };
+            console.log(`   ❌ FAIL - 0% success rate (<80% threshold)`);
+            this.benchResults.thinking1.push(failedResult);
+            return failedResult;
         }
 
         // Drop lowest 2 and highest 2 latencies, use remaining 6
         const trimmedLatencies = this.trimOutliers(results.map(r => r.latency));
 
         if (trimmedLatencies.length === 0) {
-            console.log(`   ❌ Not enough successful requests for trimmed calculation`);
-            return null;
+            // Too few successes to survive trimming — not enough data for
+            // reliable latency stats. Still register the model as a failed
+            // row (it does surface its real success count) rather than
+            // silently dropping it from the results.
+            console.log(`   ❌ Not enough successful requests for trimmed calculation (${results.length}/${testCount} succeeded)`);
+            const failedResult = {
+                model: modelName,
+                averageLatency: '0',
+                medianLatency: '0',
+                minLatency: '0',
+                maxLatency: '0',
+                successRate: '0.0',
+                correctAnswers: results.filter(r => r.correct).length,
+                successfulRequests: results.length,
+                totalRequests: testCount,
+                allLatencies: [],
+                note: 'Too few successful requests to compute stable stats'
+            };
+            console.log(`   ❌ FAIL - 0% success rate (<80% threshold)`);
+            this.benchResults.thinking1.push(failedResult);
+            return failedResult;
         }
 
         // Calculate stats on trimmed results
@@ -718,13 +778,13 @@ class ModelBenchmark {
 
     /**
      * Bench 1 — Response Time: measures raw endpoint latency only.
-     * Sends a trivial prompt capped at max_tokens:1 so every model does the
-     * same tiny amount of work. No accuracy dimension — success is simply
-     * an HTTP 200 with a returned token.
+     * Streams a trivial prompt and records the latency to the FIRST content
+     * token (then aborts). No max_tokens cap, no accuracy dimension — success
+     * is simply "the model started emitting output within the timeout."
      */
     async benchmarkResponseTimeModel(apiUrl, apiKey, modelName, testCount = ModelBenchmark.PURE_SPEED_TEST_COUNT, thinkingEnabled = false) {
         console.log(`\n⚡ [Bench 1] Starting response-time benchmark for model: ${this.getDisplayName(modelName)}`);
-        console.log(`   Running ${testCount} parallel single-token test requests...`);
+        console.log(`   Running ${testCount} parallel first-token-arrival (streaming) tests...`);
 
         const results = [];
         const requests = Array.from({ length: testCount }, () =>
@@ -751,16 +811,50 @@ class ModelBenchmark {
         });
 
         if (results.length === 0) {
-            console.log(`   ❌ No successful response-time requests for ${modelName}`);
-            return null;
+            console.log(`   ❌ No successful response-time requests for ${modelName} (timeout or errors)`);
+            const failedResult = {
+                model: modelName,
+                averageLatency: '0',
+                medianLatency: '0',
+                minLatency: '0',
+                maxLatency: '0',
+                successRate: '0.0',
+                correctAnswers: 0,
+                successfulRequests: 0,
+                totalRequests: testCount,
+                allLatencies: [],
+                note: 'No successful response-time requests (timeout or errors)'
+            };
+            console.log(`   ❌ FAIL - 0% success rate (<80% threshold)`);
+            this.benchResults.responseTime.push(failedResult);
+            return failedResult;
         }
 
         // Drop lowest 2 and highest 2 latencies, use remaining
         const trimmedLatencies = this.trimOutliers(results.map(r => r.latency));
 
         if (trimmedLatencies.length === 0) {
-            console.log(`   ❌ Not enough successful response-time requests for trimmed calculation`);
-            return null;
+            // Too few successes to survive trimming — not enough data for
+            // reliable latency stats. Still register the model as a failed
+            // row (surfacing its real success count) rather than silently
+            // dropping it from the results.
+            console.log(`   ❌ Not enough successful response-time requests for trimmed calculation (${results.length}/${testCount} succeeded)`);
+            const failedResult = {
+                model: modelName,
+                averageLatency: '0',
+                medianLatency: '0',
+                minLatency: '0',
+                maxLatency: '0',
+                successRate: '0.0',
+                correctAnswers: 0,
+                successfulRequests: results.length,
+                totalRequests: testCount,
+                allLatencies: [],
+                note: 'Too few successful requests to compute stable stats'
+            };
+            console.log(`   ❌ FAIL - 0% success rate (<80% threshold)`);
+            this.benchResults.responseTime.push(failedResult);
+            return failedResult;
         }
 
         const avgLatency = trimmedLatencies.reduce((a, b) => a + b, 0) / trimmedLatencies.length;
@@ -789,82 +883,131 @@ class ModelBenchmark {
         return result;
     }
 
+    /**
+     * Bench 1 response-time probe. All we measure is endpoint responsiveness:
+     * does the model start producing output within the timeout? We stream the
+     * response (stream: true, no max_tokens cap) and stop the instant the
+     * first non-empty content token arrives — that timestamp is the latency.
+     * The stream is then aborted so the model doesn't keep generating.
+     *
+     * Success = at least one content delta came back. Failure = non-200 HTTP,
+     * a network/parse error, timeout, or the stream ended with no content.
+     */
     async performPureSpeedRequest(apiUrl, apiKey, modelName, thinkingEnabled = false) {
+        const systemPrompt = `You are a test endpoint.`;
+        const userPrompt = ModelBenchmark.PURE_SPEED_PROMPT;
+
+        const abortController = new AbortController();
+        const timeoutId = setTimeout(
+            () => abortController.abort(),
+            ModelBenchmark.TIMEOUT_MS
+        );
+
+        const startTime = performance.now();
+
         try {
-            const systemPrompt = `You are a test endpoint.`;
-            const userPrompt = ModelBenchmark.PURE_SPEED_PROMPT;
-
-            const startTime = performance.now();
-
-            // Reuse the same timeout/race pattern as the random-line request
-            const timeoutPromise = new Promise((_, reject) => {
-                setTimeout(() => reject(new Error(`Request timeout after ${ModelBenchmark.TIMEOUT_MS/1000} seconds`)), ModelBenchmark.TIMEOUT_MS);
+            const response = await fetch(`${apiUrl}chat/completions`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${apiKey}`
+                },
+                signal: abortController.signal,
+                body: JSON.stringify({
+                    model: modelName,
+                    messages: [
+                        { role: 'system', content: systemPrompt },
+                        { role: 'user', content: userPrompt }
+                    ],
+                    temperature: 0.1,
+                    stream: true,
+                    chat_template_kwargs: { enable_thinking: thinkingEnabled }
+                })
             });
 
-            try {
-                const response = await Promise.race([
-                    fetch(`${apiUrl}chat/completions`, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Authorization': `Bearer ${apiKey}`
-                        },
-                        body: JSON.stringify({
-                            model: modelName,
-                            messages: [
-                                { role: 'system', content: systemPrompt },
-                                { role: 'user', content: userPrompt }
-                            ],
-                            temperature: 0.1,
-                            // Cap to a single token so generation length can't skew latency
-                            max_tokens: 1,
-                            chat_template_kwargs: {
-                                enable_thinking: thinkingEnabled
-                            }
-                        })
-                    }),
-                    timeoutPromise
-                ]);
-
-                const endTime = performance.now();
-                const latency = endTime - startTime;
-
-                if (!response || typeof response.ok !== 'boolean') {
-                    throw new Error('Invalid response after timeout');
-                }
-
-                if (!response.ok) {
-                    return {
-                        success: false,
-                        latency: latency,
-                        error: `HTTP ${response.status}`
-                    };
-                }
-
-                const data = await response.json();
-                // Success = we got a token back. We don't care what it says.
-                const content = data.choices?.[0]?.message?.content;
-                const success = typeof content === 'string' && content.length > 0;
-
-                return {
-                    success,
-                    latency,
-                    error: success ? null : 'Empty response'
-                };
-            } catch (raceError) {
+            if (!response.ok) {
+                const text = await response.text().catch(() => '');
                 return {
                     success: false,
                     latency: null,
-                    error: raceError.message || 'Request failed or timed out'
+                    error: `HTTP ${response.status}${text ? `: ${text.slice(0, 120)}` : ''}`
                 };
             }
+
+            // Walk the SSE stream until the first non-empty content delta.
+            if (!response.body) {
+                return { success: false, latency: null, error: 'No response body to stream' };
+            }
+            const reader = response.body.getReader();
+            const decoder = new TextDecoder();
+            let buffer = '';
+
+            while (true) {
+                const { value, done } = await reader.read();
+                if (done) break;
+                buffer += decoder.decode(value, { stream: true });
+
+                // SSE events are separated by blank lines; process whole ones.
+                let nl;
+                while ((nl = buffer.indexOf('\n')) !== -1) {
+                    const line = buffer.slice(0, nl).trim();
+                    buffer = buffer.slice(nl + 1);
+                    const found = ModelBenchmark._firstContentToken(line);
+                    if (found === 'done') { buffer = ''; break; }
+                    if (found) {
+                        return { success: true, latency: performance.now() - startTime, error: null };
+                    }
+                }
+            }
+
+            // Final flush: the last SSE line may have no trailing newline
+            // (server closed the connection mid-line). Drain the decoder and
+            // check the residual buffer before declaring no token.
+            buffer += decoder.decode();
+            if (buffer.trim()) {
+                const found = ModelBenchmark._firstContentToken(buffer.trim());
+                if (found === true) {
+                    return { success: true, latency: performance.now() - startTime, error: null };
+                }
+            }
+
+            // Stream ended without any content token.
+            return { success: false, latency: null, error: 'No content token in stream' };
         } catch (error) {
+            const timedOut = error.name === 'AbortError' && performance.now() - startTime >= ModelBenchmark.TIMEOUT_MS * 0.98;
             return {
                 success: false,
                 latency: null,
-                error: error.message
+                error: timedOut
+                    ? `Request timeout after ${ModelBenchmark.TIMEOUT_MS / 1000} seconds`
+                    : (error.message || 'Request failed or timed out')
             };
+        } finally {
+            clearTimeout(timeoutId);
+            // Ensure the underlying fetch/stream is torn down even if we
+            // returned early on the first token.
+            abortController.abort();
         }
+    }
+
+    /**
+     * Inspect one SSE `data:` line for the pure-speed probe. Returns:
+     *   true  — line carries a non-empty content delta (a usable token)
+     *   'done' — the terminal [DONE] sentinel
+     *   false — anything else (comment, blank, unparseable, no content)
+     * Used for both the streaming loop and the final no-trailing-newline flush.
+     */
+    static _firstContentToken(line) {
+        if (typeof line !== 'string') return false;
+        line = line.trim();
+        if (!line.startsWith('data:')) return false;
+        const payload = line.slice(5).trim();
+        if (payload === '[DONE]') return 'done';
+        let chunk;
+        try { chunk = JSON.parse(payload); }
+        catch { return false; }
+        const delta = chunk?.choices?.[0]?.delta?.content;
+        return typeof delta === 'string' && delta.length > 0;
     }
 
     async performUUIDRequest(apiUrl, apiKey, modelName, thinkingEnabled = false) {
