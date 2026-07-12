@@ -444,9 +444,9 @@
       "parameters": {
         "model": {
           "__rl": true,
-          "value": "deepseek-ai/DeepSeek-V3-0324-fast",
+          "value": "deepseek-ai/DeepSeek-V4-Pro",
           "mode": "list",
-          "cachedResultName": "deepseek-ai/DeepSeek-V3-0324-fast"
+          "cachedResultName": "deepseek-ai/DeepSeek-V4-Pro"
         },
         "options": {
           "temperature": 0.2

@@ -16,9 +16,9 @@ def create_models():
         (ModelPlatformType.OPENAI, ModelType.GPT_4O_MINI, ChatGPTConfig(temperature=0.0, max_tokens=2000), "OpenAI GPT-4O Mini"),
         (ModelPlatformType.OPENAI, ModelType.GPT_4O, ChatGPTConfig(temperature=0.0, max_tokens=2000), "OpenAI GPT-4O"),
 # Nebius Models
-        (ModelPlatformType.NEBIUS, "moonshotai/Kimi-K2-Instruct", NebiusConfig(temperature=0.0, max_tokens=2000), "Nebius Kimi-K2-Instruct"),
+        (ModelPlatformType.NEBIUS, "moonshotai/Kimi-K2.6", NebiusConfig(temperature=0.0, max_tokens=2000), "Nebius Kimi-K2-Instruct"),
         (ModelPlatformType.NEBIUS, "Qwen/Qwen3-Coder-480B-A35B-Instruct", NebiusConfig(temperature=0.0, max_tokens=2000), "Nebius Qwen3-Coder-480B-A35B-Instruct"),
-        (ModelPlatformType.NEBIUS, "zai-org/GLM-4.5-Air", NebiusConfig(temperature=0.0, max_tokens=2000), "Nebius GLM-4.5-Air")
+        (ModelPlatformType.NEBIUS, "zai-org/GLM-5.1", NebiusConfig(temperature=0.0, max_tokens=2000), "Nebius GLM-4.5-Air")
     ]
 
     models = [(ModelFactory.create(model_platform=platform, model_type=model_type, model_config_dict=config.as_dict(), url="https://api.tokenfactory.nebius.com/v1/" if platform == ModelPlatformType.NEBIUS else None), name)

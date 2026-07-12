@@ -16,7 +16,7 @@ class Config:
     CALENDLY_USERNAME = os.getenv("CALENDLY_USERNAME")
     
     # Models
-    LLM_MODEL = "zai-org/GLM-4.5"
+    LLM_MODEL = "zai-org/GLM-5.2"
     EMBEDDING_MODEL = "Qwen/Qwen3-Embedding-8B"
     
     # External APIs

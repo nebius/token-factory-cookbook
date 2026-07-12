@@ -16,12 +16,12 @@
 
 ### 2. Setup Nebius LLM Node
 
-- Use `deepseek-ai/DeepSeek-V3-0324-fast` from Nebius Token Factory.
+- Use `deepseek-ai/DeepSeek-V4-Pro` from Nebius Token Factory.
 - Add your Nebius API Key in credentials.
 - **Example Node Configuration:**
   ```json
   {
-    "model": "deepseek-ai/DeepSeek-V3-0324-fast",
+    "model": "deepseek-ai/DeepSeek-V4-Pro",
     "options": { "temperature": 0.2 }
   }
   ```

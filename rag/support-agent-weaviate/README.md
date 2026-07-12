@@ -201,7 +201,7 @@ Defaults/tuning (optional):
 - `DEFAULT_MIN_VECTOR_RELEVANCE` (default 0.7)
 
 Model defaults (from `config.py`):
-- `LLM_MODEL = "zai-org/GLM-4.5"`
+- `LLM_MODEL = "zai-org/GLM-5.2"`
 - `EMBEDDING_MODEL = "Qwen/Qwen3-Embedding-8B"`
 
 To change models, open `config.py` and edit `LLM_MODEL` and/or `EMBEDDING_MODEL` to the desired Nebius Token Factory identifiers.

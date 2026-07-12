@@ -54,7 +54,7 @@ productivity_tool = FunctionTool.from_defaults(fn=calculate_productivity)
 
 # Create the LLM
 llm = NebiusLLM(
-    model="openai/gpt-oss-20b",
+    model="openai/gpt-oss-120b",
     # model="Qwen/Qwen3-235B-A22B",
     api_key=os.getenv("NEBIUS_API_KEY")
 )

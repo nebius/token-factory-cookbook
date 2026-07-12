@@ -11,7 +11,7 @@ A powerful RAG (Retrieval-Augmented Generation) chat application built with Stre
 - 💬 Interactive Chat Interface
 - 🤖 Powered by Qwen3-235B-A22B Model
 - 🔍 Advanced RAG Implementation using LlamaIndex
-- 🎯 High-quality Embeddings with BAAI/bge-en-icl
+- 🎯 High-quality Embeddings with Qwen/Qwen3-Embedding-8B
 - 🔄 Real-time Document Processing
 - 💭 Transparent AI Reasoning Display
 
@@ -92,7 +92,7 @@ streamlit run main.py
 
 - Primary: Qwen3-235B-A22B
 - Alternative: DeepSeek-V3
-- Embedding Model: BAAI/bge-en-icl
+- Embedding Model: Qwen/Qwen3-Embedding-8B
 
 ## Architecture
 
