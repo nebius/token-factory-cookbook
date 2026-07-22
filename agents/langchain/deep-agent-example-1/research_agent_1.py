@@ -8,8 +8,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 model = ChatNebius(
-    # model="Qwen/Qwen3 -30B-A3B-Instruct-2507",
-    model="moonshotai/Kimi-K2.5"
+    model="MiniMaxAI/MiniMax-M3"
 )
 
 agent = create_deep_agent(model=model)
