@@ -36,7 +36,7 @@ A collection of guides and examples for building intelligent applications with o
 ## 😎 Featured
 
 - [Token Factory Workshop](workshops/token-factory-workshop/README.md)
-- [Builder Hour](builder-hour/README.md) &nbsp;•&nbsp; [Events](community/events.md) supported by Nebius AI
+- [Office Hours](office-hours/README.md) &nbsp;•&nbsp; [Events](community/events.md) supported by Nebius AI
 - [LangChain deep agent examples](agents/langchain/README.md)
 - [Community contributions](community/README.md)
 - [Post training examples](post-training/)
@@ -50,7 +50,7 @@ A collection of guides and examples for building intelligent applications with o
 
 Network, learn, and build with fellow builders - including hackathons, workshops, and community events.
 
-Join [Builder Hour](builder-hour/README.md) online.
+Join [Office Hour](office-hours/README.md) online.
 
 [Events / hackathons / workshops](community/events.md)
 
