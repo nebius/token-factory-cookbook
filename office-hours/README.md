@@ -1,9 +1,9 @@
-# 🚀 Token Factory Builder Hour
+# 🚀 Token Factory Offic Hour
 
 
 <img src="builder-hour-1.png" style="width: 300px; float:right;">
 
-Token Factory Builder Hour is an **engaging live session** where builders and developers come together to share knowledge through interactive conversations and hands-on demos.
+Token Factory Office Hour is an **engaging live session** where builders and developers come together to share knowledge through interactive conversations and hands-on demos.
 
 ### 🤝 Why Join Us?
 - 🚀 **Network** with fellow builders and tech enthusiasts
@@ -32,7 +32,7 @@ We'd love to have you join us!
 ## 📚 Resources
 
 - 🔧 **Code Repository**: [Token Factory Cookbook](https://github.com/nebius/token-factory-cookbook)
-- 💬 **Community Chat**: [Join Discord](https://discord.gg/nN58zxSTFR) → [Builder Hour Channel](https://discord.com/channels/1222156136380235877/1445865431838490676)
+- 💬 **Community Chat**: [Join Discord](https://discord.gg/nN58zxSTFR) → [Office Hour Channel](https://discord.com/channels/1222156136380235877/1445865431838490676)
 
 ---
 
