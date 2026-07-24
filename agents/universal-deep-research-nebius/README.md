@@ -1,6 +1,6 @@
 # Universal Deep Research (Nebius Token Factory) — Agent
 
-This agent demonstrates a multi‑step research pipeline powered by Nebius Token Factory models (OpenAI‑compatible) with a FastAPI backend and a Next.js frontend. It uses the model `moonshotai/Kimi-K2-Instruct` by default.
+This agent demonstrates a multi‑step research pipeline powered by Nebius Token Factory models (OpenAI‑compatible) with a FastAPI backend and a Next.js frontend. It uses the model `moonshotai/Kimi-K2.6` by default.
 
 - Source app: https://github.com/demianarc/nebiusaistudiodeepresearch
 - Cookbook context: add this folder under `agents/`.
@@ -36,7 +36,7 @@ cp env.example .env
 # FRONTEND_URL=http://localhost:3004
 # OpenAI-compatible Nebius base URL + model (already defaulted in this edition):
 # FRAME_BASE_URL=https://api.tokenfactory.nebius.com/v1/
-# FRAME_MODEL=moonshotai/Kimi-K2-Instruct
+# FRAME_MODEL=moonshotai/Kimi-K2.6
 # Optional (web search):
 # echo "<your-tavily-key>" > tavily_api.txt
 ./launch_server.sh
@@ -61,7 +61,7 @@ Open http://localhost:3004 and enter a prompt (e.g., “Tell me everything about
 
 ## Notes
 - The backend uses an OpenAI‑compatible client pointed to `https://api.tokenfactory.nebius.com/v1/`.
-- Default model is `moonshotai/Kimi-K2-Instruct`.
+- Default model is `moonshotai/Kimi-K2.6`.
 - No secrets are committed; `.env*` and `*_api.txt` files are ignored.
 - This integrates the original NVIDIA research prototype with Nebius models; credits retained.
 

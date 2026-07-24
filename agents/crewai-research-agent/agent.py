@@ -7,8 +7,8 @@ load_dotenv()
 
 ## https://docs.crewai.com/en/learn/llm-connections#using-the-llm-class
 llm=LLM(
-        model="nebius/openai/gpt-oss-20b-Instruct-2507",
-        # model="nebius/deepseek-ai/DeepSeek-R1-0528",
+        model="nebius/openai/gpt-oss-120b-Instruct-2507",
+        # model="nebius/deepseek-ai/DeepSeek-V4-Pro",
         api_key=os.getenv("NEBIUS_API_KEY")
 )
 

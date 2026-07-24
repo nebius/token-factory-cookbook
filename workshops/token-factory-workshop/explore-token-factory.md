@@ -46,7 +46,7 @@ Give the same prompt and see how both models perform and how long do they take
 ## Step 5: Compare Reasoning
 
 Compare 
-- smaller models (e.g. `Qwen/Qwen3-32B-fast`)
+- smaller models (e.g. `Qwen/Qwen3-32B`)
 - and larger models (e.g. `zai-org/GLM-5.1`)
 
 Here are some sample prompts:

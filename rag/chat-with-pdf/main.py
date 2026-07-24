@@ -16,7 +16,7 @@ load_dotenv()
 def run_rag_completion(
     documents,
     query_text: str,
-    embedding_model: str = "BAAI/bge-en-icl",
+    embedding_model: str = "Qwen/Qwen3-Embedding-8B",
     generative_model: str = "Qwen/Qwen3-235B-A22B"
 ) -> str:
     """Run RAG completion using Nebius models."""
@@ -202,7 +202,7 @@ def main():
                     response = run_rag_completion(
                         st.session_state.documents,
                         prompt,
-                        "BAAI/bge-en-icl",  # Fixed embedding model
+                        "Qwen/Qwen3-Embedding-8B",  # Fixed embedding model
                         generative_model
                     )
                     st.session_state.messages.append({"role": "assistant", "content": response})

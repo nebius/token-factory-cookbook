@@ -18,8 +18,8 @@ This example shows querying a PDF using  [llama index](https://docs.llamaindex.a
 - Minimal RAG application for querying PDF documents
 - **Tech Stack**
   - RAG framework: [llamaindex](https://docs.llamaindex.ai/)
-  - open source embedding models: [BAAI/bge-small-en](https://huggingface.co/BAAI/bge-small-en) (fast and good performance) ,  [BAAI/bge-en-icl](https://huggingface.co/BAAI/bge-en-icl) (large and more accurate) etc.
-  - powerful open source LLMs: **meta-llama/Llama-3.3-70B-Instruct**  or **openai/gpt-oss-20b**
+  - open source embedding models: [BAAI/bge-small-en](https://huggingface.co/BAAI/bge-small-en) (fast and good performance) ,  [Qwen/Qwen3-Embedding-8B](https://huggingface.co/Qwen/Qwen3-Embedding-8B) (large and more accurate) etc.
+  - powerful open source LLMs: **meta-llama/Llama-3.3-70B-Instruct**  or **openai/gpt-oss-120b**
   - [Nebius Token Factory](https://tokenfactory.nebius.com) to run models and embeddings
 - Run embedding models locally or on the cloud
 

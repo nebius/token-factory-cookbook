@@ -43,7 +43,7 @@ agent = Agent(
     tools=[hackernews_tools],
     show_tool_calls=True,
     model=Nebius(
-        id="openai/gpt-oss-20b",
+        id="openai/gpt-oss-120b",
         api_key=os.getenv("NEBIUS_API_KEY")
     ),
     markdown=True,

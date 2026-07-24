@@ -4,7 +4,7 @@ In this tutorial, we demonstrate how to perform distillation using **Nebius Toke
 
 1. Generate high-quality training data via batched LLM generation using the recently released **Qwen/Qwen3-235B-A22B-Instruct-2507**.
 2. Fine-tune a **Qwen/Qwen3-30B-A3B-Instruct-2507** non-reasoning student model using LoRA adapters  
-3. Deploy, evaluate and compare the distilled model with a 3.5x times larger model of this family, **Qwen/Qwen3-30B-A3B-Instruct-2507**, using the most powerful open-source LLM to date, **deepseek-ai/DeepSeek-R1-0528**, as evaluator.
+3. Deploy, evaluate and compare the distilled model with a 3.5x times larger model of this family, **Qwen/Qwen3-30B-A3B-Instruct-2507**, using the most powerful open-source LLM to date, **deepseek-ai/DeepSeek-V4-Pro**, as evaluator.
 
 - [Distillation Example](#distillation-example)
   - [Understanding Distillation](#understanding-distillation)
