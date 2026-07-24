@@ -101,7 +101,9 @@ Deploy trained models and monitor their performance in real time.
 
 ## 5 - Integration with Coding Agents
 
-Integrate models with **coding assistants** like Cline, Cursor and Claude Code.
+Integrate models with **coding assistants**.
+
+➡️ [Cursor, Claude Code, and Cline](coding-integration.md) - code with Token Factory models.
 
 [coding integrations](../../coding/README.md)
 
