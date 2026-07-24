@@ -1,0 +1,120 @@
+---
+title: "Tavily"
+description: "Tavily + Nebius Token Factory"
+---
+
+[Tavily](https://tavily.com/) is a web search and extraction API built for AI agents. It delivers clean, LLM-optimized results — handling query formulation, result filtering, and content extraction — so your Token Factory-powered agents can focus on reasoning and synthesis instead of parsing raw HTML.
+
+## **Prerequisites**
+
+1. [Create your Nebius API key](https://tokenfactory.nebius.com/project/api-keys) to authorize requests to Nebius Token Factory.
+2. [Create your Tavily API key](https://app.tavily.com/) — you get 1,000 free API credits every month, no credit card required.
+3. Install the `tavily-python` and `openai` packages:
+
+   ```shellscript
+   pip install tavily-python openai
+   ```
+
+## Quickstart
+
+```python
+from openai import OpenAI
+from tavily import TavilyClient
+
+# Use the OpenAI API to access Nebius Token Factory
+openai_client = OpenAI(
+    api_key="your_nebius_api_key",
+    base_url="https://api.tokenfactory.nebius.com/v1/",
+)
+tavily_client = TavilyClient(api_key="tvly-your_tavily_api_key")
+```
+
+## Web search as a tool
+
+The most common pattern is exposing Tavily search as a tool via function calling: the model decides when to search the web and answers with up-to-date information. Pick any Token Factory model that supports function calling from the [models catalog](https://tokenfactory.nebius.com/).
+
+```python
+import json
+
+MODEL = "moonshotai/Kimi-K2.5"
+
+def tavily_web_search(query: str, search_depth: str = "advanced", max_results: int = 5) -> str:
+    """Search the web using Tavily and return raw results."""
+    response = tavily_client.search(
+        query=query,
+        search_depth=search_depth,
+        max_results=max_results,
+    )
+    return json.dumps(response)
+
+tools = [{
+    "type": "function",
+    "function": {
+        "name": "tavily_web_search",
+        "description": (
+            "Search the web for current information using Tavily. "
+            "Use this to answer questions that require up-to-date information, "
+            "recent events, or facts beyond your training data."
+        ),
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "query": {
+                    "type": "string",
+                    "description": "The search query. Keep it focused and under 400 characters.",
+                },
+                "search_depth": {
+                    "type": "string",
+                    "enum": ["basic", "advanced"],
+                    "description": "'basic' for general results, 'advanced' for highest relevance.",
+                },
+                "max_results": {
+                    "type": "integer",
+                    "description": "Maximum number of search results to return (1-20).",
+                },
+            },
+            "required": ["query"],
+        },
+    },
+}]
+
+def ask(question: str) -> str:
+    """Send a question to the LLM and handle the full tool-calling loop."""
+    messages = [{"role": "user", "content": question}]
+
+    while True:
+        response = openai_client.chat.completions.create(
+            model=MODEL,
+            messages=messages,
+            tools=tools,
+        )
+        choice = response.choices[0]
+
+        if not choice.message.tool_calls:
+            return choice.message.content
+
+        messages.append({"role": "assistant", "tool_calls": choice.message.tool_calls})
+        for call in choice.message.tool_calls:
+            args = json.loads(call.function.arguments)
+            messages.append({
+                "role": "tool",
+                "content": tavily_web_search(**args),
+                "tool_call_id": call.id,
+                "name": call.function.name,
+            })
+
+print(ask("What are the latest developments in AI this month?"))
+```
+
+See the [complete notebook example](https://github.com/nebius/token-factory-cookbook/blob/main/tool-calling/tavily_tool_calling.ipynb) for a step-by-step walkthrough.
+
+## More examples
+
+* [Competitive intelligence agent](https://github.com/nebius/token-factory-cookbook/tree/main/agents/langchain/competitive-intelligence-agent) — a deep agent with three sub-agents for pricing, news, and sentiment research (LangChain deepagents · Token Factory · Tavily)
+* [Universal Deep Research](https://github.com/nebius/token-factory-cookbook/tree/main/agents/universal-deep-research-nebius) — a multi-step research pipeline with a FastAPI backend and Next.js frontend (FastAPI · Next.js · Token Factory · Tavily)
+
+## Resources
+
+* [Tavily documentation](https://docs.tavily.com/)
+* [Tavily API reference](https://docs.tavily.com/documentation/api-reference/introduction)
+* [Tavily Playground](https://app.tavily.com/playground)
