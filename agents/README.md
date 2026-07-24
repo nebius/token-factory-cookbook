@@ -43,6 +43,7 @@ Jump to:
 | [Agno multi agent](agno-agents-examples/) | Multiple agents working together to do finance research | Agno + Duckduckgo + Yahoo Finance |
 | [Customer Support Resolution Agent](langchain/customer_support_resolution_agent/) | Resolve support questions with order lookup, policy RAG, and human ticket escalation | LangChain + Nebius TF + FAISS + Streamlit |
 | [LangChain Data Agent PoC](langchain/langchain_data_agent_poc/) | Ask natural language questions over sample business data with safe SQL and charts | LangChain + LangGraph + Nebius TF + SQLite + Streamlit |
+| [Meeting Briefing Agent](langchain/meeting_briefing_agent/) | Research a company and generate a cited pre-meeting brief with iterative gap analysis | LangChain + LangGraph + Nebius TF + Tavily + Streamlit |
 | [Nebius Travel Planner](langchain/nebius_travel_planner/) | Build grounded itineraries with weather, web research, budgets, currency conversion, and packing prep | LangChain + Nebius TF + Streamlit |
 
 ## Agents by Framework
@@ -94,6 +95,7 @@ https://docs.langchain.com/
 | [Customer Support Resolution Agent](langchain/customer_support_resolution_agent/) | Resolve support questions with order lookup, policy RAG, and human ticket escalation | LangChain + Nebius TF + FAISS + Streamlit |
 | [Customer Support Resolution Agent (v2)](langchain/customer-support-resolution-agent/) | CX ticket resolution with KB search, order lookup, and policy-grounded draft responses | LangChain + Nebius TF |
 | [LangChain Data Agent PoC](langchain/langchain_data_agent_poc/) | Natural-language queries over business data with safe read-only SQL and chart suggestions | LangChain + LangGraph + Nebius TF + SQLGlot + Streamlit |
+| [Meeting Briefing Agent](langchain/meeting_briefing_agent/) | Research a company and generate a cited pre-meeting brief with iterative gap analysis | LangChain + LangGraph + Nebius TF + Tavily + Streamlit |
 | [Nebius Travel Planner](langchain/nebius_travel_planner/) | Build grounded itineraries with weather, web research, budgets, and currency conversion | LangChain + Nebius TF + Streamlit |
 | [Voice Agent with Gradium](langchain/voice-agent-gradium-nebius-langchain/) | Conversational pitch and public-speaking coach with browser voice turns | LangChain + Nebius TF + Gradium STT/TTS + FastAPI |
 | [Incident Response Agent](langchain/incident-response-agent/) | SRE incident triage with log search, runbook lookup, and typed mitigation plans | LangChain + Nebius TF |
