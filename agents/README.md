@@ -43,6 +43,7 @@ Jump to:
 | [Agno multi agent](agno-agents-examples/) | Multiple agents working together to do finance research | Agno + Duckduckgo + Yahoo Finance |
 | [Customer Support Resolution Agent](customer_support_resolution_agent/) | Resolve support questions with order lookup, policy RAG, and human ticket escalation | LangChain + Nebius + FAISS + Streamlit |
 | [LangChain Data Agent PoC](langchain_data_agent_poc/) | Ask natural language questions over sample business data with safe SQL and charts | LangChain + LangGraph + Nebius + SQLite + Streamlit |
+| [Meeting Briefing Agent](meeting_briefing_agent/) | Research a company and generate a cited pre-meeting brief with iterative gap analysis | LangChain + LangGraph + Nebius + Tavily + Streamlit |
 | [Nebius Travel Planner](nebius_travel_planner/) | Build grounded itineraries with weather, web research, budgets, currency conversion, and packing prep | LangChain + Nebius + Streamlit |
 
 ## Agents by Framework
@@ -73,6 +74,7 @@ Jump to:
 | ----- | ---------- | ---------- |
 | [Customer Support Resolution Agent](customer_support_resolution_agent/) | Resolve support questions with order lookup, policy RAG, and human ticket escalation | LangChain + Nebius + FAISS + Streamlit |
 | [LangChain Data Agent PoC](langchain_data_agent_poc/) | Ask natural language questions over sample business data with safe SQL and charts | LangChain + LangGraph + Nebius + SQLite + Streamlit |
+| [Meeting Briefing Agent](meeting_briefing_agent/) | Research a company and generate a cited pre-meeting brief with iterative gap analysis | LangChain + LangGraph + Nebius + Tavily + Streamlit |
 | [Nebius Travel Planner](nebius_travel_planner/) | Build grounded itineraries with weather, web research, budgets, currency conversion, and packing prep | LangChain + Nebius + Streamlit |
 
 ### [Llama-index](https://www.llamaindex.ai/)
