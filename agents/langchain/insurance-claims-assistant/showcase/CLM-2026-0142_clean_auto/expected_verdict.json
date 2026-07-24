@@ -1,0 +1,14 @@
+{
+  "claim_id": "CLM-2026-0142",
+  "verdict": "approve",
+  "risk_level": "low",
+  "confidence": 0.96,
+  "reason": "Photographs, estimate, invoice, policy, and claimant record are mutually consistent.",
+  "checks": {
+    "document_completeness": "pass",
+    "damage_description_consistency": "pass",
+    "amount_consistency": "pass",
+    "identity_consistency": "pass"
+  },
+  "synthetic_demo": true
+}

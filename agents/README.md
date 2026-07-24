@@ -44,6 +44,7 @@ Jump to:
 | [Customer Support Resolution Agent](langchain/customer_support_resolution_agent/) | Resolve support questions with order lookup, policy RAG, and human ticket escalation | LangChain + Nebius TF + FAISS + Streamlit |
 | [LangChain Data Agent PoC](langchain/langchain_data_agent_poc/) | Ask natural language questions over sample business data with safe SQL and charts | LangChain + LangGraph + Nebius TF + SQLite + Streamlit |
 | [Nebius Travel Planner](langchain/nebius_travel_planner/) | Build grounded itineraries with weather, web research, budgets, currency conversion, and packing prep | LangChain + Nebius TF + Streamlit |
+| [Insurance Claims Assistant](langchain/insurance-claims-assistant/) | Drop-any-folder multimodal claims triage: reads PDFs + photos + forms, auto-classifies the documents, confirms the claim with the user, reconciles stated vs evidence, and emits an assessor verdict | LangChain + Nebius TF (Nemotron Ultra 253B + Cosmos3 VLM) + PyMuPDF + Streamlit |
 
 ## Agents by Framework
 
@@ -99,6 +100,7 @@ https://docs.langchain.com/
 | [Incident Response Agent](langchain/incident-response-agent/) | SRE incident triage with log search, runbook lookup, and typed mitigation plans | LangChain + Nebius TF |
 | [Vendor Risk Compliance Agent](langchain/vendor-risk-compliance-agent/) | Vendor questionnaire review producing risk registers from contract evidence | LangChain + Nebius TF |
 | [Data Quality Ops Agent](langchain/data-quality-ops-agent/) | Data pipeline investigation with guarded read-only SQL and quality reports | LangChain + Nebius TF |
+| [Insurance Claims Assistant](langchain/insurance-claims-assistant/) | Drop-any-folder multimodal claims triage: reads PDFs + photos + forms, auto-classifies the documents, confirms the claim with the user, reconciles stated vs evidence, and emits an assessor verdict | LangChain + Nebius TF (Nemotron Ultra 253B + Cosmos3 VLM) + PyMuPDF + Streamlit |
 
 ---
 

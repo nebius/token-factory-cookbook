@@ -1,0 +1,29 @@
+{
+  "schema_version": "1.0",
+  "claim_id": "CLM-2026-0142",
+  "policy_number": "NB-AU-88231",
+  "claimant_name": "Priya Nair",
+  "claimant_date_of_birth": "1993-04-14",
+  "claimant_address": "1254 Maple Ridge Drive, Austin, TX 78701",
+  "incident_date": "2026-07-10",
+  "incident_time": "08:35",
+  "incident_location": "S Lamar Blvd & W Oltorf St, Austin, TX",
+  "incident_description": "Rear-ended while stopped at a red light. Rear bumper, left tail lamp, and trunk alignment were damaged.",
+  "claimed_damage": "Rear bumper dent; cracked left tail lamp; minor trunk misalignment",
+  "claimed_severity": "moderate",
+  "claimed_amount_usd": 2200.0,
+  "vehicle": "2021 Toyota Camry LE",
+  "vin": "4T1C11AK7MU123456",
+  "attached_documents": [
+    "claim_form",
+    "photos",
+    "policy_declaration",
+    "customer_verification",
+    "estimate",
+    "invoice",
+    "incident_report",
+    "vehicle_registration"
+  ],
+  "declaration": "I certify that the information supplied is complete and accurate to the best of my knowledge.",
+  "synthetic_demo": true
+}
