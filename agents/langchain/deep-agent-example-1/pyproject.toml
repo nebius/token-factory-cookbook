@@ -1,0 +1,17 @@
+[project]
+name = "deep-agent-example-1"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "deepagents>=0.5.9",
+    "langchain-nebius>=0.1.3",
+    "langchain-tavily>=0.2.18",
+    "markdownify>=1.2.2",
+    "python-dotenv>=1.2.2",
+    "tavily-python>=0.7.24",
+]
+
+[tool.setuptools]
+packages = ["research_agent"]

@@ -31,7 +31,7 @@ demo:
 Follow the instructions there.
 
 Recommended coding models on Token Factory (as of March 2026)
-- `zai-org/GLM-5`
+- `zai-org/GLM-5.1`
 - `zai-org/GLM-4.7-FP8`
 - `Qwen/Qwen3-Coder-480B-A35B-Instruct`
 

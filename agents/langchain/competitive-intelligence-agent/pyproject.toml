@@ -1,0 +1,15 @@
+[project]
+name = "competitive-intelligence-agent"
+version = "0.1.0"
+description = "Competitive intelligence brief generator built with LangChain Deep Agents, Tavily, and Nebius Token Factory."
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "deepagents>=0.6.1",
+    "langchain-nebius>=0.1.3",
+    "langchain-tavily>=0.2.18",
+    "python-dotenv>=1.2.2",
+    "rich>=15.0.0",
+    "streamlit>=1.45.0",
+    "typer>=0.25.1",
+]

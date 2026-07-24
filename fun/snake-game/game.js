@@ -6,53 +6,73 @@ const CANVAS_HEIGHT = GRID_SIZE * CELL_SIZE;
 const NUM_FRUITS = 3; // Number of fruits on board
 
 // Timing and Retry Constants
-const LLM_TIMEOUT_MS = 15000; // 15 second timeout for LLM responses
+const LLM_TIMEOUT_MS = 30000; // 30 second timeout for LLM responses
 const API_RETRY_DELAY_MS = 2000; // 2 second delay between API retries
 const MAX_API_RETRIES = 10; // Max retry attempts for non-429 errors
 const MAX_429_RETRIES = 3; // Max retry attempts specifically for 429 rate limit errors
+const MAX_TIMEOUT_RETRIES = 5; // Max consecutive move-timeout retries before the game gives up
 const MAX_CONSECUTIVE_FAILURES = 3; // Max consecutive failures before forfeiting (for demo mode)
 
 // Animation and Effects Constants
 const SYSTEM_FONT = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif';
+
+// Max <p> entries kept in the game log DOM. Older entries are trimmed from the
+// top as new ones are added, so a long single game (or a resumed loop session)
+// can't accumulate unbounded nodes. Reset on restart/loop round still wipes all.
+const MAX_LOG_ENTRIES = 100;
 
 // LLM Configuration
 // If true, passes the full GRID_SIZE x GRID_SIZE board to the LLM
 // Visibility Control System
 // LLM_FULL_GRID_VIEW = true for full 30x30 grid visibility
 // LLM_FULL_GRID_VIEW = false and adjust VIEW_RADIUS for limited visibility
-// VIEW_RADIUS can be controlled from the UI (default initialized to 5)
+// VIEW_RADIUS can be controlled from the UI (default initialized to 10)
 const LLM_FULL_GRID_VIEW = false;
-let VIEW_RADIUS = 5; // Initialized to 5 as requested, can be changed from UI
+let VIEW_RADIUS = 10; // Initialized to 10 as requested, can be changed from UI
 // If true, provides a list of safe moves in the prompt (helps LLM avoid collisions)
 let collisionAvoidanceEnabled = true;
+// If true, lets the model "think"/reason before answering (chat_template_kwargs.enable_thinking)
+let thinkingModeEnabled = false;
 
 // LLM System Prompt
-const SYSTEM_PROMPT1 = `You are a snake game AI with LIMITED VISIBILITY. Your goal: SURVIVE longer than your opponent while strategically eating fruits to grow. Respond INSTANTLY with ONLY ONE WORD: up, down, left, or right. NO thinking, NO explanation, NO extra text.
+//
+// --- ORIGINAL SYSTEM PROMPT (backup) ---
+// const SYSTEM_PROMPT1 = `You are a snake game AI with LIMITED VISIBILITY. Your goal: SURVIVE longer than your opponent while strategically eating fruits to grow. Respond INSTANTLY with ONLY ONE WORD: up, down, left, or right. NO thinking, NO explanation, NO extra text.
+//
+// VISIBILITY LIMITATIONS:
+// - You can only see a {VISIBILITY_SIZE}x{VISIBILITY_SIZE} area centered on your head
+// - Beyond this view, you cannot see snakes, fruits, or obstacles
+// - Walls are SAFE - you wrap through to the other side, BUT the destination must be clear within your view
+// - Visibility radius can be adjusted by the game operator
+//
+// CRITICAL SURVIVAL RULES:
+// - NEVER move into YOUR OWN BODY or into ENEMY SNAKE - instant death
+// - Walls are SAFE - you wrap through to the other side, BUT check the destination
+// - Prioritize SURVIVAL over fruit, BUT seek fruit when safe to gain length advantage
+//
+// STRATEGIC FRUIT SEEKING:
+// - Target HIGH-VALUE fruits (⭐💎🦋🎁) for maximum growth advantage
+// - Consider distance vs value - sometimes a distant high-value fruit is worth pursuing
+// - Compare your length to enemy's - seek fruits to maintain or gain length advantage
+// - When equally safe, prefer moves toward the CLOSEST HIGH-VALUE fruit within your view
+// - Sometimes the shortest path to a fruit is by wrapping through a wall.
+//
+// SPATIAL AWARENESS:
+// - Look at your body and visible enemy snake positions - create mental map of occupied spaces
+// - Find large empty areas to move into - avoid tight spaces alongside your body
+// - If your body is blocking one direction, move AWAY from it
+// - The safest moves are into open space, not alongside or toward your body
+// - When approaching the edge of your vision, consider exploring to expand your knowledge of the board
+// `;
+// --- END ORIGINAL SYSTEM PROMPT ---
+//
+const SYSTEM_PROMPT1 = `You are a snake game AI with LIMITED VISIBILITY. Goal: SURVIVE longer than your opponent while eating fruits to grow. Respond with ONLY ONE WORD: up, down, left, or right. No thinking, no explanation, no extra text.
 
-VISIBILITY LIMITATIONS:
-- You can only see a {VISIBILITY_SIZE}x{VISIBILITY_SIZE} area centered on your head
-- Beyond this view, you cannot see snakes, fruits, or obstacles
-- Walls are SAFE - you wrap through to the other side, BUT the destination must be clear within your view
-- Visibility radius can be adjusted by the game operator
-
-CRITICAL SURVIVAL RULES:
-- NEVER move into YOUR OWN BODY or into ENEMY SNAKE - instant death
-- Walls are SAFE - you wrap through to the other side, BUT check the destination
-- Prioritize SURVIVAL over fruit, BUT seek fruit when safe to gain length advantage
-
-STRATEGIC FRUIT SEEKING:
-- Target HIGH-VALUE fruits (⭐💎🦋🎁) for maximum growth advantage
-- Consider distance vs value - sometimes a distant high-value fruit is worth pursuing
-- Compare your length to enemy's - seek fruits to maintain or gain length advantage
-- When equally safe, prefer moves toward the CLOSEST HIGH-VALUE fruit within your view
-- Sometimes the shortest path to a fruit is by wrapping through a wall.
-
-SPATIAL AWARENESS:
-- Look at your body and visible enemy snake positions - create mental map of occupied spaces
-- Find large empty areas to move into - avoid tight spaces alongside your body
-- If your body is blocking one direction, move AWAY from it
-- The safest moves are into open space, not alongside or toward your body
-- When approaching the edge of your vision, consider exploring to expand your knowledge of the board
+- VISIBILITY: you see a {VISIBILITY_SIZE}x{VISIBILITY_SIZE} area centered on your head; beyond it is unknown.
+- WALLS: safe - you wrap through to the other side, but the destination must be clear.
+- SURVIVAL: never move into YOUR OWN BODY or the ENEMY SNAKE (instant death). Prioritize survival over fruit.
+- FRUIT: when safe, prefer HIGH-VALUE fruits (⭐💎🦋🎁); the board lists each fruit's value, distance, and a strategic direction hint.
+- SPACE: favor moves into open space; avoid tight spots alongside your body. When your body blocks a direction, move away from it.
 `;
 
 // Use SYSTEM_PROMPT1 as the system prompt
@@ -127,6 +147,7 @@ const apiUrlInput = document.getElementById('api-url');
 const apiKeyInput = document.getElementById('api-key');
 const loadModelsBtn = document.getElementById('load-models-btn');
 const loadingDiv = document.getElementById('loading');
+const modelsLoadedCount = document.getElementById('models-loaded-count');
 const modelSelection = document.getElementById('model-selection');
 const startBattleBtn = document.getElementById('start-battle-btn');
 const errorMessage = document.getElementById('error-message');
@@ -136,6 +157,7 @@ const pauseBtn = document.getElementById('pause-btn');
 const restartBtn = document.getElementById('restart-btn');
 const debugCheckbox = document.getElementById('debug-checkbox');
 const collisionAvoidanceCheckbox = document.getElementById('collision-avoidance-checkbox');
+const thinkingModeCheckbox = document.getElementById('thinking-mode-checkbox');
 const loopCheckbox = document.getElementById('loop-checkbox');
 const viewRadiusInput = document.getElementById('view-radius-input');
 const logContent = document.getElementById('log-content');
@@ -239,13 +261,14 @@ let needsRedraw = true;
 
 function startAnimation() {
     function animate() {
-        // Only redraw if game state has changed or explicitly needed
-        if (needsRedraw && (!gameState.gameOver && !gameState.paused)) {
+        // Only redraw when game state has changed or explicitly needed.
+        // During game-over/pause the scene is static except the loop countdown,
+        // which ticks once per second via updateLoopCountdownDisplay()
+        // (sets needsRedraw=true). So gating both branches on needsRedraw
+        // avoids a 60fps full-canvas redraw while the overlay is up.
+        if (needsRedraw) {
             draw();
             needsRedraw = false;
-        } else if (gameState.gameOver || gameState.paused) {
-            // Redraw for overlay or pause state
-            draw();
         }
 
         animationFrame = requestAnimationFrame(animate);
@@ -311,6 +334,10 @@ if (collisionAvoidanceCheckbox) {
     addTrackedEventListener(collisionAvoidanceCheckbox, 'change', toggleCollisionAvoidance);
 }
 
+if (thinkingModeCheckbox) {
+    addTrackedEventListener(thinkingModeCheckbox, 'change', toggleThinkingMode);
+}
+
 if (loopCheckbox) {
     addTrackedEventListener(loopCheckbox, 'change', toggleLoopMode);
     // Also add click handler for better responsiveness
@@ -344,7 +371,7 @@ if (canvas) {
     addTrackedEventListener(canvas, 'click', () => {
         if (gameState.gameOver) {
             gameState.overlayDismissed = true;
-            draw();
+            needsRedraw = true;
         }
     });
 }
@@ -362,9 +389,6 @@ if (p2LatencyCanvas) {
     addTrackedEventListener(p2LatencyCanvas, 'mousemove', (e) => handleLatencyGraphMouseMove(e, p2LatencyCanvas, 2));
     addTrackedEventListener(p2LatencyCanvas, 'mouseleave', () => handleLatencyGraphMouseLeave(p2LatencyCanvas));
 }
-
-// Initialize fruit legend on page load
-populateFruitLegend();
 
 // Initialize collapsible sections
 function initializeCollapsibleSections() {
@@ -414,37 +438,180 @@ if (loopCheckbox) {
     console.error('Loop checkbox not found during initialization!');
 }
 
-// Populate fruit legend
-function populateFruitLegend() {
-    const legendContent = document.getElementById('fruit-legend-content');
-    if (!legendContent) return;
+// Fruit info with rarity labels (data source for the legend popover)
+const FRUIT_LEGEND_INFO = [
+    { emoji: '🍎', name: 'Apple', value: 1, rarity: 'Common (40%)' },
+    { emoji: '⭐', name: 'Star', value: 3, rarity: 'Uncommon (25%)' },
+    { emoji: '🍇', name: 'Grapes', value: 2, rarity: 'Uncommon (15%)' },
+    { emoji: '🍒', name: 'Cherry', value: 2, rarity: 'Rare (10%)' },
+    { emoji: '🦋', name: 'Butterfly', value: 3, rarity: 'Rare (6%)' },
+    { emoji: '💎', name: 'Diamond', value: 4, rarity: 'Very Rare (3%)', isRare: true },
+    { emoji: '🎁', name: 'Present', value: 5, rarity: 'Ultra Rare (1%)', isUltraRare: true },
+];
 
-    // Fruit info with rarity labels
-    const fruitInfo = [
-        { emoji: '🍎', name: 'Apple', value: 1, rarity: 'Common (40%)' },
-        { emoji: '⭐', name: 'Star', value: 3, rarity: 'Uncommon (25%)' },
-        { emoji: '🍇', name: 'Grapes', value: 2, rarity: 'Uncommon (15%)' },
-        { emoji: '🍒', name: 'Cherry', value: 2, rarity: 'Rare (10%)' },
-        { emoji: '🦋', name: 'Butterfly', value: 3, rarity: 'Rare (6%)' },
-        { emoji: '💎', name: 'Diamond', value: 4, rarity: 'Very Rare (3%)', isRare: true },
-        { emoji: '🎁', name: 'Present', value: 5, rarity: 'Ultra Rare (1%)', isUltraRare: true },
-    ];
-
-    legendContent.innerHTML = '';
-    fruitInfo.forEach(fruit => {
+// Build the legend fruit rows into the given container (reused by the popover).
+function buildFruitLegendRows(container) {
+    container.innerHTML = '';
+    FRUIT_LEGEND_INFO.forEach(fruit => {
         const item = document.createElement('div');
         item.className = `fruit-item ${fruit.isUltraRare ? 'ultra-rare' : fruit.isRare ? 'rare' : ''}`;
 
-        item.innerHTML = `
-            <div class="fruit-icon">${fruit.emoji}</div>
-            <div class="fruit-info">
-                <div class="fruit-name">${fruit.name}</div>
-                <div class="fruit-value">+${fruit.value}</div>
-                <div class="fruit-rarity">${fruit.rarity}</div>
-            </div>
-        `;
+        const icon = document.createElement('div');
+        icon.className = 'fruit-icon';
+        icon.textContent = fruit.emoji; // trusted constant, no user input
 
-        legendContent.appendChild(item);
+        const info = document.createElement('div');
+        info.className = 'fruit-info';
+
+        const name = document.createElement('div');
+        name.className = 'fruit-name';
+        name.textContent = fruit.name;
+
+        const value = document.createElement('div');
+        value.className = 'fruit-value';
+        value.textContent = `+${fruit.value}`;
+
+        const rarity = document.createElement('div');
+        rarity.className = 'fruit-rarity';
+        rarity.textContent = fruit.rarity;
+
+        info.appendChild(name);
+        info.appendChild(value);
+        info.appendChild(rarity);
+        item.appendChild(icon);
+        item.appendChild(info);
+        container.appendChild(item);
+    });
+}
+
+// --- Fruit legend popover controller -------------------------------------
+// Mirrors the benchmark sort flyout lifecycle (benchmark.js sortModelsBySpeed /
+// _closeSortMenu / _positionSortMenu): a position:fixed <div> appended to
+// <body>, pinned to the trigger button, with outside-click + Escape dismiss
+// and scroll/resize repositioning. Full listener teardown on close.
+let _fruitLegendPopover = null;
+let _fruitLegendOutsideHandler = null;
+let _fruitLegendKeyHandler = null;
+let _fruitLegendRepositionHandler = null;
+
+function toggleFruitLegendPopover() {
+    const btn = document.getElementById('fruit-legend-btn');
+    if (!btn) return;
+
+    // Toggle: if already open, close it.
+    if (_fruitLegendPopover && _fruitLegendPopover.parentNode) {
+        closeFruitLegendPopover();
+        return;
+    }
+
+    const popover = document.createElement('div');
+    popover.className = 'fruit-legend-popover';
+    const title = document.createElement('div');
+    title.className = 'fruit-legend-popover-title';
+    title.textContent = 'Fruit Legend';
+    const content = document.createElement('div');
+    content.className = 'fruit-legend-content';
+    buildFruitLegendRows(content);
+    popover.appendChild(title);
+    popover.appendChild(content);
+
+    // Append to <body> so the flyout escapes any overflow:hidden / scrollable
+    // ancestor, then position relative to the button.
+    document.body.appendChild(popover);
+    _fruitLegendPopover = popover;
+    positionFruitLegendPopover();
+    btn.classList.add('fruit-legend-btn-active');
+    btn.setAttribute('aria-expanded', 'true');
+
+    // Outside-click / Escape dismisses the popover.
+    _fruitLegendOutsideHandler = (e) => {
+        if (!popover.contains(e.target) && e.target !== btn && !btn.contains(e.target)) {
+            closeFruitLegendPopover();
+        }
+    };
+    _fruitLegendKeyHandler = (e) => {
+        if (e.key === 'Escape') closeFruitLegendPopover();
+    };
+    // Keep the popover pinned to the button while the page scrolls/resizes.
+    _fruitLegendRepositionHandler = () => positionFruitLegendPopover();
+    // Defer attaching so the click that opened the popover doesn't close it.
+    setTimeout(() => {
+        document.addEventListener('click', _fruitLegendOutsideHandler);
+        document.addEventListener('keydown', _fruitLegendKeyHandler);
+        window.addEventListener('scroll', _fruitLegendRepositionHandler, true);
+        window.addEventListener('resize', _fruitLegendRepositionHandler);
+    }, 0);
+}
+
+function closeFruitLegendPopover() {
+    if (_fruitLegendPopover && _fruitLegendPopover.parentNode) {
+        _fruitLegendPopover.parentNode.removeChild(_fruitLegendPopover);
+    }
+    _fruitLegendPopover = null;
+    if (_fruitLegendOutsideHandler) {
+        document.removeEventListener('click', _fruitLegendOutsideHandler);
+        _fruitLegendOutsideHandler = null;
+    }
+    if (_fruitLegendKeyHandler) {
+        document.removeEventListener('keydown', _fruitLegendKeyHandler);
+        _fruitLegendKeyHandler = null;
+    }
+    if (_fruitLegendRepositionHandler) {
+        window.removeEventListener('scroll', _fruitLegendRepositionHandler, true);
+        window.removeEventListener('resize', _fruitLegendRepositionHandler);
+        _fruitLegendRepositionHandler = null;
+    }
+    const btn = document.getElementById('fruit-legend-btn');
+    if (btn) {
+        btn.classList.remove('fruit-legend-btn-active');
+        btn.setAttribute('aria-expanded', 'false');
+    }
+}
+
+/**
+ * Pin the popover just below the trigger button, left-aligned to it. Flips to
+ * the right side if there's no room on the left, and clamps vertically so a
+ * long popover never runs off the bottom of the viewport. Mirrors the edge
+ * logic in _positionSortMenu (benchmark.js). Uses fixed coords so it isn't
+ * affected by page scroll.
+ */
+function positionFruitLegendPopover() {
+    if (!_fruitLegendPopover) return;
+    const btn = document.getElementById('fruit-legend-btn');
+    if (!btn) return;
+    const popover = _fruitLegendPopover;
+    const btnRect = btn.getBoundingClientRect();
+
+    // Measure once placed to decide edge flips.
+    popover.style.left = '0px';
+    popover.style.top = '0px';
+    const popoverRect = popover.getBoundingClientRect();
+
+    let left = btnRect.left;
+    // Flip to the right side if it would overflow the viewport's left edge.
+    if (left + popoverRect.width > window.innerWidth) {
+        left = window.innerWidth - popoverRect.width - 8;
+    }
+    if (left < 8) left = 8;
+
+    let top = btnRect.bottom + 6;
+    // Clamp vertically so a long popover never runs off the bottom of the screen.
+    const maxTop = Math.max(8, window.innerHeight - popoverRect.height - 8);
+    if (top > maxTop) {
+        // Not enough room below: open upward from the button's top instead.
+        top = Math.max(8, btnRect.top - popoverRect.height - 6);
+    }
+
+    popover.style.left = `${left}px`;
+    popover.style.top = `${top}px`;
+}
+
+// Wire the trigger button.
+const fruitLegendBtn = document.getElementById('fruit-legend-btn');
+if (fruitLegendBtn) {
+    fruitLegendBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        toggleFruitLegendPopover();
     });
 }
 
@@ -482,18 +649,21 @@ function filterTextModels(models) {
     const filtered = models.filter(model => {
         // Priority 1: Check architecture.modality (Nebius and similar APIs)
         if (model.architecture && model.architecture.modality) {
-            return model.architecture.modality === 'text->text';
+            // Include any model whose OUTPUT modality is text (e.g. "text->text",
+            // "text+image->text"). Vision-capable LLMs still output text and are
+            // usable for this game. Exclude pure image/audio generation
+            // (e.g. "text->image", "->audio", "text->audio").
+            // NOTE: do NOT require exact "text->text" — that wrongly drops
+            // vision text LLMs like moonshotai/Kimi-K2.6 ("text+image->text").
+            return /->\s*text\b/.test(model.architecture.modality);
         }
 
         // Priority 2: Check capabilities.modalities (OpenAI style)
         if (model.capabilities && model.capabilities.modalities) {
             const modalities = model.capabilities.modalities;
-            const isTextOnly = modalities.includes('text') &&
-                             !modalities.includes('image') &&
-                             !modalities.includes('audio') &&
-                             !modalities.includes('vision');
-
-            return isTextOnly;
+            // Keep if it can produce text output. Multimodal inputs
+            // (image/vision) are fine — the game only needs text back.
+            return modalities.includes('text');
         }
 
         // Priority 3: Fallback to pattern matching (only filter OUT known non-text)
@@ -668,6 +838,12 @@ async function loadModels() {
         populateModelSelects();
         loadingDiv.classList.add('hidden');
 
+        // Show how many models loaded (text-to-text, filtered from total)
+        if (modelsLoadedCount) {
+            modelsLoadedCount.textContent = `✓ Loaded ${availableModels.length} models (of ${allModels.length} total)`;
+            modelsLoadedCount.classList.remove('hidden');
+        }
+
         // Dispatch event for demo mode
         console.log('🎮 Dispatching modelsLoaded event');
         document.dispatchEvent(new CustomEvent('modelsLoaded'));
@@ -675,6 +851,7 @@ async function loadModels() {
 
     } catch (error) {
         loadingDiv.classList.add('hidden');
+        if (modelsLoadedCount) modelsLoadedCount.classList.add('hidden');
         showError(`Failed to load models: ${error.message}`);
         console.error('Error loading models:', error);
     }
@@ -1029,6 +1206,13 @@ function addLog(message, playerNum = null, forceLog = false) {
 
     logContent.appendChild(p);
 
+    // Cap log size: drop oldest entries beyond MAX_LOG_ENTRIES.
+    // We trim in a while-loop (not once) in case MAX_LOG_ENTRIES was lowered;
+    // for the normal +1 case this runs a single iteration.
+    while (logContent.children.length > MAX_LOG_ENTRIES) {
+        logContent.removeChild(logContent.firstChild);
+    }
+
     // Auto-scroll only if we were at the bottom before adding content
     if (shouldScroll) {
         requestAnimationFrame(() => {
@@ -1161,6 +1345,15 @@ function wrapPosition(x, y) {
     };
 }
 
+// Toroidal (wrap-aware) Manhattan distance between two grid points.
+// Consistent with the wrapped board view: a fruit just past a wall is
+// reported as close, not far away.
+function toroidalDist(ax, ay, bx, by) {
+    const dx = Math.abs(ax - bx);
+    const dy = Math.abs(ay - by);
+    return Math.min(dx, GRID_SIZE - dx) + Math.min(dy, GRID_SIZE - dy);
+}
+
 // Get game board state as text for LLM
 function getBoardState(playerNum) {
     const snake = playerNum === 1 ? gameState.snake1 : gameState.snake2;
@@ -1175,14 +1368,14 @@ function getBoardState(playerNum) {
     let closestFruit = null;
     let closestDist = Infinity;
     gameState.fruits.forEach(fruit => {
-        const dist = Math.abs(head.x - fruit.x) + Math.abs(head.y - fruit.y);
+        const dist = toroidalDist(head.x, head.y, fruit.x, fruit.y);
         if (dist < closestDist) {
             closestDist = dist;
             closestFruit = fruit;
         }
     });
 
-    const distToEnemy = Math.abs(head.x - enemyHead.x) + Math.abs(head.y - enemyHead.y);
+    const distToEnemy = toroidalDist(head.x, head.y, enemyHead.x, enemyHead.y);
 
     // Build board representation - either full grid or view around snake head
     let boardView = "";
@@ -1246,12 +1439,43 @@ function getBoardState(playerNum) {
     state += `Your head at: (${head.x}, ${head.y})\n`;
     state += `Enemy head at: (${enemyHead.x}, ${enemyHead.y})\n\n`;
 
-    // List all fruits with strategic values
-    state += `FRUITS (${gameState.fruits.length} available):\n`;
-    gameState.fruits.forEach((fruit, i) => {
-        const dist = Math.abs(head.x - fruit.x) + Math.abs(head.y - fruit.y);
-        const valueRatio = fruit.type.value / Math.max(dist, 1); // Value per distance unit
-        state += `${i + 1}. ${fruit.type.emoji} at (${fruit.x}, ${fruit.y}) - Value: ${fruit.type.value} - Distance: ${dist} - Value/Distance: ${valueRatio.toFixed(2)}\n`;
+    // --- ORIGINAL FRUIT LIST / HIGH-VALUE TARGETS BLOCK (backup) ---
+    // state += `FRUITS (${gameState.fruits.length} available):\n`;
+    // gameState.fruits.forEach((fruit, i) => {
+    //     const dist = toroidalDist(head.x, head.y, fruit.x, fruit.y);
+    //     const valueRatio = fruit.type.value / Math.max(dist, 1); // Value per distance unit
+    //     state += `${i + 1}. ${fruit.type.emoji} at (${fruit.x}, ${fruit.y}) - Value: ${fruit.type.value} - Distance: ${dist} - Value/Distance: ${valueRatio.toFixed(2)}\n`;
+    // });
+    // state += `\n`;
+    //
+    // const highValueFruits = gameState.fruits.filter(fruit => fruit.type.value > 1);
+    // if (highValueFruits.length > 0) {
+    //     state += `HIGH-VALUE TARGETS (${highValueFruits.length} rare fruits):\n`;
+    //     highValueFruits.forEach((fruit, i) => {
+    //         const dist = toroidalDist(head.x, head.y, fruit.x, fruit.y);
+    //         state += `- ${fruit.type.emoji} ${fruit.type.value}x growth at (${fruit.x}, ${fruit.y}) - Distance: ${dist}\n`;
+    //     });
+    //     state += `\n`;
+    // }
+    // --- END ORIGINAL BLOCK ---
+
+    // Single sorted fruit list: best value/distance first, high-value flagged inline.
+    // (Replaces a previous duplicate HIGH-VALUE TARGETS block that re-listed these.)
+    const rankedFruits = gameState.fruits
+        .map(fruit => ({
+            fruit,
+            dist: toroidalDist(head.x, head.y, fruit.x, fruit.y)
+        }))
+        .sort((a, b) => {
+            const ratioA = a.fruit.type.value / Math.max(a.dist, 1);
+            const ratioB = b.fruit.type.value / Math.max(b.dist, 1);
+            return ratioB - ratioA; // higher value/distance first
+        });
+
+    state += `FRUITS (${gameState.fruits.length} available, best first; * = high-value):\n`;
+    rankedFruits.forEach(({ fruit, dist }, i) => {
+        const marker = fruit.type.value > 1 ? ' *' : '';
+        state += `${i + 1}. ${fruit.type.emoji} at (${fruit.x}, ${fruit.y}) - Value: ${fruit.type.value} - Distance: ${dist}${marker}\n`;
     });
     state += `\n`;
 
@@ -1262,22 +1486,11 @@ function getBoardState(playerNum) {
         state += `YOUR LENGTH ADVANTAGE: ${lengthAdvantage > 0 ? '+' : ''}${lengthAdvantage} (Target fruits to maintain or gain advantage)\n\n`;
     }
 
-    // Highlight high-value fruits
-    const highValueFruits = gameState.fruits.filter(fruit => fruit.type.value > 1);
-    if (highValueFruits.length > 0) {
-        state += `HIGH-VALUE TARGETS (${highValueFruits.length} rare fruits):\n`;
-        highValueFruits.forEach((fruit, i) => {
-            const dist = Math.abs(head.x - fruit.x) + Math.abs(head.y - fruit.y);
-            state += `- ${fruit.type.emoji} ${fruit.type.value}x growth at (${fruit.x}, ${fruit.y}) - Distance: ${dist}\n`;
-        });
-        state += `\n`;
-    }
-
     // Legend
     const viewDescription = LLM_FULL_GRID_VIEW ? "full board" : `${viewSize}x${viewSize} area around you`;
     state += `Board view (${viewDescription}):\n`;
     state += `@ = your head | ★ = fruit | ${playerNum === 1 ? "R/ r" : "B/b"} = your body | ${playerNum === 1 ? "B/b" : "R/r"} = enemy | . = empty\n`;
-    state += ` \n\n`;
+    state += `\n`;
     state += boardView + "\n";
 
     // Check for immediate dangers (walls don't kill, only snakes do)
@@ -1832,7 +2045,10 @@ function redrawGraphWithOverlay(canvas, playerNum, highlightIndex) {
     }
 
     const ctx = overlay.getContext('2d');
-    ctx.scale(dpr, dpr);
+    // Reset the transform absolutely on every call (setTransform, not scale):
+    // the context is reused across mousemove events, so ctx.scale(dpr,dpr)
+    // would compound the matrix every move and break rendering on high-DPI.
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     ctx.clearRect(0, 0, width, height);
 
     // Draw vertical line at hover position (within padded area)
@@ -2116,7 +2332,12 @@ async function getLLMDirection(playerNum, maxTokens = null) {
                     content: prompt
                 }
             ],
-            temperature: 0
+            temperature: 0,
+            // Toggle model "thinking" mode via the Options UI (e.g. GLM-5.x).
+            // Harmless for models that don't recognize chat_template_kwargs.
+            chat_template_kwargs: {
+                enable_thinking: thinkingModeEnabled
+            }
         };
 
         // Conditionally add max_tokens based on the parameter
@@ -2167,7 +2388,7 @@ async function getLLMDirection(playerNum, maxTokens = null) {
         } catch (fetchError) {
             clearTimeout(timeoutId);
             if (fetchError.name === 'AbortError') {
-                throw new Error('Timeout (>15s)');
+                throw new Error(`Timeout (>${LLM_TIMEOUT_MS/1000}s)`);
             }
             throw fetchError;
             }
@@ -2469,8 +2690,8 @@ function moveSingleSnake(playerNum, latency) {
         // Don't pop the tail
     }
 
-    // Draw game
-    draw();
+    // Redraw is handled by the rAF loop (needsRedraw was set above on every
+    // state change), so no direct draw() here — avoids a double redraw per move.
 
     // Check game over
     checkGameOver();
@@ -2561,7 +2782,7 @@ function gameLoop() {
 }
 
 // Move snake with LLM decision (called independently for each snake)
-async function moveSnakeWithLLM(playerNum, abortSignal) {
+async function moveSnakeWithLLM(playerNum, abortSignal, timeoutAttempt = 0) {
     if (gameState.gameOver || gameState.paused) {
         return;
     }
@@ -2580,21 +2801,39 @@ async function moveSnakeWithLLM(playerNum, abortSignal) {
     let result;
     let timedOut = false;
 
+    // Capture the race timer so we can clear it on success (otherwise every
+    // successful move would leave a 30s timer pending — a slow leak over a
+    // long game). Also tracked in activeTimeouts for pause/stop teardown.
+    let outerTimeoutId;
     try {
         result = await Promise.race([
             getLLMDirectionWithRetry(playerNum),
-            new Promise((_, reject) =>
-                setTimeout(() => {
+            new Promise((_, reject) => {
+                outerTimeoutId = setTimeout(() => {
+                    activeTimeouts.delete(outerTimeoutId);
                     if (gameState.debugMode) {
                         console.log(`[${formatTimestamp(new Date())}] ⚠️ P${playerNum}: Move timeout (${LLM_TIMEOUT_MS}ms)`);
                     }
                     timedOut = true;
                     reject(new Error('Timeout'));
-                }, LLM_TIMEOUT_MS)
-            )
+                }, LLM_TIMEOUT_MS);
+                activeTimeouts.add(outerTimeoutId);
+            })
         ]);
+        // Race resolved (success or inner error) before the timer fired — cancel it.
+        clearTimeout(outerTimeoutId);
+        activeTimeouts.delete(outerTimeoutId);
     } catch (error) {
-        if (error.message === 'Timeout') {
+        // Race rejected. If the inner error won (not the outer timer), the
+        // timer is still armed — cancel it so it can't fire late.
+        if (outerTimeoutId) {
+            clearTimeout(outerTimeoutId);
+            activeTimeouts.delete(outerTimeoutId);
+        }
+        // Recognize both timeout shapes: the outer race ('Timeout') and the inner
+        // AbortController timeout (e.g. 'Timeout (>30s)'). Treat both identically
+        // so the inner-timeout rejection doesn't escape as Uncaught (in promise).
+        if (error && error.message && error.message.startsWith('Timeout')) {
             // Timeout occurred - count as API failure and retry after delay
             const failuresKey = playerNum === 1 ? 'player1ApiFailures' : 'player2ApiFailures';
             const consecutiveFailuresKey = playerNum === 1 ? 'player1ConsecutiveFailures' : 'player2ConsecutiveFailures';
@@ -2617,20 +2856,38 @@ async function moveSnakeWithLLM(playerNum, abortSignal) {
             const globalStats = calculateLatencyStats(globalLatencies);
             updateLatencyStatsDisplay(playerNum, globalStats);
 
-            const delayMs = API_RETRY_DELAY_MS;
+            // Hard cap: give up after MAX_TIMEOUT_RETRIES consecutive move
+            // timeouts instead of looping forever (the playerForfeited event is
+            // only handled by an external demo harness, so in normal play there
+            // is otherwise no terminator for persistent timeouts).
+            if (timeoutAttempt + 1 > MAX_TIMEOUT_RETRIES) {
+                const modelName = (playerNum === 1 ? gameState.player1Model : gameState.player2Model).split('/').pop();
+                addLog(`❌ ${playerNum === 1 ? 'Red' : 'Blue'} (${modelName}) timed out ${MAX_TIMEOUT_RETRIES}x — forfeits.`, playerNum);
+                // Mark this player dead so checkGameOver declares the opponent
+                // the winner, logs the banner, and disables pause. (Mirrors the
+                // collision-death path in moveSingleSnake.)
+                gameState[deadKey] = true;
+                gameState.gameOver = true;
+                needsRedraw = true; // Mark canvas for redraw
+                checkGameOver();
+                return;
+            }
+
+            // Exponential backoff: 2s, 4s, 8s, 16s, 32s (capped by MAX_TIMEOUT_RETRIES).
+            const delayMs = API_RETRY_DELAY_MS * Math.pow(2, timeoutAttempt);
             if (gameState.debugMode) {
-                console.log(`[${formatTimestamp(new Date())}] ⚠️ P${playerNum}: Timeout - retrying in ${delayMs/1000}s...`);
+                console.log(`[${formatTimestamp(new Date())}] ⚠️ P${playerNum}: Timeout - retrying in ${delayMs/1000}s... (attempt ${timeoutAttempt + 1}/${MAX_TIMEOUT_RETRIES})`);
             }
             // Only log to game log if not aborted (paused)
             if (!abortSignal?.aborted) {
-                addLog(`⏱️ Timeout - retrying in ${delayMs/1000}s...`, playerNum);
+                addLog(`⏱️ Timeout - retrying in ${delayMs/1000}s... (${timeoutAttempt + 1}/${MAX_TIMEOUT_RETRIES})`, playerNum);
             }
 
-            // Wait for delay then retry if game still active
+            // Wait for delay then retry if game still active, escalating the attempt counter.
             const timeoutRetryId = setTimeout(() => {
                 activeTimeouts.delete(timeoutRetryId);
                 if (!gameState.gameOver && !abortSignal?.aborted && !gameState.paused) {
-                    moveSnakeWithLLM(playerNum, abortSignal);
+                    moveSnakeWithLLM(playerNum, abortSignal, timeoutAttempt + 1);
                 }
             }, delayMs);
             activeTimeouts.add(timeoutRetryId);
@@ -3104,6 +3361,9 @@ function updateScores() {
 // Toggle pause
 function togglePause() {
     gameState.paused = !gameState.paused;
+    // Either entering or leaving pause changes the on-canvas overlay, so
+    // request a redraw (the rAF loop is now fully gated on needsRedraw).
+    needsRedraw = true;
     const iconSpan = pauseBtn.querySelector('.btn-icon');
     if (iconSpan) {
         iconSpan.textContent = gameState.paused ? '▶️' : '⏸️';
@@ -3145,6 +3405,19 @@ function toggleCollisionAvoidance() {
     }
     addLog(`${collisionAvoidanceEnabled ? '🛡️ Collision avoidance enabled' : '🚫 Collision avoidance disabled'}`, 1);
     addLog(`${collisionAvoidanceEnabled ? '🛡️ Collision avoidance enabled' : '🚫 Collision avoidance disabled'}`, 2);
+}
+
+// Toggle model reasoning (thinking) mode — changes take effect immediately (next API call)
+function toggleThinkingMode() {
+    thinkingModeEnabled = thinkingModeCheckbox.checked;
+    if (gameState.debugMode) {
+        console.log(`Model reasoning (thinking): ${thinkingModeEnabled ? 'enabled' : 'disabled'}`);
+    }
+    const msg = thinkingModeEnabled
+        ? '🧠 Model reasoning enabled (thinking on, may be slower)'
+        : '🚫 Model reasoning disabled (thinking off)';
+    addLog(msg, 1);
+    addLog(msg, 2);
 }
 
 // Toggle loop mode
@@ -3414,9 +3687,6 @@ function startGame(fromDemoMode = false) {
         showError('Please select both player models');
         return;
     }
-
-    // Populate fruit legend
-    populateFruitLegend();
 
     logContent.innerHTML = '';
     initializeGame();

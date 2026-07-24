@@ -47,7 +47,7 @@ Give the same prompt and see how both models perform and how long do they take
 
 Compare 
 - smaller models (e.g. `Qwen/Qwen3-32B-fast`)
-- and larger models (e.g. `zai-org/GLM-5`)
+- and larger models (e.g. `zai-org/GLM-5.1`)
 
 Here are some sample prompts:
 

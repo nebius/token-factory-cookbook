@@ -17,6 +17,10 @@ body {
     margin: 10px 0 15px 0;
     color: #4ecdc4;
     text-shadow: 0 0 15px rgba(78, 205, 196, 0.5);
+    /* Center over the board + game log row (canvas 600 + gap 20 + log 250 = 870px,
+       matching .stats-panel), not the full pane, so the title stays aligned on resize. */
+    width: 100%;
+    max-width: 870px;
 }
 
 .hidden {
@@ -380,6 +384,14 @@ body {
     gap: 15px;
     margin: 20px 0;
     color: #4ecdc4;
+}
+
+/* "N models loaded" confirmation shown below the Load Models button */
+.models-loaded-count {
+    margin-top: 8px;
+    font-size: 0.85em;
+    color: #4ecdc4;
+    font-weight: 600;
 }
 
 .spinner {
@@ -765,8 +777,11 @@ body {
     border-radius: 8px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
     flex-shrink: 0;
-    max-width: 100%;
+    /* Align with the game-layout row above: canvas(600) + gap(20) + log(250) = 870px.
+       Left-aligned so the panel's edges line up with the board (left) and game log (right). */
     width: 100%;
+    max-width: 870px;
+    align-self: flex-start;
 }
 
 .player-card {
@@ -1032,9 +1047,9 @@ body {
 .latency-stat label {
     display: block;
     margin-bottom: 2px;
-    color: #7a8ba3;
+    color: #c2d0e0;
     text-transform: uppercase;
-    font-weight: 400;
+    font-weight: 600;
     letter-spacing: 0.5px;
     font-size: 0.75em;
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
@@ -1069,9 +1084,29 @@ body {
     width: 100%;
 }
 
-.game-left-panel {
-    width: 200px;
-    flex-shrink: 0;
+/* Toolbar row above the board: legend button on the left, timer centered
+   over the 600px canvas (the board). Constrained to the board width so the
+   timer's center aligns with the canvas center, not the full pane. */
+.game-toolbar {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+    width: 100%;
+    max-width: 600px;
+    align-self: flex-start;
+}
+
+/* Legend button pinned to the start of the left column. */
+.game-toolbar .fruit-legend-btn {
+    justify-self: start;
+}
+
+/* Timer centered in the middle column. */
+.game-toolbar .timer-display {
+    justify-self: center;
+    margin: 0;
 }
 
 .game-center-panel {
@@ -1084,28 +1119,21 @@ body {
     flex-shrink: 0;
 }
 
-.fruit-legend {
-    background: rgba(0, 0, 0, 0.3);
-    border-radius: 10px;
-    padding: 10px;
-    border: 2px solid rgba(255, 255, 255, 0.1);
-    width: 100%;
-    max-width: 200px;
-}
-
-.fruit-legend h3 {
-    margin-bottom: 6px;
-    color: #4ecdc4;
-    font-size: 0.8em;
-    text-align: center;
-    border-bottom: 1px solid rgba(78, 205, 196, 0.3);
-    padding-bottom: 4px;
-}
-
 .fruit-legend-content {
     display: flex;
     flex-direction: column;
     gap: 6px;
+}
+
+/* Popover header (restores the title the old legend column had). */
+.fruit-legend-popover-title {
+    margin-bottom: 6px;
+    color: #4ecdc4;
+    font-size: 0.8em;
+    font-weight: 600;
+    text-align: center;
+    border-bottom: 1px solid rgba(78, 205, 196, 0.3);
+    padding-bottom: 4px;
 }
 
 .fruit-item {
@@ -1161,6 +1189,58 @@ body {
 .fruit-item.ultra-rare .fruit-value {
     color: #FF6B6B;
     text-shadow: 0 0 8px rgba(255, 107, 107, 0.7);
+}
+
+/* Compact legend trigger button — small square chip matching the timer
+   height, in the same toolbar row. */
+.fruit-legend-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 28px;
+    min-width: 28px;
+    padding: 0 6px;
+    background: rgba(0, 0, 0, 0.3);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    border-radius: 6px;
+    font-size: 15px;
+    line-height: 1;
+    color: #fff;
+    cursor: pointer;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
+    transition: background 0.15s ease, border-color 0.15s ease, transform 0.1s ease;
+}
+
+.fruit-legend-btn:hover {
+    background: rgba(78, 205, 196, 0.15);
+    border-color: rgba(78, 205, 196, 0.5);
+}
+
+.fruit-legend-btn:active {
+    transform: scale(0.95);
+}
+
+/* Button state while its popover is open */
+.fruit-legend-btn.fruit-legend-btn-active,
+.btn.fruit-legend-btn-active {
+    background: rgba(78, 205, 196, 0.2) !important;
+    border-color: #4ecdc4 !important;
+    color: #fff !important;
+}
+
+/* Fruit legend popup — page-level (position:fixed), pinned below the trigger
+   button via JS getBoundingClientRect(). Reuses the same dark chip styling as
+   .benchmark-sort-menu and the .fruit-item rows above for zero restyle. */
+.fruit-legend-popover {
+    position: fixed;
+    z-index: 10000;
+    min-width: 210px;
+    padding: 10px;
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    border: 1px solid rgba(78, 205, 196, 0.4);
+    border-radius: 10px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+    animation: benchmark-menu-in 0.12s ease;
 }
 
 .game-log-panel {
@@ -1291,10 +1371,6 @@ body {
         width: 350px;
         min-width: 300px;
     }
-
-    .game-left-panel {
-        width: 180px;
-    }
 }
 
 @media (max-width: 600px) {
@@ -1313,7 +1389,6 @@ body {
         flex-direction: column;
     }
 
-    .game-left-panel,
     .game-center-panel,
     .game-right-panel {
         width: 100%;
@@ -1491,6 +1566,27 @@ body {
     font-weight: 600;
 }
 
+/* Sortable column headers in the results table */
+.benchmark-results-table th.benchmark-sortable {
+    cursor: pointer;
+    user-select: none;
+    transition: color 0.15s ease, background 0.15s ease;
+}
+
+.benchmark-results-table th.benchmark-sortable:hover {
+    color: #fff;
+    background: rgba(78, 205, 196, 0.2);
+}
+
+.benchmark-results-table th.benchmark-sortable-active {
+    color: #fff;
+    background: rgba(78, 205, 196, 0.15);
+}
+
+.benchmark-results-table th.benchmark-th-rank {
+    cursor: default;
+}
+
 .benchmark-success-high {
     color: #4ecdc4;
     font-weight: 600;
@@ -1558,4 +1654,108 @@ body {
     .benchmark-results-table td {
         padding: 8px 10px;
     }
+}
+
+/* Benchmark results — tab bar */
+.benchmark-tabs {
+    display: flex;
+    gap: 6px;
+    border-bottom: 2px solid rgba(78, 205, 196, 0.3);
+    margin-bottom: 18px;
+    padding-bottom: 0;
+}
+
+.benchmark-tab {
+    background: transparent;
+    border: none;
+    color: #aaa;
+    font-size: 0.95em;
+    font-weight: 600;
+    padding: 8px 16px;
+    cursor: pointer;
+    border-radius: 8px 8px 0 0;
+    border-bottom: 3px solid transparent;
+    transition: all 0.2s ease;
+    margin-bottom: -2px;
+}
+
+.benchmark-tab:hover {
+    color: #4ecdc4;
+    background: rgba(78, 205, 196, 0.08);
+}
+
+.benchmark-tab.active {
+    color: #4ecdc4;
+    border-bottom-color: #4ecdc4;
+}
+
+/* A benchmark tab whose results aren't available yet (not run / failed) */
+.benchmark-tab.benchmark-tab-empty {
+    opacity: 0.45;
+    cursor: not-allowed;
+}
+
+/* Each benchmark's table group lives in its own view container */
+.benchmark-view.hidden {
+    display: none;
+}
+
+/* "Sort by Benchmark" flyout submenu — page-level (position:fixed),
+   pinned to the right of the button via JS getBoundingClientRect() */
+.benchmark-sort-menu {
+    position: fixed;
+    z-index: 10000;
+    min-width: 260px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 6px;
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    border: 1px solid rgba(78, 205, 196, 0.4);
+    border-radius: 10px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+    animation: benchmark-menu-in 0.12s ease;
+}
+
+@keyframes benchmark-menu-in {
+    from { opacity: 0; transform: translateY(-4px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+.benchmark-menu-item {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 3px;
+    text-align: left;
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: 7px;
+    padding: 9px 12px;
+    color: #ddd;
+    cursor: pointer;
+    transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.benchmark-menu-item:hover {
+    background: rgba(78, 205, 196, 0.15);
+    border-color: rgba(78, 205, 196, 0.4);
+}
+
+.benchmark-menu-title {
+    font-size: 0.9em;
+    font-weight: 600;
+    color: #fff;
+}
+
+.benchmark-menu-meta {
+    font-size: 0.78em;
+    color: #999;
+}
+
+/* Button state while its flyout is open */
+.btn.benchmark-sort-btn-active {
+    background: rgba(78, 205, 196, 0.2) !important;
+    border-color: #4ecdc4 !important;
+    color: #fff !important;
 }

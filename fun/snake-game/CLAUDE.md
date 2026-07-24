@@ -14,15 +14,15 @@ This is a snake battle game with AI-controlled opponents powered by LLM APIs. Th
 
 1. **HTML Structure Rules:**
    - Never add or remove `</div>` tags without proper context
-   - Maintain the exact nesting structure: main-container → left-pane/right-pane → game-layout → game-left-panel/game-center-panel/game-right-panel
-   - All three game panels must remain present: fruit legend (left), canvas (center), game log (right)
+   - Maintain the exact nesting structure: main-container → left-pane/right-pane → game-toolbar → game-layout → game-center-panel/game-right-panel
+   - Both game panels must remain present: canvas (center), game log (right). The fruit legend is a compact `🍎 Legend` button in `.game-toolbar` that opens a fixed popover (no longer a left column).
    - Canvas and game log panels must maintain matching 600px heights
 
 2. **CSS Layout Rules:**
    - Preserve flex layouts and flex properties
    - Do not change widths that affect layout structure
    - Maintain responsive breakpoints (currently 600px)
-   - Keep game panel alignment: left (fruit legend) + center (canvas) + right (game log)
+   - Keep game panel alignment: center (canvas) + right (game log)
 
 3. **Before Making Changes:**
    - Verify the visual layout is correct before starting any optimization
@@ -31,7 +31,7 @@ This is a snake battle game with AI-controlled opponents powered by LLM APIs. Th
    - Ensure div tags are perfectly balanced (equal opening/closing counts)
 
 4. **After Making Changes:**
-   - Check that fruit legend is visible on the left
+   - Check that the `🍎 Legend` button is visible in the toolbar above the canvas, and its popover opens/closes correctly
    - Verify canvas takes most space in center (600x600)
    - Confirm game log matches canvas height on right (600px)
    - Test responsive layout at different screen sizes
