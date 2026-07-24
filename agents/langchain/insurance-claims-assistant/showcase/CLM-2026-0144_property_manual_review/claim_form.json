@@ -1,0 +1,27 @@
+{
+  "schema_version": "1.0",
+  "claim_id": "CLM-2026-0144",
+  "policy_number": "NB-HO-91923",
+  "claimant_name": "Michael Jonson",
+  "claimant_date_of_birth": "1985-02-11",
+  "claimant_address": "108 Maple Ridge Drive, Houston, TX 77079",
+  "incident_date": "2026-07-11",
+  "incident_time": "04:20",
+  "incident_location": "Insured residence, Houston, TX",
+  "incident_description": "Severe thunderstorm caused roof penetration and interior water damage in the upstairs bedroom and hallway.",
+  "claimed_damage": "Roof opening, saturated drywall, ceiling collapse, flooring damage",
+  "claimed_severity": "major",
+  "claimed_amount_usd": 13100.0,
+  "vehicle": null,
+  "vin": null,
+  "attached_documents": [
+    "claim_form",
+    "photos",
+    "policy_declaration",
+    "customer_verification",
+    "estimate",
+    "incident_report"
+  ],
+  "declaration": "I certify that the information supplied is complete and accurate to the best of my knowledge.",
+  "synthetic_demo": true
+}

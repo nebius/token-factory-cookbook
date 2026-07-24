@@ -1,0 +1,14 @@
+{
+  "claim_id": "CLM-2026-0144",
+  "verdict": "manual_review",
+  "risk_level": "medium",
+  "confidence": 0.78,
+  "reason": "Damage and estimate are plausible, but the claimant surname differs from the verification record and no final paid invoice is supplied.",
+  "checks": {
+    "document_completeness": "partial",
+    "damage_description_consistency": "pass",
+    "amount_consistency": "pass",
+    "identity_consistency": "name_mismatch"
+  },
+  "synthetic_demo": true
+}

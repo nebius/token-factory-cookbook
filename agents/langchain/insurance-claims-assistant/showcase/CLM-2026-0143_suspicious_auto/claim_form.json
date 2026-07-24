@@ -1,0 +1,28 @@
+{
+  "schema_version": "1.0",
+  "claim_id": "CLM-2026-0143",
+  "policy_number": "NB-AU-77219",
+  "claimant_name": "Jason Miller",
+  "claimant_date_of_birth": "1988-11-03",
+  "claimant_address": "4302 Oak Crest Lane, Dallas, TX 75204",
+  "incident_date": "2026-07-08",
+  "incident_time": "23:10",
+  "incident_location": "Parking garage, 1800 Main Street, Dallas, TX",
+  "incident_description": "Minor scrape to front bumper while parking at low speed.",
+  "claimed_damage": "Small cosmetic scratch on front bumper",
+  "claimed_severity": "minor",
+  "claimed_amount_usd": 350.0,
+  "vehicle": "2020 Honda Accord Sport",
+  "vin": "1HGCV1F39LA098765",
+  "attached_documents": [
+    "claim_form",
+    "photos",
+    "policy_declaration",
+    "customer_verification",
+    "estimate",
+    "invoice",
+    "incident_report"
+  ],
+  "declaration": "I certify that the information supplied is complete and accurate to the best of my knowledge.",
+  "synthetic_demo": true
+}

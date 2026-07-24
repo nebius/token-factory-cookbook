@@ -1,0 +1,16 @@
+{
+  "claim_id": "CLM-2024-08817",
+  "policy_number": "NB-POL-55123",
+  "claimant_name": "Jordan Rivera",
+  "incident_date": "2024-06-18",
+  "incident_location": "Springfield, IL - office parking lot",
+  "incident_description": "While my car was parked, another vehicle lightly grazed the front bumper. It left a minor cosmetic scratch on the bumper.",
+  "claimed_damage": "Minor scratch on front bumper",
+  "claimed_severity": "minor",
+  "claimed_amount_usd": 350,
+  "attached_documents": [
+    "claim_form",
+    "photos",
+    "repair_invoice"
+  ]
+}

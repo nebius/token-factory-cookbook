@@ -1,0 +1,4 @@
+claim_id,claim_type,expected_verdict,risk_level,notes
+CLM-2026-0142,auto,approve,low,"Photographs, estimate, invoice, policy, and claimant record are mutually consistent."
+CLM-2026-0143,auto,deny,high,Photos show catastrophic frontal damage inconsistent with the statement. Estimate and invoice exceed the claimed amount by an order of magnitude. Required claimant verification record is absent.
+CLM-2026-0144,property,manual_review,medium,"Damage and estimate are plausible, but the claimant surname differs from the verification record and no final paid invoice is supplied."

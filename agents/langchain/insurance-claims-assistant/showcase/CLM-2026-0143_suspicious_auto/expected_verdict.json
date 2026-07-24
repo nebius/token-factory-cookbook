@@ -1,0 +1,14 @@
+{
+  "claim_id": "CLM-2026-0143",
+  "verdict": "deny",
+  "risk_level": "high",
+  "confidence": 0.96,
+  "reason": "Photos show catastrophic frontal damage inconsistent with the statement. Estimate and invoice exceed the claimed amount by an order of magnitude. Required claimant verification record is absent.",
+  "checks": {
+    "document_completeness": "fail",
+    "damage_description_consistency": "fail",
+    "amount_consistency": "fail",
+    "identity_consistency": "missing"
+  },
+  "synthetic_demo": true
+}
