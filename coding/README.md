@@ -63,7 +63,7 @@ Native integration.
 Integrates using the following proxies:
 
 - [Claude Codex proxy server](https://github.com/KiranChilledOut/claude-codex-nebius-proxy)
-- [Nebius TF Relay](https://nebius-tf-relay.vercel.app/)
+- [Nebius TF Relay](https://nebius-tf-relay.vercel.app/)  .   [how to video](https://www.youtube.com/watch?v=u8c_exTe2To)
 
 
 ## Codex

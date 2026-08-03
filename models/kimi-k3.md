@@ -75,7 +75,16 @@ Kimi K3 is Moonshot AI's flagship reasoning model, released July 2026 — a majo
 
 ## Examples and Resources
 
+### Apps and demos
+
 - [Charlie in Token Factory RPG game built with Kimi 3](https://datamon.vercel.app/)
+- [Broswer playable Quake game](https://github.com/sujee/practical-llm-evals/tree/main/fun/quake/)
+- [fun demos created with K3](https://github.com/sujee/practical-llm-evals/tree/main/fun/kimi-k3)
+  
+
+### Coding
+
+- [Using K3 wih claude code](https://www.youtube.com/watch?v=u8c_exTe2To)
 
 ---
 
