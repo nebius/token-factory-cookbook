@@ -1,0 +1,39 @@
+[project]
+name = "financial-report-analyst-backend"
+version = "0.1.0"
+description = "FastAPI + Deep Agents backend for multimodal financial report analysis."
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "deepagents>=0.7.0a4",
+    "fastapi>=0.115.0",
+    "langchain-nebius>=0.1.0",
+    "langchain-openai>=0.3.0",
+    "langgraph-checkpoint-sqlite>=3.1.1",
+    "openai>=1.58.0",
+    "openpyxl>=3.1.5",
+    "pandas>=2.2.0",
+    "pdfplumber>=0.11.0",
+    "pillow>=11.0.0",
+    "pymupdf>=1.24.0",
+    "pydantic>=2.10.0",
+    "python-docx>=1.1.2",
+    "python-multipart>=0.0.12",
+    "python-pptx>=1.0.2",
+    "sqlmodel>=0.0.22",
+    "uvicorn[standard]>=0.32.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "httpx>=0.27.0",
+    "pytest>=8.3.0",
+]
+
+[tool.setuptools.packages.find]
+include = ["app*"]
+exclude = ["data*", "tests*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]

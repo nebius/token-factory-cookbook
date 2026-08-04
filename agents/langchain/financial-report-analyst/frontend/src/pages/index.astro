@@ -1,0 +1,21 @@
+---
+import AnalystWorkspace from "../components/AnalystWorkspace";
+import "../styles/global.css";
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Financial Report Analyst</title>
+    <script is:inline>
+      (() => {
+        const stored = localStorage.getItem("fra-theme");
+        document.documentElement.dataset.theme = stored === "light" ? "light" : "dark";
+      })();
+    </script>
+  </head>
+  <body>
+    <AnalystWorkspace client:load />
+  </body>
+</html>

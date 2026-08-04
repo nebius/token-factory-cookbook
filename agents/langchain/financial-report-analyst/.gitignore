@@ -1,0 +1,25 @@
+.DS_Store
+
+# Keep the env template trackable even if the repo root ignores `.env*`
+!.env.example
+
+# Python
+backend/.venv/
+backend/__pycache__/
+backend/app/__pycache__/
+backend/tests/__pycache__/
+backend/.pytest_cache/
+backend/*.egg-info/
+
+# Local app data and uploads
+backend/data/
+backend/.env
+
+# Frontend
+frontend/node_modules/
+frontend/.astro/
+frontend/dist/
+frontend/.env
+
+# Logs
+*.log
