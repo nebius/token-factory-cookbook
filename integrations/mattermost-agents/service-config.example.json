@@ -1,0 +1,8 @@
+{
+  "name": "Nebius Token Factory",
+  "type": "openaicompatible",
+  "apiURL": "https://api.tokenfactory.nebius.com/v1",
+  "apiKey": "<NEBIUS_API_KEY>",
+  "defaultModel": "moonshotai/Kimi-K2.7-Code",
+  "useResponsesAPI": false
+}
