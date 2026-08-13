@@ -9,7 +9,7 @@ from typing import ClassVar
 from urllib.error import HTTPError
 from urllib.request import Request, urlopen
 
-from server import SnakeGameServer
+from server import DEFAULT_BASE_URL, SnakeGameServer, resolve_config
 
 DEMO_DIR = Path(__file__).resolve().parent
 
@@ -142,6 +142,24 @@ class SnakeGameProxyTest(unittest.TestCase):
             self.assertEqual(
                 response.headers["Cross-Origin-Resource-Policy"], "same-origin"
             )
+
+    def test_default_endpoint_never_uses_an_ambient_openai_key(self) -> None:
+        with self.assertRaisesRegex(ValueError, "NEBIUS_API_KEY"):
+            resolve_config({"OPENAI_API_KEY": "must-not-go-to-nebius"})
+
+        api_key, base_url = resolve_config({"NEBIUS_API_KEY": "nebius-secret"})
+        self.assertEqual(api_key, "nebius-secret")
+        self.assertEqual(base_url, DEFAULT_BASE_URL)
+
+    def test_custom_endpoint_explicitly_enables_openai_key(self) -> None:
+        api_key, base_url = resolve_config(
+            {
+                "TOKEN_FACTORY_BASE_URL": "https://provider.example/v1",
+                "OPENAI_API_KEY": "provider-secret",
+            }
+        )
+        self.assertEqual(api_key, "provider-secret")
+        self.assertEqual(base_url, "https://provider.example/v1/")
 
 
 if __name__ == "__main__":

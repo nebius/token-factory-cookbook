@@ -159,6 +159,8 @@ export TOKEN_FACTORY_BASE_URL='https://example.com/v1/'
 python3 server.py
 ```
 
+`OPENAI_API_KEY` is read only when `TOKEN_FACTORY_BASE_URL` is explicitly set;
+an ambient OpenAI key is never sent to the default Nebius endpoint.
 `TOKEN_FACTORY_BASE_URL` must be an absolute HTTP(S) URL without embedded
 credentials, query parameters, or fragments. The browser can only call the
 proxy's allowlisted `/api/models` and `/api/chat/completions` routes; it cannot

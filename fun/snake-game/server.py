@@ -11,6 +11,7 @@ import argparse
 import json
 import os
 import sys
+from collections.abc import Mapping
 from http import HTTPStatus
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
@@ -39,6 +40,23 @@ def normalize_base_url(value: str) -> str:
         )
     path = parsed.path.rstrip("/") + "/"
     return urlunsplit((parsed.scheme, parsed.netloc, path, "", ""))
+
+
+def resolve_config(environ: Mapping[str, str]) -> tuple[str, str]:
+    """Resolve an endpoint and its matching key without ambient-key confusion."""
+    custom_base_url = environ.get("TOKEN_FACTORY_BASE_URL")
+    if custom_base_url:
+        api_key = environ.get("OPENAI_API_KEY") or environ.get("NEBIUS_API_KEY")
+        if not api_key:
+            raise ValueError(
+                "Set OPENAI_API_KEY (or NEBIUS_API_KEY) for TOKEN_FACTORY_BASE_URL."
+            )
+        return api_key, normalize_base_url(custom_base_url)
+
+    api_key = environ.get("NEBIUS_API_KEY")
+    if not api_key:
+        raise ValueError("Set NEBIUS_API_KEY before starting the server.")
+    return api_key, DEFAULT_BASE_URL
 
 
 class SnakeGameServer(ThreadingHTTPServer):
@@ -214,16 +232,8 @@ def parse_args() -> argparse.Namespace:
 
 def main() -> int:
     args = parse_args()
-    api_key = os.environ.get("NEBIUS_API_KEY") or os.environ.get("OPENAI_API_KEY")
-    if not api_key:
-        print(
-            "Set NEBIUS_API_KEY (or OPENAI_API_KEY) before starting the server.",
-            file=sys.stderr,
-        )
-        return 2
-
-    base_url = os.environ.get("TOKEN_FACTORY_BASE_URL", DEFAULT_BASE_URL)
     try:
+        api_key, base_url = resolve_config(os.environ)
         server = SnakeGameServer(("127.0.0.1", args.port), api_key, base_url)
     except ValueError as error:
         print(error, file=sys.stderr)
