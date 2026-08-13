@@ -11,7 +11,7 @@ python -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
 cp .env.example .env
-# add NEBIUS_API_KEY
+# add NEBIUS_API_KEY and a currently available NEBIUS_MODEL
 python main.py
 ```
 
@@ -22,4 +22,3 @@ python main.py
 - Pipeline-change correlation
 - Typed data quality report
 - SQL/audit trail for reproducibility
-

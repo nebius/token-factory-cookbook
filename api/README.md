@@ -1,10 +1,11 @@
-# Run Models on Nebius Token Factory using APIs
+# Run models on Nebius Token Factory using APIs
 
 This guide shows how to run models using various python APIs.
 
 ## References and Acknowledgements
 
-- [API documentation](https://docs.tokenfactory.nebius.com//inference/quickstart)
+- [API documentation](https://docs.tokenfactory.nebius.com/api-reference/introduction)
+- [Quickstart](https://docs.tokenfactory.nebius.com/quickstart)
 
 ## Prerequisites
 
@@ -23,23 +24,25 @@ source  .venv/bin/activate
 pip install -r  requirements.txt
 ```
 
-## OpenAI Compatible API
+## OpenAI-compatible API
 
-This is the default API. OpenAI API comptable.
+Token Factory provides OpenAI-compatible Chat Completions and Responses APIs.
 
 Example code: [api_native.ipynb](api_native.ipynb)
 
+Stateless Responses API example: [responses/README.md](responses/README.md)
+
 [API reference](https://tokenfactory.nebius.com/api-reference)
 
-## Thirdparty APIs 
+## Third-party APIs
 
-Nebius Token Factory also supports [third party APIs](https://docs.tokenfactory.nebius.com//inference/integrations).  Here are some examples
+Nebius Token Factory also supports [third-party integrations](https://docs.tokenfactory.nebius.com/integrations/overview). Here are some examples.
 
 ## AISuite
 
 [aisuite](https://github.com/andrewyng/aisuite) is a simple, unified interface to multiple Generative AI providers.
 
-Example code: [api_native.ipynb](api_native.ipynb)
+Example code: [api_aisuite.ipynb](api_aisuite.ipynb)
 
 ## LiteLLM
 
@@ -54,10 +57,9 @@ Example code: [api_litellm.ipynb](api_litellm.ipynb)
 
 Example code: [api_llamaindex.ipynb](api_llamaindex.ipynb)
 
-## More Thirdparty APIs
+## More third-party APIs
 
-See [Nebius third party API documentation](https://docs.tokenfactory.nebius.com//inference/integrations) for complete list.
-
+See the [Token Factory integrations overview](https://docs.tokenfactory.nebius.com/integrations/overview) for the complete list.
 
 
 

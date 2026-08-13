@@ -12,7 +12,7 @@ class Settings:
     nebius_api_key: str
     gradium_base_url: str = "https://eu.api.gradium.ai/api"
     gradium_voice_id: str = "m86j6D7UZpGzHsNu"
-    nebius_model: str = "moonshotai/Kimi-K2.5"
+    nebius_model: str = ""
 
 
 def load_settings() -> Settings:
@@ -26,6 +26,9 @@ def load_settings() -> Settings:
         missing.append("GRADIUM_API_KEY")
     if not nebius_api_key:
         missing.append("NEBIUS_API_KEY")
+    nebius_model = os.getenv("NEBIUS_MODEL", "").strip()
+    if not nebius_model:
+        missing.append("NEBIUS_MODEL")
     if missing:
         names = ", ".join(missing)
         raise RuntimeError(f"Missing required environment variable(s): {names}")
@@ -35,5 +38,5 @@ def load_settings() -> Settings:
         nebius_api_key=nebius_api_key,
         gradium_base_url=os.getenv("GRADIUM_BASE_URL", "https://eu.api.gradium.ai/api").strip(),
         gradium_voice_id=os.getenv("GRADIUM_VOICE_ID", "m86j6D7UZpGzHsNu").strip(),
-        nebius_model=os.getenv("NEBIUS_MODEL", "moonshotai/Kimi-K2.5").strip(),
+        nebius_model=nebius_model,
     )

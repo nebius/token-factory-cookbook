@@ -44,6 +44,7 @@ Then fill:
 ```text
 GRADIUM_API_KEY=...
 NEBIUS_API_KEY=...
+NEBIUS_MODEL=... # choose a model currently available in your Token Factory project
 ```
 
 ## Run the conversational voice agent
@@ -70,4 +71,3 @@ python -m voice_pitch_coach.cli samples/my_pitch.wav \
 ```
 
 The CLI prints the transcript, score, feedback, rewrite, and next question. It also writes spoken feedback to `outputs/coach-feedback.wav`.
-
