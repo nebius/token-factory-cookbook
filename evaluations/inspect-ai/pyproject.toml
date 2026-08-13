@@ -1,0 +1,24 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "token-factory-inspect-eval"
+version = "0.1.0"
+description = "A small Inspect AI evaluation for Nebius Token Factory"
+requires-python = ">=3.11"
+dependencies = [
+  "inspect-ai==0.3.258",
+  "openai>=2.45,<3",
+]
+
+[project.optional-dependencies]
+test = [
+  "pytest>=8.4,<9",
+]
+
+[tool.setuptools]
+py-modules = ["settings", "smoke_eval", "run_eval"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
