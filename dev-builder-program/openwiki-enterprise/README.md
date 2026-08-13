@@ -10,11 +10,11 @@ You can use the same foundation for two related use cases:
 - **A personal or team second brain:** approved sources such as local repositories, Notion, Slack, Gmail, web search, or custom MCP servers are ingested into a local knowledge base under `~/.openwiki/wiki`.
 
 > [!IMPORTANT]
-> This is an enterprise adoption pattern, not a compliance certification or a
-> data-access control system. OpenWiki produces proposed documentation from the
-> evidence it can read. Your organization remains responsible for model access,
-> source authorization, data classification, output review, retention, and
-> production change control.
+> This guide describes documentation workflow considerations; it does not assess
+> compliance, approve data access, or replace an organization's change-control
+> process. OpenWiki produces proposed documentation from the evidence it can
+> read. Your organization remains responsible for model access, source
+> authorization, data classification, output review, and retention.
 
 ## Architecture
 
@@ -32,7 +32,7 @@ flowchart LR
 
 OpenWiki reads the allowed evidence, asks Kimi K2.7 Code to synthesize it, and writes ordinary Markdown. For repository documentation, Git remains the publication and review boundary.
 
-## Enterprise readiness at a glance
+## Operational controls
 
 | Control plane | Minimum control | Evidence to retain |
 | --- | --- | --- |
@@ -78,9 +78,9 @@ export OPENWIKI_MODEL_ID="moonshotai/Kimi-K2.7-Code"
 ```
 
 Before changing the model, provider, system prompt, or connector scope in a
-production workflow, run the proposed configuration against a representative
+managed workflow, run the proposed configuration against a representative
 non-sensitive repository. Compare documentation coverage, factual corrections,
-cost, latency, and tool-use reliability; record the approval with the change.
+cost, latency, and tool-use reliability; record the decision with the change.
 
 ## Use case 1: enterprise repository documentation
 
@@ -346,7 +346,7 @@ approve the remediation.
 
 ## Security checklist
 
-Before production adoption:
+Before enabling an automated workflow:
 
 - [ ] Hosted-model processing of the repository is permitted by organizational policy and contracts.
 - [ ] Nebius account access, project controls, region, retention, and logging have been reviewed.
