@@ -20,6 +20,7 @@ const SYSTEM_FONT = '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Aria
 // top as new ones are added, so a long single game (or a resumed loop session)
 // can't accumulate unbounded nodes. Reset on restart/loop round still wipes all.
 const MAX_LOG_ENTRIES = 100;
+const API_BASE_URL = '/api/';
 
 // LLM Configuration
 // If true, passes the full GRID_SIZE x GRID_SIZE board to the LLM
@@ -120,8 +121,7 @@ let gameState = {
     player1ConsecutiveFailures: 0,
     player2ConsecutiveFailures: 0,
     turnDelay: 0,
-    apiUrl: '',
-    apiKey: '',
+    apiUrl: API_BASE_URL,
     player1Model: '',
     player2Model: '',
     debugMode: false,
@@ -143,8 +143,6 @@ let gameState = {
 };
 
 // DOM Elements
-const apiUrlInput = document.getElementById('api-url');
-const apiKeyInput = document.getElementById('api-key');
 const loadModelsBtn = document.getElementById('load-models-btn');
 const loadingDiv = document.getElementById('loading');
 const modelsLoadedCount = document.getElementById('models-loaded-count');
@@ -615,33 +613,6 @@ if (fruitLegendBtn) {
     });
 }
 
-// Normalize API URL - ensure trailing slash
-function normalizeApiUrl(url) {
-    if (!url) return '';
-    return url.endsWith('/') ? url : url + '/';
-}
-
-// Validate API URL format
-function isValidApiUrl(url) {
-    try {
-        // Check if it's a valid HTTPS URL
-        const parsedUrl = new URL(url);
-        return parsedUrl.protocol === 'https:' || parsedUrl.protocol === 'http:';
-    } catch (e) {
-        return false;
-    }
-}
-
-// Validate API key format
-function isValidApiKey(apiKey) {
-    if (!apiKey || apiKey.length < 10) {
-        return false;
-    }
-    // Check for reasonable character set (letters, numbers, symbols)
-    const apiKeyRegex = /^[A-Za-z0-9\-_\.]+$/;
-    return apiKeyRegex.test(apiKey);
-}
-
 // Filter models to text-to-text only
 function filterTextModels(models) {
     console.log(`🎯 Filtering ${models.length} models to text-to-text only...`);
@@ -697,31 +668,10 @@ function isNonTextModel(modelId) {
 
 // Load models from API
 async function loadModels() {
-    const apiUrl = normalizeApiUrl(apiUrlInput.value.trim());
-    const apiKey = apiKeyInput.value.trim();
+    const apiUrl = API_BASE_URL;
 
     // Clear any previous error messages
     clearError();
-
-    if (!apiUrl) {
-        showError('Please enter an API URL');
-        return;
-    }
-
-    if (!isValidApiUrl(apiUrl)) {
-        showError('Please enter a valid API URL (e.g., https://api.example.com/v1/)');
-        return;
-    }
-
-    if (!apiKey) {
-        showError('Please enter an API key');
-        return;
-    }
-
-    if (!isValidApiKey(apiKey)) {
-        showError('Please enter a valid API key');
-        return;
-    }
 
     loadingDiv.classList.remove('hidden');
 
@@ -735,9 +685,6 @@ async function loadModels() {
             console.log('🔄 Attempting to fetch models with verbose=true...');
             response = await fetch(`${apiUrl}models?verbose=true`, {
                 method: 'GET',
-                headers: {
-                    'Authorization': `Bearer ${apiKey}`
-                },
                 credentials: 'omit'
             });
 
@@ -772,9 +719,6 @@ async function loadModels() {
             console.log('ℹ️ Verbose request failed or not supported, falling back to standard request');
             response = await fetch(`${apiUrl}models`, {
                 method: 'GET',
-                headers: {
-                    'Authorization': `Bearer ${apiKey}`
-                },
                 credentials: 'omit'
             });
 
@@ -2366,8 +2310,7 @@ async function getLLMDirection(playerNum, maxTokens = null) {
             console.log(`[${formatTimestamp(new Date(startTime))}] ======== P${playerNum}: Move ${playerMove}: Request ${requestNum} (${requestBytes} bytes, ~${requestTokens} tokens) ======`);
             console.log('URL:', `${gameState.apiUrl}chat/completions`);
             console.log('Headers:', {
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ***HIDDEN***'
+                'Content-Type': 'application/json'
             });
             console.log('Body:', JSON.stringify(requestBody, null, 2));
         }
@@ -2377,8 +2320,7 @@ async function getLLMDirection(playerNum, maxTokens = null) {
             response = await fetch(`${gameState.apiUrl}chat/completions`, {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${gameState.apiKey}`
+                    'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(requestBody),
                 signal: abortController.signal,
@@ -3680,8 +3622,7 @@ function startGame(fromDemoMode = false) {
         return;
     }
 
-    gameState.apiUrl = normalizeApiUrl(apiUrlInput.value.trim());
-    gameState.apiKey = apiKeyInput.value.trim();
+    gameState.apiUrl = API_BASE_URL;
 
     if (!gameState.player1Model || !gameState.player2Model) {
         showError('Please select both player models');

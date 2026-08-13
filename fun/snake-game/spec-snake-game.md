@@ -36,7 +36,7 @@ snake-battle/
 
 ### LLM Integration
 
-- **Endpoints:** `GET {apiUrl}models` (load; tries `?verbose=true` first for modality metadata, falls back to plain `/models`); `POST {apiUrl}chat/completions` (decisions).
+- **Browser endpoints:** same-origin `GET /api/models` (load; tries `?verbose=true` first for modality metadata, falls back to plain `/models`) and `POST /api/chat/completions` (decisions). `server.py` maps only these two paths to the configured OpenAI-compatible upstream and adds server-side authentication.
 - **Request body:** `{ model, messages:[{system}, {user}], temperature: 0, chat_template_kwargs: { enable_thinking } }` plus `max_tokens` only when non-null. `enable_thinking` mirrors the **Model Reasoning** Options toggle (`thinkingModeEnabled`, default `false`); setting it `false` disables model "thinking" mode (e.g. GLM-5.x) so only the direction answer comes back — harmless for models that don't recognize `chat_template_kwargs`. The benchmark Speed Test sends the same value for apples-to-apples comparison.
 - **System prompt** (`SYSTEM_PROMPT1`): survival goal + instructions to respond with ONLY `up`/`down`/`left`/`right`, no thinking; a `{VISIBILITY_SIZE}` placeholder is replaced with `VIEW_RADIUS * 2 + 1`.
 - **Board state prompt** (`getBoardState`): player color/length/head pos, enemy info, all fruits with value/distance/value-per-distance, closest fruit + length advantage, high-value targets, ASCII board view centered on head (full 30×30 OR `(VIEW_RADIUS*2+1)` square with wrap; legend `@`=head `★`=fruit `R/r`/`B/b`=bodies `.`=empty), per-direction danger checks, and — if `collisionAvoidanceEnabled` — a `Safe moves:` line with a preferred direction toward the closest fruit.
@@ -46,7 +46,7 @@ snake-battle/
 - **Forfeit:** `MAX_CONSECUTIVE_FAILURES = 3` consecutive failures dispatches a `playerForfeited` event and ends the game.
 - **Fallback:** on error/invalid response, direction falls back via `findSafeDirection` (still records a latency sample).
 - **Pause support:** `togglePause` aborts `gameLoopAbortController` (cancels in-flight fetches); resume creates a fresh controller and restarts the loop. Aborted requests are not logged.
-- **Debug mode:** masks the Authorization header, timestamps logs `[HH:MM:SS.mmm]`, correlates request/response with per-player move numbers. `formatTimestamp(date)` helper.
+- **Debug mode:** timestamps logs `[HH:MM:SS.mmm]` and correlates request/response with per-player move numbers. Authentication never exists in browser state or logs. `formatTimestamp(date)` helper.
 
 ### AI Safety (`collisionAvoidanceEnabled`, default on)
 
@@ -88,8 +88,8 @@ Two-column flex (`main-container`, `.left-pane` + `.right-pane`): a **left confi
 │  .left-pane      │  .right-pane                             │
 │  (config, 400px) │  (flex:1)                                │
 │                  │                                          │
-│  API URL         │  ⏱️ M:SS  timer  (#game-timer)           │
-│  API Key         │  ┌────────┬───────────────────┬────────┐ │
+│  Local API note  │  ⏱️ M:SS  timer  (#game-timer)           │
+│                  │  ┌────────┬───────────────────┬────────┐ │
 │  ⚡ Load Models  │  │ Fruit  │   Game Canvas     │ Game   │ │
 │  P1 model search │  │ Legend │   #game-canvas    │ Log    │ │
 │  P2 model search │  │ (left) │   600×600, 30×30  │(right) │ │
@@ -110,7 +110,7 @@ Two-column flex (`main-container`, `.left-pane` + `.right-pane`): a **left confi
 > Inside `.right-pane`, top-to-bottom: timer → `.game-layout` (3 cols) → `.stats-panel` (2 player cards + VS). The stats panel is **below** the game layout, not above.
 
 ### Left pane (config / controls)
-- **API URL** (`#api-url`, pre-filled Nebius), **API Key** (password), **⚡ Load Models** button + spinner/error.
+- Local-proxy security note, **⚡ Load Models** button, spinner, and error display. API endpoint and secret configuration are server-side only.
 - **Searchable model dropdowns** (`.searchable-dropdown`): `.model-search-input` + `.dropdown-options` for P1 and P2 (type-to-filter, case-insensitive, selects first match; invalid free-text reverts on blur). Player labels `🔴 Player 1 (Red Snake)` / `🔵 Player 2 (Blue Snake)`.
 - **Options section** (`#options-section`, collapsible, starts collapsed): Visibility Radius input (1–30, default 5), Collision Avoidance checkbox (on by default), Debug Mode checkbox, Model Reasoning checkbox (off by default — toggles `chat_template_kwargs.enable_thinking`).
 - **Extra section** (`#extra-section`, collapsible, starts collapsed): ⚡ Speed Test, 📈 Show Results, Sort by Name / by Speed buttons.
@@ -160,10 +160,8 @@ P1 - #45: 💥 HEAD-ON COLLISION!
 ### User-configurable (UI)
 | Setting | Default | Range | Description |
 |---------|---------|-------|-------------|
-| API URL | `https://api.tokenfactory.nebius.com/v1/` | — | OpenAI-compatible endpoint (trailing slash normalized) |
-| API Key | — | min 10 chars, `^[A-Za-z0-9\-_\.]+$` | Auth key (password input) |
 | Player 1 / 2 Model | first / second available | — | Searchable dropdown |
-| Debug Mode | off | on/off | Console logging, masked auth |
+| Debug Mode | off | on/off | Console request/response correlation; auth is server-only |
 | Collision Avoidance | on | on/off | Hints + auto safe-move override |
 | Model Reasoning | off | on/off | `chat_template_kwargs.enable_thinking` in API calls (e.g. GLM-5.x thinking mode). Dynamic — next move uses new setting. Also drives the Speed Test. |
 | Visibility Radius | 5 | 1–30 | Snake vision radius in cells (30 = full grid) |
@@ -205,7 +203,7 @@ P1 - #45: 💥 HEAD-ON COLLISION!
   player1ApiFailures, player2ApiFailures,
   player1ConsecutiveFailures, player2ConsecutiveFailures,
   turnDelay,                       // ms delay before loop starts (init 0)
-  apiUrl, apiKey,
+  apiUrl,                          // fixed browser path: /api/
   player1Model, player2Model,
   debugMode,
   overlayDismissed,                // hide overlay on canvas click
@@ -234,7 +232,7 @@ P1 - #45: 💥 HEAD-ON COLLISION!
 **Models**
 - `loadModels()` — GET, verbose-first, `filterTextModels` (text→text only via Nebius `architecture.modality` / OpenAI `capabilities.modalities` / pattern fallback; `isNonTextModel` excludes whisper/tts/audio/image/vision/dall-e/etc.), sort alphabetically, populate selects, dispatch `modelsLoaded`.
 - `populateSearchableDropdown` / `setupSearchableDropdown` — searchable dropdown behavior.
-- `normalizeApiUrl` / `isValidApiUrl` / `isValidApiKey` — validation.
+- `API_BASE_URL` — fixed same-origin browser proxy path.
 
 **Game loop**
 - `gameLoop()` — bail if over/paused; create `AbortController`; fire both `moveSnakeWithLLM` in parallel.
@@ -281,8 +279,9 @@ On game end with `loopMode` on, `startLoopCountdown()` runs a 5s interval; the o
 ## Security & Performance
 
 - **XSS protection:** game log uses safe DOM manipulation; latency spans built as elements with `data-latency-*` attributes (not string injection). User input goes through DOM APIs.
-- **Input validation:** `isValidApiUrl` (http/https), `isValidApiKey` (length + charset), bounds checks on `max_tokens` level and view radius.
-- **API keys:** password input, only in memory, not persisted; Authorization header masked in debug logs.
+- **Input validation:** bounds checks on `max_tokens` level and view radius; proxy enforces JSON, a 2 MiB body limit, exact route/method allowlists, and a validated server-side upstream URL.
+- **API keys:** read only from the server process environment. Browser JavaScript, HTML, storage, and network requests never receive the key or construct an Authorization header.
+- **Local proxy boundary:** binds to `127.0.0.1`, does not enable CORS, and allows only `/api/models` and `/api/chat/completions`.
 - **Redraw optimization:** `needsRedraw` flag — rAF redraws only on state change or when paused/gameOver (for overlay/animation).
 - **Memory:** latency arrays capped at 1000 (oldest shifted); all `setTimeout` ids tracked in `activeTimeouts` and cleared on teardown; `AbortController` aborts in-flight requests on pause/cleanup.
 - **Cleanup:** `cleanupAllResources` / `cleanupGameResources` stop animation, timer, loop countdown, abort controller, clear timeouts, remove tracked listeners, clear latency data.
@@ -312,30 +311,26 @@ On game end with `loopMode` on, `startLoopCountdown()` runs a 5s interval; the o
 
 ---
 
-## API Config Examples
+## Server API Configuration
 
-| Provider | API URL | Notes |
+| Provider | `TOKEN_FACTORY_BASE_URL` | Server key variable |
 |----------|---------|-------|
-| Nebius Token Factory (default) | `https://api.tokenfactory.nebius.com/v1/` | pre-filled |
-| OpenAI | `https://api.openai.com/v1/` | gpt-4o, etc. |
-| Compatible proxy (e.g. Claude) | `{proxy}/v1/` | OpenAI-compat |
-| Ollama | `http://localhost:11434/v1/` | local, key often blank |
-| LM Studio | `http://localhost:1234/v1/` | key `lm-studio` or blank |
+| Nebius Token Factory (default) | `https://api.tokenfactory.nebius.com/v1/` | `NEBIUS_API_KEY` |
+| OpenAI | `https://api.openai.com/v1/` | `OPENAI_API_KEY` |
+| Compatible proxy | `{proxy}/v1/` | `OPENAI_API_KEY` |
 
-All require an OpenAI-compatible `/models` and `/chat/completions`. CORS must be permitted by the provider.
+All require an OpenAI-compatible `/models` and `/chat/completions`. The upstream does not need CORS because only the local Python server contacts it.
 
 ---
 
 ## Running
 
-No build step. Open `snake.html` in a modern browser, enter API URL + key, Load Models, pick models, Start Battle.
-
-Optional dev server:
+No build step. Export the key in the current shell, start the security proxy, then open its localhost URL:
 
 ```bash
-python3 -m http.server 8000   # http://localhost:8000
-# or
-npx serve .
+read -rsp 'Nebius API key: ' NEBIUS_API_KEY && echo
+export NEBIUS_API_KEY
+python3 server.py             # http://127.0.0.1:8000/snake.html
 ```
 
 **Requirements:** Canvas 2D, Fetch API, ES6+ (async/await, arrow fns, template literals, destructuring), Flexbox, `requestAnimationFrame`, `backdrop-filter` (degrades gracefully).
