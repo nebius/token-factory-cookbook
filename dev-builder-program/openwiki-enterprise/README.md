@@ -9,6 +9,13 @@ You can use the same foundation for two related use cases:
 - **Enterprise repository documentation:** architecture, APIs, domain concepts, data flows, operations, testing, and ownership are generated under a repository's `openwiki/` directory and reviewed through Git.
 - **A personal or team second brain:** approved sources such as local repositories, Notion, Slack, Gmail, web search, or custom MCP servers are ingested into a local knowledge base under `~/.openwiki/wiki`.
 
+> [!IMPORTANT]
+> This is an enterprise adoption pattern, not a compliance certification or a
+> data-access control system. OpenWiki produces proposed documentation from the
+> evidence it can read. Your organization remains responsible for model access,
+> source authorization, data classification, output review, retention, and
+> production change control.
+
 ## Architecture
 
 ```mermaid
@@ -25,6 +32,20 @@ flowchart LR
 
 OpenWiki reads the allowed evidence, asks Kimi K2.7 Code to synthesize it, and writes ordinary Markdown. For repository documentation, Git remains the publication and review boundary.
 
+## Enterprise readiness at a glance
+
+| Control plane | Minimum control | Evidence to retain |
+| --- | --- | --- |
+| Scope | Named system owner, audience, data classification, and exclusions | Reviewed `openwiki/INSTRUCTIONS.md` |
+| Input | A repository-specific `.openwikiignore` and least-privilege connector identities | Security review of allowed and excluded sources |
+| Model | Approved Nebius account/project, secret-managed key, explicit model ID | Change record for model or provider updates |
+| Output | Documentation PR, protected branches, and accountable owner review | PR, review, and generated wiki commit |
+| Operations | Scheduled or release-triggered updates, cost/time limits, and failure alerts | Workflow run, model usage/cost record, incident ticket |
+| Assurance | Secret scanning, DLP, link/Markdown checks, and factual owner review | Passing checks and review sign-off |
+
+Do not enable scheduled generation until every row has an owner. For a pilot,
+start with an internal, low-risk repository and a read-only documentation PR.
+
 ## Prerequisites
 
 - Node.js 22 or newer
@@ -37,7 +58,9 @@ Install OpenWiki:
 npm install --global openwiki
 ```
 
-Keep the API key outside source control. OpenWiki's interactive setup can store credentials in `~/.openwiki/.env`, or you can export them from an approved secret manager:
+Keep the API key outside source control. OpenWiki's interactive setup can store
+credentials in `~/.openwiki/.env`; for a managed environment, inject the value
+from an approved secret manager instead of persisting it on a shared machine:
 
 ```bash
 export NEBIUS_API_KEY="your-token-factory-key"
@@ -47,7 +70,37 @@ export OPENWIKI_MODEL_ID="moonshotai/Kimi-K2.7-Code"
 
 Do not commit the API key to the repository, a documentation page, a notebook, or a CI workflow.
 
+Set the complete model ID explicitly. This makes a model change reviewable and
+avoids relying on an interactive preset:
+
+```bash
+export OPENWIKI_MODEL_ID="moonshotai/Kimi-K2.7-Code"
+```
+
+Before changing the model, provider, system prompt, or connector scope in a
+production workflow, run the proposed configuration against a representative
+non-sensitive repository. Compare documentation coverage, factual corrections,
+cost, latency, and tool-use reliability; record the approval with the change.
+
 ## Use case 1: enterprise repository documentation
+
+### Make the data and access decision first
+
+Treat a documentation run as controlled processing of the source material it
+reads. Before the first run, confirm:
+
+1. The repository and its history are approved for hosted-model processing.
+2. An owner has classified the repository and identified restricted paths,
+   generated data, customer content, legal holds, and credentials.
+3. The Nebius account, project, users, region, retention, and logging posture
+   have been reviewed against organizational requirements.
+4. The API key is held only by the developer or CI identity that needs it and
+   follows your rotation and incident-response policy.
+5. The generated `openwiki/` directory is included in the normal repository
+   controls for code review, secret scanning, DLP, retention, and backup.
+
+If any of these are unknown, keep the repository out of automation until the
+appropriate security, privacy, and system owners decide the scope.
 
 Run OpenWiki at the root of the repository you want to document:
 
@@ -158,7 +211,38 @@ For CI, provide the key as a protected secret and configure the same provider co
 
 Use a full Git checkout so OpenWiki can inspect relevant history. Have automation open a documentation pull request; do not give it autonomous merge permission. Use CODEOWNERS or an equivalent mechanism to require reviews from the responsible service, security, or operations teams.
 
-## Use case 2: a second brain
+#### Harden the CI boundary
+
+Run the secret-bearing update job only for trusted repository events such as a
+scheduled run, a protected-branch push, or a maintainer-triggered dispatch. Do
+not expose `NEBIUS_API_KEY` to workflows triggered from untrusted forks or
+unreviewed external pull requests. Keep the workflow permissions narrowly
+scoped, pin third-party GitHub Actions to reviewed commit SHAs, set a job
+timeout, and protect the branch that receives the generated pull request.
+
+Treat an update as failed when it cannot complete, produces a validation error,
+or exceeds its expected time or spend threshold. Alert the platform owner and
+preserve enough run metadata to correlate the source revision, model ID,
+workflow run, generated commit, and approving reviewer. Never log the API key
+or raw restricted connector content.
+
+#### Define an acceptance gate
+
+Before a generated documentation PR can merge, require:
+
+- no secrets or restricted content in the diff;
+- valid Markdown and working internal links;
+- review of architecture, API, security, and runbook claims by their accountable
+  owners when those areas changed;
+- explicitly labelled unknowns instead of invented topology, ownership,
+  compliance, or data-classification claims;
+- a narrow, relevant validation command for each change-sensitive component;
+- a clear source revision and model identifier in the workflow record.
+
+Automated structure checks are necessary but cannot establish factual accuracy,
+operational readiness, or compliance. Those remain human approval decisions.
+
+## Use case 2: a personal or team second brain
 
 Personal mode writes to `~/.openwiki/wiki` instead of the current repository:
 
@@ -186,7 +270,14 @@ For organizational use, connector ingestion is a data-governance decision, not m
 - separate knowledge bases that require different access policies;
 - define retention, deletion, audit, and incident procedures;
 - avoid ingesting private messages, customer records, or regulated data without authorization;
-- remember that a local personal wiki is not automatically a secure multi-user enterprise service.
+- remember that a local personal wiki is not automatically a secure multi-user
+  enterprise service.
+
+For a shared knowledge program, decide where the source corpus and generated
+wiki live, who can query or modify each, and how identity, retention, legal
+hold, deletion, audit, and offboarding work end to end. A connector's source
+permissions do not automatically become access controls for the generated
+Markdown; publish only to a destination with equivalent protection.
 
 ## Enterprise operating model
 
@@ -200,12 +291,21 @@ For organizational use, connector ingestion is a data-governance decision, not m
 
 A practical rollout has four stages:
 
-1. **Scope:** classify the repository, identify owners and audiences, and define exclusions.
-2. **Baseline:** generate the wiki, resolve unsupported claims, and merge through normal review.
-3. **Operate:** run updates after releases or on a schedule and publish changes through pull requests.
-4. **Measure:** track page ownership, stale content, unresolved documentation debt, broken links, review acceptance, and incident findings.
+1. **Pilot:** choose a low-risk internal repository, define exclusions and
+   acceptance criteria, then run manually with an isolated developer key.
+2. **Baseline:** generate the wiki, resolve unsupported claims, and merge it
+   through normal review with service-owner approval.
+3. **Controlled automation:** use a dedicated CI secret, trusted events only,
+   protected branches, required owners, time/spend thresholds, and a
+   documentation-only PR.
+4. **Operate and measure:** update after releases or on a schedule; track page
+   ownership, stale content, unresolved documentation debt, broken links,
+   review acceptance, cost, failures, and incident findings.
 
 For critical or regulated systems, require security and operations review, periodically reassess `.openwikiignore`, and test runbook procedures independently of documentation generation.
+
+Reassess the control set whenever the model, provider, connector, repository,
+data classification, deployment environment, or legal requirement changes.
 
 ## Troubleshooting
 
@@ -235,6 +335,15 @@ Available models can change over time. Check the current [Nebius Token Factory m
 
 Tighten `openwiki/INSTRUCTIONS.md`, ensure authoritative schemas and tests are readable, and ask owners to correct the generated page. Avoid turning assumptions about topology, compliance, data classification, or ownership into documentation requirements unless those facts are evidenced.
 
+### A CI update generated sensitive or incorrect content
+
+Do not merge the pull request. Revoke or rotate credentials if they were
+disclosed, restrict the relevant input path or connector, remove sensitive
+content through the organization's approved incident process, and preserve the
+workflow and review evidence for investigation. Update the documentation brief
+and `.openwikiignore`, then repeat the run only after the responsible owners
+approve the remediation.
+
 ## Security checklist
 
 Before production adoption:
@@ -247,6 +356,12 @@ Before production adoption:
 - [ ] Generated changes require accountable human reviewers and cannot merge autonomously.
 - [ ] Generated security, compliance, SLO, and runbook claims are treated as unverified until owner review.
 - [ ] The generated wiki is covered by normal secret scanning, DLP, retention, backup, and incident processes.
+- [ ] The CI job runs only for trusted events and cannot expose a secret to a
+  forked pull request.
+- [ ] PRs record the source revision and model ID; model or scope changes follow
+  a documented evaluation and approval process.
+- [ ] There is a documented owner and response path for failed generation,
+  inaccurate documentation, or sensitive-output incidents.
 
 ## References
 
