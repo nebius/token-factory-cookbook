@@ -161,6 +161,33 @@ class SnakeGameProxyTest(unittest.TestCase):
         self.assertEqual(api_key, "provider-secret")
         self.assertEqual(base_url, "https://provider.example/v1/")
 
+    def test_custom_endpoint_never_falls_back_to_nebius_key(self) -> None:
+        with self.assertRaisesRegex(ValueError, "OPENAI_API_KEY"):
+            resolve_config(
+                {
+                    "TOKEN_FACTORY_BASE_URL": "https://provider.example/v1",
+                    "NEBIUS_API_KEY": "must-not-go-to-custom-provider",
+                }
+            )
+
+    def test_custom_endpoint_requires_https_except_for_loopback(self) -> None:
+        with self.assertRaisesRegex(ValueError, "must use HTTPS"):
+            resolve_config(
+                {
+                    "TOKEN_FACTORY_BASE_URL": "http://provider.example/v1",
+                    "OPENAI_API_KEY": "provider-secret",
+                }
+            )
+
+        api_key, base_url = resolve_config(
+            {
+                "TOKEN_FACTORY_BASE_URL": "http://localhost:11434/v1",
+                "OPENAI_API_KEY": "local-provider-secret",
+            }
+        )
+        self.assertEqual(api_key, "local-provider-secret")
+        self.assertEqual(base_url, "http://localhost:11434/v1/")
+
 
 if __name__ == "__main__":
     unittest.main()

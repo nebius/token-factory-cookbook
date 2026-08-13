@@ -320,9 +320,11 @@ On game end with `loopMode` on, `startLoopCountdown()` runs a 5s interval; the o
 | Compatible proxy | `{proxy}/v1/` | `OPENAI_API_KEY` |
 
 All require an OpenAI-compatible `/models` and `/chat/completions`. The upstream does not need CORS because only the local Python server contacts it.
-`OPENAI_API_KEY` is only eligible when `TOKEN_FACTORY_BASE_URL` is explicitly
-configured; the default Nebius endpoint requires `NEBIUS_API_KEY` so an ambient
-provider key cannot be sent to the wrong service.
+`OPENAI_API_KEY` is required when `TOKEN_FACTORY_BASE_URL` is explicitly
+configured; a custom upstream never falls back to `NEBIUS_API_KEY`. The default
+Nebius endpoint requires `NEBIUS_API_KEY`, so an ambient provider key cannot be
+sent to the wrong service. Custom upstreams require HTTPS except explicit
+loopback HTTP endpoints (`localhost`, `127.0.0.1`, or `::1`).
 
 ---
 

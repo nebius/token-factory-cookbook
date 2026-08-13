@@ -38,6 +38,14 @@ def normalize_base_url(value: str) -> str:
         raise ValueError(
             "TOKEN_FACTORY_BASE_URL must not contain credentials, query, or fragment"
         )
+    if parsed.scheme != "https" and parsed.hostname not in {
+        "127.0.0.1",
+        "localhost",
+        "::1",
+    }:
+        raise ValueError(
+            "TOKEN_FACTORY_BASE_URL must use HTTPS unless it is loopback-only"
+        )
     path = parsed.path.rstrip("/") + "/"
     return urlunsplit((parsed.scheme, parsed.netloc, path, "", ""))
 
@@ -46,11 +54,9 @@ def resolve_config(environ: Mapping[str, str]) -> tuple[str, str]:
     """Resolve an endpoint and its matching key without ambient-key confusion."""
     custom_base_url = environ.get("TOKEN_FACTORY_BASE_URL")
     if custom_base_url:
-        api_key = environ.get("OPENAI_API_KEY") or environ.get("NEBIUS_API_KEY")
+        api_key = environ.get("OPENAI_API_KEY")
         if not api_key:
-            raise ValueError(
-                "Set OPENAI_API_KEY (or NEBIUS_API_KEY) for TOKEN_FACTORY_BASE_URL."
-            )
+            raise ValueError("Set OPENAI_API_KEY for TOKEN_FACTORY_BASE_URL.")
         return api_key, normalize_base_url(custom_base_url)
 
     api_key = environ.get("NEBIUS_API_KEY")
