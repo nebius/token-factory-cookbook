@@ -1,0 +1,20 @@
+{
+  "notice": "Reference checklist only; configure these values in the Respan Providers and Models pages.",
+  "provider": {
+    "type": "Custom / Self-hosted",
+    "name": "Nebius Token Factory",
+    "provider_id": "nebius-token-factory",
+    "protocol": "OpenAI compatible",
+    "base_url": "https://api.tokenfactory.nebius.com/v1",
+    "api_key_source": "NEBIUS_API_KEY copied into Respan Provider settings"
+  },
+  "model": {
+    "id": "moonshotai/Kimi-K3",
+    "provider_id": "nebius-token-factory"
+  },
+  "application": {
+    "base_url": "https://api.respan.ai/api",
+    "api_key_env": "RESPAN_API_KEY",
+    "request_path": "/chat/completions"
+  }
+}
