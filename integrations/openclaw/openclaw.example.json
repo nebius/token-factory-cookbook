@@ -1,0 +1,53 @@
+{
+  "agents": {
+    "defaults": {
+      "model": {
+        "primary": "nebius-token-factory/moonshotai/Kimi-K2.6"
+      },
+      "models": {
+        "nebius-token-factory/moonshotai/Kimi-K2.6": {
+          "alias": "Kimi K2.6 on Token Factory"
+        },
+        "nebius-token-factory/deepseek-ai/DeepSeek-V4-Flash": {
+          "alias": "DeepSeek V4 Flash on Token Factory"
+        },
+        "nebius-token-factory/zai-org/GLM-5.1": {
+          "alias": "GLM 5.1 on Token Factory"
+        }
+      }
+    }
+  },
+  "models": {
+    "mode": "merge",
+    "providers": {
+      "nebius-token-factory": {
+        "baseUrl": "https://api.tokenfactory.nebius.com/v1",
+        "apiKey": "${NEBIUS_API_KEY}",
+        "api": "openai-completions",
+        "models": [
+          {
+            "id": "moonshotai/Kimi-K2.6",
+            "name": "Kimi K2.6",
+            "input": [
+              "text"
+            ]
+          },
+          {
+            "id": "deepseek-ai/DeepSeek-V4-Flash",
+            "name": "DeepSeek V4 Flash",
+            "input": [
+              "text"
+            ]
+          },
+          {
+            "id": "zai-org/GLM-5.1",
+            "name": "GLM 5.1",
+            "input": [
+              "text"
+            ]
+          }
+        ]
+      }
+    }
+  }
+}
