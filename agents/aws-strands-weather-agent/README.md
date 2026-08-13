@@ -1,72 +1,71 @@
-![AWS Strands](./banner.png)
+# Strands Agents + Nebius Token Factory
 
-# AWS Strands Starter Agent
+This small smoke recipe connects [Strands Agents](https://github.com/strands-agents/harness-sdk) to Nebius Token Factory through Strands' existing `OpenAIModel`. It streams the answer and requires the model to call one deterministic local tool.
 
-A simple demonstration of using the Strands library with Nebius Token Factory's API to create an AI assistant that can fetch weather information.
-
-## Features
-
-- Custom AI assistant using Nebius's LLMs with the Strands Agent SDK.
-- Weather forecasting capability using the National Weather Service API.
-- Demonstrates using `http_request` tool for making external API calls.
+No Strands provider adapter or LiteLLM routing is required. This recipe exercises the OpenAI-compatible Chat Completions surface used by `OpenAIModel`; it does not claim full OpenAI API parity or stateful Responses behavior.
 
 ## Prerequisites
 
-- Python 3.12+
-- [uv](https://github.com/astral-sh/uv) - an extremely fast Python package installer and resolver.
-- [Nebius API key](https://dub.sh/nebius)
+- Python 3.11 or newer.
+- [uv](https://docs.astral.sh/uv/).
+- A Nebius Token Factory API key from [tokenfactory.nebius.com](https://tokenfactory.nebius.com/).
+- A current model that supports function calling. The sample suggests `zai-org/GLM-5.1`; verify it, or choose another model, in the [live model catalog](https://tokenfactory.nebius.com/model-catalog.md).
 
-## Environment Variables
+## Setup
 
-The application requires the following environment variable. You can create a `.env` file in the project root to store it.
+```bash
+cd agents/aws-strands-weather-agent
+uv sync
+cp env.example .env
+```
 
-- `NEBIUS_API_KEY`: Your Nebius Token Factory API key.
+Edit `.env` and provide both required values:
 
-## Installation
+```dotenv
+NEBIUS_API_KEY=your_key_here
+NEBIUS_MODEL=zai-org/GLM-5.1
+```
 
-1.  Clone this repository and navigate to the agent's directory.
+The model is intentionally required at runtime rather than hard-coded. Model availability changes, and IDs are case-sensitive.
 
-    ```bash
-    cd agents/aws-strands-weather-agent
-    ```
-2.  Create a virtual environment and install dependencies using `uv`:
-
-    ```bash
-    # Create a virtual environment
-    uv venv
-
-    # Activate the virtual environment
-    source .venv/bin/activate
-
-    # Install dependencies from pyproject.toml and uv.lock
-    uv sync
-    ```
-
-3.  Create a `.env` file and add your `NEBIUS_API_KEY`.
-
-    ```
-    NEBIUS_API_KEY="your-nebius-api-key"
-    ```
-
-## Usage
-
-Run the main script:
+## Run the smoke recipe
 
 ```bash
 uv run agent.py
 ```
 
-The script will:
+The agent:
 
-1.  Create a weather assistant agent.
-2.  Ask the agent to compare the temperature in New York and Chicago for the upcoming weekend.
-3.  Output the assistant's response.
+1. creates Strands' generic `OpenAIModel` with `https://api.tokenfactory.nebius.com/v1`;
+2. registers a deterministic `get_temperature` tool;
+3. streams text from `agent.stream_async()`; and
+4. fails if the model never selects the tool.
 
-## Customization
+The tool returns fixed demonstration data and makes no external request. A successful run verifies the configured model can complete a basic Strands tool-call/result loop and stream its final text; it does not establish compatibility with every Strands or OpenAI feature.
 
-You can modify the `agent.py` file to:
+## Offline validation
 
-- Change the assistant's `system_prompt`.
-- Add more tools from `strands_tools` or your own custom tools.
-- Alter the example query passed to the `weather_agent`.
-- Configure different LLM models supported by LiteLLM.
+The configuration tests require no API key and make no network requests:
+
+```bash
+uv run python -m unittest -v test_config.py
+```
+
+They check the canonical URL, explicit key/model mapping, Chat Completions parameters, missing-configuration error, and the tool-bearing streaming request Strands formats for the OpenAI client.
+
+## Troubleshooting
+
+- **Missing environment variables** — copy `env.example` to `.env` and set both values. Do not commit `.env`.
+- **401 Unauthorized** — verify the key has no quotes, placeholder text, or `Bearer` prefix.
+- **404 / model not found** — compare the exact model ID with the live catalog and the models available to your key. Do not guess a replacement from the model family name.
+- **Wrong endpoint** — `base_url` must be `https://api.tokenfactory.nebius.com/v1`. Do not append `/chat/completions`; the OpenAI client adds the route.
+- **The smoke test reports no tool call** — confirm the selected model currently advertises function calling. Try the plain prompt path separately before treating a tool-selection failure as a platform defect.
+- **Streaming fails but a non-streaming request works** — keep `stream_options.include_usage` enabled (the Strands default) and capture the provider error. This recipe targets streamed Chat Completions, so silently disabling streaming would not validate the intended path.
+- **You need Responses-specific features** — Strands has a separate `OpenAIResponsesModel`. Token Factory's Responses-compatible surface is stateless and must be validated per model and workflow; it is outside this recipe.
+
+## Resources
+
+- [Strands OpenAI model provider](https://strandsagents.com/latest/documentation/docs/user-guide/concepts/model-providers/openai/)
+- [Strands streaming guide](https://strandsagents.com/latest/documentation/docs/user-guide/concepts/streaming/async-iterators/)
+- [Token Factory model catalog](https://tokenfactory.nebius.com/model-catalog.md)
+- [Token Factory Chat Completions API](https://docs.tokenfactory.nebius.com/api-reference/inference/chat-completion)
