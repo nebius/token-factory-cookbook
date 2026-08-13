@@ -1,0 +1,16 @@
+default_model = "token-factory"
+default_thinking = true
+default_yolo = false
+
+[providers.token-factory]
+type = "openai_legacy"
+base_url = "https://api.tokenfactory.nebius.com/v1"
+api_key = "overridden-by-OPENAI_API_KEY"
+reasoning_key = "reasoning_content"
+
+[models.token-factory]
+provider = "token-factory"
+model = "__NEBIUS_MODEL__"
+display_name = "Nebius Token Factory"
+max_context_size = 1000000
+capabilities = ["always_thinking", "image_in"]
