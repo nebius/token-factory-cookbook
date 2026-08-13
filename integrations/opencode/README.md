@@ -36,7 +36,7 @@ pass the provider/model pair explicitly:
 ```bash
 opencode run \
   --model nebius/moonshotai/Kimi-K2.7-Code \
-  "Read this repository's test command, run the smallest relevant test, and summarize the result."
+  "Run the smallest relevant test and summarize the result."
 ```
 
 The first slash separates the Models.dev provider ID (`nebius`) from the full
