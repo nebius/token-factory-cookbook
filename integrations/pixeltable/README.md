@@ -1,25 +1,37 @@
 # Pixeltable + Nebius Token Factory
 
-[Pixeltable](https://pixeltable.com/) is open-source multimodal AI data infrastructure. You declare tables with images, video, audio, documents, and text; computed columns and embedding indexes run incrementally as data arrives. Pixeltable includes a **native Nebius Token Factory provider** (`pixeltable.functions.nebius`) for chat completions and embeddings—no custom base-URL wiring required.
+[Pixeltable](https://pixeltable.com/) is open-source multimodal AI data
+infrastructure. You declare tables with images, video, audio, documents, and
+text; computed columns and embedding indexes run incrementally as data arrives.
+Pixeltable includes a **native Nebius Token Factory provider**
+(`pixeltable.functions.nebius`) for chat completions and embeddings—no custom
+base-URL wiring required.
 
 ## Why Token Factory?
 
-- **Native UDFs** — `nebius.chat_completions` and `nebius.embeddings` call Token Factory directly.
+- **Native UDFs** — `nebius.chat_completions` and `nebius.embeddings` call
+  Token Factory directly.
 - **Open models** — Llama, Qwen, DeepSeek, and more behind one API key.
-- **Incremental pipelines** — insert rows; Pixeltable fills computed columns and maintains indexes automatically.
+- **Incremental pipelines** — insert rows; Pixeltable fills computed columns
+  and maintains indexes automatically.
 
 ## Prerequisites
 
 - A Nebius Token Factory API key — see [Getting Started](../../getting-started.md).
 - Python 3.10+ (local, Colab, etc.).
 
+This recipe was contract-checked with Pixeltable 0.7.1 on 2026-08-13. It uses
+Pixeltable's existing native Nebius UDFs and Chat Completions; it does not add
+another provider or claim Responses API support.
+
 ## 1. Install
 
 ```bash
-pip install -U pixeltable openai
+pip install "pixeltable==0.7.1" openai
 ```
 
-Nebius uses an OpenAI-compatible API, so the `openai` package is required alongside Pixeltable.
+Nebius uses an OpenAI-compatible API, so the `openai` package is required
+alongside Pixeltable.
 
 ## 2. Set your API key
 
@@ -27,18 +39,21 @@ Nebius uses an OpenAI-compatible API, so the `openai` package is required alongs
 export NEBIUS_API_KEY=your_key_here
 ```
 
-Or in Python:
-
-```python
-import os
-os.environ['NEBIUS_API_KEY'] = 'your_key_here'
-```
+Keep the key outside notebooks and source control. For a local notebook, set the
+environment variable in the shell that launches Jupyter rather than saving a
+key assignment in a cell.
 
 ## 3. Chat completions
 
 ```python
+import os
+
 import pixeltable as pxt
 from pixeltable.functions import nebius
+
+CHAT_MODEL = os.getenv(
+    'NEBIUS_CHAT_MODEL', 'meta-llama/Llama-3.3-70B-Instruct'
+)
 
 pxt.drop_dir('nebius_demo', force=True)
 pxt.create_dir('nebius_demo')
@@ -49,7 +64,7 @@ messages = [{'role': 'user', 'content': chat_t.input}]
 chat_t.add_computed_column(
     output=nebius.chat_completions(
         messages=messages,
-        model='meta-llama/Llama-3.3-70B-Instruct',
+        model=CHAT_MODEL,
         model_kwargs={'max_tokens': 300, 'temperature': 0.7},
     )
 )
@@ -59,11 +74,17 @@ chat_t.insert([{'input': 'What is the capital of France?'}])
 chat_t.select(chat_t.input, chat_t.response).collect()
 ```
 
-Model IDs use the `org/model` form. Browse the catalog at [tokenfactory.nebius.com](https://tokenfactory.nebius.com/) or the [Models guides](../../models/) in this cookbook.
+Model IDs use the `org/model` form. The default above was present in the public
+catalog when this recipe was checked; use `NEBIUS_CHAT_MODEL` to select another
+model without editing the example. Browse the
+[live catalog](https://tokenfactory.nebius.com/) before running because model
+availability is lifecycle-dependent.
 
 ## 4. Embeddings
 
-Token Factory currently serves `Qwen/Qwen3-Embedding-8B`. By default it returns **4096-dimensional** vectors, which exceed Pixeltable’s embedding-index limit of 4000. Request a truncated size when you need an index:
+Token Factory currently serves `Qwen/Qwen3-Embedding-8B`. By default it returns
+**4096-dimensional** vectors, which exceed Pixeltable’s embedding-index limit
+of 4000. Request a truncated size when you need an index:
 
 ```python
 emb_t = pxt.create_table('nebius_demo/embeddings', {'input': pxt.String})
@@ -88,8 +109,12 @@ emb_t.select(emb_t.input, sim=sim).order_by(sim, asc=False).collect()
 ## Troubleshooting
 
 - **401 Unauthorized** — confirm `NEBIUS_API_KEY` is set in the environment.
-- **404 / model not found** — check the model ID (`org/model`, case-sensitive) against your Token Factory catalog.
-- **Embedding index errors** — use `model_kwargs={'dimensions': 1024}` (or another size ≤ 4000) with `Qwen/Qwen3-Embedding-8B`.
+- **404 / model not found** — check the model ID (`org/model`, case-sensitive)
+  against your Token Factory catalog.
+- **Embedding index errors** — use `model_kwargs={'dimensions': 1024}` (or
+  another size ≤ 4000) with `Qwen/Qwen3-Embedding-8B`.
+- **Different chat model** — export `NEBIUS_CHAT_MODEL=org/model` after checking
+  that the selected model supports the features you use.
 
 ## Resources
 
