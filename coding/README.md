@@ -14,6 +14,7 @@ Check out [all coding integrations](https://docs.tokenfactory.nebius.com/integra
 - [Claude Code](#claude-code)
 - [Codex](#codex)
 - [OpenCode](#opencode)
+- [Qwen Code](qwen-code/)
 
 ## Prerequisites
 
@@ -38,6 +39,7 @@ Check out [all coding integrations](https://docs.tokenfactory.nebius.com/integra
 | Claude Code | via Proxy | [notes](#claude-code) |
 | Codex | via Proxy | [notes](#codex) |
 | OpenCode | Native | [notes](#opencode) |
+| Qwen Code | OpenAI-compatible custom provider | [setup recipe](qwen-code/) |
 
 
 ## Cursor
@@ -83,3 +85,9 @@ Optionally, you can use this proxy: [Nebius TF Relay](https://nebius-tf-relay.ve
 
 Guides:
 - A [setup guide](https://github.com/m1burn/omo-nebius-token-factory) guide with agentmemory + opencode + Token Factory
+
+## Qwen Code
+
+Qwen Code supports Token Factory through its existing OpenAI-compatible custom-provider configuration. No adapter or proxy is required.
+
+- [setup and offline configuration checks](qwen-code/)

@@ -1,0 +1,25 @@
+{
+  "modelProviders": {
+    "openai": [
+      {
+        "id": "moonshotai/Kimi-K2.7-Code",
+        "name": "Kimi K2.7 Code (Nebius Token Factory)",
+        "description": "Coding model through Token Factory Chat Completions",
+        "envKey": "NEBIUS_API_KEY",
+        "baseUrl": "https://api.tokenfactory.nebius.com/v1",
+        "generationConfig": {
+          "timeout": 120000,
+          "maxRetries": 2
+        }
+      }
+    ]
+  },
+  "security": {
+    "auth": {
+      "selectedType": "openai"
+    }
+  },
+  "model": {
+    "name": "moonshotai/Kimi-K2.7-Code"
+  }
+}
