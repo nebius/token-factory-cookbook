@@ -1,4 +1,2 @@
-python-dotenv>=1.1.1
-strands-agents-builder>=0.1.7
-strands-agents-tools>=0.2.1
-strands-agents[litellm]>=1.0.1 
+python-dotenv>=1.2.2,<2
+strands-agents[openai]>=1.52.0,<2
