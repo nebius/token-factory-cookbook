@@ -76,7 +76,10 @@ Integrates using the following proxies:
 ## OpenCode
 
 Native integration with Token Factory!
-- [🎥 howto video](https://www.youtube.com/watch?v=216_T--JE0k)
+
+[🎥 howto video](https://www.youtube.com/watch?v=216_T--JE0k)
 
 Optionally, you can use this proxy: [Nebius TF Relay](https://nebius-tf-relay.vercel.app/)
 
+Guides:
+- A [setup guide](https://github.com/m1burn/omo-nebius-token-factory) guide with agentmemory + opencode + Token Factory
