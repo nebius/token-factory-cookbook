@@ -81,3 +81,6 @@ catalog integration, not a separate Token Factory adapter.
 
 - [Tested Token Factory recipe](../integrations/opencode/)
 - [🎥 how-to video](https://www.youtube.com/watch?v=216_T--JE0k)
+
+Guides:
+- A [setup guide](https://github.com/m1burn/omo-nebius-token-factory) guide with agentmemory + opencode + Token Factory
