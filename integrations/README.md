@@ -10,6 +10,7 @@ Token Factory exposes an **OpenAI-compatible API** at `https://api.tokenfactory.
 | [Tavily](tavily/) 🔍 | LLM-optimized search API for agentic research, competitive intelligence, and web-grounded agents | Search / Research |
 | [Pixeltable](pixeltable/) | Multimodal AI data infrastructure with native Token Factory chat completions and embeddings | Data / RAG framework |
 | [openwiki](openwiki-enterprise//) | A documentation agent that generates and maintains a Markdown knowledge base from source repositories | Documentation |
+| [OpenHands Agent Canvas](openhands-agent-canvas/) 🙌 | Self-hosted control center for coding agents, running on a Nebius VM with Qwen3-32B served by Token Factory | Coding agent |
 
 > Looking for the official integrations catalog? See [docs.tokenfactory.nebius.com/integrations](https://docs.tokenfactory.nebius.com/integrations/overview).
 
