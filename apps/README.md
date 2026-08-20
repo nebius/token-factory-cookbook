@@ -3,6 +3,7 @@
   - [WhatLLM](#whatllm)
   - [LLM Streetfighter!](#llm-streetfighter)
   - [Allycat](#allycat)
+  - [Customer Support AI](#customer-support-ai)
 
 
 ## WhatLLM
@@ -41,3 +42,29 @@ Author: [Sujee Maniyam](https://sujee.dev/)  |   [@sujee_dev](https://x.com/suje
 
 ---
 
+## Customer Support AI
+
+[Customer Support AI](https://github.com/amrrs/customer-support-ai) is an
+enterprise-style Next.js demo for building a conversational support assistant
+with Nebius Token Factory and Tavily. It streams Markdown responses, supports
+same-session follow-up questions, and restricts retrieval to a domain selected
+by the user.
+
+```mermaid
+flowchart LR
+    U[Customer question] --> UI[Next.js chat UI]
+    UI --> API[Server API route]
+    API --> T[Tavily domain search]
+    T --> V[HTTPS and hostname validation]
+    V --> N[Nebius Token Factory]
+    N -->|Streamed answer| UI
+    V -->|Approved links| UI
+```
+
+The server validates every retrieved URL before its excerpt can enter model
+context, and the interface hyperlinks answers only to those approved sources.
+The demo can be run locally or deployed to Vercel or Render.
+
+Built by [Amrrs](https://github.com/amrrs).
+
+---
