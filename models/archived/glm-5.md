@@ -1,38 +1,20 @@
 # GLM-5
 
+> **Archived:** GLM-5 was removed from Token Factory Public Serverless
+> Endpoints on June 22, 2026. This page is retained only as historical model
+> information. Choose a current model in the
+> [Token Factory catalog](https://tokenfactory.nebius.com/) or contact Sales
+> about a Dedicated Endpoint.
+
 ---
 
 ## Table of Contents
 
-- [Quickstart](#quickstart)
-- [Try it Out](#try-it-out)
 - [TL;DR](#tldr)
 - [Performance and Benchmarks](#performance-and-benchmarks)
 - [References](#references)
 
 ---
-
-## Quickstart
-
-```python
-import os
-from openai import OpenAI
-
-client = OpenAI(
-    base_url="https://api.tokenfactory.us-central1.nebius.com/v1/",
-    api_key=os.environ.get("NEBIUS_API_KEY")
-)
-
-response = client.chat.completions.create(
-    model="zai-org/GLM-5",
-    messages=[{"role": "user", "content": "Explain quantum computing in one sentence."}]
-)
-print(response.choices[0].message.content)
-```
-
-## Try it Out
-
-[▶ Try it in the Token Factory Playground](https://tokenfactory.nebius.com/playground?models=zai-org/GLM-5)
 
 ## TL;DR
 
