@@ -37,7 +37,7 @@ Check out [all coding integrations](https://docs.tokenfactory.nebius.com/integra
 | Cline | Native | [notes](#cline) |
 | Claude Code | via Proxy | [notes](#claude-code) |
 | Codex | via Proxy | [notes](#codex) |
-| OpenCode | Native | [notes](#opencode) |
+| OpenCode | Models.dev catalog | [tested recipe](../integrations/opencode/) |
 
 
 ## Cursor
@@ -75,11 +75,12 @@ Integrates using the following proxies:
 
 ## OpenCode
 
-Native integration with Token Factory!
+OpenCode discovers Token Factory through the shared Models.dev catalog and
+uses its existing OpenAI-compatible Chat Completions client. This is a dynamic
+catalog integration, not a separate Token Factory adapter.
 
-[🎥 howto video](https://www.youtube.com/watch?v=216_T--JE0k)
-
-Optionally, you can use this proxy: [Nebius TF Relay](https://nebius-tf-relay.vercel.app/)
+- [Tested Token Factory recipe](../integrations/opencode/)
+- [🎥 how-to video](https://www.youtube.com/watch?v=216_T--JE0k)
 
 Guides:
 - A [setup guide](https://github.com/m1burn/omo-nebius-token-factory) guide with agentmemory + opencode + Token Factory
