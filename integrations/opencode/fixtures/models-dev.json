@@ -1,0 +1,26 @@
+{
+  "nebius": {
+    "id": "nebius",
+    "env": ["NEBIUS_API_KEY"],
+    "npm": "@ai-sdk/openai-compatible",
+    "api": "https://api.tokenfactory.nebius.com/v1",
+    "name": "Nebius Token Factory",
+    "doc": "https://docs.tokenfactory.nebius.com/",
+    "models": {
+      "moonshotai/Kimi-K2.7-Code": {
+        "id": "moonshotai/Kimi-K2.7-Code",
+        "name": "Kimi K2.7 Code",
+        "tool_call": true,
+        "reasoning": true,
+        "modalities": {"input": ["text"], "output": ["text"]}
+      },
+      "moonshotai/Kimi-K2.5": {
+        "id": "moonshotai/Kimi-K2.5",
+        "name": "Kimi K2.5",
+        "status": "deprecated",
+        "tool_call": true,
+        "modalities": {"input": ["text"], "output": ["text"]}
+      }
+    }
+  }
+}
