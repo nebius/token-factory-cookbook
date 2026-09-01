@@ -35,8 +35,10 @@ The most common pattern is exposing Tavily search as a tool via function calling
 
 ```python
 import json
+import os
 
-MODEL = "moonshotai/Kimi-K2.5"
+# Choose a function-calling model currently available in your project.
+MODEL = os.environ["NEBIUS_MODEL"]
 
 def tavily_web_search(query: str, search_depth: str = "advanced", max_results: int = 5) -> str:
     """Search the web using Tavily and return raw results."""

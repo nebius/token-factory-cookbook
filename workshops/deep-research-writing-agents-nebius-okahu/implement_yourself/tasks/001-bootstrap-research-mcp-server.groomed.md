@@ -33,7 +33,7 @@ Wire the boot path of the `deep-research` MCP server so that `make run-research-
 | `log_level` | `int` | `logging.INFO` (`LOG_LEVEL`) | Pydantic alias `LOG_LEVEL` |
 | `llm_model` | `str` | `"meta-llama/Llama-3.3-70B-Instruct"` | Default Nebius-hosted model |
 | `youtube_transcription_model` | `str` | `"meta-llama/Llama-3.3-70B-Instruct"` | Nebius model for transcript summarization |
-| `nebius_base_url` | `str` | `"https://api.studio.nebius.com/v1/"` | OpenAI-compatible Nebius base URL |
+| `nebius_base_url` | `str` | `"https://api.tokenfactory.nebius.com/v1/"` | OpenAI-compatible Nebius Token Factory base URL |
 | `nebius_api_key` | `SecretStr` | required | Pydantic alias `NEBIUS_API_KEY` |
 | `exa_api_key` | `SecretStr` | required | Pydantic alias `EXA_API_KEY` |
 | `okahu_api_key` | `SecretStr \| None` | `None` | Alias `OKAHU_API_KEY`; reserved for #020 |

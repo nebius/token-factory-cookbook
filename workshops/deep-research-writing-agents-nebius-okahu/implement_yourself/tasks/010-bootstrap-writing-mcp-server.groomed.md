@@ -35,7 +35,7 @@ Mirror the shape of the research server tightly — every layer (`routers/`, `to
 | `writer_model` | `str` | `"meta-llama/Llama-3.3-70B-Instruct"` | Nebius model used by `write_post` / `edit_post` |
 | `reviewer_model` | `str` | `"meta-llama/Llama-3.3-70B-Instruct"` | Nebius model used by `review_post` and the LLM judge |
 | `image_model` | `str` | `"gemini-2.5-flash-image"` | Used by `generate_image` (#015) |
-| `nebius_base_url` | `str` | `"https://api.studio.nebius.com/v1/"` | OpenAI-compatible Nebius base URL |
+| `nebius_base_url` | `str` | `"https://api.tokenfactory.nebius.com/v1/"` | OpenAI-compatible Nebius Token Factory base URL |
 | `num_reviews` | `int` | `4` | Number of evaluator-optimizer iterations (#013) |
 | `nebius_api_key` | `SecretStr` | required | Alias `NEBIUS_API_KEY` |
 | `gemini_api_key` | `SecretStr` | required | Alias `GEMINI_API_KEY` for image generation |
