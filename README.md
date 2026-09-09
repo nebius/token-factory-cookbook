@@ -17,6 +17,7 @@ A collection of guides and examples for building intelligent applications with o
   - [🚀 Getting Started](#-getting-started)
   - [🎁 Models](#-models)
   - [📘 APIs](#-apis)
+  - [🧪 Evaluations](#-evaluations)
   - [🎠 Agents](#-agents)
   - [🔍 RAG](#-rag)
   - [⛓️ Integrations](#️-integrations)
@@ -82,6 +83,12 @@ Access Token Factory using various APIs:
 &nbsp; • &nbsp; [LiteLLM](api/api_litellm.ipynb)
 &nbsp; • &nbsp; [ai-suite](api/api_aisuite.ipynb)
 &nbsp; • &nbsp; [Llama-index](api/api_llamaindex.ipynb)
+
+---
+
+## 🧪 Evaluations
+
+- [Inspect AI smoke evaluation](evaluations/inspect-ai/README.md) — run a small, reproducible evaluation through Token Factory's OpenAI-compatible endpoint
 
 ---
 
