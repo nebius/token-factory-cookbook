@@ -1,0 +1,123 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1240" height="700" viewBox="0 0 1240 700" font-family="Inter, Helvetica, Arial, sans-serif" font-size="14">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#4b5563"/>
+    </marker>
+    <marker id="arrow-loop" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#7c3aed"/>
+    </marker>
+    <marker id="arrow-accent" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#b45309"/>
+    </marker>
+  </defs>
+  <rect width="1240" height="700" fill="#ffffff"/>
+  <text x="620" y="32" text-anchor="middle" font-size="20" font-weight="700" fill="#111827">The prompt optimization loop: raise the environment reward by rewriting the system prompt</text>
+  <text x="620" y="52" text-anchor="middle" fill="#6b7280">Only the prompt changes between iterations. Model weights never do.</text>
+
+  <!-- ===== Token Factory column: x 24..324 ===== -->
+  <rect x="24" y="72" width="300" height="384" rx="12" fill="#eef2ff" stroke="#6366f1" stroke-width="1.5"/>
+  <text x="174" y="100" text-anchor="middle" font-size="16" font-weight="700" fill="#312e81">Nebius Token Factory</text>
+  <text x="174" y="120" text-anchor="middle" fill="#4338ca">OpenAI-compatible API, hosted open models</text>
+
+  <rect x="44" y="144" width="260" height="84" rx="8" fill="#ffffff" stroke="#a5b4fc"/>
+  <text x="174" y="168" text-anchor="middle" font-weight="700" fill="#111827">Policy model</text>
+  <text x="174" y="188" text-anchor="middle" fill="#374151">GLM-5.3-Flash (default)</text>
+  <text x="174" y="208" text-anchor="middle" fill="#6b7280">runs the agent with prompt vₙ</text>
+
+  <rect x="44" y="244" width="260" height="84" rx="8" fill="#ffffff" stroke="#7c3aed" stroke-width="1.5"/>
+  <text x="174" y="268" text-anchor="middle" font-weight="700" fill="#111827">Reflector model</text>
+  <text x="174" y="288" text-anchor="middle" fill="#374151">Kimi K3</text>
+  <text x="174" y="308" text-anchor="middle" fill="#6b7280">reads failures, writes prompt vₙ₊₁</text>
+
+  <rect x="44" y="344" width="260" height="84" rx="8" fill="#ffffff" stroke="#a5b4fc" stroke-dasharray="6 4"/>
+  <text x="174" y="368" text-anchor="middle" font-weight="700" fill="#111827">Judge model (optional)</text>
+  <text x="174" y="388" text-anchor="middle" fill="#374151">any Token Factory model</text>
+  <text x="174" y="408" text-anchor="middle" fill="#6b7280">scores the decision note, +0.2 max</text>
+
+  <!-- ===== Laptop column: x 454..784 (gap 324..454, centre 389) ===== -->
+  <rect x="454" y="72" width="330" height="384" rx="12" fill="#f0fdf4" stroke="#16a34a" stroke-width="1.5"/>
+  <text x="619" y="100" text-anchor="middle" font-size="16" font-weight="700" fill="#14532d">Your laptop</text>
+  <text x="619" y="120" text-anchor="middle" fill="#166534">agent.py, optimize.py, evaluate.py</text>
+
+  <rect x="474" y="144" width="290" height="100" rx="8" fill="#ffffff" stroke="#86efac"/>
+  <text x="619" y="168" text-anchor="middle" font-weight="700" fill="#111827">Agent loop (run_episode)</text>
+  <text x="488" y="192" fill="#374151">system prompt vₙ + ticket + tool schemas</text>
+  <text x="488" y="212" fill="#374151">→ model picks a tool → env.step(...)</text>
+  <text x="488" y="232" fill="#374151">→ repeat until the environment says done</text>
+
+  <rect x="474" y="262" width="290" height="176" rx="8" fill="#faf5ff" stroke="#7c3aed" stroke-width="1.5"/>
+  <text x="619" y="286" text-anchor="middle" font-weight="700" fill="#4c1d95">Prompt optimizer (optimize.py)</text>
+  <text x="488" y="310" fill="#374151">run prompt vₙ on the training seeds</text>
+  <text x="488" y="330" fill="#374151">→ collect episodes with reward &lt; 1</text>
+  <text x="488" y="350" fill="#374151">→ reflector proposes prompt vₙ₊₁</text>
+  <text x="488" y="370" fill="#374151">→ run vₙ₊₁ on the same seeds</text>
+  <text x="488" y="390" fill="#374151">→ keep it only if mean reward improves</text>
+  <text x="488" y="410" fill="#374151">→ repeat; finally score on held-out seeds</text>
+  <text x="619" y="430" text-anchor="middle" fill="#6d28d9" font-size="12" font-style="italic">the only trainable thing is the text of the prompt</text>
+
+  <!-- ===== OpenEnv column: x 914..1216 (gap 784..914, centre 849) ===== -->
+  <rect x="914" y="72" width="302" height="384" rx="12" fill="#fff7ed" stroke="#ea580c" stroke-width="1.5"/>
+  <text x="1065" y="100" text-anchor="middle" font-size="16" font-weight="700" fill="#7c2d12">OpenEnv environment server</text>
+  <text x="1065" y="120" text-anchor="middle" fill="#9a3412">access_request_env · FastAPI + WebSocket /ws</text>
+
+  <rect x="924" y="144" width="282" height="100" rx="8" fill="#ffffff" stroke="#fdba74"/>
+  <text x="1065" y="168" text-anchor="middle" font-weight="700" fill="#111827">MCPEnvironment (RFC 003)</text>
+  <text x="936" y="192" fill="#374151">read tools: get_ticket, get_employee,</text>
+  <text x="936" y="210" fill="#374151">get_system_policy, check_manager_approval</text>
+  <text x="936" y="232" fill="#374151">terminal: grant_access, deny_request, escalate</text>
+
+  <rect x="924" y="262" width="282" height="80" rx="8" fill="#ffffff" stroke="#fdba74"/>
+  <text x="1065" y="286" text-anchor="middle" font-weight="700" fill="#111827">Scenario generator + policy engine</text>
+  <text x="936" y="310" fill="#374151">seeded tickets, 13 archetypes, mocked HR data</text>
+  <text x="936" y="330" fill="#374151">decide() = hidden ground truth (9 ordered rules)</text>
+
+  <rect x="924" y="358" width="282" height="80" rx="8" fill="#ffffff" stroke="#fdba74"/>
+  <text x="1065" y="382" text-anchor="middle" font-weight="700" fill="#111827">Reward on the terminal step</text>
+  <text x="936" y="406" fill="#374151" font-size="13">+1 correct · −1 unauthorized grant · +0.2 needless</text>
+  <text x="936" y="426" fill="#374151" font-size="13">escalation · penalties for extra / invalid calls</text>
+
+  <!-- ===== the loop, numbered. Labels live inside the 130px gaps. ===== -->
+  <!-- 1: agent <-> policy model -->
+  <line x1="474" y1="186" x2="304" y2="186" stroke="#4b5563" stroke-width="1.5" marker-end="url(#arrow)" marker-start="url(#arrow)"/>
+  <circle cx="389" cy="168" r="10" fill="#7c3aed"/><text x="389" y="172" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">1</text>
+  <text x="389" y="204" text-anchor="middle" fill="#4b5563" font-size="11">prompt vₙ in,</text>
+  <text x="389" y="218" text-anchor="middle" fill="#4b5563" font-size="11">tool calls out</text>
+
+  <!-- 2: agent <-> environment -->
+  <line x1="764" y1="186" x2="924" y2="186" stroke="#4b5563" stroke-width="1.5" marker-end="url(#arrow)" marker-start="url(#arrow)"/>
+  <circle cx="849" cy="168" r="10" fill="#7c3aed"/><text x="849" y="172" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">2</text>
+  <text x="849" y="204" text-anchor="middle" fill="#4b5563" font-size="11">reset(seed), step(action)</text>
+  <text x="849" y="218" text-anchor="middle" fill="#4b5563" font-size="11">→ reward, done</text>
+
+  <!-- 3: optimizer -> reflector (low-reward episodes) -->
+  <line x1="474" y1="326" x2="304" y2="276" stroke="#7c3aed" stroke-width="1.5" marker-end="url(#arrow-loop)"/>
+  <circle cx="389" cy="301" r="10" fill="#7c3aed"/><text x="389" y="305" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">3</text>
+  <text x="389" y="270" text-anchor="middle" fill="#6d28d9" font-size="11">low-reward episodes</text>
+
+  <!-- 4: reflector -> optimizer (new prompt) -->
+  <line x1="304" y1="312" x2="474" y2="366" stroke="#7c3aed" stroke-width="1.5" marker-end="url(#arrow-loop)"/>
+  <circle cx="389" cy="339" r="10" fill="#7c3aed"/><text x="389" y="343" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">4</text>
+  <text x="389" y="374" text-anchor="middle" fill="#6d28d9" font-size="11">prompt vₙ₊₁</text>
+
+  <!-- 5: optimizer -> environment (same seeds) -->
+  <line x1="764" y1="352" x2="924" y2="302" stroke="#7c3aed" stroke-width="1.5" marker-end="url(#arrow-loop)"/>
+  <circle cx="849" cy="309" r="10" fill="#7c3aed"/><text x="849" y="313" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">5</text>
+  <text x="849" y="352" text-anchor="middle" fill="#6d28d9" font-size="11">re-run vₙ₊₁ on the</text>
+  <text x="849" y="366" text-anchor="middle" fill="#6d28d9" font-size="11">same seeds, compare</text>
+
+  <!-- judge: environment -> Token Factory (dashed) -->
+  <path d="M 924 430 C 800 468, 440 468, 304 408" fill="none" stroke="#b45309" stroke-width="1.5" stroke-dasharray="6 4" marker-end="url(#arrow-accent)"/>
+  <text x="620" y="480" text-anchor="middle" fill="#b45309" font-size="12">optional: NoteQualityJudge (OpenEnv Rubric / LLMJudge) calls Token Factory from inside the environment</text>
+
+  <!-- ===== result strip ===== -->
+  <rect x="24" y="496" width="1192" height="72" rx="12" fill="#fefce8" stroke="#ca8a04" stroke-width="1.5"/>
+  <text x="620" y="522" text-anchor="middle" font-weight="700" fill="#713f12">Measured effect on 26 held-out tickets (mean reward / decision accuracy)</text>
+  <text x="620" y="545" text-anchor="middle" fill="#374151">GLM-5.3-Flash: baseline prompt 0.885 / 88%  →  optimized prompt 1.000 / 100%      ·      MiniMax-M3 (same prompt): 0.923 / 92%  →  1.000 / 100%</text>
+  <text x="620" y="562" text-anchor="middle" fill="#374151">Qwen3-30B-A3B with its own optimized prompt: 0.044 / 46%  →  0.650 / 77%  (unauthorized grants 9 → 3)</text>
+
+  <!-- ===== bottom: shipping ===== -->
+  <rect x="24" y="584" width="1192" height="94" rx="12" fill="#f9fafb" stroke="#d1d5db"/>
+  <text x="620" y="612" text-anchor="middle" font-weight="700" fill="#111827">Same environment package, shipped with the OpenEnv toolchain</text>
+  <text x="620" y="636" text-anchor="middle" fill="#374151">openenv validate  ·  openenv build → Docker image for a private VM or Kubernetes  ·  openenv push → Hugging Face Space</text>
+  <text x="620" y="656" text-anchor="middle" fill="#6b7280">later: the same environment for TRL GRPO training or for sampling trajectories to fine-tune on</text>
+</svg>

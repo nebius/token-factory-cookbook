@@ -121,6 +121,7 @@ Guides for connecting third-party tools to Token Factory:
 - [OpenClaw](integrations/openclaw/README.md) — self-hosted AI agents on open models
 - [Tavily](integrations/tavily/README.md) — LLM-optimized search API for agentic research
 - [Pixeltable](integrations/pixeltable/README.md) — multimodal AI data infrastructure with native Token Factory chat + embeddings
+- [OpenEnv prompt optimization](integrations/openenv/prompt-optimization/README.md) — build an OpenEnv agent environment and optimize an agent's prompt against its reward with open models
 
 See also the official catalog: [docs.tokenfactory.nebius.com/integrations](https://docs.tokenfactory.nebius.com/integrations/overview)
 

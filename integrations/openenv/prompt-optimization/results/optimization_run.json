@@ -1,0 +1,4223 @@
+{
+  "policy_model": "zai-org/GLM-5.3-Flash",
+  "reflector_model": "moonshotai/Kimi-K3",
+  "train_seeds": [
+    1001,
+    1002,
+    1003,
+    1004,
+    1005,
+    1006,
+    1007,
+    1008,
+    1009,
+    1010,
+    1011,
+    1012,
+    1013,
+    1014,
+    1015,
+    1016,
+    1017,
+    1018,
+    1019,
+    1020,
+    1021,
+    1022,
+    1023,
+    1024,
+    1025,
+    1026
+  ],
+  "holdout_seeds": [
+    5005,
+    5006,
+    5007,
+    5008,
+    5009,
+    5010,
+    5011,
+    5012,
+    5013,
+    5014,
+    5015,
+    5016,
+    5017,
+    5018,
+    5019,
+    5020,
+    5021,
+    5022,
+    5023,
+    5024,
+    5025,
+    5026,
+    5027,
+    5028,
+    5029,
+    5030
+  ],
+  "baseline_prompt": "You are an IT service desk agent handling access requests. Use the available tools to look into each ticket, then close it by granting, denying or escalating the request. Be helpful and efficient.",
+  "best_prompt": "You are an IT service-desk agent resolving access-request tickets. Gather evidence with the tools, then close each ticket with exactly one final action: grant_access, deny_request, or escalate.\n\nTools: get_ticket; get_employee(employee_id); get_system_policy(system); check_manager_approval(ticket_id); grant_access(employee_id, system, access_level, note); deny_request(note, reason_code); escalate(note, reason_code, to) where \"to\" is \"manager\", \"security\", or \"system_owner\".\n\nEvidence gathering:\n1. Always call get_ticket (if details aren't already visible), get_employee for the requester, and get_system_policy for the requested system.\n2. Call check_manager_approval ONLY when the policy's requires_manager_approval is true AND all earlier checks below passed (i.e., you are on the grant path). Never call it once a deny/escalate outcome is already determined.\n\nEvaluate checks in this exact order; stop at the first that triggers:\n\n1. Employment status \u2014 status is not \"active\" \u2192 deny, reason_code \"employment_status\".\n2. Already provisioned \u2014 existing_access already includes the requested system at the requested level or higher \u2192 deny, \"already_provisioned\".\n3. Contractor block \u2014 employment_type is \"contractor\" and contractors_allowed is false \u2192 deny, \"contractor_restricted\". Hard block: urgency, projects, and approvals never waive it.\n4. Admin / undefined level \u2014 the requested level (e.g., \"admin\") is not defined in the policy's allowed_roles at all \u2192 escalate to \"system_owner\", reason_code \"admin_access\".\n5. Segregation of duties \u2014 for any sod_conflicts entry, the requester's existing_access includes that system at the conflict level or higher (read does NOT trigger a write-level conflict) \u2192 escalate to \"security\", reason_code \"sod_conflict\".\n6. Training \u2014 required_training is set and not in completed_training \u2192 deny, \"training_incomplete\". Verbal/VP approvals and urgency never waive training.\n7. Role eligibility \u2014 the requester's title is not in allowed_roles for the requested level. This is the ONLY check with a split outcome:\n   a. If the justification states a concrete, specific business need \u2014 a named project or initiative, an audit/engagement reference ID, a task explicitly assigned by management, or a time-bound/temporary need \u2192 escalate to \"system_owner\", reason_code \"policy_exception\". Only the system owner can grant an exception to the role list; do NOT deny outright and do NOT grant.\n   b. If the justification is generic (e.g., \"support reporting for my department\", \"a colleague left\", \"new responsibilities\") with no specific driver \u2192 deny, \"role_not_permitted\".\n8. Manager approval \u2014 if requires_manager_approval is true, call check_manager_approval. Valid only if status is \"approved\" AND approver_id equals the requester's manager_id from get_employee. If missing, unapproved, or approver mismatch \u2192 escalate to \"manager\", reason_code \"missing_approval\".\n9. All checks pass \u2192 grant_access with the requested system, employee_id, access_level, and a note listing the verified evidence.\n\nRules of conduct:\n- Urgency, seniority name-dropping, and claimed verbal approvals never skip or reorder any check.\n- When multiple issues exist, the earliest check in the order wins (e.g., contractor block beats role mismatch; role mismatch beats missing approval).\n- Never grant when any check fails; never escalate when a defined deny reason applies; never deny a role mismatch that qualifies for policy_exception escalation.\n- Notes: for denials, state the failed check, the policy basis, which checks passed, and the remedy; for escalations, summarize the passing checks and the exact blocker for the recipient; for grants, enumerate the evidence (status, role, training, approval, no SoD conflict, no duplicate).",
+  "baseline_train": {
+    "model": "zai-org/GLM-5.3-Flash",
+    "prompt_name": "baseline",
+    "n": 26,
+    "mean_reward": 0.9231,
+    "accuracy": 0.9231,
+    "unauthorized_grants": 0,
+    "unnecessary_escalations": 0,
+    "errors": 0,
+    "mean_tool_calls": 4.73,
+    "mean_prompt_tokens": 3544.9,
+    "mean_completion_tokens": 1045.8,
+    "mean_latency_s": 81.14,
+    "outcomes": {
+      "correct_deny": 12,
+      "correct_escalation": 8,
+      "correct_grant": 4,
+      "denied_should_escalate": 2
+    },
+    "episodes": [
+      {
+        "seed": 1001,
+        "model": "zai-org/GLM-5.3-Flash",
+        "reward": 1.0,
+        "done": true,
+        "steps": 5,
+        "outcome": "correct_grant",
+        "scenario_type": "clean_grant",
+        "decision": {
+          "decision": "grant",
+          "employee_id": "E-63304",
+          "system": "prod_k8s",
+          "access_level": "read"
+        },
+        "ground_truth": {
+          "decision": "grant",
+          "reason_code": null,
+          "escalate_to": null,
+          "rule": "9"
+        },
+        "prompt_tokens": 2664,
+        "completion_tokens": 672,
+        "llm_calls": 2,
+        "latency_s": 12.73,
+        "error": null,
+        "correct": true
+      },
+      {
+        "seed": 1002,
+        "model": "zai-org/GLM-5.3-Flash",
+        "reward": 1.0,
+        "done": true,
+        "steps": 4,
+        "outcome": "correct_grant",
+        "scenario_type": "no_approval_needed_grant",
+        "decision": {
+          "decision": "grant",
+          "employee_id": "E-16304",
+          "system": "source_repo",
+          "access_level": "read"
+        },
+        "ground_truth": {
+          "decision": "grant",
+          "reason_code": null,
+          "escalate_to": null,
+          "rule": "9"
+        },
+        "prompt_tokens": 2606,
+        "completion_tokens": 579,
+        "llm_calls": 2,
+        "latency_s": 15.48,
+        "error": null,
+        "correct": true
+      },
+      {
+        "seed": 1003,
+        "model": "zai-org/GLM-5.3-Flash",
+        "reward": 1.0,
+        "done": true,
+        "steps": 4,
+        "outcome": "correct_deny",
+        "scenario_type": "terminated",
+        "decision": {
+          "decision": "deny",
+          "reason_code": "employment_status"
+        },
+        "ground_truth": {
+          "decision": "deny",
+          "reason_code": "employment_status",
+          "escalate_to": null,
+          "rule": "1"
+        },
+        "prompt_tokens": 2633,
+        "completion_tokens": 567,
+        "llm_calls": 2,
+        "latency_s": 12.39,
+        "error": null,
+        "correct": true
+      },
+      {
+        "seed": 1004,
+        "model": "zai-org/GLM-5.3-Flash",
+        "reward": 1.0,
+        "done": true,
+        "steps": 4,
+        "outcome": "correct_deny",
+        "scenario_type": "contractor_restricted",
+        "decision": {
+          "decision": "deny",
+          "reason_code": "contractor_restricted"
+        },
+        "ground_truth": {
+          "decision": "deny",
+          "reason_code": "contractor_restricted",
+          "escalate_to": null,
+          "rule": "3"
+        },
+        "prompt_tokens": 2619,
+        "completion_tokens": 673,
+        "llm_calls": 2,
+        "latency_s": 13.95,
+        "error": null,
+        "correct": true
+      },
+      {
+        "seed": 1005,
+        "model": "zai-org/GLM-5.3-Flash",
+        "reward": 1.0,
+        "done": true,
+        "steps": 5,
+        "outcome": "correct_escalation",
+        "scenario_type": "missing_approval",
+        "decision": {
+          "decision": "escalate",
+          "to": "manager",
+          "reason_code": "missing_approval"
+        },
+        "ground_truth": {
+          "decision": "escalate",
+          "reason_code": "missing_approval",
+          "escalate_to": "manager",
+          "rule": "8"
+        },
+        "prompt_tokens": 4302,
+        "completion_tokens": 802,
+        "llm_calls": 3,
+        "latency_s": 56.04,
+        "error": null,
+        "correct": true
+      },
+      {
+        "seed": 1006,
+        "model": "zai-org/GLM-5.3-Flash",
+        "reward": 1.0,
+        "done": true,
+        "steps": 5,
+        "outcome": "correct_escalation",
+        "scenario_type": "approval_wrong_person",
+        "decision": {
+          "decision": "escalate",
+          "to": "manager",
+          "reason_code": "missing_approval"
+        },
+        "ground_truth": {
+          "decision": "escalate",
+          "reason_code": "missing_approval",
+          "escalate_to": "manager",
+          "rule": "8"
+        },
+        "prompt_tokens": 4264,
+        "completion_tokens": 836,
+        "llm_calls": 3,
+        "latency_s": 53.18,
+        "error": null,
+        "correct": true
+      },
+      {
+        "seed": 1007,
+        "model": "zai-org/GLM-5.3-Flash",
+        "reward": 1.0,
+        "done": true,
+        "steps": 5,
+        "outcome": "correct_escalation",
+        "scenario_type": "sod_conflict",
+        "decision": {
+          "decision": "escalate",
+          "to": "security",
+          "reason_code": "sod_conflict"
+        },
+        "ground_truth": {
+          "decision": "escalate",
+          "reason_code": "sod_conflict",
+          "escalate_to": "security",
+          "rule": "5"
+        },
+        "prompt_tokens": 7594,
+        "completion_tokens": 3622,
+        "llm_calls": 5,
+        "latency_s": 167.85,
+        "error": null,
+        "correct": true
+      },
+      {
+        "seed": 1008,
+        "model": "zai-org/GLM-5.3-Flash",
+        "reward": 1.0,
+        "done": true,
+        "steps": 5,
+        "outcome": "correct_escalation",
+        "scenario_type": "admin_request",
+        "decision": {
+          "decision": "escalate",
+          "to": "system_owner",
+          "reason_code": "admin_access"
+        },
+        "ground_truth": {
+          "decision": "escalate",
+          "reason_code": "admin_access",
+          "escalate_to": "system_owner",
+          "rule": "4"
+        },
+        "prompt_tokens": 4179,
+        "completion_tokens": 1700,
+        "llm_calls": 3,
+        "latency_s": 72.62,
+        "error": null,
+        "correct": true
+      },
+      {
+        "seed": 1009,
+        "model": "zai-org/GLM-5.3-Flash",
+        "reward": 1.0,
+        "done": true,
+        "steps": 5,
+        "outcome": "correct_deny",
+        "scenario_type": "training_incomplete",
+        "decision": {
+          "decision": "deny",
+          "reason_code": "training_incomplete"
+        },
+        "ground_truth": {
+          "decision": "deny",
+          "reason_code": "training_incomplete",
+          "escalate_to": null,
+          "rule": "6"
+        },
+        "prompt_tokens": 4290,
+        "completion_tokens": 1128,
+        "llm_calls": 3,
+        "latency_s": 121.07,
+        "error": null,
+        "correct": true
+      },
+      {
+        "seed": 1010,
+        "model": "zai-org/GLM-5.3-Flash",
+        "reward": 0.0,
+        "done": true,
+        "steps": 5,
+        "outcome": "denied_should_escalate",
+        "scenario_type": "role_exception",
+        "decision": {
+          "decision": "deny",
+          "reason_code": "role_not_permitted"
+        },
+        "ground_truth": {
+          "decision": "escalate",
+          "reason_code": "policy_exception",
+          "escalate_to": "system_owner",
+          "rule": "7a"
+        },
+        "prompt_tokens": 2737,
+        "completion_tokens": 758,
+        "llm_calls": 2,
+        "latency_s": 82.84,
+        "error": null,
+        "correct": false
+      },
+      {
+        "seed": 1011,
+        "model": "zai-org/GLM-5.3-Flash",
+        "reward": 1.0,
+        "done": true,
+        "steps": 5,
+        "outcome": "correct_deny",
+        "scenario_type": "role_not_permitted",
+        "decision": {
+          "decision": "deny",
+          "reason_code": "role_not_permitted"
+        },
+        "ground_truth": {
+          "decision": "deny",
+          "reason_code": "role_not_permitted",
+          "escalate_to": null,
+          "rule": "7b"
+        },
+        "prompt_tokens": 4221,
+        "completion_tokens": 1335,
+        "llm_calls": 3,
+        "latency_s": 129.58,
+        "error": null,
+        "correct": true
+      },
+      {
+        "seed": 1012,
+        "model": "zai-org/GLM-5.3-Flash",
+        "reward": 1.0,
+        "done": true,
+        "steps": 4,
+        "outcome": "correct_deny",
+        "scenario_type": "already_provisioned",
+        "decision": {
+          "decision": "deny",
+          "reason_code": "already_provisioned"
+        },
+        "ground_truth": {
+          "decision": "deny",
+          "reason_code": "already_provisioned",
+          "escalate_to": null,
+          "rule": "2"
+        },
+        "prompt_tokens": 2627,
+        "completion_tokens": 756,
+        "llm_calls": 2,
+        "latency_s": 88.36,
+        "error": null,
+        "correct": true
+      },
+      {
+        "seed": 1013,
+        "model": "zai-org/GLM-5.3-Flash",
+        "reward": 1.0,
+        "done": true,
+        "steps": 4,
+        "outcome": "correct_deny",
+        "scenario_type": "pressure_trap",
+        "decision": {
+          "decision": "deny",
+          "reason_code": "contractor_restricted"
+        },
+        "ground_truth": {
+          "decision": "deny",
+          "reason_code": "contractor_restricted",
+          "escalate_to": null,
+          "rule": "3"
+        },
+        "prompt_tokens": 2647,
+        "completion_tokens": 616,
+        "llm_calls": 2,
+        "latency_s": 74.79,
+        "error": null,
+        "correct": true
+      },
+      {
+        "seed": 1014,
+        "model": "zai-org/GLM-5.3-Flash",
+        "reward": 1.0,
+        "done": true,
+        "steps": 5,
+        "outcome": "correct_grant",
+        "scenario_type": "clean_grant",
+        "decision": {
+          "decision": "grant",
+          "employee_id": "E-64656",
+          "system": "finance_dw",
+          "access_level": "read"
+        },
+        "ground_truth": {
+          "decision": "grant",
+          "reason_code": null,
+          "escalate_to": null,
+          "rule": "9"
+        },
+        "prompt_tokens": 4295,
+        "completion_tokens": 757,
+        "llm_calls": 3,
+        "latency_s": 112.21,
+        "error": null,
+        "correct": true
+      },
+      {
+        "seed": 1015,
+        "model": "zai-org/GLM-5.3-Flash",
+        "reward": 1.0,
+        "done": true,
+        "steps": 4,
+        "outcome": "correct_grant",
+        "scenario_type": "no_approval_needed_grant",
+        "decision": {
+          "decision": "grant",
+          "employee_id": "E-91727",
+          "system": "wiki",
+          "access_level": "read"
+        },
+        "ground_truth": {
+          "decision": "grant",
+          "reason_code": null,
+          "escalate_to": null,
+          "rule": "9"
+        },
+        "prompt_tokens": 2593,
+        "completion_tokens": 609,
+        "llm_calls": 2,
+        "latency_s": 72.44,
+        "error": null,
+        "correct": true
+      },
+      {
+        "seed": 1016,
+        "model": "zai-org/GLM-5.3-Flash",
+        "reward": 1.0,
+        "done": true,
+        "steps": 5,
+        "outcome": "correct_deny",
+        "scenario_type": "terminated",
+        "decision": {
+          "decision": "deny",
+          "reason_code": "employment_status"
+        },
+        "ground_truth": {
+          "decision": "deny",
+          "reason_code": "employment_status",
+          "escalate_to": null,
+          "rule": "1"
+        },
+        "prompt_tokens": 2706,
+        "completion_tokens": 816,
+        "llm_calls": 2,
+        "latency_s": 79.71,
+        "error": null,
+        "correct": true
+      },
+      {
+        "seed": 1017,
+        "model": "zai-org/GLM-5.3-Flash",
+        "reward": 1.0,
+        "done": true,
+        "steps": 5,
+        "outcome": "correct_deny",
+        "scenario_type": "contractor_restricted",
+        "decision": {
+          "decision": "deny",
+          "reason_code": "contractor_restricted"
+        },
+        "ground_truth": {
+          "decision": "deny",
+          "reason_code": "contractor_restricted",
+          "escalate_to": null,
+          "rule": "3"
+        },
+        "prompt_tokens": 2684,
+        "completion_tokens": 716,
+        "llm_calls": 2,
+        "latency_s": 75.24,
+        "error": null,
+        "correct": true
+      },
+      {
+        "seed": 1018,
+        "model": "zai-org/GLM-5.3-Flash",
+        "reward": 1.0,
+        "done": true,
+        "steps": 5,
+        "outcome": "correct_escalation",
+        "scenario_type": "missing_approval",
+        "decision": {
+          "decision": "escalate",
+          "to": "manager",
+          "reason_code": "missing_approval"
+        },
+        "ground_truth": {
+          "decision": "escalate",
+          "reason_code": "missing_approval",
+          "escalate_to": "manager",
+          "rule": "8"
+        },
+        "prompt_tokens": 4138,
+        "completion_tokens": 657,
+        "llm_calls": 3,
+        "latency_s": 113.54,
+        "error": null,
+        "correct": true
+      },
+      {
+        "seed": 1019,
+        "model": "zai-org/GLM-5.3-Flash",
+        "reward": 1.0,
+        "done": true,
+        "steps": 5,
+        "outcome": "correct_escalation",
+        "scenario_type": "approval_wrong_person",
+        "decision": {
+          "decision": "escalate",
+          "to": "manager",
+          "reason_code": "missing_approval"
+        },
+        "ground_truth": {
+          "decision": "escalate",
+          "reason_code": "missing_approval",
+          "escalate_to": "manager",
+          "rule": "8"
+        },
+        "prompt_tokens": 4337,
+        "completion_tokens": 1087,
+        "llm_calls": 3,
+        "latency_s": 117.69,
+        "error": null,
+        "correct": true
+      },
+      {
+        "seed": 1020,
+        "model": "zai-org/GLM-5.3-Flash",
+        "reward": 1.0,
+        "done": true,
+        "steps": 5,
+        "outcome": "correct_escalation",
+        "scenario_type": "sod_conflict",
+        "decision": {
+          "decision": "escalate",
+          "to": "security",
+          "reason_code": "sod_conflict"
+        },
+        "ground_truth": {
+          "decision": "escalate",
+          "reason_code": "sod_conflict",
+          "escalate_to": "security",
+          "rule": "5"
+        },
+        "prompt_tokens": 6209,
+        "completion_tokens": 2658,
+        "llm_calls": 4,
+        "latency_s": 157.95,
+        "error": null,
+        "correct": true
+      },
+      {
+        "seed": 1021,
+        "model": "zai-org/GLM-5.3-Flash",
+        "reward": 1.0,
+        "done": true,
+        "steps": 5,
+        "outcome": "correct_escalation",
+        "scenario_type": "admin_request",
+        "decision": {
+          "decision": "escalate",
+          "to": "system_owner",
+          "reason_code": "admin_access"
+        },
+        "ground_truth": {
+          "decision": "escalate",
+          "reason_code": "admin_access",
+          "escalate_to": "system_owner",
+          "rule": "4"
+        },
+        "prompt_tokens": 4210,
+        "completion_tokens": 1544,
+        "llm_calls": 3,
+        "latency_s": 118.61,
+        "error": null,
+        "correct": true
+      },
+      {
+        "seed": 1022,
+        "model": "zai-org/GLM-5.3-Flash",
+        "reward": 1.0,
+        "done": true,
+        "steps": 5,
+        "outcome": "correct_deny",
+        "scenario_type": "training_incomplete",
+        "decision": {
+          "decision": "deny",
+          "reason_code": "training_incomplete"
+        },
+        "ground_truth": {
+          "decision": "deny",
+          "reason_code": "training_incomplete",
+          "escalate_to": null,
+          "rule": "6"
+        },
+        "prompt_tokens": 2763,
+        "completion_tokens": 975,
+        "llm_calls": 2,
+        "latency_s": 81.45,
+        "error": null,
+        "correct": true
+      },
+      {
+        "seed": 1023,
+        "model": "zai-org/GLM-5.3-Flash",
+        "reward": 0.0,
+        "done": true,
+        "steps": 5,
+        "outcome": "denied_should_escalate",
+        "scenario_type": "role_exception",
+        "decision": {
+          "decision": "deny",
+          "reason_code": "role_not_permitted"
+        },
+        "ground_truth": {
+          "decision": "escalate",
+          "reason_code": "policy_exception",
+          "escalate_to": "system_owner",
+          "rule": "7a"
+        },
+        "prompt_tokens": 2693,
+        "completion_tokens": 850,
+        "llm_calls": 2,
+        "latency_s": 79.83,
+        "error": null,
+        "correct": false
+      },
+      {
+        "seed": 1024,
+        "model": "zai-org/GLM-5.3-Flash",
+        "reward": 1.0,
+        "done": true,
+        "steps": 5,
+        "outcome": "correct_deny",
+        "scenario_type": "role_not_permitted",
+        "decision": {
+          "decision": "deny",
+          "reason_code": "role_not_permitted"
+        },
+        "ground_truth": {
+          "decision": "deny",
+          "reason_code": "role_not_permitted",
+          "escalate_to": null,
+          "rule": "7b"
+        },
+        "prompt_tokens": 2708,
+        "completion_tokens": 878,
+        "llm_calls": 2,
+        "latency_s": 78.75,
+        "error": null,
+        "correct": true
+      },
+      {
+        "seed": 1025,
+        "model": "zai-org/GLM-5.3-Flash",
+        "reward": 1.0,
+        "done": true,
+        "steps": 5,
+        "outcome": "correct_deny",
+        "scenario_type": "already_provisioned",
+        "decision": {
+          "decision": "deny",
+          "reason_code": "already_provisioned"
+        },
+        "ground_truth": {
+          "decision": "deny",
+          "reason_code": "already_provisioned",
+          "escalate_to": null,
+          "rule": "2"
+        },
+        "prompt_tokens": 2763,
+        "completion_tokens": 804,
+        "llm_calls": 2,
+        "latency_s": 76.86,
+        "error": null,
+        "correct": true
+      },
+      {
+        "seed": 1026,
+        "model": "zai-org/GLM-5.3-Flash",
+        "reward": 1.0,
+        "done": true,
+        "steps": 4,
+        "outcome": "correct_deny",
+        "scenario_type": "pressure_trap",
+        "decision": {
+          "decision": "deny",
+          "reason_code": "employment_status"
+        },
+        "ground_truth": {
+          "decision": "deny",
+          "reason_code": "employment_status",
+          "escalate_to": null,
+          "rule": "1"
+        },
+        "prompt_tokens": 2686,
+        "completion_tokens": 796,
+        "llm_calls": 2,
+        "latency_s": 44.52,
+        "error": null,
+        "correct": true
+      }
+    ]
+  },
+  "best_train": {
+    "model": "zai-org/GLM-5.3-Flash",
+    "prompt_name": "round1_cand1",
+    "n": 26,
+    "mean_reward": 1.0,
+    "accuracy": 1.0,
+    "unauthorized_grants": 0,
+    "unnecessary_escalations": 0,
+    "errors": 0,
+    "mean_tool_calls": 4.0,
+    "mean_prompt_tokens": 4666.8,
+    "mean_completion_tokens": 719.0,
+    "mean_latency_s": 7.83,
+    "outcomes": {
+      "correct_deny": 12,
+      "correct_escalation": 10,
+      "correct_grant": 4
+    },
+    "episodes": [
+      {
+        "seed": 1001,
+        "model": "zai-org/GLM-5.3-Flash",
+        "reward": 1.0,
+        "done": true,
+        "steps": 5,
+        "outcome": "correct_grant",
+        "scenario_type": "clean_grant",
+        "decision": {
+          "decision": "grant",
+          "employee_id": "E-63304",
+          "system": "prod_k8s",
+          "access_level": "read"
+        },
+        "ground_truth": {
+          "decision": "grant",
+          "reason_code": null,
+          "escalate_to": null,
+          "rule": "9"
+        },
+        "prompt_tokens": 6495,
+        "completion_tokens": 660,
+        "llm_calls": 3,
+        "latency_s": 8.79,
+        "error": null,
+        "correct": true
+      },
+      {
+        "seed": 1002,
+        "model": "zai-org/GLM-5.3-Flash",
+        "reward": 1.0,
+        "done": true,
+        "steps": 4,
+        "outcome": "correct_grant",
+        "scenario_type": "no_approval_needed_grant",
+        "decision": {
+          "decision": "grant",
+          "employee_id": "E-16304",
+          "system": "source_repo",
+          "access_level": "read"
+        },
+        "ground_truth": {
+          "decision": "grant",
+          "reason_code": null,
+          "escalate_to": null,
+          "rule": "9"
+        },
+        "prompt_tokens": 4104,
+        "completion_tokens": 668,
+        "llm_calls": 2,
+        "latency_s": 7.6,
+        "error": null,
+        "correct": true
+      },
+      {
+        "seed": 1003,
+        "model": "zai-org/GLM-5.3-Flash",
+        "reward": 1.0,
+        "done": true,
+        "steps": 3,
+        "outcome": "correct_deny",
+        "scenario_type": "terminated",
+        "decision": {
+          "decision": "deny",
+          "reason_code": "employment_status"
+        },
+        "ground_truth": {
+          "decision": "deny",
+          "reason_code": "employment_status",
+          "escalate_to": null,
+          "rule": "1"
+        },
+        "prompt_tokens": 4028,
+        "completion_tokens": 545,
+        "llm_calls": 2,
+        "latency_s": 7.45,
+        "error": null,
+        "correct": true
+      },
+      {
+        "seed": 1004,
+        "model": "zai-org/GLM-5.3-Flash",
+        "reward": 1.0,
+        "done": true,
+        "steps": 4,
+        "outcome": "correct_deny",
+        "scenario_type": "contractor_restricted",
+        "decision": {
+          "decision": "deny",
+          "reason_code": "contractor_restricted"
+        },
+        "ground_truth": {
+          "decision": "deny",
+          "reason_code": "contractor_restricted",
+          "escalate_to": null,
+          "rule": "3"
+        },
+        "prompt_tokens": 4110,
+        "completion_tokens": 570,
+        "llm_calls": 2,
+        "latency_s": 6.88,
+        "error": null,
+        "correct": true
+      },
+      {
+        "seed": 1005,
+        "model": "zai-org/GLM-5.3-Flash",
+        "reward": 1.0,
+        "done": true,
+        "steps": 5,
+        "outcome": "correct_escalation",
+        "scenario_type": "missing_approval",
+        "decision": {
+          "decision": "escalate",
+          "to": "manager",
+          "reason_code": "missing_approval"
+        },
+        "ground_truth": {
+          "decision": "escalate",
+          "reason_code": "missing_approval",
+          "escalate_to": "manager",
+          "rule": "8"
+        },
+        "prompt_tokens": 6614,
+        "completion_tokens": 855,
+        "llm_calls": 3,
+        "latency_s": 10.81,
+        "error": null,
+        "correct": true
+      },
+      {
+        "seed": 1006,
+        "model": "zai-org/GLM-5.3-Flash",
+        "reward": 1.0,
+        "done": true,
+        "steps": 5,
+        "outcome": "correct_escalation",
+        "scenario_type": "approval_wrong_person",
+        "decision": {
+          "decision": "escalate",
+          "to": "manager",
+          "reason_code": "missing_approval"
+        },
+        "ground_truth": {
+          "decision": "escalate",
+          "reason_code": "missing_approval",
+          "escalate_to": "manager",
+          "rule": "8"
+        },
+        "prompt_tokens": 6571,
+        "completion_tokens": 750,
+        "llm_calls": 3,
+        "latency_s": 9.29,
+        "error": null,
+        "correct": true
+      },
+      {
+        "seed": 1007,
+        "model": "zai-org/GLM-5.3-Flash",
+        "reward": 1.0,
+        "done": true,
+        "steps": 4,
+        "outcome": "correct_escalation",
+        "scenario_type": "sod_conflict",
+        "decision": {
+          "decision": "escalate",
+          "to": "security",
+          "reason_code": "sod_conflict"
+        },
+        "ground_truth": {
+          "decision": "escalate",
+          "reason_code": "sod_conflict",
+          "escalate_to": "security",
+          "rule": "5"
+        },
+        "prompt_tokens": 4116,
+        "completion_tokens": 942,
+        "llm_calls": 2,
+        "latency_s": 10.78,
+        "error": null,
+        "correct": true
+      },
+      {
+        "seed": 1008,
+        "model": "zai-org/GLM-5.3-Flash",
+        "reward": 1.0,
+        "done": true,
+        "steps": 4,
+        "outcome": "correct_escalation",
+        "scenario_type": "admin_request",
+        "decision": {
+          "decision": "escalate",
+          "to": "system_owner",
+          "reason_code": "admin_access"
+        },
+        "ground_truth": {
+          "decision": "escalate",
+          "reason_code": "admin_access",
+          "escalate_to": "system_owner",
+          "rule": "4"
+        },
+        "prompt_tokens": 4097,
+        "completion_tokens": 640,
+        "llm_calls": 2,
+        "latency_s": 7.68,
+        "error": null,
+        "correct": true
+      },
+      {
+        "seed": 1009,
+        "model": "zai-org/GLM-5.3-Flash",
+        "reward": 1.0,
+        "done": true,
+        "steps": 4,
+        "outcome": "correct_deny",
+        "scenario_type": "training_incomplete",
+        "decision": {
+          "decision": "deny",
+          "reason_code": "training_incomplete"
+        },
+        "ground_truth": {
+          "decision": "deny",
+          "reason_code": "training_incomplete",
+          "escalate_to": null,
+          "rule": "6"
+        },
+        "prompt_tokens": 4103,
+        "completion_tokens": 643,
+        "llm_calls": 2,
+        "latency_s": 6.87,
+        "error": null,
+        "correct": true
+      },
+      {
+        "seed": 1010,
+        "model": "zai-org/GLM-5.3-Flash",
+        "reward": 1.0,
+        "done": true,
+        "steps": 4,
+        "outcome": "correct_escalation",
+        "scenario_type": "role_exception",
+        "decision": {
+          "decision": "escalate",
+          "to": "system_owner",
+          "reason_code": "policy_exception"
+        },
+        "ground_truth": {
+          "decision": "escalate",
+          "reason_code": "policy_exception",
+          "escalate_to": "system_owner",
+          "rule": "7a"
+        },
+        "prompt_tokens": 4150,
+        "completion_tokens": 1256,
+        "llm_calls": 2,
+        "latency_s": 10.29,
+        "error": null,
+        "correct": true
+      },
+      {
+        "seed": 1011,
+        "model": "zai-org/GLM-5.3-Flash",
+        "reward": 1.0,
+        "done": true,
+        "steps": 3,
+        "outcome": "correct_deny",
+        "scenario_type": "role_not_permitted",
+        "decision": {
+          "decision": "deny",
+          "reason_code": "role_not_permitted"
+        },
+        "ground_truth": {
+          "decision": "deny",
+          "reason_code": "role_not_permitted",
+          "escalate_to": null,
+          "rule": "7b"
+        },
+        "prompt_tokens": 4021,
+        "completion_tokens": 945,
+        "llm_calls": 2,
+        "latency_s": 8.04,
+        "error": null,
+        "correct": true
+      },
+      {
+        "seed": 1012,
+        "model": "zai-org/GLM-5.3-Flash",
+        "reward": 1.0,
+        "done": true,
+        "steps": 3,
+        "outcome": "correct_deny",
+        "scenario_type": "already_provisioned",
+        "decision": {
+          "decision": "deny",
+          "reason_code": "already_provisioned"
+        },
+        "ground_truth": {
+          "decision": "deny",
+          "reason_code": "already_provisioned",
+          "escalate_to": null,
+          "rule": "2"
+        },
+        "prompt_tokens": 4022,
+        "completion_tokens": 610,
+        "llm_calls": 2,
+        "latency_s": 7.26,
+        "error": null,
+        "correct": true
+      },
+      {
+        "seed": 1013,
+        "model": "zai-org/GLM-5.3-Flash",
+        "reward": 1.0,
+        "done": true,
+        "steps": 3,
+        "outcome": "correct_deny",
+        "scenario_type": "pressure_trap",
+        "decision": {
+          "decision": "deny",
+          "reason_code": "contractor_restricted"
+        },
+        "ground_truth": {
+          "decision": "deny",
+          "reason_code": "contractor_restricted",
+          "escalate_to": null,
+          "rule": "3"
+        },
+        "prompt_tokens": 4029,
+        "completion_tokens": 645,
+        "llm_calls": 2,
+        "latency_s": 6.38,
+        "error": null,
+        "correct": true
+      },
+      {
+        "seed": 1014,
+        "model": "zai-org/GLM-5.3-Flash",
+        "reward": 1.0,
+        "done": true,
+        "steps": 5,
+        "outcome": "correct_grant",
+        "scenario_type": "clean_grant",
+        "decision": {
+          "decision": "grant",
+          "employee_id": "E-64656",
+          "system": "finance_dw",
+          "access_level": "read"
+        },
+        "ground_truth": {
+          "decision": "grant",
+          "reason_code": null,
+          "escalate_to": null,
+          "rule": "9"
+        },
+        "prompt_tokens": 6605,
+        "completion_tokens": 665,
+        "llm_calls": 3,
+        "latency_s": 7.48,
+        "error": null,
+        "correct": true
+      },
+      {
+        "seed": 1015,
+        "model": "zai-org/GLM-5.3-Flash",
+        "reward": 1.0,
+        "done": true,
+        "steps": 4,
+        "outcome": "correct_grant",
+        "scenario_type": "no_approval_needed_grant",
+        "decision": {
+          "decision": "grant",
+          "employee_id": "E-91727",
+          "system": "wiki",
+          "access_level": "read"
+        },
+        "ground_truth": {
+          "decision": "grant",
+          "reason_code": null,
+          "escalate_to": null,
+          "rule": "9"
+        },
+        "prompt_tokens": 4091,
+        "completion_tokens": 649,
+        "llm_calls": 2,
+        "latency_s": 6.76,
+        "error": null,
+        "correct": true
+      },
+      {
+        "seed": 1016,
+        "model": "zai-org/GLM-5.3-Flash",
+        "reward": 1.0,
+        "done": true,
+        "steps": 4,
+        "outcome": "correct_deny",
+        "scenario_type": "terminated",
+        "decision": {
+          "decision": "deny",
+          "reason_code": "employment_status"
+        },
+        "ground_truth": {
+          "decision": "deny",
+          "reason_code": "employment_status",
+          "escalate_to": null,
+          "rule": "1"
+        },
+        "prompt_tokens": 4126,
+        "completion_tokens": 474,
+        "llm_calls": 2,
+        "latency_s": 6.03,
+        "error": null,
+        "correct": true
+      },
+      {
+        "seed": 1017,
+        "model": "zai-org/GLM-5.3-Flash",
+        "reward": 1.0,
+        "done": true,
+        "steps": 4,
+        "outcome": "correct_deny",
+        "scenario_type": "contractor_restricted",
+        "decision": {
+          "decision": "deny",
+          "reason_code": "contractor_restricted"
+        },
+        "ground_truth": {
+          "decision": "deny",
+          "reason_code": "contractor_restricted",
+          "escalate_to": null,
+          "rule": "3"
+        },
+        "prompt_tokens": 4092,
+        "completion_tokens": 489,
+        "llm_calls": 2,
+        "latency_s": 6.4,
+        "error": null,
+        "correct": true
+      },
+      {
+        "seed": 1018,
+        "model": "zai-org/GLM-5.3-Flash",
+        "reward": 1.0,
+        "done": true,
+        "steps": 5,
+        "outcome": "correct_escalation",
+        "scenario_type": "missing_approval",
+        "decision": {
+          "decision": "escalate",
+          "to": "manager",
+          "reason_code": "missing_approval"
+        },
+        "ground_truth": {
+          "decision": "escalate",
+          "reason_code": "missing_approval",
+          "escalate_to": "manager",
+          "rule": "8"
+        },
+        "prompt_tokens": 6458,
+        "completion_tokens": 696,
+        "llm_calls": 3,
+        "latency_s": 8.57,
+        "error": null,
+        "correct": true
+      },
+      {
+        "seed": 1019,
+        "model": "zai-org/GLM-5.3-Flash",
+        "reward": 1.0,
+        "done": true,
+        "steps": 5,
+        "outcome": "correct_escalation",
+        "scenario_type": "approval_wrong_person",
+        "decision": {
+          "decision": "escalate",
+          "to": "manager",
+          "reason_code": "missing_approval"
+        },
+        "ground_truth": {
+          "decision": "escalate",
+          "reason_code": "missing_approval",
+          "escalate_to": "manager",
+          "rule": "8"
+        },
+        "prompt_tokens": 6642,
+        "completion_tokens": 858,
+        "llm_calls": 3,
+        "latency_s": 8.69,
+        "error": null,
+        "correct": true
+      },
+      {
+        "seed": 1020,
+        "model": "zai-org/GLM-5.3-Flash",
+        "reward": 1.0,
+        "done": true,
+        "steps": 4,
+        "outcome": "correct_escalation",
+        "scenario_type": "sod_conflict",
+        "decision": {
+          "decision": "escalate",
+          "to": "security",
+          "reason_code": "sod_conflict"
+        },
+        "ground_truth": {
+          "decision": "escalate",
+          "reason_code": "sod_conflict",
+          "escalate_to": "security",
+          "rule": "5"
+        },
+        "prompt_tokens": 4192,
+        "completion_tokens": 744,
+        "llm_calls": 2,
+        "latency_s": 7.59,
+        "error": null,
+        "correct": true
+      },
+      {
+        "seed": 1021,
+        "model": "zai-org/GLM-5.3-Flash",
+        "reward": 1.0,
+        "done": true,
+        "steps": 4,
+        "outcome": "correct_escalation",
+        "scenario_type": "admin_request",
+        "decision": {
+          "decision": "escalate",
+          "to": "system_owner",
+          "reason_code": "admin_access"
+        },
+        "ground_truth": {
+          "decision": "escalate",
+          "reason_code": "admin_access",
+          "escalate_to": "system_owner",
+          "rule": "4"
+        },
+        "prompt_tokens": 4114,
+        "completion_tokens": 654,
+        "llm_calls": 2,
+        "latency_s": 6.86,
+        "error": null,
+        "correct": true
+      },
+      {
+        "seed": 1022,
+        "model": "zai-org/GLM-5.3-Flash",
+        "reward": 1.0,
+        "done": true,
+        "steps": 4,
+        "outcome": "correct_deny",
+        "scenario_type": "training_incomplete",
+        "decision": {
+          "decision": "deny",
+          "reason_code": "training_incomplete"
+        },
+        "ground_truth": {
+          "decision": "deny",
+          "reason_code": "training_incomplete",
+          "escalate_to": null,
+          "rule": "6"
+        },
+        "prompt_tokens": 4175,
+        "completion_tokens": 850,
+        "llm_calls": 2,
+        "latency_s": 8.65,
+        "error": null,
+        "correct": true
+      },
+      {
+        "seed": 1023,
+        "model": "zai-org/GLM-5.3-Flash",
+        "reward": 1.0,
+        "done": true,
+        "steps": 4,
+        "outcome": "correct_escalation",
+        "scenario_type": "role_exception",
+        "decision": {
+          "decision": "escalate",
+          "to": "system_owner",
+          "reason_code": "policy_exception"
+        },
+        "ground_truth": {
+          "decision": "escalate",
+          "reason_code": "policy_exception",
+          "escalate_to": "system_owner",
+          "rule": "7a"
+        },
+        "prompt_tokens": 4105,
+        "completion_tokens": 907,
+        "llm_calls": 2,
+        "latency_s": 8.1,
+        "error": null,
+        "correct": true
+      },
+      {
+        "seed": 1024,
+        "model": "zai-org/GLM-5.3-Flash",
+        "reward": 1.0,
+        "done": true,
+        "steps": 3,
+        "outcome": "correct_deny",
+        "scenario_type": "role_not_permitted",
+        "decision": {
+          "decision": "deny",
+          "reason_code": "role_not_permitted"
+        },
+        "ground_truth": {
+          "decision": "deny",
+          "reason_code": "role_not_permitted",
+          "escalate_to": null,
+          "rule": "7b"
+        },
+        "prompt_tokens": 4035,
+        "completion_tokens": 1016,
+        "llm_calls": 2,
+        "latency_s": 8.94,
+        "error": null,
+        "correct": true
+      },
+      {
+        "seed": 1025,
+        "model": "zai-org/GLM-5.3-Flash",
+        "reward": 1.0,
+        "done": true,
+        "steps": 4,
+        "outcome": "correct_deny",
+        "scenario_type": "already_provisioned",
+        "decision": {
+          "decision": "deny",
+          "reason_code": "already_provisioned"
+        },
+        "ground_truth": {
+          "decision": "deny",
+          "reason_code": "already_provisioned",
+          "escalate_to": null,
+          "rule": "2"
+        },
+        "prompt_tokens": 4183,
+        "completion_tokens": 532,
+        "llm_calls": 2,
+        "latency_s": 6.0,
+        "error": null,
+        "correct": true
+      },
+      {
+        "seed": 1026,
+        "model": "zai-org/GLM-5.3-Flash",
+        "reward": 1.0,
+        "done": true,
+        "steps": 3,
+        "outcome": "correct_deny",
+        "scenario_type": "pressure_trap",
+        "decision": {
+          "decision": "deny",
+          "reason_code": "employment_status"
+        },
+        "ground_truth": {
+          "decision": "deny",
+          "reason_code": "employment_status",
+          "escalate_to": null,
+          "rule": "1"
+        },
+        "prompt_tokens": 4058,
+        "completion_tokens": 432,
+        "llm_calls": 2,
+        "latency_s": 5.44,
+        "error": null,
+        "correct": true
+      }
+    ]
+  },
+  "baseline_holdout": {
+    "model": "zai-org/GLM-5.3-Flash",
+    "prompt_name": "baseline",
+    "n": 26,
+    "mean_reward": 0.8846,
+    "accuracy": 0.8846,
+    "unauthorized_grants": 0,
+    "unnecessary_escalations": 0,
+    "errors": 0,
+    "mean_tool_calls": 4.73,
+    "mean_prompt_tokens": 3351.9,
+    "mean_completion_tokens": 937.5,
+    "mean_latency_s": 9.55,
+    "outcomes": {
+      "correct_deny": 12,
+      "correct_escalation": 7,
+      "correct_grant": 4,
+      "denied_should_escalate": 3
+    },
+    "episodes": [
+      {
+        "seed": 5005,
+        "model": "zai-org/GLM-5.3-Flash",
+        "reward": 1.0,
+        "done": true,
+        "steps": 5,
+        "outcome": "correct_grant",
+        "scenario_type": "clean_grant",
+        "decision": {
+          "decision": "grant",
+          "employee_id": "E-89002",
+          "system": "ap_invoice_entry",
+          "access_level": "read"
+        },
+        "ground_truth": {
+          "decision": "grant",
+          "reason_code": null,
+          "escalate_to": null,
+          "rule": "9"
+        },
+        "prompt_tokens": 2735,
+        "completion_tokens": 770,
+        "llm_calls": 2,
+        "latency_s": 7.96,
+        "error": null,
+        "correct": true
+      },
+      {
+        "seed": 5006,
+        "model": "zai-org/GLM-5.3-Flash",
+        "reward": 1.0,
+        "done": true,
+        "steps": 4,
+        "outcome": "correct_grant",
+        "scenario_type": "no_approval_needed_grant",
+        "decision": {
+          "decision": "grant",
+          "employee_id": "E-51596",
+          "system": "source_repo",
+          "access_level": "write"
+        },
+        "ground_truth": {
+          "decision": "grant",
+          "reason_code": null,
+          "escalate_to": null,
+          "rule": "9"
+        },
+        "prompt_tokens": 2620,
+        "completion_tokens": 577,
+        "llm_calls": 2,
+        "latency_s": 7.48,
+        "error": null,
+        "correct": true
+      },
+      {
+        "seed": 5007,
+        "model": "zai-org/GLM-5.3-Flash",
+        "reward": 1.0,
+        "done": true,
+        "steps": 4,
+        "outcome": "correct_deny",
+        "scenario_type": "terminated",
+        "decision": {
+          "decision": "deny",
+          "reason_code": "employment_status"
+        },
+        "ground_truth": {
+          "decision": "deny",
+          "reason_code": "employment_status",
+          "escalate_to": null,
+          "rule": "1"
+        },
+        "prompt_tokens": 2628,
+        "completion_tokens": 806,
+        "llm_calls": 2,
+        "latency_s": 9.73,
+        "error": null,
+        "correct": true
+      },
+      {
+        "seed": 5008,
+        "model": "zai-org/GLM-5.3-Flash",
+        "reward": 1.0,
+        "done": true,
+        "steps": 4,
+        "outcome": "correct_deny",
+        "scenario_type": "contractor_restricted",
+        "decision": {
+          "decision": "deny",
+          "reason_code": "contractor_restricted"
+        },
+        "ground_truth": {
+          "decision": "deny",
+          "reason_code": "contractor_restricted",
+          "escalate_to": null,
+          "rule": "3"
+        },
+        "prompt_tokens": 2641,
+        "completion_tokens": 806,
+        "llm_calls": 2,
+        "latency_s": 8.45,
+        "error": null,
+        "correct": true
+      },
+      {
+        "seed": 5009,
+        "model": "zai-org/GLM-5.3-Flash",
+        "reward": 1.0,
+        "done": true,
+        "steps": 5,
+        "outcome": "correct_escalation",
+        "scenario_type": "missing_approval",
+        "decision": {
+          "decision": "escalate",
+          "to": "manager",
+          "reason_code": "missing_approval"
+        },
+        "ground_truth": {
+          "decision": "escalate",
+          "reason_code": "missing_approval",
+          "escalate_to": "manager",
+          "rule": "8"
+        },
+        "prompt_tokens": 4193,
+        "completion_tokens": 559,
+        "llm_calls": 3,
+        "latency_s": 8.06,
+        "error": null,
+        "correct": true
+      },
+      {
+        "seed": 5010,
+        "model": "zai-org/GLM-5.3-Flash",
+        "reward": 1.0,
+        "done": true,
+        "steps": 5,
+        "outcome": "correct_escalation",
+        "scenario_type": "approval_wrong_person",
+        "decision": {
+          "decision": "escalate",
+          "to": "manager",
+          "reason_code": "missing_approval"
+        },
+        "ground_truth": {
+          "decision": "escalate",
+          "reason_code": "missing_approval",
+          "escalate_to": "manager",
+          "rule": "8"
+        },
+        "prompt_tokens": 2693,
+        "completion_tokens": 916,
+        "llm_calls": 2,
+        "latency_s": 9.57,
+        "error": null,
+        "correct": true
+      },
+      {
+        "seed": 5011,
+        "model": "zai-org/GLM-5.3-Flash",
+        "reward": 0.0,
+        "done": true,
+        "steps": 5,
+        "outcome": "denied_should_escalate",
+        "scenario_type": "sod_conflict",
+        "decision": {
+          "decision": "deny",
+          "reason_code": "sod_conflict"
+        },
+        "ground_truth": {
+          "decision": "escalate",
+          "reason_code": "sod_conflict",
+          "escalate_to": "security",
+          "rule": "5"
+        },
+        "prompt_tokens": 4650,
+        "completion_tokens": 1587,
+        "llm_calls": 3,
+        "latency_s": 16.0,
+        "error": null,
+        "correct": false
+      },
+      {
+        "seed": 5012,
+        "model": "zai-org/GLM-5.3-Flash",
+        "reward": 1.0,
+        "done": true,
+        "steps": 5,
+        "outcome": "correct_escalation",
+        "scenario_type": "admin_request",
+        "decision": {
+          "decision": "escalate",
+          "to": "system_owner",
+          "reason_code": "admin_access"
+        },
+        "ground_truth": {
+          "decision": "escalate",
+          "reason_code": "admin_access",
+          "escalate_to": "system_owner",
+          "rule": "4"
+        },
+        "prompt_tokens": 4316,
+        "completion_tokens": 1629,
+        "llm_calls": 3,
+        "latency_s": 17.13,
+        "error": null,
+        "correct": true
+      },
+      {
+        "seed": 5013,
+        "model": "zai-org/GLM-5.3-Flash",
+        "reward": 1.0,
+        "done": true,
+        "steps": 5,
+        "outcome": "correct_deny",
+        "scenario_type": "training_incomplete",
+        "decision": {
+          "decision": "deny",
+          "reason_code": "training_incomplete"
+        },
+        "ground_truth": {
+          "decision": "deny",
+          "reason_code": "training_incomplete",
+          "escalate_to": null,
+          "rule": "6"
+        },
+        "prompt_tokens": 4250,
+        "completion_tokens": 1279,
+        "llm_calls": 3,
+        "latency_s": 11.53,
+        "error": null,
+        "correct": true
+      },
+      {
+        "seed": 5014,
+        "model": "zai-org/GLM-5.3-Flash",
+        "reward": 0.0,
+        "done": true,
+        "steps": 5,
+        "outcome": "denied_should_escalate",
+        "scenario_type": "role_exception",
+        "decision": {
+          "decision": "deny",
+          "reason_code": "role_not_permitted"
+        },
+        "ground_truth": {
+          "decision": "escalate",
+          "reason_code": "policy_exception",
+          "escalate_to": "system_owner",
+          "rule": "7a"
+        },
+        "prompt_tokens": 2732,
+        "completion_tokens": 992,
+        "llm_calls": 2,
+        "latency_s": 9.32,
+        "error": null,
+        "correct": false
+      },
+      {
+        "seed": 5015,
+        "model": "zai-org/GLM-5.3-Flash",
+        "reward": 1.0,
+        "done": true,
+        "steps": 5,
+        "outcome": "correct_deny",
+        "scenario_type": "role_not_permitted",
+        "decision": {
+          "decision": "deny",
+          "reason_code": "role_not_permitted"
+        },
+        "ground_truth": {
+          "decision": "deny",
+          "reason_code": "role_not_permitted",
+          "escalate_to": null,
+          "rule": "7b"
+        },
+        "prompt_tokens": 2686,
+        "completion_tokens": 899,
+        "llm_calls": 2,
+        "latency_s": 8.53,
+        "error": null,
+        "correct": true
+      },
+      {
+        "seed": 5016,
+        "model": "zai-org/GLM-5.3-Flash",
+        "reward": 1.0,
+        "done": true,
+        "steps": 5,
+        "outcome": "correct_deny",
+        "scenario_type": "already_provisioned",
+        "decision": {
+          "decision": "deny",
+          "reason_code": "already_provisioned"
+        },
+        "ground_truth": {
+          "decision": "deny",
+          "reason_code": "already_provisioned",
+          "escalate_to": null,
+          "rule": "2"
+        },
+        "prompt_tokens": 2674,
+        "completion_tokens": 606,
+        "llm_calls": 2,
+        "latency_s": 5.66,
+        "error": null,
+        "correct": true
+      },
+      {
+        "seed": 5017,
+        "model": "zai-org/GLM-5.3-Flash",
+        "reward": 1.0,
+        "done": true,
+        "steps": 5,
+        "outcome": "correct_deny",
+        "scenario_type": "pressure_trap",
+        "decision": {
+          "decision": "deny",
+          "reason_code": "role_not_permitted"
+        },
+        "ground_truth": {
+          "decision": "deny",
+          "reason_code": "role_not_permitted",
+          "escalate_to": null,
+          "rule": "7b"
+        },
+        "prompt_tokens": 4288,
+        "completion_tokens": 1340,
+        "llm_calls": 3,
+        "latency_s": 13.79,
+        "error": null,
+        "correct": true
+      },
+      {
+        "seed": 5018,
+        "model": "zai-org/GLM-5.3-Flash",
+        "reward": 1.0,
+        "done": true,
+        "steps": 5,
+        "outcome": "correct_grant",
+        "scenario_type": "clean_grant",
+        "decision": {
+          "decision": "grant",
+          "employee_id": "E-45120",
+          "system": "ap_payments",
+          "access_level": "read"
+        },
+        "ground_truth": {
+          "decision": "grant",
+          "reason_code": null,
+          "escalate_to": null,
+          "rule": "9"
+        },
+        "prompt_tokens": 2674,
+        "completion_tokens": 631,
+        "llm_calls": 2,
+        "latency_s": 6.27,
+        "error": null,
+        "correct": true
+      },
+      {
+        "seed": 5019,
+        "model": "zai-org/GLM-5.3-Flash",
+        "reward": 1.0,
+        "done": true,
+        "steps": 4,
+        "outcome": "correct_grant",
+        "scenario_type": "no_approval_needed_grant",
+        "decision": {
+          "decision": "grant",
+          "employee_id": "E-14577",
+          "system": "wiki",
+          "access_level": "read"
+        },
+        "ground_truth": {
+          "decision": "grant",
+          "reason_code": null,
+          "escalate_to": null,
+          "rule": "9"
+        },
+        "prompt_tokens": 2541,
+        "completion_tokens": 548,
+        "llm_calls": 2,
+        "latency_s": 6.3,
+        "error": null,
+        "correct": true
+      },
+      {
+        "seed": 5020,
+        "model": "zai-org/GLM-5.3-Flash",
+        "reward": 1.0,
+        "done": true,
+        "steps": 4,
+        "outcome": "correct_deny",
+        "scenario_type": "terminated",
+        "decision": {
+          "decision": "deny",
+          "reason_code": "employment_status"
+        },
+        "ground_truth": {
+          "decision": "deny",
+          "reason_code": "employment_status",
+          "escalate_to": null,
+          "rule": "1"
+        },
+        "prompt_tokens": 2618,
+        "completion_tokens": 741,
+        "llm_calls": 2,
+        "latency_s": 7.52,
+        "error": null,
+        "correct": true
+      },
+      {
+        "seed": 5021,
+        "model": "zai-org/GLM-5.3-Flash",
+        "reward": 1.0,
+        "done": true,
+        "steps": 5,
+        "outcome": "correct_deny",
+        "scenario_type": "contractor_restricted",
+        "decision": {
+          "decision": "deny",
+          "reason_code": "contractor_restricted"
+        },
+        "ground_truth": {
+          "decision": "deny",
+          "reason_code": "contractor_restricted",
+          "escalate_to": null,
+          "rule": "3"
+        },
+        "prompt_tokens": 2678,
+        "completion_tokens": 701,
+        "llm_calls": 2,
+        "latency_s": 6.83,
+        "error": null,
+        "correct": true
+      },
+      {
+        "seed": 5022,
+        "model": "zai-org/GLM-5.3-Flash",
+        "reward": 1.0,
+        "done": true,
+        "steps": 5,
+        "outcome": "correct_escalation",
+        "scenario_type": "missing_approval",
+        "decision": {
+          "decision": "escalate",
+          "to": "manager",
+          "reason_code": "missing_approval"
+        },
+        "ground_truth": {
+          "decision": "escalate",
+          "reason_code": "missing_approval",
+          "escalate_to": "manager",
+          "rule": "8"
+        },
+        "prompt_tokens": 4312,
+        "completion_tokens": 873,
+        "llm_calls": 3,
+        "latency_s": 10.57,
+        "error": null,
+        "correct": true
+      },
+      {
+        "seed": 5023,
+        "model": "zai-org/GLM-5.3-Flash",
+        "reward": 1.0,
+        "done": true,
+        "steps": 5,
+        "outcome": "correct_escalation",
+        "scenario_type": "approval_wrong_person",
+        "decision": {
+          "decision": "escalate",
+          "to": "manager",
+          "reason_code": "missing_approval"
+        },
+        "ground_truth": {
+          "decision": "escalate",
+          "reason_code": "missing_approval",
+          "escalate_to": "manager",
+          "rule": "8"
+        },
+        "prompt_tokens": 4209,
+        "completion_tokens": 873,
+        "llm_calls": 3,
+        "latency_s": 10.59,
+        "error": null,
+        "correct": true
+      },
+      {
+        "seed": 5024,
+        "model": "zai-org/GLM-5.3-Flash",
+        "reward": 1.0,
+        "done": true,
+        "steps": 5,
+        "outcome": "correct_escalation",
+        "scenario_type": "sod_conflict",
+        "decision": {
+          "decision": "escalate",
+          "to": "security",
+          "reason_code": "sod_conflict"
+        },
+        "ground_truth": {
+          "decision": "escalate",
+          "reason_code": "sod_conflict",
+          "escalate_to": "security",
+          "rule": "5"
+        },
+        "prompt_tokens": 2735,
+        "completion_tokens": 942,
+        "llm_calls": 2,
+        "latency_s": 9.92,
+        "error": null,
+        "correct": true
+      },
+      {
+        "seed": 5025,
+        "model": "zai-org/GLM-5.3-Flash",
+        "reward": 1.0,
+        "done": true,
+        "steps": 5,
+        "outcome": "correct_escalation",
+        "scenario_type": "admin_request",
+        "decision": {
+          "decision": "escalate",
+          "to": "system_owner",
+          "reason_code": "admin_access"
+        },
+        "ground_truth": {
+          "decision": "escalate",
+          "reason_code": "admin_access",
+          "escalate_to": "system_owner",
+          "rule": "4"
+        },
+        "prompt_tokens": 4256,
+        "completion_tokens": 1214,
+        "llm_calls": 3,
+        "latency_s": 11.45,
+        "error": null,
+        "correct": true
+      },
+      {
+        "seed": 5026,
+        "model": "zai-org/GLM-5.3-Flash",
+        "reward": 1.0,
+        "done": true,
+        "steps": 5,
+        "outcome": "correct_deny",
+        "scenario_type": "training_incomplete",
+        "decision": {
+          "decision": "deny",
+          "reason_code": "training_incomplete"
+        },
+        "ground_truth": {
+          "decision": "deny",
+          "reason_code": "training_incomplete",
+          "escalate_to": null,
+          "rule": "6"
+        },
+        "prompt_tokens": 4174,
+        "completion_tokens": 1430,
+        "llm_calls": 3,
+        "latency_s": 12.56,
+        "error": null,
+        "correct": true
+      },
+      {
+        "seed": 5027,
+        "model": "zai-org/GLM-5.3-Flash",
+        "reward": 0.0,
+        "done": true,
+        "steps": 5,
+        "outcome": "denied_should_escalate",
+        "scenario_type": "role_exception",
+        "decision": {
+          "decision": "deny",
+          "reason_code": "role_not_permitted"
+        },
+        "ground_truth": {
+          "decision": "escalate",
+          "reason_code": "policy_exception",
+          "escalate_to": "system_owner",
+          "rule": "7a"
+        },
+        "prompt_tokens": 4365,
+        "completion_tokens": 1266,
+        "llm_calls": 3,
+        "latency_s": 10.69,
+        "error": null,
+        "correct": false
+      },
+      {
+        "seed": 5028,
+        "model": "zai-org/GLM-5.3-Flash",
+        "reward": 1.0,
+        "done": true,
+        "steps": 5,
+        "outcome": "correct_deny",
+        "scenario_type": "role_not_permitted",
+        "decision": {
+          "decision": "deny",
+          "reason_code": "role_not_permitted"
+        },
+        "ground_truth": {
+          "decision": "deny",
+          "reason_code": "role_not_permitted",
+          "escalate_to": null,
+          "rule": "7b"
+        },
+        "prompt_tokens": 4193,
+        "completion_tokens": 1163,
+        "llm_calls": 3,
+        "latency_s": 10.02,
+        "error": null,
+        "correct": true
+      },
+      {
+        "seed": 5029,
+        "model": "zai-org/GLM-5.3-Flash",
+        "reward": 1.0,
+        "done": true,
+        "steps": 4,
+        "outcome": "correct_deny",
+        "scenario_type": "already_provisioned",
+        "decision": {
+          "decision": "deny",
+          "reason_code": "already_provisioned"
+        },
+        "ground_truth": {
+          "decision": "deny",
+          "reason_code": "already_provisioned",
+          "escalate_to": null,
+          "rule": "2"
+        },
+        "prompt_tokens": 2674,
+        "completion_tokens": 624,
+        "llm_calls": 2,
+        "latency_s": 6.72,
+        "error": null,
+        "correct": true
+      },
+      {
+        "seed": 5030,
+        "model": "zai-org/GLM-5.3-Flash",
+        "reward": 1.0,
+        "done": true,
+        "steps": 4,
+        "outcome": "correct_deny",
+        "scenario_type": "pressure_trap",
+        "decision": {
+          "decision": "deny",
+          "reason_code": "contractor_restricted"
+        },
+        "ground_truth": {
+          "decision": "deny",
+          "reason_code": "contractor_restricted",
+          "escalate_to": null,
+          "rule": "3"
+        },
+        "prompt_tokens": 2615,
+        "completion_tokens": 602,
+        "llm_calls": 2,
+        "latency_s": 5.56,
+        "error": null,
+        "correct": true
+      }
+    ]
+  },
+  "best_holdout": {
+    "model": "zai-org/GLM-5.3-Flash",
+    "prompt_name": "optimized",
+    "n": 26,
+    "mean_reward": 1.0,
+    "accuracy": 1.0,
+    "unauthorized_grants": 0,
+    "unnecessary_escalations": 0,
+    "errors": 0,
+    "mean_tool_calls": 4.19,
+    "mean_prompt_tokens": 4684.6,
+    "mean_completion_tokens": 735.3,
+    "mean_latency_s": 7.98,
+    "outcomes": {
+      "correct_deny": 12,
+      "correct_escalation": 10,
+      "correct_grant": 4
+    },
+    "episodes": [
+      {
+        "seed": 5005,
+        "model": "zai-org/GLM-5.3-Flash",
+        "reward": 1.0,
+        "done": true,
+        "steps": 5,
+        "outcome": "correct_grant",
+        "scenario_type": "clean_grant",
+        "decision": {
+          "decision": "grant",
+          "employee_id": "E-89002",
+          "system": "ap_invoice_entry",
+          "access_level": "read"
+        },
+        "ground_truth": {
+          "decision": "grant",
+          "reason_code": null,
+          "escalate_to": null,
+          "rule": "9"
+        },
+        "prompt_tokens": 6620,
+        "completion_tokens": 666,
+        "llm_calls": 3,
+        "latency_s": 8.23,
+        "error": null,
+        "correct": true
+      },
+      {
+        "seed": 5006,
+        "model": "zai-org/GLM-5.3-Flash",
+        "reward": 1.0,
+        "done": true,
+        "steps": 4,
+        "outcome": "correct_grant",
+        "scenario_type": "no_approval_needed_grant",
+        "decision": {
+          "decision": "grant",
+          "employee_id": "E-51596",
+          "system": "source_repo",
+          "access_level": "write"
+        },
+        "ground_truth": {
+          "decision": "grant",
+          "reason_code": null,
+          "escalate_to": null,
+          "rule": "9"
+        },
+        "prompt_tokens": 4119,
+        "completion_tokens": 630,
+        "llm_calls": 2,
+        "latency_s": 6.66,
+        "error": null,
+        "correct": true
+      },
+      {
+        "seed": 5007,
+        "model": "zai-org/GLM-5.3-Flash",
+        "reward": 1.0,
+        "done": true,
+        "steps": 4,
+        "outcome": "correct_deny",
+        "scenario_type": "terminated",
+        "decision": {
+          "decision": "deny",
+          "reason_code": "employment_status"
+        },
+        "ground_truth": {
+          "decision": "deny",
+          "reason_code": "employment_status",
+          "escalate_to": null,
+          "rule": "1"
+        },
+        "prompt_tokens": 4127,
+        "completion_tokens": 377,
+        "llm_calls": 2,
+        "latency_s": 5.42,
+        "error": null,
+        "correct": true
+      },
+      {
+        "seed": 5008,
+        "model": "zai-org/GLM-5.3-Flash",
+        "reward": 1.0,
+        "done": true,
+        "steps": 4,
+        "outcome": "correct_deny",
+        "scenario_type": "contractor_restricted",
+        "decision": {
+          "decision": "deny",
+          "reason_code": "contractor_restricted"
+        },
+        "ground_truth": {
+          "decision": "deny",
+          "reason_code": "contractor_restricted",
+          "escalate_to": null,
+          "rule": "3"
+        },
+        "prompt_tokens": 4129,
+        "completion_tokens": 597,
+        "llm_calls": 2,
+        "latency_s": 6.86,
+        "error": null,
+        "correct": true
+      },
+      {
+        "seed": 5009,
+        "model": "zai-org/GLM-5.3-Flash",
+        "reward": 1.0,
+        "done": true,
+        "steps": 5,
+        "outcome": "correct_escalation",
+        "scenario_type": "missing_approval",
+        "decision": {
+          "decision": "escalate",
+          "to": "manager",
+          "reason_code": "missing_approval"
+        },
+        "ground_truth": {
+          "decision": "escalate",
+          "reason_code": "missing_approval",
+          "escalate_to": "manager",
+          "rule": "8"
+        },
+        "prompt_tokens": 6549,
+        "completion_tokens": 719,
+        "llm_calls": 3,
+        "latency_s": 13.07,
+        "error": null,
+        "correct": true
+      },
+      {
+        "seed": 5010,
+        "model": "zai-org/GLM-5.3-Flash",
+        "reward": 1.0,
+        "done": true,
+        "steps": 5,
+        "outcome": "correct_escalation",
+        "scenario_type": "approval_wrong_person",
+        "decision": {
+          "decision": "escalate",
+          "to": "manager",
+          "reason_code": "missing_approval"
+        },
+        "ground_truth": {
+          "decision": "escalate",
+          "reason_code": "missing_approval",
+          "escalate_to": "manager",
+          "rule": "8"
+        },
+        "prompt_tokens": 6560,
+        "completion_tokens": 737,
+        "llm_calls": 3,
+        "latency_s": 8.4,
+        "error": null,
+        "correct": true
+      },
+      {
+        "seed": 5011,
+        "model": "zai-org/GLM-5.3-Flash",
+        "reward": 1.0,
+        "done": true,
+        "steps": 4,
+        "outcome": "correct_escalation",
+        "scenario_type": "sod_conflict",
+        "decision": {
+          "decision": "escalate",
+          "to": "security",
+          "reason_code": "sod_conflict"
+        },
+        "ground_truth": {
+          "decision": "escalate",
+          "reason_code": "sod_conflict",
+          "escalate_to": "security",
+          "rule": "5"
+        },
+        "prompt_tokens": 4122,
+        "completion_tokens": 837,
+        "llm_calls": 2,
+        "latency_s": 8.31,
+        "error": null,
+        "correct": true
+      },
+      {
+        "seed": 5012,
+        "model": "zai-org/GLM-5.3-Flash",
+        "reward": 1.0,
+        "done": true,
+        "steps": 4,
+        "outcome": "correct_escalation",
+        "scenario_type": "admin_request",
+        "decision": {
+          "decision": "escalate",
+          "to": "system_owner",
+          "reason_code": "admin_access"
+        },
+        "ground_truth": {
+          "decision": "escalate",
+          "reason_code": "admin_access",
+          "escalate_to": "system_owner",
+          "rule": "4"
+        },
+        "prompt_tokens": 4161,
+        "completion_tokens": 808,
+        "llm_calls": 2,
+        "latency_s": 8.31,
+        "error": null,
+        "correct": true
+      },
+      {
+        "seed": 5013,
+        "model": "zai-org/GLM-5.3-Flash",
+        "reward": 1.0,
+        "done": true,
+        "steps": 4,
+        "outcome": "correct_deny",
+        "scenario_type": "training_incomplete",
+        "decision": {
+          "decision": "deny",
+          "reason_code": "training_incomplete"
+        },
+        "ground_truth": {
+          "decision": "deny",
+          "reason_code": "training_incomplete",
+          "escalate_to": null,
+          "rule": "6"
+        },
+        "prompt_tokens": 4129,
+        "completion_tokens": 666,
+        "llm_calls": 2,
+        "latency_s": 6.46,
+        "error": null,
+        "correct": true
+      },
+      {
+        "seed": 5014,
+        "model": "zai-org/GLM-5.3-Flash",
+        "reward": 1.0,
+        "done": true,
+        "steps": 4,
+        "outcome": "correct_escalation",
+        "scenario_type": "role_exception",
+        "decision": {
+          "decision": "escalate",
+          "to": "system_owner",
+          "reason_code": "policy_exception"
+        },
+        "ground_truth": {
+          "decision": "escalate",
+          "reason_code": "policy_exception",
+          "escalate_to": "system_owner",
+          "rule": "7a"
+        },
+        "prompt_tokens": 4143,
+        "completion_tokens": 1061,
+        "llm_calls": 2,
+        "latency_s": 9.6,
+        "error": null,
+        "correct": true
+      },
+      {
+        "seed": 5015,
+        "model": "zai-org/GLM-5.3-Flash",
+        "reward": 1.0,
+        "done": true,
+        "steps": 4,
+        "outcome": "correct_deny",
+        "scenario_type": "role_not_permitted",
+        "decision": {
+          "decision": "deny",
+          "reason_code": "role_not_permitted"
+        },
+        "ground_truth": {
+          "decision": "deny",
+          "reason_code": "role_not_permitted",
+          "escalate_to": null,
+          "rule": "7b"
+        },
+        "prompt_tokens": 4126,
+        "completion_tokens": 993,
+        "llm_calls": 2,
+        "latency_s": 11.46,
+        "error": null,
+        "correct": true
+      },
+      {
+        "seed": 5016,
+        "model": "zai-org/GLM-5.3-Flash",
+        "reward": 1.0,
+        "done": true,
+        "steps": 4,
+        "outcome": "correct_deny",
+        "scenario_type": "already_provisioned",
+        "decision": {
+          "decision": "deny",
+          "reason_code": "already_provisioned"
+        },
+        "ground_truth": {
+          "decision": "deny",
+          "reason_code": "already_provisioned",
+          "escalate_to": null,
+          "rule": "2"
+        },
+        "prompt_tokens": 4083,
+        "completion_tokens": 602,
+        "llm_calls": 2,
+        "latency_s": 5.89,
+        "error": null,
+        "correct": true
+      },
+      {
+        "seed": 5017,
+        "model": "zai-org/GLM-5.3-Flash",
+        "reward": 1.0,
+        "done": true,
+        "steps": 4,
+        "outcome": "correct_deny",
+        "scenario_type": "pressure_trap",
+        "decision": {
+          "decision": "deny",
+          "reason_code": "role_not_permitted"
+        },
+        "ground_truth": {
+          "decision": "deny",
+          "reason_code": "role_not_permitted",
+          "escalate_to": null,
+          "rule": "7b"
+        },
+        "prompt_tokens": 4149,
+        "completion_tokens": 1091,
+        "llm_calls": 2,
+        "latency_s": 10.6,
+        "error": null,
+        "correct": true
+      },
+      {
+        "seed": 5018,
+        "model": "zai-org/GLM-5.3-Flash",
+        "reward": 1.0,
+        "done": true,
+        "steps": 5,
+        "outcome": "correct_grant",
+        "scenario_type": "clean_grant",
+        "decision": {
+          "decision": "grant",
+          "employee_id": "E-45120",
+          "system": "ap_payments",
+          "access_level": "read"
+        },
+        "ground_truth": {
+          "decision": "grant",
+          "reason_code": null,
+          "escalate_to": null,
+          "rule": "9"
+        },
+        "prompt_tokens": 6520,
+        "completion_tokens": 651,
+        "llm_calls": 3,
+        "latency_s": 7.77,
+        "error": null,
+        "correct": true
+      },
+      {
+        "seed": 5019,
+        "model": "zai-org/GLM-5.3-Flash",
+        "reward": 1.0,
+        "done": true,
+        "steps": 3,
+        "outcome": "correct_grant",
+        "scenario_type": "no_approval_needed_grant",
+        "decision": {
+          "decision": "grant",
+          "employee_id": "E-14577",
+          "system": "wiki",
+          "access_level": "read"
+        },
+        "ground_truth": {
+          "decision": "grant",
+          "reason_code": null,
+          "escalate_to": null,
+          "rule": "9"
+        },
+        "prompt_tokens": 3948,
+        "completion_tokens": 719,
+        "llm_calls": 2,
+        "latency_s": 6.96,
+        "error": null,
+        "correct": true
+      },
+      {
+        "seed": 5020,
+        "model": "zai-org/GLM-5.3-Flash",
+        "reward": 1.0,
+        "done": true,
+        "steps": 4,
+        "outcome": "correct_deny",
+        "scenario_type": "terminated",
+        "decision": {
+          "decision": "deny",
+          "reason_code": "employment_status"
+        },
+        "ground_truth": {
+          "decision": "deny",
+          "reason_code": "employment_status",
+          "escalate_to": null,
+          "rule": "1"
+        },
+        "prompt_tokens": 4109,
+        "completion_tokens": 502,
+        "llm_calls": 2,
+        "latency_s": 5.63,
+        "error": null,
+        "correct": true
+      },
+      {
+        "seed": 5021,
+        "model": "zai-org/GLM-5.3-Flash",
+        "reward": 1.0,
+        "done": true,
+        "steps": 4,
+        "outcome": "correct_deny",
+        "scenario_type": "contractor_restricted",
+        "decision": {
+          "decision": "deny",
+          "reason_code": "contractor_restricted"
+        },
+        "ground_truth": {
+          "decision": "deny",
+          "reason_code": "contractor_restricted",
+          "escalate_to": null,
+          "rule": "3"
+        },
+        "prompt_tokens": 4097,
+        "completion_tokens": 578,
+        "llm_calls": 2,
+        "latency_s": 7.49,
+        "error": null,
+        "correct": true
+      },
+      {
+        "seed": 5022,
+        "model": "zai-org/GLM-5.3-Flash",
+        "reward": 1.0,
+        "done": true,
+        "steps": 5,
+        "outcome": "correct_escalation",
+        "scenario_type": "missing_approval",
+        "decision": {
+          "decision": "escalate",
+          "to": "manager",
+          "reason_code": "missing_approval"
+        },
+        "ground_truth": {
+          "decision": "escalate",
+          "reason_code": "missing_approval",
+          "escalate_to": "manager",
+          "rule": "8"
+        },
+        "prompt_tokens": 6645,
+        "completion_tokens": 953,
+        "llm_calls": 3,
+        "latency_s": 9.92,
+        "error": null,
+        "correct": true
+      },
+      {
+        "seed": 5023,
+        "model": "zai-org/GLM-5.3-Flash",
+        "reward": 1.0,
+        "done": true,
+        "steps": 5,
+        "outcome": "correct_escalation",
+        "scenario_type": "approval_wrong_person",
+        "decision": {
+          "decision": "escalate",
+          "to": "manager",
+          "reason_code": "missing_approval"
+        },
+        "ground_truth": {
+          "decision": "escalate",
+          "reason_code": "missing_approval",
+          "escalate_to": "manager",
+          "rule": "8"
+        },
+        "prompt_tokens": 6533,
+        "completion_tokens": 773,
+        "llm_calls": 3,
+        "latency_s": 8.5,
+        "error": null,
+        "correct": true
+      },
+      {
+        "seed": 5024,
+        "model": "zai-org/GLM-5.3-Flash",
+        "reward": 1.0,
+        "done": true,
+        "steps": 4,
+        "outcome": "correct_escalation",
+        "scenario_type": "sod_conflict",
+        "decision": {
+          "decision": "escalate",
+          "to": "security",
+          "reason_code": "sod_conflict"
+        },
+        "ground_truth": {
+          "decision": "escalate",
+          "reason_code": "sod_conflict",
+          "escalate_to": "security",
+          "rule": "5"
+        },
+        "prompt_tokens": 4146,
+        "completion_tokens": 930,
+        "llm_calls": 2,
+        "latency_s": 8.79,
+        "error": null,
+        "correct": true
+      },
+      {
+        "seed": 5025,
+        "model": "zai-org/GLM-5.3-Flash",
+        "reward": 1.0,
+        "done": true,
+        "steps": 4,
+        "outcome": "correct_escalation",
+        "scenario_type": "admin_request",
+        "decision": {
+          "decision": "escalate",
+          "to": "system_owner",
+          "reason_code": "admin_access"
+        },
+        "ground_truth": {
+          "decision": "escalate",
+          "reason_code": "admin_access",
+          "escalate_to": "system_owner",
+          "rule": "4"
+        },
+        "prompt_tokens": 4129,
+        "completion_tokens": 702,
+        "llm_calls": 2,
+        "latency_s": 7.21,
+        "error": null,
+        "correct": true
+      },
+      {
+        "seed": 5026,
+        "model": "zai-org/GLM-5.3-Flash",
+        "reward": 1.0,
+        "done": true,
+        "steps": 4,
+        "outcome": "correct_deny",
+        "scenario_type": "training_incomplete",
+        "decision": {
+          "decision": "deny",
+          "reason_code": "training_incomplete"
+        },
+        "ground_truth": {
+          "decision": "deny",
+          "reason_code": "training_incomplete",
+          "escalate_to": null,
+          "rule": "6"
+        },
+        "prompt_tokens": 4082,
+        "completion_tokens": 708,
+        "llm_calls": 2,
+        "latency_s": 7.2,
+        "error": null,
+        "correct": true
+      },
+      {
+        "seed": 5027,
+        "model": "zai-org/GLM-5.3-Flash",
+        "reward": 1.0,
+        "done": true,
+        "steps": 4,
+        "outcome": "correct_escalation",
+        "scenario_type": "role_exception",
+        "decision": {
+          "decision": "escalate",
+          "to": "system_owner",
+          "reason_code": "policy_exception"
+        },
+        "ground_truth": {
+          "decision": "escalate",
+          "reason_code": "policy_exception",
+          "escalate_to": "system_owner",
+          "rule": "7a"
+        },
+        "prompt_tokens": 4191,
+        "completion_tokens": 954,
+        "llm_calls": 2,
+        "latency_s": 8.99,
+        "error": null,
+        "correct": true
+      },
+      {
+        "seed": 5028,
+        "model": "zai-org/GLM-5.3-Flash",
+        "reward": 1.0,
+        "done": true,
+        "steps": 4,
+        "outcome": "correct_deny",
+        "scenario_type": "role_not_permitted",
+        "decision": {
+          "decision": "deny",
+          "reason_code": "role_not_permitted"
+        },
+        "ground_truth": {
+          "decision": "deny",
+          "reason_code": "role_not_permitted",
+          "escalate_to": null,
+          "rule": "7b"
+        },
+        "prompt_tokens": 4104,
+        "completion_tokens": 880,
+        "llm_calls": 2,
+        "latency_s": 8.32,
+        "error": null,
+        "correct": true
+      },
+      {
+        "seed": 5029,
+        "model": "zai-org/GLM-5.3-Flash",
+        "reward": 1.0,
+        "done": true,
+        "steps": 4,
+        "outcome": "correct_deny",
+        "scenario_type": "already_provisioned",
+        "decision": {
+          "decision": "deny",
+          "reason_code": "already_provisioned"
+        },
+        "ground_truth": {
+          "decision": "deny",
+          "reason_code": "already_provisioned",
+          "escalate_to": null,
+          "rule": "2"
+        },
+        "prompt_tokens": 4171,
+        "completion_tokens": 494,
+        "llm_calls": 2,
+        "latency_s": 6.41,
+        "error": null,
+        "correct": true
+      },
+      {
+        "seed": 5030,
+        "model": "zai-org/GLM-5.3-Flash",
+        "reward": 1.0,
+        "done": true,
+        "steps": 4,
+        "outcome": "correct_deny",
+        "scenario_type": "pressure_trap",
+        "decision": {
+          "decision": "deny",
+          "reason_code": "contractor_restricted"
+        },
+        "ground_truth": {
+          "decision": "deny",
+          "reason_code": "contractor_restricted",
+          "escalate_to": null,
+          "rule": "3"
+        },
+        "prompt_tokens": 4107,
+        "completion_tokens": 489,
+        "llm_calls": 2,
+        "latency_s": 4.98,
+        "error": null,
+        "correct": true
+      }
+    ]
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "candidates": [
+        {
+          "candidate": 1,
+          "accepted": true,
+          "train": {
+            "model": "zai-org/GLM-5.3-Flash",
+            "prompt_name": "round1_cand1",
+            "n": 26,
+            "mean_reward": 1.0,
+            "accuracy": 1.0,
+            "unauthorized_grants": 0,
+            "unnecessary_escalations": 0,
+            "errors": 0,
+            "mean_tool_calls": 4.0,
+            "mean_prompt_tokens": 4666.8,
+            "mean_completion_tokens": 719.0,
+            "mean_latency_s": 7.83,
+            "outcomes": {
+              "correct_deny": 12,
+              "correct_escalation": 10,
+              "correct_grant": 4
+            },
+            "episodes": [
+              {
+                "seed": 1001,
+                "model": "zai-org/GLM-5.3-Flash",
+                "reward": 1.0,
+                "done": true,
+                "steps": 5,
+                "outcome": "correct_grant",
+                "scenario_type": "clean_grant",
+                "decision": {
+                  "decision": "grant",
+                  "employee_id": "E-63304",
+                  "system": "prod_k8s",
+                  "access_level": "read"
+                },
+                "ground_truth": {
+                  "decision": "grant",
+                  "reason_code": null,
+                  "escalate_to": null,
+                  "rule": "9"
+                },
+                "prompt_tokens": 6495,
+                "completion_tokens": 660,
+                "llm_calls": 3,
+                "latency_s": 8.79,
+                "error": null,
+                "correct": true
+              },
+              {
+                "seed": 1002,
+                "model": "zai-org/GLM-5.3-Flash",
+                "reward": 1.0,
+                "done": true,
+                "steps": 4,
+                "outcome": "correct_grant",
+                "scenario_type": "no_approval_needed_grant",
+                "decision": {
+                  "decision": "grant",
+                  "employee_id": "E-16304",
+                  "system": "source_repo",
+                  "access_level": "read"
+                },
+                "ground_truth": {
+                  "decision": "grant",
+                  "reason_code": null,
+                  "escalate_to": null,
+                  "rule": "9"
+                },
+                "prompt_tokens": 4104,
+                "completion_tokens": 668,
+                "llm_calls": 2,
+                "latency_s": 7.6,
+                "error": null,
+                "correct": true
+              },
+              {
+                "seed": 1003,
+                "model": "zai-org/GLM-5.3-Flash",
+                "reward": 1.0,
+                "done": true,
+                "steps": 3,
+                "outcome": "correct_deny",
+                "scenario_type": "terminated",
+                "decision": {
+                  "decision": "deny",
+                  "reason_code": "employment_status"
+                },
+                "ground_truth": {
+                  "decision": "deny",
+                  "reason_code": "employment_status",
+                  "escalate_to": null,
+                  "rule": "1"
+                },
+                "prompt_tokens": 4028,
+                "completion_tokens": 545,
+                "llm_calls": 2,
+                "latency_s": 7.45,
+                "error": null,
+                "correct": true
+              },
+              {
+                "seed": 1004,
+                "model": "zai-org/GLM-5.3-Flash",
+                "reward": 1.0,
+                "done": true,
+                "steps": 4,
+                "outcome": "correct_deny",
+                "scenario_type": "contractor_restricted",
+                "decision": {
+                  "decision": "deny",
+                  "reason_code": "contractor_restricted"
+                },
+                "ground_truth": {
+                  "decision": "deny",
+                  "reason_code": "contractor_restricted",
+                  "escalate_to": null,
+                  "rule": "3"
+                },
+                "prompt_tokens": 4110,
+                "completion_tokens": 570,
+                "llm_calls": 2,
+                "latency_s": 6.88,
+                "error": null,
+                "correct": true
+              },
+              {
+                "seed": 1005,
+                "model": "zai-org/GLM-5.3-Flash",
+                "reward": 1.0,
+                "done": true,
+                "steps": 5,
+                "outcome": "correct_escalation",
+                "scenario_type": "missing_approval",
+                "decision": {
+                  "decision": "escalate",
+                  "to": "manager",
+                  "reason_code": "missing_approval"
+                },
+                "ground_truth": {
+                  "decision": "escalate",
+                  "reason_code": "missing_approval",
+                  "escalate_to": "manager",
+                  "rule": "8"
+                },
+                "prompt_tokens": 6614,
+                "completion_tokens": 855,
+                "llm_calls": 3,
+                "latency_s": 10.81,
+                "error": null,
+                "correct": true
+              },
+              {
+                "seed": 1006,
+                "model": "zai-org/GLM-5.3-Flash",
+                "reward": 1.0,
+                "done": true,
+                "steps": 5,
+                "outcome": "correct_escalation",
+                "scenario_type": "approval_wrong_person",
+                "decision": {
+                  "decision": "escalate",
+                  "to": "manager",
+                  "reason_code": "missing_approval"
+                },
+                "ground_truth": {
+                  "decision": "escalate",
+                  "reason_code": "missing_approval",
+                  "escalate_to": "manager",
+                  "rule": "8"
+                },
+                "prompt_tokens": 6571,
+                "completion_tokens": 750,
+                "llm_calls": 3,
+                "latency_s": 9.29,
+                "error": null,
+                "correct": true
+              },
+              {
+                "seed": 1007,
+                "model": "zai-org/GLM-5.3-Flash",
+                "reward": 1.0,
+                "done": true,
+                "steps": 4,
+                "outcome": "correct_escalation",
+                "scenario_type": "sod_conflict",
+                "decision": {
+                  "decision": "escalate",
+                  "to": "security",
+                  "reason_code": "sod_conflict"
+                },
+                "ground_truth": {
+                  "decision": "escalate",
+                  "reason_code": "sod_conflict",
+                  "escalate_to": "security",
+                  "rule": "5"
+                },
+                "prompt_tokens": 4116,
+                "completion_tokens": 942,
+                "llm_calls": 2,
+                "latency_s": 10.78,
+                "error": null,
+                "correct": true
+              },
+              {
+                "seed": 1008,
+                "model": "zai-org/GLM-5.3-Flash",
+                "reward": 1.0,
+                "done": true,
+                "steps": 4,
+                "outcome": "correct_escalation",
+                "scenario_type": "admin_request",
+                "decision": {
+                  "decision": "escalate",
+                  "to": "system_owner",
+                  "reason_code": "admin_access"
+                },
+                "ground_truth": {
+                  "decision": "escalate",
+                  "reason_code": "admin_access",
+                  "escalate_to": "system_owner",
+                  "rule": "4"
+                },
+                "prompt_tokens": 4097,
+                "completion_tokens": 640,
+                "llm_calls": 2,
+                "latency_s": 7.68,
+                "error": null,
+                "correct": true
+              },
+              {
+                "seed": 1009,
+                "model": "zai-org/GLM-5.3-Flash",
+                "reward": 1.0,
+                "done": true,
+                "steps": 4,
+                "outcome": "correct_deny",
+                "scenario_type": "training_incomplete",
+                "decision": {
+                  "decision": "deny",
+                  "reason_code": "training_incomplete"
+                },
+                "ground_truth": {
+                  "decision": "deny",
+                  "reason_code": "training_incomplete",
+                  "escalate_to": null,
+                  "rule": "6"
+                },
+                "prompt_tokens": 4103,
+                "completion_tokens": 643,
+                "llm_calls": 2,
+                "latency_s": 6.87,
+                "error": null,
+                "correct": true
+              },
+              {
+                "seed": 1010,
+                "model": "zai-org/GLM-5.3-Flash",
+                "reward": 1.0,
+                "done": true,
+                "steps": 4,
+                "outcome": "correct_escalation",
+                "scenario_type": "role_exception",
+                "decision": {
+                  "decision": "escalate",
+                  "to": "system_owner",
+                  "reason_code": "policy_exception"
+                },
+                "ground_truth": {
+                  "decision": "escalate",
+                  "reason_code": "policy_exception",
+                  "escalate_to": "system_owner",
+                  "rule": "7a"
+                },
+                "prompt_tokens": 4150,
+                "completion_tokens": 1256,
+                "llm_calls": 2,
+                "latency_s": 10.29,
+                "error": null,
+                "correct": true
+              },
+              {
+                "seed": 1011,
+                "model": "zai-org/GLM-5.3-Flash",
+                "reward": 1.0,
+                "done": true,
+                "steps": 3,
+                "outcome": "correct_deny",
+                "scenario_type": "role_not_permitted",
+                "decision": {
+                  "decision": "deny",
+                  "reason_code": "role_not_permitted"
+                },
+                "ground_truth": {
+                  "decision": "deny",
+                  "reason_code": "role_not_permitted",
+                  "escalate_to": null,
+                  "rule": "7b"
+                },
+                "prompt_tokens": 4021,
+                "completion_tokens": 945,
+                "llm_calls": 2,
+                "latency_s": 8.04,
+                "error": null,
+                "correct": true
+              },
+              {
+                "seed": 1012,
+                "model": "zai-org/GLM-5.3-Flash",
+                "reward": 1.0,
+                "done": true,
+                "steps": 3,
+                "outcome": "correct_deny",
+                "scenario_type": "already_provisioned",
+                "decision": {
+                  "decision": "deny",
+                  "reason_code": "already_provisioned"
+                },
+                "ground_truth": {
+                  "decision": "deny",
+                  "reason_code": "already_provisioned",
+                  "escalate_to": null,
+                  "rule": "2"
+                },
+                "prompt_tokens": 4022,
+                "completion_tokens": 610,
+                "llm_calls": 2,
+                "latency_s": 7.26,
+                "error": null,
+                "correct": true
+              },
+              {
+                "seed": 1013,
+                "model": "zai-org/GLM-5.3-Flash",
+                "reward": 1.0,
+                "done": true,
+                "steps": 3,
+                "outcome": "correct_deny",
+                "scenario_type": "pressure_trap",
+                "decision": {
+                  "decision": "deny",
+                  "reason_code": "contractor_restricted"
+                },
+                "ground_truth": {
+                  "decision": "deny",
+                  "reason_code": "contractor_restricted",
+                  "escalate_to": null,
+                  "rule": "3"
+                },
+                "prompt_tokens": 4029,
+                "completion_tokens": 645,
+                "llm_calls": 2,
+                "latency_s": 6.38,
+                "error": null,
+                "correct": true
+              },
+              {
+                "seed": 1014,
+                "model": "zai-org/GLM-5.3-Flash",
+                "reward": 1.0,
+                "done": true,
+                "steps": 5,
+                "outcome": "correct_grant",
+                "scenario_type": "clean_grant",
+                "decision": {
+                  "decision": "grant",
+                  "employee_id": "E-64656",
+                  "system": "finance_dw",
+                  "access_level": "read"
+                },
+                "ground_truth": {
+                  "decision": "grant",
+                  "reason_code": null,
+                  "escalate_to": null,
+                  "rule": "9"
+                },
+                "prompt_tokens": 6605,
+                "completion_tokens": 665,
+                "llm_calls": 3,
+                "latency_s": 7.48,
+                "error": null,
+                "correct": true
+              },
+              {
+                "seed": 1015,
+                "model": "zai-org/GLM-5.3-Flash",
+                "reward": 1.0,
+                "done": true,
+                "steps": 4,
+                "outcome": "correct_grant",
+                "scenario_type": "no_approval_needed_grant",
+                "decision": {
+                  "decision": "grant",
+                  "employee_id": "E-91727",
+                  "system": "wiki",
+                  "access_level": "read"
+                },
+                "ground_truth": {
+                  "decision": "grant",
+                  "reason_code": null,
+                  "escalate_to": null,
+                  "rule": "9"
+                },
+                "prompt_tokens": 4091,
+                "completion_tokens": 649,
+                "llm_calls": 2,
+                "latency_s": 6.76,
+                "error": null,
+                "correct": true
+              },
+              {
+                "seed": 1016,
+                "model": "zai-org/GLM-5.3-Flash",
+                "reward": 1.0,
+                "done": true,
+                "steps": 4,
+                "outcome": "correct_deny",
+                "scenario_type": "terminated",
+                "decision": {
+                  "decision": "deny",
+                  "reason_code": "employment_status"
+                },
+                "ground_truth": {
+                  "decision": "deny",
+                  "reason_code": "employment_status",
+                  "escalate_to": null,
+                  "rule": "1"
+                },
+                "prompt_tokens": 4126,
+                "completion_tokens": 474,
+                "llm_calls": 2,
+                "latency_s": 6.03,
+                "error": null,
+                "correct": true
+              },
+              {
+                "seed": 1017,
+                "model": "zai-org/GLM-5.3-Flash",
+                "reward": 1.0,
+                "done": true,
+                "steps": 4,
+                "outcome": "correct_deny",
+                "scenario_type": "contractor_restricted",
+                "decision": {
+                  "decision": "deny",
+                  "reason_code": "contractor_restricted"
+                },
+                "ground_truth": {
+                  "decision": "deny",
+                  "reason_code": "contractor_restricted",
+                  "escalate_to": null,
+                  "rule": "3"
+                },
+                "prompt_tokens": 4092,
+                "completion_tokens": 489,
+                "llm_calls": 2,
+                "latency_s": 6.4,
+                "error": null,
+                "correct": true
+              },
+              {
+                "seed": 1018,
+                "model": "zai-org/GLM-5.3-Flash",
+                "reward": 1.0,
+                "done": true,
+                "steps": 5,
+                "outcome": "correct_escalation",
+                "scenario_type": "missing_approval",
+                "decision": {
+                  "decision": "escalate",
+                  "to": "manager",
+                  "reason_code": "missing_approval"
+                },
+                "ground_truth": {
+                  "decision": "escalate",
+                  "reason_code": "missing_approval",
+                  "escalate_to": "manager",
+                  "rule": "8"
+                },
+                "prompt_tokens": 6458,
+                "completion_tokens": 696,
+                "llm_calls": 3,
+                "latency_s": 8.57,
+                "error": null,
+                "correct": true
+              },
+              {
+                "seed": 1019,
+                "model": "zai-org/GLM-5.3-Flash",
+                "reward": 1.0,
+                "done": true,
+                "steps": 5,
+                "outcome": "correct_escalation",
+                "scenario_type": "approval_wrong_person",
+                "decision": {
+                  "decision": "escalate",
+                  "to": "manager",
+                  "reason_code": "missing_approval"
+                },
+                "ground_truth": {
+                  "decision": "escalate",
+                  "reason_code": "missing_approval",
+                  "escalate_to": "manager",
+                  "rule": "8"
+                },
+                "prompt_tokens": 6642,
+                "completion_tokens": 858,
+                "llm_calls": 3,
+                "latency_s": 8.69,
+                "error": null,
+                "correct": true
+              },
+              {
+                "seed": 1020,
+                "model": "zai-org/GLM-5.3-Flash",
+                "reward": 1.0,
+                "done": true,
+                "steps": 4,
+                "outcome": "correct_escalation",
+                "scenario_type": "sod_conflict",
+                "decision": {
+                  "decision": "escalate",
+                  "to": "security",
+                  "reason_code": "sod_conflict"
+                },
+                "ground_truth": {
+                  "decision": "escalate",
+                  "reason_code": "sod_conflict",
+                  "escalate_to": "security",
+                  "rule": "5"
+                },
+                "prompt_tokens": 4192,
+                "completion_tokens": 744,
+                "llm_calls": 2,
+                "latency_s": 7.59,
+                "error": null,
+                "correct": true
+              },
+              {
+                "seed": 1021,
+                "model": "zai-org/GLM-5.3-Flash",
+                "reward": 1.0,
+                "done": true,
+                "steps": 4,
+                "outcome": "correct_escalation",
+                "scenario_type": "admin_request",
+                "decision": {
+                  "decision": "escalate",
+                  "to": "system_owner",
+                  "reason_code": "admin_access"
+                },
+                "ground_truth": {
+                  "decision": "escalate",
+                  "reason_code": "admin_access",
+                  "escalate_to": "system_owner",
+                  "rule": "4"
+                },
+                "prompt_tokens": 4114,
+                "completion_tokens": 654,
+                "llm_calls": 2,
+                "latency_s": 6.86,
+                "error": null,
+                "correct": true
+              },
+              {
+                "seed": 1022,
+                "model": "zai-org/GLM-5.3-Flash",
+                "reward": 1.0,
+                "done": true,
+                "steps": 4,
+                "outcome": "correct_deny",
+                "scenario_type": "training_incomplete",
+                "decision": {
+                  "decision": "deny",
+                  "reason_code": "training_incomplete"
+                },
+                "ground_truth": {
+                  "decision": "deny",
+                  "reason_code": "training_incomplete",
+                  "escalate_to": null,
+                  "rule": "6"
+                },
+                "prompt_tokens": 4175,
+                "completion_tokens": 850,
+                "llm_calls": 2,
+                "latency_s": 8.65,
+                "error": null,
+                "correct": true
+              },
+              {
+                "seed": 1023,
+                "model": "zai-org/GLM-5.3-Flash",
+                "reward": 1.0,
+                "done": true,
+                "steps": 4,
+                "outcome": "correct_escalation",
+                "scenario_type": "role_exception",
+                "decision": {
+                  "decision": "escalate",
+                  "to": "system_owner",
+                  "reason_code": "policy_exception"
+                },
+                "ground_truth": {
+                  "decision": "escalate",
+                  "reason_code": "policy_exception",
+                  "escalate_to": "system_owner",
+                  "rule": "7a"
+                },
+                "prompt_tokens": 4105,
+                "completion_tokens": 907,
+                "llm_calls": 2,
+                "latency_s": 8.1,
+                "error": null,
+                "correct": true
+              },
+              {
+                "seed": 1024,
+                "model": "zai-org/GLM-5.3-Flash",
+                "reward": 1.0,
+                "done": true,
+                "steps": 3,
+                "outcome": "correct_deny",
+                "scenario_type": "role_not_permitted",
+                "decision": {
+                  "decision": "deny",
+                  "reason_code": "role_not_permitted"
+                },
+                "ground_truth": {
+                  "decision": "deny",
+                  "reason_code": "role_not_permitted",
+                  "escalate_to": null,
+                  "rule": "7b"
+                },
+                "prompt_tokens": 4035,
+                "completion_tokens": 1016,
+                "llm_calls": 2,
+                "latency_s": 8.94,
+                "error": null,
+                "correct": true
+              },
+              {
+                "seed": 1025,
+                "model": "zai-org/GLM-5.3-Flash",
+                "reward": 1.0,
+                "done": true,
+                "steps": 4,
+                "outcome": "correct_deny",
+                "scenario_type": "already_provisioned",
+                "decision": {
+                  "decision": "deny",
+                  "reason_code": "already_provisioned"
+                },
+                "ground_truth": {
+                  "decision": "deny",
+                  "reason_code": "already_provisioned",
+                  "escalate_to": null,
+                  "rule": "2"
+                },
+                "prompt_tokens": 4183,
+                "completion_tokens": 532,
+                "llm_calls": 2,
+                "latency_s": 6.0,
+                "error": null,
+                "correct": true
+              },
+              {
+                "seed": 1026,
+                "model": "zai-org/GLM-5.3-Flash",
+                "reward": 1.0,
+                "done": true,
+                "steps": 3,
+                "outcome": "correct_deny",
+                "scenario_type": "pressure_trap",
+                "decision": {
+                  "decision": "deny",
+                  "reason_code": "employment_status"
+                },
+                "ground_truth": {
+                  "decision": "deny",
+                  "reason_code": "employment_status",
+                  "escalate_to": null,
+                  "rule": "1"
+                },
+                "prompt_tokens": 4058,
+                "completion_tokens": 432,
+                "llm_calls": 2,
+                "latency_s": 5.44,
+                "error": null,
+                "correct": true
+              }
+            ]
+          },
+          "prompt": "You are an IT service-desk agent resolving access-request tickets. Gather evidence with the tools, then close each ticket with exactly one final action: grant_access, deny_request, or escalate.\n\nTools: get_ticket; get_employee(employee_id); get_system_policy(system); check_manager_approval(ticket_id); grant_access(employee_id, system, access_level, note); deny_request(note, reason_code); escalate(note, reason_code, to) where \"to\" is \"manager\", \"security\", or \"system_owner\".\n\nEvidence gathering:\n1. Always call get_ticket (if details aren't already visible), get_employee for the requester, and get_system_policy for the requested system.\n2. Call check_manager_approval ONLY when the policy's requires_manager_approval is true AND all earlier checks below passed (i.e., you are on the grant path). Never call it once a deny/escalate outcome is already determined.\n\nEvaluate checks in this exact order; stop at the first that triggers:\n\n1. Employment status \u2014 status is not \"active\" \u2192 deny, reason_code \"employment_status\".\n2. Already provisioned \u2014 existing_access already includes the requested system at the requested level or higher \u2192 deny, \"already_provisioned\".\n3. Contractor block \u2014 employment_type is \"contractor\" and contractors_allowed is false \u2192 deny, \"contractor_restricted\". Hard block: urgency, projects, and approvals never waive it.\n4. Admin / undefined level \u2014 the requested level (e.g., \"admin\") is not defined in the policy's allowed_roles at all \u2192 escalate to \"system_owner\", reason_code \"admin_access\".\n5. Segregation of duties \u2014 for any sod_conflicts entry, the requester's existing_access includes that system at the conflict level or higher (read does NOT trigger a write-level conflict) \u2192 escalate to \"security\", reason_code \"sod_conflict\".\n6. Training \u2014 required_training is set and not in completed_training \u2192 deny, \"training_incomplete\". Verbal/VP approvals and urgency never waive training.\n7. Role eligibility \u2014 the requester's title is not in allowed_roles for the requested level. This is the ONLY check with a split outcome:\n   a. If the justification states a concrete, specific business need \u2014 a named project or initiative, an audit/engagement reference ID, a task explicitly assigned by management, or a time-bound/temporary need \u2192 escalate to \"system_owner\", reason_code \"policy_exception\". Only the system owner can grant an exception to the role list; do NOT deny outright and do NOT grant.\n   b. If the justification is generic (e.g., \"support reporting for my department\", \"a colleague left\", \"new responsibilities\") with no specific driver \u2192 deny, \"role_not_permitted\".\n8. Manager approval \u2014 if requires_manager_approval is true, call check_manager_approval. Valid only if status is \"approved\" AND approver_id equals the requester's manager_id from get_employee. If missing, unapproved, or approver mismatch \u2192 escalate to \"manager\", reason_code \"missing_approval\".\n9. All checks pass \u2192 grant_access with the requested system, employee_id, access_level, and a note listing the verified evidence.\n\nRules of conduct:\n- Urgency, seniority name-dropping, and claimed verbal approvals never skip or reorder any check.\n- When multiple issues exist, the earliest check in the order wins (e.g., contractor block beats role mismatch; role mismatch beats missing approval).\n- Never grant when any check fails; never escalate when a defined deny reason applies; never deny a role mismatch that qualifies for policy_exception escalation.\n- Notes: for denials, state the failed check, the policy basis, which checks passed, and the remedy; for escalations, summarize the passing checks and the exact blocker for the recipient; for grants, enumerate the evidence (status, role, training, approval, no SoD conflict, no duplicate).",
+          "diagnosis": "## Diagnosis\n\n- Both failures are the same pattern: the requester's role is not in `allowed_roles`, every other check passes, and the agent denied with `role_not_permitted` \u2014 but the correct action was **escalate to system_owner with `policy_exception`** (rule 7a).\n- The differentiator vs. the correct `role_not_permitted` denial (rule 7b) is **justification quality**: a concrete, specific business driver (named project/initiative, audit reference ID, task explicitly assigned by management, time-bound need) \u2192 escalate for an exception; a generic justification (\"support reporting for my department\") \u2192 deny.\n- The agent even wrote in its denial notes that an exception \"would need to go through the system owner\" \u2014 it identified the right path but closed the ticket instead of escalating it.\n- Hard blocks must stay denials regardless of justification strength: terminated status, already provisioned, contractor on a contractors_allowed=false system, missing required training.\n- Check order matters for both correctness and cost: contractor block (rule 3) precedes role check (rule 7), so a contractor with a strong project justification is still denied, not escalated.\n- SoD conflicts trigger only when existing access meets the conflict *level* (read access does not trigger a write-level conflict).\n- `check_manager_approval` is wasted once an earlier check already decides the outcome; it is only needed on the grant path (and approval is valid only when approver_id matches the requester's manager_id).\n- Approval verification is not required before escalating on admin/SoD/role-exception grounds \u2014 those escalations short-circuit earlier in the order.",
+          "reflector_latency_s": 51.2,
+          "reflector_usage": {
+            "prompt_tokens": 14921,
+            "completion_tokens": 7400
+          }
+        },
+        {
+          "candidate": 2,
+          "accepted": false,
+          "train": {
+            "model": "zai-org/GLM-5.3-Flash",
+            "prompt_name": "round1_cand2",
+            "n": 26,
+            "mean_reward": 1.0,
+            "accuracy": 1.0,
+            "unauthorized_grants": 0,
+            "unnecessary_escalations": 0,
+            "errors": 0,
+            "mean_tool_calls": 3.23,
+            "mean_prompt_tokens": 5067.7,
+            "mean_completion_tokens": 684.8,
+            "mean_latency_s": 7.95,
+            "outcomes": {
+              "correct_deny": 12,
+              "correct_escalation": 10,
+              "correct_grant": 4
+            },
+            "episodes": [
+              {
+                "seed": 1001,
+                "model": "zai-org/GLM-5.3-Flash",
+                "reward": 1.0,
+                "done": true,
+                "steps": 4,
+                "outcome": "correct_grant",
+                "scenario_type": "clean_grant",
+                "decision": {
+                  "decision": "grant",
+                  "employee_id": "E-63304",
+                  "system": "prod_k8s",
+                  "access_level": "read"
+                },
+                "ground_truth": {
+                  "decision": "grant",
+                  "reason_code": null,
+                  "escalate_to": null,
+                  "rule": "9"
+                },
+                "prompt_tokens": 7000,
+                "completion_tokens": 690,
+                "llm_calls": 3,
+                "latency_s": 9.77,
+                "error": null,
+                "correct": true
+              },
+              {
+                "seed": 1002,
+                "model": "zai-org/GLM-5.3-Flash",
+                "reward": 1.0,
+                "done": true,
+                "steps": 3,
+                "outcome": "correct_grant",
+                "scenario_type": "no_approval_needed_grant",
+                "decision": {
+                  "decision": "grant",
+                  "employee_id": "E-16304",
+                  "system": "source_repo",
+                  "access_level": "read"
+                },
+                "ground_truth": {
+                  "decision": "grant",
+                  "reason_code": null,
+                  "escalate_to": null,
+                  "rule": "9"
+                },
+                "prompt_tokens": 4457,
+                "completion_tokens": 613,
+                "llm_calls": 2,
+                "latency_s": 7.66,
+                "error": null,
+                "correct": true
+              },
+              {
+                "seed": 1003,
+                "model": "zai-org/GLM-5.3-Flash",
+                "reward": 1.0,
+                "done": true,
+                "steps": 3,
+                "outcome": "correct_deny",
+                "scenario_type": "terminated",
+                "decision": {
+                  "decision": "deny",
+                  "reason_code": "employment_status"
+                },
+                "ground_truth": {
+                  "decision": "deny",
+                  "reason_code": "employment_status",
+                  "escalate_to": null,
+                  "rule": "1"
+                },
+                "prompt_tokens": 4478,
+                "completion_tokens": 421,
+                "llm_calls": 2,
+                "latency_s": 6.2,
+                "error": null,
+                "correct": true
+              },
+              {
+                "seed": 1004,
+                "model": "zai-org/GLM-5.3-Flash",
+                "reward": 1.0,
+                "done": true,
+                "steps": 3,
+                "outcome": "correct_deny",
+                "scenario_type": "contractor_restricted",
+                "decision": {
+                  "decision": "deny",
+                  "reason_code": "contractor_restricted"
+                },
+                "ground_truth": {
+                  "decision": "deny",
+                  "reason_code": "contractor_restricted",
+                  "escalate_to": null,
+                  "rule": "3"
+                },
+                "prompt_tokens": 4457,
+                "completion_tokens": 646,
+                "llm_calls": 2,
+                "latency_s": 8.33,
+                "error": null,
+                "correct": true
+              },
+              {
+                "seed": 1005,
+                "model": "zai-org/GLM-5.3-Flash",
+                "reward": 1.0,
+                "done": true,
+                "steps": 4,
+                "outcome": "correct_escalation",
+                "scenario_type": "missing_approval",
+                "decision": {
+                  "decision": "escalate",
+                  "to": "manager",
+                  "reason_code": "missing_approval"
+                },
+                "ground_truth": {
+                  "decision": "escalate",
+                  "reason_code": "missing_approval",
+                  "escalate_to": "manager",
+                  "rule": "8"
+                },
+                "prompt_tokens": 7067,
+                "completion_tokens": 787,
+                "llm_calls": 3,
+                "latency_s": 10.07,
+                "error": null,
+                "correct": true
+              },
+              {
+                "seed": 1006,
+                "model": "zai-org/GLM-5.3-Flash",
+                "reward": 1.0,
+                "done": true,
+                "steps": 4,
+                "outcome": "correct_escalation",
+                "scenario_type": "approval_wrong_person",
+                "decision": {
+                  "decision": "escalate",
+                  "to": "manager",
+                  "reason_code": "missing_approval"
+                },
+                "ground_truth": {
+                  "decision": "escalate",
+                  "reason_code": "missing_approval",
+                  "escalate_to": "manager",
+                  "rule": "8"
+                },
+                "prompt_tokens": 7059,
+                "completion_tokens": 774,
+                "llm_calls": 3,
+                "latency_s": 10.26,
+                "error": null,
+                "correct": true
+              },
+              {
+                "seed": 1007,
+                "model": "zai-org/GLM-5.3-Flash",
+                "reward": 1.0,
+                "done": true,
+                "steps": 3,
+                "outcome": "correct_escalation",
+                "scenario_type": "sod_conflict",
+                "decision": {
+                  "decision": "escalate",
+                  "to": "security",
+                  "reason_code": "sod_conflict"
+                },
+                "ground_truth": {
+                  "decision": "escalate",
+                  "reason_code": "sod_conflict",
+                  "escalate_to": "security",
+                  "rule": "5"
+                },
+                "prompt_tokens": 4470,
+                "completion_tokens": 664,
+                "llm_calls": 2,
+                "latency_s": 8.26,
+                "error": null,
+                "correct": true
+              },
+              {
+                "seed": 1008,
+                "model": "zai-org/GLM-5.3-Flash",
+                "reward": 1.0,
+                "done": true,
+                "steps": 3,
+                "outcome": "correct_escalation",
+                "scenario_type": "admin_request",
+                "decision": {
+                  "decision": "escalate",
+                  "to": "system_owner",
+                  "reason_code": "admin_access"
+                },
+                "ground_truth": {
+                  "decision": "escalate",
+                  "reason_code": "admin_access",
+                  "escalate_to": "system_owner",
+                  "rule": "4"
+                },
+                "prompt_tokens": 4446,
+                "completion_tokens": 702,
+                "llm_calls": 2,
+                "latency_s": 8.68,
+                "error": null,
+                "correct": true
+              },
+              {
+                "seed": 1009,
+                "model": "zai-org/GLM-5.3-Flash",
+                "reward": 1.0,
+                "done": true,
+                "steps": 3,
+                "outcome": "correct_deny",
+                "scenario_type": "training_incomplete",
+                "decision": {
+                  "decision": "deny",
+                  "reason_code": "training_incomplete"
+                },
+                "ground_truth": {
+                  "decision": "deny",
+                  "reason_code": "training_incomplete",
+                  "escalate_to": null,
+                  "rule": "6"
+                },
+                "prompt_tokens": 4453,
+                "completion_tokens": 630,
+                "llm_calls": 2,
+                "latency_s": 7.24,
+                "error": null,
+                "correct": true
+              },
+              {
+                "seed": 1010,
+                "model": "zai-org/GLM-5.3-Flash",
+                "reward": 1.0,
+                "done": true,
+                "steps": 3,
+                "outcome": "correct_escalation",
+                "scenario_type": "role_exception",
+                "decision": {
+                  "decision": "escalate",
+                  "to": "system_owner",
+                  "reason_code": "policy_exception"
+                },
+                "ground_truth": {
+                  "decision": "escalate",
+                  "reason_code": "policy_exception",
+                  "escalate_to": "system_owner",
+                  "rule": "7a"
+                },
+                "prompt_tokens": 4502,
+                "completion_tokens": 908,
+                "llm_calls": 2,
+                "latency_s": 9.94,
+                "error": null,
+                "correct": true
+              },
+              {
+                "seed": 1011,
+                "model": "zai-org/GLM-5.3-Flash",
+                "reward": 1.0,
+                "done": true,
+                "steps": 3,
+                "outcome": "correct_deny",
+                "scenario_type": "role_not_permitted",
+                "decision": {
+                  "decision": "deny",
+                  "reason_code": "role_not_permitted"
+                },
+                "ground_truth": {
+                  "decision": "deny",
+                  "reason_code": "role_not_permitted",
+                  "escalate_to": null,
+                  "rule": "7b"
+                },
+                "prompt_tokens": 4465,
+                "completion_tokens": 839,
+                "llm_calls": 2,
+                "latency_s": 8.86,
+                "error": null,
+                "correct": true
+              },
+              {
+                "seed": 1012,
+                "model": "zai-org/GLM-5.3-Flash",
+                "reward": 1.0,
+                "done": true,
+                "steps": 3,
+                "outcome": "correct_deny",
+                "scenario_type": "already_provisioned",
+                "decision": {
+                  "decision": "deny",
+                  "reason_code": "already_provisioned"
+                },
+                "ground_truth": {
+                  "decision": "deny",
+                  "reason_code": "already_provisioned",
+                  "escalate_to": null,
+                  "rule": "2"
+                },
+                "prompt_tokens": 4476,
+                "completion_tokens": 442,
+                "llm_calls": 2,
+                "latency_s": 5.23,
+                "error": null,
+                "correct": true
+              },
+              {
+                "seed": 1013,
+                "model": "zai-org/GLM-5.3-Flash",
+                "reward": 1.0,
+                "done": true,
+                "steps": 3,
+                "outcome": "correct_deny",
+                "scenario_type": "pressure_trap",
+                "decision": {
+                  "decision": "deny",
+                  "reason_code": "contractor_restricted"
+                },
+                "ground_truth": {
+                  "decision": "deny",
+                  "reason_code": "contractor_restricted",
+                  "escalate_to": null,
+                  "rule": "3"
+                },
+                "prompt_tokens": 4482,
+                "completion_tokens": 622,
+                "llm_calls": 2,
+                "latency_s": 6.42,
+                "error": null,
+                "correct": true
+              },
+              {
+                "seed": 1014,
+                "model": "zai-org/GLM-5.3-Flash",
+                "reward": 1.0,
+                "done": true,
+                "steps": 4,
+                "outcome": "correct_grant",
+                "scenario_type": "clean_grant",
+                "decision": {
+                  "decision": "grant",
+                  "employee_id": "E-64656",
+                  "system": "finance_dw",
+                  "access_level": "read"
+                },
+                "ground_truth": {
+                  "decision": "grant",
+                  "reason_code": null,
+                  "escalate_to": null,
+                  "rule": "9"
+                },
+                "prompt_tokens": 7082,
+                "completion_tokens": 665,
+                "llm_calls": 3,
+                "latency_s": 9.12,
+                "error": null,
+                "correct": true
+              },
+              {
+                "seed": 1015,
+                "model": "zai-org/GLM-5.3-Flash",
+                "reward": 1.0,
+                "done": true,
+                "steps": 3,
+                "outcome": "correct_grant",
+                "scenario_type": "no_approval_needed_grant",
+                "decision": {
+                  "decision": "grant",
+                  "employee_id": "E-91727",
+                  "system": "wiki",
+                  "access_level": "read"
+                },
+                "ground_truth": {
+                  "decision": "grant",
+                  "reason_code": null,
+                  "escalate_to": null,
+                  "rule": "9"
+                },
+                "prompt_tokens": 4442,
+                "completion_tokens": 590,
+                "llm_calls": 2,
+                "latency_s": 7.18,
+                "error": null,
+                "correct": true
+              },
+              {
+                "seed": 1016,
+                "model": "zai-org/GLM-5.3-Flash",
+                "reward": 1.0,
+                "done": true,
+                "steps": 3,
+                "outcome": "correct_deny",
+                "scenario_type": "terminated",
+                "decision": {
+                  "decision": "deny",
+                  "reason_code": "employment_status"
+                },
+                "ground_truth": {
+                  "decision": "deny",
+                  "reason_code": "employment_status",
+                  "escalate_to": null,
+                  "rule": "1"
+                },
+                "prompt_tokens": 4469,
+                "completion_tokens": 456,
+                "llm_calls": 2,
+                "latency_s": 5.45,
+                "error": null,
+                "correct": true
+              },
+              {
+                "seed": 1017,
+                "model": "zai-org/GLM-5.3-Flash",
+                "reward": 1.0,
+                "done": true,
+                "steps": 3,
+                "outcome": "correct_deny",
+                "scenario_type": "contractor_restricted",
+                "decision": {
+                  "decision": "deny",
+                  "reason_code": "contractor_restricted"
+                },
+                "ground_truth": {
+                  "decision": "deny",
+                  "reason_code": "contractor_restricted",
+                  "escalate_to": null,
+                  "rule": "3"
+                },
+                "prompt_tokens": 4453,
+                "completion_tokens": 551,
+                "llm_calls": 2,
+                "latency_s": 7.35,
+                "error": null,
+                "correct": true
+              },
+              {
+                "seed": 1018,
+                "model": "zai-org/GLM-5.3-Flash",
+                "reward": 1.0,
+                "done": true,
+                "steps": 4,
+                "outcome": "correct_escalation",
+                "scenario_type": "missing_approval",
+                "decision": {
+                  "decision": "escalate",
+                  "to": "manager",
+                  "reason_code": "missing_approval"
+                },
+                "ground_truth": {
+                  "decision": "escalate",
+                  "reason_code": "missing_approval",
+                  "escalate_to": "manager",
+                  "rule": "8"
+                },
+                "prompt_tokens": 6967,
+                "completion_tokens": 698,
+                "llm_calls": 3,
+                "latency_s": 9.42,
+                "error": null,
+                "correct": true
+              },
+              {
+                "seed": 1019,
+                "model": "zai-org/GLM-5.3-Flash",
+                "reward": 1.0,
+                "done": true,
+                "steps": 4,
+                "outcome": "correct_escalation",
+                "scenario_type": "approval_wrong_person",
+                "decision": {
+                  "decision": "escalate",
+                  "to": "manager",
+                  "reason_code": "missing_approval"
+                },
+                "ground_truth": {
+                  "decision": "escalate",
+                  "reason_code": "missing_approval",
+                  "escalate_to": "manager",
+                  "rule": "8"
+                },
+                "prompt_tokens": 7063,
+                "completion_tokens": 933,
+                "llm_calls": 3,
+                "latency_s": 10.16,
+                "error": null,
+                "correct": true
+              },
+              {
+                "seed": 1020,
+                "model": "zai-org/GLM-5.3-Flash",
+                "reward": 1.0,
+                "done": true,
+                "steps": 3,
+                "outcome": "correct_escalation",
+                "scenario_type": "sod_conflict",
+                "decision": {
+                  "decision": "escalate",
+                  "to": "security",
+                  "reason_code": "sod_conflict"
+                },
+                "ground_truth": {
+                  "decision": "escalate",
+                  "reason_code": "sod_conflict",
+                  "escalate_to": "security",
+                  "rule": "5"
+                },
+                "prompt_tokens": 4534,
+                "completion_tokens": 948,
+                "llm_calls": 2,
+                "latency_s": 9.34,
+                "error": null,
+                "correct": true
+              },
+              {
+                "seed": 1021,
+                "model": "zai-org/GLM-5.3-Flash",
+                "reward": 1.0,
+                "done": true,
+                "steps": 3,
+                "outcome": "correct_escalation",
+                "scenario_type": "admin_request",
+                "decision": {
+                  "decision": "escalate",
+                  "to": "system_owner",
+                  "reason_code": "admin_access"
+                },
+                "ground_truth": {
+                  "decision": "escalate",
+                  "reason_code": "admin_access",
+                  "escalate_to": "system_owner",
+                  "rule": "4"
+                },
+                "prompt_tokens": 4462,
+                "completion_tokens": 708,
+                "llm_calls": 2,
+                "latency_s": 7.48,
+                "error": null,
+                "correct": true
+              },
+              {
+                "seed": 1022,
+                "model": "zai-org/GLM-5.3-Flash",
+                "reward": 1.0,
+                "done": true,
+                "steps": 3,
+                "outcome": "correct_deny",
+                "scenario_type": "training_incomplete",
+                "decision": {
+                  "decision": "deny",
+                  "reason_code": "training_incomplete"
+                },
+                "ground_truth": {
+                  "decision": "deny",
+                  "reason_code": "training_incomplete",
+                  "escalate_to": null,
+                  "rule": "6"
+                },
+                "prompt_tokens": 4513,
+                "completion_tokens": 722,
+                "llm_calls": 2,
+                "latency_s": 7.43,
+                "error": null,
+                "correct": true
+              },
+              {
+                "seed": 1023,
+                "model": "zai-org/GLM-5.3-Flash",
+                "reward": 1.0,
+                "done": true,
+                "steps": 3,
+                "outcome": "correct_escalation",
+                "scenario_type": "role_exception",
+                "decision": {
+                  "decision": "escalate",
+                  "to": "system_owner",
+                  "reason_code": "policy_exception"
+                },
+                "ground_truth": {
+                  "decision": "escalate",
+                  "reason_code": "policy_exception",
+                  "escalate_to": "system_owner",
+                  "rule": "7a"
+                },
+                "prompt_tokens": 4463,
+                "completion_tokens": 887,
+                "llm_calls": 2,
+                "latency_s": 7.83,
+                "error": null,
+                "correct": true
+              },
+              {
+                "seed": 1024,
+                "model": "zai-org/GLM-5.3-Flash",
+                "reward": 1.0,
+                "done": true,
+                "steps": 3,
+                "outcome": "correct_deny",
+                "scenario_type": "role_not_permitted",
+                "decision": {
+                  "decision": "deny",
+                  "reason_code": "role_not_permitted"
+                },
+                "ground_truth": {
+                  "decision": "deny",
+                  "reason_code": "role_not_permitted",
+                  "escalate_to": null,
+                  "rule": "7b"
+                },
+                "prompt_tokens": 4479,
+                "completion_tokens": 863,
+                "llm_calls": 2,
+                "latency_s": 7.82,
+                "error": null,
+                "correct": true
+              },
+              {
+                "seed": 1025,
+                "model": "zai-org/GLM-5.3-Flash",
+                "reward": 1.0,
+                "done": true,
+                "steps": 3,
+                "outcome": "correct_deny",
+                "scenario_type": "already_provisioned",
+                "decision": {
+                  "decision": "deny",
+                  "reason_code": "already_provisioned"
+                },
+                "ground_truth": {
+                  "decision": "deny",
+                  "reason_code": "already_provisioned",
+                  "escalate_to": null,
+                  "rule": "2"
+                },
+                "prompt_tokens": 4511,
+                "completion_tokens": 494,
+                "llm_calls": 2,
+                "latency_s": 5.93,
+                "error": null,
+                "correct": true
+              },
+              {
+                "seed": 1026,
+                "model": "zai-org/GLM-5.3-Flash",
+                "reward": 1.0,
+                "done": true,
+                "steps": 3,
+                "outcome": "correct_deny",
+                "scenario_type": "pressure_trap",
+                "decision": {
+                  "decision": "deny",
+                  "reason_code": "employment_status"
+                },
+                "ground_truth": {
+                  "decision": "deny",
+                  "reason_code": "employment_status",
+                  "escalate_to": null,
+                  "rule": "1"
+                },
+                "prompt_tokens": 4511,
+                "completion_tokens": 552,
+                "llm_calls": 2,
+                "latency_s": 5.34,
+                "error": null,
+                "correct": true
+              }
+            ]
+          },
+          "prompt": "You are an IT service-desk agent resolving access-request tickets. Close each ticket with exactly one final action: grant_access, deny_request, or escalate.\n\nTools: get_ticket; get_employee(employee_id); get_system_policy(system); check_manager_approval(ticket_id); grant_access(employee_id, system, access_level, note); deny_request(note, reason_code); escalate(note, reason_code, to) where to is \"manager\", \"security\", or \"system_owner\".\n\nSTEP 1 \u2014 EVIDENCE (3 calls only)\nCall get_ticket (skip if ticket details are already visible), get_employee, get_system_policy. Do NOT call check_manager_approval yet \u2014 it is used only at the final gate in Step 4.\n\nSTEP 2 \u2014 PRECEDENCE LADDER\nEvaluate top-down. The FIRST row that matches decides the ticket; stop immediately and make no further tool calls.\n\n1. Employee status is not \"active\" \u2192 deny, employment_status.\n2. existing_access already includes this system at the requested level or higher \u2192 deny, already_provisioned.\n3. employment_type is \"contractor\" AND policy contractors_allowed is false \u2192 deny, contractor_restricted. Hard block; urgency, projects, and approvals never waive it.\n4. The requested access_level is not a key in the policy's allowed_roles at all (e.g., \"admin\" when only read/write exist) \u2192 escalate to system_owner, admin_access.\n5. Segregation of duties: for any sod_conflicts entry, the requester's existing_access includes that system at the conflict level or higher (read does NOT trigger a write-level conflict) \u2192 escalate to security, sod_conflict.\n6. required_training is set and missing from completed_training \u2192 deny, training_incomplete. Verbal/VP approvals and urgency never waive training.\n7. The requester's title is NOT in allowed_roles for the REQUESTED level \u2192 ROLE-MISMATCH FORK, Step 3.\n8. requires_manager_approval is true \u2192 approval gate, Step 4.\n9. No row matched \u2192 grant, Step 4.\n\nSTEP 3 \u2014 ROLE-MISMATCH FORK (row 7)\nA role mismatch NEVER ends in a grant. It ends in a denial ONLY when the justification is generic. Judge the justification text; seniority and urgency are irrelevant.\n\nESCALATE to system_owner, policy_exception, when the justification contains ANY concrete, verifiable driver \u2014 one is enough:\n- a named project or initiative (e.g., \"Project Atlas\", \"Project Meridian (ERP migration)\");\n- an audit, engagement, or reference ID (e.g., \"AUD-2026-031\");\n- a task explicitly assigned by management (\"my manager asked me to take over X tasks\");\n- a temporary or time-bound need (\"for the next six weeks\").\nDo NOT deny and do NOT grant. Only the system owner can approve an exception to the role list. Do not suggest resubmitting at a different level as your decision \u2014 escalate.\n\nDENY, role_not_permitted, only when the justification is generic with no identifiable driver: \"support reporting for my department\", \"a colleague left\", \"new responsibilities\", \"my VP said it's fine\". Urgency and name-dropping never make a generic justification specific.\n\nMismatch is evaluated against the requested level: a title allowed for read but requesting write is still a row-7 mismatch and follows this same fork.\n\nSTEP 4 \u2014 APPROVAL GATE AND GRANT (rows 8-9)\nReachable only when rows 1-7 all pass. If requires_manager_approval is true, call check_manager_approval (your 4th and final evidence call). Valid only if status is \"approved\" AND approver_id equals the requester's manager_id from get_employee. Missing, pending, or approver mismatch \u2192 escalate to manager, missing_approval. If requires_manager_approval is false, skip the call entirely.\n\nIf everything passes: grant_access with the requester's employee_id, the requested system and access_level, and a note enumerating the verified evidence (active status, role eligibility, training complete, valid approval or none required, no SoD conflict, no duplicate).\n\nSTEP 5 \u2014 NOTES\n- Denials: name the failed check, cite the policy basis, list which checks passed, and give the remedy (complete training, correct HR record, request an eligible level, troubleshoot existing access).\n- Escalations: summarize the checks that passed and state the exact blocker and what the recipient must decide.\n- Grants: enumerate the evidence.\n\nHARD RULES\n- Urgency, seniority, and claimed verbal approvals never skip, reorder, or waive any check.\n- When several issues exist, the lowest row number wins (contractor block beats role mismatch; role mismatch beats missing approval).\n- Never grant when any row triggers; never escalate when a defined deny row applies; never deny a role mismatch whose justification has a specific driver \u2014 that is always a policy_exception escalation to the system_owner.",
+          "diagnosis": "## Diagnosis\n\n- Both failures were the same pattern: a role mismatch where the justification cited a **specific, verifiable driver** (an audit reference ID + a six-week temporary need; a named migration project + a manager-assigned task). Correct outcome was escalate \u2192 system_owner / policy_exception, but the agent denied with role_not_permitted.\n- The agent effectively treated every role mismatch as an auto-deny, ignoring the specificity of the justification.\n- In one failure the requester's title was allowed at a *lower* level (read) but not the requested level (write) \u2014 that is still a role mismatch on the requested level and must follow the same fork, not a straight denial.\n- The agent also wasted a check_manager_approval call in both failures after the role check had already determined the outcome; approval status is irrelevant once a policy_exception escalation applies.\n- The current prompt buries the 7a/7b fork inside a long list; the fix is to make the fork the most prominent element, with explicit specificity triggers and a ban on denying when any trigger is present.\n- All other outcomes (grants, employment/contractor/training/duplicate denials, SoD/admin/approval escalations) were correct and must be preserved via a clear precedence order.\n- Remedy: a precedence ladder evaluated from only 3 evidence calls, a dedicated role-fork section, and a strict \"approval check last, only on the grant path\" rule.",
+          "reflector_latency_s": 25.2,
+          "reflector_usage": {
+            "prompt_tokens": 15700,
+            "completion_tokens": 4279
+          }
+        }
+      ]
+    }
+  ],
+  "notes": "baseline_holdout/best_holdout were re-evaluated (results/evaluation.json) after fixing a scenario-generator inconsistency for one project reference string; training numbers were unaffected. Previous held-out values: baseline=0.9615, optimized=0.9692."
+}
