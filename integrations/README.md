@@ -9,6 +9,7 @@ Token Factory exposes an **OpenAI-compatible API** at `https://api.tokenfactory.
 | [OpenClaw](openclaw/) 🦞 | Run self-hosted AI agents (WhatsApp, Telegram, Discord, …) on open models served by Token Factory | Self-hosted AI assistant |
 | [Tavily](tavily/) 🔍 | LLM-optimized search API for agentic research, competitive intelligence, and web-grounded agents | Search / Research |
 | [Pixeltable](pixeltable/) | Multimodal AI data infrastructure with native Token Factory chat completions and embeddings | Data / RAG framework |
+| [Vercel AI SDK](vercel-ai-sdk/) | Stream typed tool-calling responses through the generic OpenAI-compatible provider | TypeScript AI SDK |
 | [openwiki](openwiki-enterprise//) | A documentation agent that generates and maintains a Markdown knowledge base from source repositories | Documentation |
 | [OpenHands Agent Canvas](openhands-agent-canvas/) 🙌 | Self-hosted control center for coding agents, running on a Nebius VM with Qwen3-32B served by Token Factory | Coding agent |
 | [Tendem by Toloka](tendem-invoice-validation/) 🧾 | Confidence-gated human validation: extract invoice fields with a Token Factory vision model, escalate only the uncertain ones to a vetted human expert | Human-in-the-loop |
