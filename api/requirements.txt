@@ -1,14 +1,11 @@
-openai
+# Shared notebook utilities. Framework adapters live in separate requirement
+# files because current aisuite and LiteLLM releases require incompatible
+# httpx versions and cannot be installed into one environment.
+openai>=2.20,<3
+python-dotenv>=1,<2
+ipykernel>=7,<8
 
-aisuite
-docstring-parser
-
-litellm
-
-llama-index-llms-nebius
-
-## python utils
-python-dotenv
-
-## jupyter notebook
-ipykernel
+# Choose one framework environment:
+#   pip install -r api/requirements-aisuite.txt
+#   pip install -r api/requirements-litellm.txt
+#   pip install -r api/requirements-llamaindex.txt
