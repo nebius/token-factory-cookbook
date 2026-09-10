@@ -1,0 +1,31 @@
+{
+  "language_models": {
+    "openai_compatible": {
+      "nebius": {
+        "api_url": "https://api.tokenfactory.nebius.com/v1",
+        "available_models": [
+          {
+            "name": "moonshotai/Kimi-K3",
+            "display_name": "Nebius Token Factory · Kimi K3",
+            "max_tokens": 1000000,
+            "capabilities": {
+              "tools": true,
+              "images": true,
+              "parallel_tool_calls": false,
+              "prompt_cache_key": false,
+              "chat_completions": true,
+              "interleaved_reasoning": true,
+              "max_tokens_parameter": false
+            }
+          }
+        ]
+      }
+    }
+  },
+  "agent": {
+    "default_model": {
+      "provider": "nebius",
+      "model": "moonshotai/Kimi-K3"
+    }
+  }
+}
