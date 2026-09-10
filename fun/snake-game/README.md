@@ -12,12 +12,12 @@ A visual snake battle game where two LLMs compete against each other! Watch as A
 - **Real-time Visualization**: Watch the snakes move, grow, and compete on a 30×30 canvas
 - **Game Log**: Per-move event tracking with color-coded API latency (teal/yellow/red) and smart auto-scroll
 - **Latency Graphs**: Interactive per-player time-series graph (hover for exact move + latency) with Min/Median/P90/Max stats
-- **Configurable**: Choose models from any OpenAI-compatible API
+- **Configurable**: Choose models from any OpenAI-compatible API through a local, server-side proxy
 - **Loop Mode**: Auto-restart with a 5-second countdown after each game ends (on by default)
 - **Collision Avoidance Toggle**: Enable/disable LLM safe-move hints and automatic override (on by default)
 - **Thinking Mode**: Optionally let models reason before answering via `enable_thinking` (off by default)
 - **Visibility Radius**: Adjustable snake vision (1–30 cells, default 5; 30 = full grid)
-- **Debug Mode**: Console logging with masked auth headers and timestamped request/response correlation
+- **Debug Mode**: Timestamped request/response correlation without exposing auth headers to the browser
 - **Model Benchmarking**: Dual-benchmark Speed Test with tabbed results, sortable headers, and sort-by-benchmark menu
 - **Capped Game Log**: Keeps the 100 most recent entries (older ones trimmed) to stay light over long games
 - **Fancy UI**: Dark theme with glowing effects and glass panels
@@ -35,13 +35,35 @@ A visual snake battle game where two LLMs compete against each other! Watch as A
 
 ## How to Play
 
-1. Open `snake.html` in your web browser
-2. Enter your **API URL** (already filled with Nebius Token Factory endpoint)
-3. Paste your **API Key**
-4. Click **Load Models** to fetch available models
-5. Select different models for Player 1 (Red) and Player 2 (Blue) via the searchable dropdowns
-6. (Optional) Adjust **Options** — Visibility Radius, Collision Avoidance, Thinking Mode, Debug Mode
-7. Click **Start** to begin the battle
+1. Set the API key in your current terminal session:
+
+   ```bash
+   read -rsp 'Nebius API key: ' NEBIUS_API_KEY && echo
+   export NEBIUS_API_KEY
+   ```
+
+2. Start the loopback-only game server from this directory:
+
+   ```bash
+   python3 server.py
+   ```
+
+3. Open <http://127.0.0.1:8000/snake.html>.
+4. Click **Load Models** to fetch available models.
+5. Select different models for Player 1 (Red) and Player 2 (Blue) via the searchable dropdowns.
+6. (Optional) Adjust **Options** — Visibility Radius, Collision Avoidance, Thinking Mode, Debug Mode.
+7. Click **Start** to begin the battle.
+
+The API key remains in the Python process. It is never placed in HTML, browser
+storage, browser JavaScript, or a client-side `Authorization` header. Do not
+commit keys to this repository. Stop the server and `unset NEBIUS_API_KEY` when
+you are finished if the shell is shared.
+
+Run the offline proxy/security checks with:
+
+```bash
+python3 -m unittest -v test_server.py
+```
 
 Controls in the left pane: **Start**, **Pause** ⏸️, **Restart** 🔄, and a **Loop** toggle. The **🔧 Extra** section has the **Speed Test** benchmark and sort buttons.
 
@@ -82,7 +104,7 @@ Controls in the left pane: **Start**, **Pause** ⏸️, **Restart** 🔄, and a 
 
 ## Tech Stack
 
-- Pure HTML/CSS/JavaScript (no build tools required)
+- HTML/CSS/JavaScript frontend with a Python standard-library localhost proxy
 - Canvas API for game rendering
 - OpenAI-compatible API for LLM calls
 - Responsive design (stacks vertically on narrow screens)
@@ -94,6 +116,8 @@ Controls in the left pane: **Start**, **Pause** ⏸️, **Restart** 🔄, and a 
 ├── style.css       # Styling and animations
 ├── game.js         # Game logic, rendering, and API integration
 ├── benchmark.js    # Model performance testing system
+├── server.py       # Static server + narrow server-side API proxy
+├── test_server.py  # Proxy/security regression tests
 └── README.md       # This file
 ```
 
@@ -120,20 +144,44 @@ const MAX_LOG_ENTRIES = 100;          // Cap on game-log <p> entries (oldest tri
 
 ## API Compatibility
 
-Works with any OpenAI-compatible API that supports:
+The server defaults to Nebius Token Factory. It works with any OpenAI-compatible
+API that supports:
 - `GET /models` endpoint (verbose metadata is tried first for modality filtering, with plain fallback)
 - `POST /chat/completions` endpoint
 - Standard message format
 
-Tested with Nebius Token Factory but should work with others (OpenAI, compatible proxies, Ollama, LM Studio). Models are filtered by **output modality**: any model that produces text output is included (so vision-capable text LLMs like `moonshotai/Kimi-K2.6` are selectable), while pure image/audio generation models are excluded.
+To use another endpoint, configure it on the server, not in the browser:
+
+```bash
+read -rsp 'Provider API key: ' OPENAI_API_KEY && echo
+export OPENAI_API_KEY
+export TOKEN_FACTORY_BASE_URL='https://example.com/v1/'
+python3 server.py
+```
+
+`OPENAI_API_KEY` is required when `TOKEN_FACTORY_BASE_URL` is explicitly set;
+the server never falls back to `NEBIUS_API_KEY` for a custom upstream, and an
+ambient OpenAI key is never sent to the default Nebius endpoint.
+`TOKEN_FACTORY_BASE_URL` must be an absolute HTTP(S) URL without embedded
+credentials, query parameters, or fragments. Custom network endpoints must use
+HTTPS; plain HTTP is accepted only for `localhost`, `127.0.0.1`, or `::1` local
+providers. The browser can only call the
+proxy's allowlisted `/api/models` and `/api/chat/completions` routes; it cannot
+choose an arbitrary upstream URL. The server binds to `127.0.0.1` and does not
+enable CORS.
+
+Models are filtered by **output modality**: any model that produces text output
+is included (so vision-capable text LLMs like `moonshotai/Kimi-K2.6` are
+selectable), while pure image/audio generation models are excluded.
 
 ## Troubleshooting
 
 **"Failed to load models" error:**
-- Check your API URL ends with `/`
-- Verify your API key is correct
+- Confirm you opened the game through `python3 server.py`, not as a `file://` URL
+- Check that `NEBIUS_API_KEY` or `OPENAI_API_KEY` was exported before the server started
+- If using a custom provider, verify `TOKEN_FACTORY_BASE_URL`
+- Read the server terminal for an upstream HTTP status
 - Check browser console (F12) for detailed errors
-- Some APIs require CORS to be configured to work from the browser
 
 **Snakes don't seem smart:**
 - Try different models - some are better at this task than others

@@ -1759,3 +1759,9 @@ body {
     border-color: #4ecdc4 !important;
     color: #fff !important;
 }
+.proxy-status {
+    margin: 0 0 15px;
+    color: #b8c4d6;
+    font-size: 12px;
+    line-height: 1.5;
+}

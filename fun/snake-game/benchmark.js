@@ -658,13 +658,13 @@ class ModelBenchmark {
         }
     }
 
-    async benchmarkThinking1Model(apiUrl, apiKey, modelName, testCount = ModelBenchmark.TEST_COUNT, thinkingEnabled = false) {
+    async benchmarkThinking1Model(apiUrl, modelName, testCount = ModelBenchmark.TEST_COUNT, thinkingEnabled = false) {
         console.log(`\n🎯 [Bench 2] Starting thinking-1 (random line) benchmark for model: ${this.getDisplayName(modelName)}`);
         console.log(`   Running ${testCount} parallel test requests...`);
 
         const results = [];
         const requests = Array.from({ length: testCount }, () =>
-            this.performUUIDRequest(apiUrl, apiKey, modelName, thinkingEnabled)
+            this.performUUIDRequest(apiUrl, modelName, thinkingEnabled)
         );
 
         const requestResults = await Promise.all(requests);
@@ -782,13 +782,13 @@ class ModelBenchmark {
      * token (then aborts). No max_tokens cap, no accuracy dimension — success
      * is simply "the model started emitting output within the timeout."
      */
-    async benchmarkResponseTimeModel(apiUrl, apiKey, modelName, testCount = ModelBenchmark.PURE_SPEED_TEST_COUNT, thinkingEnabled = false) {
+    async benchmarkResponseTimeModel(apiUrl, modelName, testCount = ModelBenchmark.PURE_SPEED_TEST_COUNT, thinkingEnabled = false) {
         console.log(`\n⚡ [Bench 1] Starting response-time benchmark for model: ${this.getDisplayName(modelName)}`);
         console.log(`   Running ${testCount} parallel first-token-arrival (streaming) tests...`);
 
         const results = [];
         const requests = Array.from({ length: testCount }, () =>
-            this.performPureSpeedRequest(apiUrl, apiKey, modelName, thinkingEnabled)
+            this.performPureSpeedRequest(apiUrl, modelName, thinkingEnabled)
         );
 
         const requestResults = await Promise.all(requests);
@@ -893,7 +893,7 @@ class ModelBenchmark {
      * Success = at least one content delta came back. Failure = non-200 HTTP,
      * a network/parse error, timeout, or the stream ended with no content.
      */
-    async performPureSpeedRequest(apiUrl, apiKey, modelName, thinkingEnabled = false) {
+    async performPureSpeedRequest(apiUrl, modelName, thinkingEnabled = false) {
         const systemPrompt = `You are a test endpoint.`;
         const userPrompt = ModelBenchmark.PURE_SPEED_PROMPT;
 
@@ -909,8 +909,7 @@ class ModelBenchmark {
             const response = await fetch(`${apiUrl}chat/completions`, {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${apiKey}`
+                    'Content-Type': 'application/json'
                 },
                 signal: abortController.signal,
                 body: JSON.stringify({
@@ -1010,7 +1009,7 @@ class ModelBenchmark {
         return typeof delta === 'string' && delta.length > 0;
     }
 
-    async performUUIDRequest(apiUrl, apiKey, modelName, thinkingEnabled = false) {
+    async performUUIDRequest(apiUrl, modelName, thinkingEnabled = false) {
         try {
             // Fallback for crypto.randomUUID() in older browsers
             const generateUUID = () => {
@@ -1048,8 +1047,7 @@ class ModelBenchmark {
                     fetch(`${apiUrl}chat/completions`, {
                         method: 'POST',
                         headers: {
-                            'Content-Type': 'application/json',
-                            'Authorization': `Bearer ${apiKey}`
+                            'Content-Type': 'application/json'
                         },
                         body: JSON.stringify({
                             model: modelName,
@@ -1270,17 +1268,9 @@ document.addEventListener('DOMContentLoaded', () => {
             // Disable button immediately
             benchmarkBtn.disabled = true;
 
-            const apiUrl = document.getElementById('api-url').value;
-            const apiKey = document.getElementById('api-key').value;
+            const apiUrl = API_BASE_URL;
             // Mirror the Options toggle so benchmarks compare the same setting used in-game
             const thinkingEnabled = document.getElementById('thinking-mode-checkbox')?.checked ?? false;
-
-            if (!apiUrl || !apiKey) {
-                console.error('❌ Please provide API URL and API key');
-                alert('Please provide API URL and API key');
-                benchmarkBtn.disabled = false;
-                return;
-            }
 
             // Access availableModels from game.js
             if (typeof availableModels === 'undefined' || availableModels.length === 0) {
@@ -1318,7 +1308,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                     await Promise.allSettled(availableModels.map(model =>
                         // Count omitted so each runner applies its own default
-                        runner.call(benchmark, apiUrl, apiKey, model.id, undefined, thinkingEnabled)
+                        runner.call(benchmark, apiUrl, model.id, undefined, thinkingEnabled)
                     ));
                 }
 
