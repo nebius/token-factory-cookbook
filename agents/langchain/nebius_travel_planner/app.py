@@ -143,13 +143,7 @@ st.caption("Streamlit + LangChain + Nebius ChatNebius")
 
 with st.sidebar:
     st.header("Nebius")
-    sidebar_api_key = st.text_input(
-        "API key",
-        value="",
-        type="password",
-        help="Optional. Leave blank to use NEBIUS_API_KEY from .env or Streamlit secrets.",
-    )
-    api_key = sidebar_api_key or _secret_or_env("NEBIUS_API_KEY")
+    api_key = _secret_or_env("NEBIUS_API_KEY")
     model_name = st.text_input("Model", value=_secret_or_env("NEBIUS_MODEL", DEFAULT_MODEL))
     temperature = st.slider("Creativity", min_value=0.0, max_value=1.0, value=0.25, step=0.05)
     if api_key:
@@ -253,10 +247,11 @@ if submitted:
 st.divider()
 
 if not api_key:
-    st.info("Add a Nebius API key in the sidebar, .env, or Streamlit secrets.")
+    st.info("Set NEBIUS_API_KEY in the server environment or Streamlit secrets.")
     if "pending_prompt" in st.session_state:
         st.warning(
-            "Add a Nebius API key before building the itinerary. Your trip brief is ready to send."
+            "Configure NEBIUS_API_KEY on the server before building the itinerary. "
+            "Your trip brief is ready to send."
         )
     with st.form("fixed_chat_bar_disabled", clear_on_submit=True):
         chat_col, send_col = st.columns([0.84, 0.16])

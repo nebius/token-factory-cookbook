@@ -28,8 +28,8 @@ NEBIUS_API_KEY=your-nebius-api-key
 NEBIUS_MODEL=Qwen/Qwen3-30B-A3B
 ```
 
-You can also paste the API key into the Streamlit sidebar or configure it in
-Streamlit secrets.
+For a deployed app, configure the key in the server environment or Streamlit
+secrets. The app never accepts provider credentials through the browser UI.
 
 ## Run
 
