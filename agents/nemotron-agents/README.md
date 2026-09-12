@@ -35,7 +35,7 @@ NEBIUS_API_KEY=your-nebius-api-key
 
 ## Run the Agent
 
-file: [esearch_agent_1_nemotron.py](esearch_agent_1_nemotron.py)
+file: [research_agent_1_nemotron.py](research_agent_1_nemotron.py)
 
 Bare deep agent (no external tools):
 
@@ -43,7 +43,7 @@ Bare deep agent (no external tools):
 uv run python research_agent_1_nemotron.py
 ```
 
-The report is written to `output.md`, and a short summary is printed to stdout. You can view a sample output [here](output-sample.md).
+The report is written to `output.md`, and a short summary is printed to stdout. You can view a sample output [here](output-example.md).
 
 ## Run the Agent with Metrics 
 

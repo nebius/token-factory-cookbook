@@ -24,7 +24,7 @@ Jump to:
 
 **Quick-start agents for learning and extending:**
 
-| Agent                                                               | Descripton                                          | Tech Stack                 |
+| Agent                                                               | Description                                         | Tech Stack                 |
 | ------------------------------------------------------------------- | --------------------------------------------------- | -------------------------- |
 | [CrewAI Research agent](crewai-research-agent/)                     | CrewAI research agent                               | CrewAI                     |
 | [Google ADK Tool calling agent](google-adk-tool-calling/)           | Function calling agent                              | Google ADK                 |
@@ -34,11 +34,11 @@ Jump to:
 | [Pydantic weather agent](pydantic-weather-agent/)                   | Get weather info in realtime                        | Pydantic + Duckduckgo      |
 | [n8n E-commerce Data Analyst](n8n-ecommerce-analytics-agent/)       | E-commerce data analysis and reporting              | n8n + Google Workspace     |
 | [AWS Strands Weather Agent](aws-strands-weather-agent/)             | Weather assistant using Strands SDK and Nebius LLMs | Strands + Nebius + NWS     |
-| [Camel AI Model Comaprison Agent](camel-ai-model-comparison-agent/) | Model Comparison Agent using Camel AI Framework     | Camel AI + Nebius + OpenAI |
+| [Camel AI Model Comparison Agent](camel-ai-model-comparison-agent/) | Model Comparison Agent using Camel AI Framework     | Camel AI + Nebius + OpenAI |
 
 ### Intermediate Agents
 
-| Agent                                     | Descripton                                              | Tech Stack                        |
+| Agent                                     | Description                                             | Tech Stack                        |
 | ----------------------------------------- | ------------------------------------------------------- | --------------------------------- |
 | [Agno multi agent](agno-agents-examples/) | Multiple agents working together to do finance research | Agno + Duckduckgo + Yahoo Finance |
 | [Customer Support Resolution Agent](langchain/customer_support_resolution_agent/) | Resolve support questions with order lookup, policy RAG, and human ticket escalation | LangChain + Nebius TF + FAISS + Streamlit |
@@ -53,7 +53,7 @@ Jump to:
 
 https://www.crewai.com/
 
-| Agent                                           | Descripton            | Tech Stack |
+| Agent                                           | Description           | Tech Stack |
 | ----------------------------------------------- | --------------------- | ---------- |
 | [CrewAI Research agent](crewai-research-agent/) | CrewAI research agent | CrewAI     |
 
@@ -61,7 +61,7 @@ https://www.crewai.com/
 
 https://google.github.io/adk-docs/
 
-| Agent                                                     | Descripton             | Tech Stack |
+| Agent                                                     | Description            | Tech Stack |
 | --------------------------------------------------------- | ---------------------- | ---------- |
 | [Google ADK Tool calling agent](google-adk-tool-calling/) | Function calling agent | Google ADK |
 
@@ -69,7 +69,7 @@ https://google.github.io/adk-docs/
 
 https://www.agno.com/
 
-| Agent                                             | Descripton                                              | Tech Stack                        |
+| Agent                                             | Description                                             | Tech Stack                        |
 | ------------------------------------------------- | ------------------------------------------------------- | --------------------------------- |
 | [Agno Hacker News Agent](agno-hacker-news-agent/) | Analyze hacker news                                     | AgnoAI                            |
 | [Agno websearch agent](agno-agents-examples/)     | Use web search to do research                           | Agno + Duckduckgo                 |
@@ -86,7 +86,7 @@ https://docs.langchain.com/
 | Agent | Description | Tech Stack |
 | ----- | ----------- | ---------- |
 | [Deep Agent Example 1](langchain/deep-agent-example-1/) | Deep research agent with planning, virtual file system, and a research sub-agent using DuckDuckGo web search | LangChain deepagents · Nebius TF · DuckDuckGo |
-| [Deep Agent Example 2](langchain/deep-agent-example-1/) | A Tavily-powered web research variant | LangChain deepagents · Nebius TF · Tavily |
+| [Deep Agent Example 2](langchain/deep-agent-example-1/tavily_agent.py) | A Tavily-powered web research variant | LangChain deepagents · Nebius TF · Tavily |
 | [Competitive Intelligence Agent](langchain/competitive-intelligence-agent/) | Single-company input → 2-3 competitors picked automatically → pricing/news/sentiment sub-agents → synthesized markdown brief, streamed live in the terminal | LangChain deepagents · Nebius TF · Tavily |
 
 **Langchain Agents**
@@ -110,7 +110,7 @@ https://docs.langchain.com/
 
 https://www.llamaindex.ai/
 
-| Agent                                            | Descripton                    | Tech Stack  |
+| Agent                                            | Description                   | Tech Stack  |
 | ------------------------------------------------ | ----------------------------- | ----------- |
 | [Llama-index task timer](llamaindex-task-timer/) | Calculate time spent on tasks | Llama-index |
 
@@ -118,7 +118,7 @@ https://www.llamaindex.ai/
 
 https://ai.pydantic.dev/
 
-| Agent                                             | Descripton                   | Tech Stack            |
+| Agent                                             | Description                  | Tech Stack            |
 | ------------------------------------------------- | ---------------------------- | --------------------- |
 | [Pydantic weather agent](pydantic-weather-agent/) | Get weather info in realtime | Pydantic + Duckduckgo |
 
@@ -126,7 +126,7 @@ https://ai.pydantic.dev/
 
 https://strandsagents.com/latest/
 
-| Agent                                                   | Descripton        | Tech Stack      |
+| Agent                                                   | Description       | Tech Stack      |
 | ------------------------------------------------------- | ----------------- | --------------- |
 | [AWS Strands Weather Agent](aws-strands-weather-agent/) | Weather assistant | AWS Strands SDK |
 

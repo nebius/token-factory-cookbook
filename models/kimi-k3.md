@@ -46,7 +46,7 @@ Run it locally as follows
 
 ```bash
 # prepare .env file
-cp  .env.example  .env
+cp  env.example  .env
 # Add your NEBIUS_API_KEY to .env
 
 # run the notebook
