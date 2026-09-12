@@ -1,72 +1,57 @@
-# Install required Python packages
+"""Deep agent with real-time web search via Tavily, on a Nebius Token Factory model.
 
-* **langchain-nebius** — LangChain integration for accessing models powered by Nebius Token Factory.
-* **langchain-tavily** — LangChain integration for Tavily Search, enabling the agent to perform web research.
-* **tavily-python** — Tavily's Python SDK, used by the Tavily search integration.
-* **deepagents** — Framework for building Deep Agents with planning, tool use, and research capabilities.
-* **langchain** — Core LangChain framework used to connect models, tools, and agent components.
-* **langchain-core** — Core LangChain abstractions and interfaces used by Deep Agents and tools.
-* **openai** — OpenAI-compatible Python SDK for connecting directly to Nebius Token Factory APIs (optional).
+Same deep-agent loop as `research_agent_1.py` (planning, virtual file system,
+sub-agents), but with a Tavily search tool so the agent can research live sources
+instead of relying on the model's own knowledge.
+
+Requires `NEBIUS_API_KEY` and `TAVILY_API_KEY` in the environment or in a local
+`.env` file — see `env.example`.
 """
 
-!pip install -q -U \
-    deepagents \
-    langchain \
-    langchain-core \
-    langchain-nebius \
-    langchain-tavily \
-    tavily-python
-
-"""# Setup the Environment Variables from Nebius Token Factory and Tavily"""
-
-import os;
-os.environ['NEBIUS_API_KEY'] = 'v1.xxx'
-os.environ['TAVILY_API_KEY']='tvly-dev-2fLsjb-'
-
-"""# Import the Required Libraries"""
+import json
+import os
 
 from deepagents import create_deep_agent
+from dotenv import load_dotenv
 from langchain_nebius import ChatNebius
 from langchain_tavily import TavilySearch
-import json
 
-"""# Tavily Configuration"""
+load_dotenv()
 
-tavily_search = TavilySearch(
-    max_results=5,
-    search_depth="advanced",
+RESEARCH_QUESTION = (
+    "Research GPUs available in the US in 2026 and write a detailed report."
 )
 
-"""# Nebius Token Factory model
 
-"""
-
-model = ChatNebius(
-    model="MiniMaxAI/MiniMax-M3"
-)
-
-"""# Create a Tavily-powered Deep Agent
-
-"""
-
-agent = create_deep_agent(
-    model=model,
-    tools=[tavily_search],
-)
-
-"""# Deep Research and Result"""
-
-result = agent.invoke({
-    "messages": [
-        {
-            "role": "user",
-            "content": "Research GPUs available in the US in 2026 and write a detailed report."
-        }
+def require_keys() -> None:
+    """Fail early with an actionable message rather than deep inside a client."""
+    missing = [
+        name
+        for name in ("NEBIUS_API_KEY", "TAVILY_API_KEY")
+        if not os.getenv(name)
     ]
-})
+    if missing:
+        raise RuntimeError(
+            f"Set {' and '.join(missing)} in the environment or this folder's "
+            ".env file (copy env.example to .env)."
+        )
 
-print(json.dumps(result, indent=2, default=str))
 
-"""# Final Result"""
+def main() -> None:
+    require_keys()
 
-print(result["messages"][-1].content)
+    tavily_search = TavilySearch(max_results=5, search_depth="advanced")
+    model = ChatNebius(model="MiniMaxAI/MiniMax-M3")
+    agent = create_deep_agent(model=model, tools=[tavily_search])
+
+    result = agent.invoke({
+        "messages": [{"role": "user", "content": RESEARCH_QUESTION}]
+    })
+
+    # Full trace first (planning steps, sub-agent calls), then the final report.
+    print(json.dumps(result, indent=2, default=str))
+    print(result["messages"][-1].content)
+
+
+if __name__ == "__main__":
+    main()
