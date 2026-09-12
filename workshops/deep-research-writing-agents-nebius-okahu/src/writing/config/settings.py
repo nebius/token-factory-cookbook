@@ -42,7 +42,7 @@ class Settings(BaseSettings):
         description="Gemini image generation model",
     )
     nebius_base_url: str = Field(
-        default="https://api.studio.nebius.com/v1/",
+        default="https://api.tokenfactory.nebius.com/v1/",
         alias="NEBIUS_BASE_URL",
         description="OpenAI-compatible Nebius API base URL",
     )
