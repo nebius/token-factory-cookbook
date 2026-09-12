@@ -81,5 +81,5 @@ Total tokens:        44,289
 
 - LangChain Deep Agents: <https://github.com/langchain-ai/deepagents>
 - LangChain Nebius provider: <https://docs.langchain.com/oss/python/integrations/providers/nebius>
-- Nebius Token Factory: <https://studio.nebius.com/>
+- Nebius Token Factory: <https://tokenfactory.nebius.com/>
 - Tavily: <https://tavily.com/>

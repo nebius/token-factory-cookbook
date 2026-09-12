@@ -135,7 +135,7 @@ def build_llm() -> Any:
         raise RuntimeError("Set NEBIUS_API_KEY in the environment or this folder's .env file.")
     return ChatOpenAI(
         api_key=key,
-        base_url="https://api.studio.nebius.ai/v1/",
+        base_url="https://api.tokenfactory.nebius.com/v1/",
         model=os.getenv("NEBIUS_MODEL", "moonshotai/Kimi-K2.5"),
         temperature=0.1,
         max_tokens=2600,

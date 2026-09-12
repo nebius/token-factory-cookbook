@@ -59,7 +59,7 @@ class NebiusPitchCoach:
         # LangChain prompt/model flow while targeting Nebius.
         self.llm = ChatOpenAI(
             api_key=api_key,
-            base_url="https://api.studio.nebius.ai/v1/",
+            base_url="https://api.tokenfactory.nebius.com/v1/",
             model=model,
             temperature=0.2,
             top_p=0.95,
