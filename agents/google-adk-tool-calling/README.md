@@ -1,154 +1,81 @@
-# Simple Tool Calling Agent with Google ADK (Agent Development Kit) + Nebius AI
+# Google ADK tool-calling agent with Token Factory
 
-![banner](./banner.png)
-
-
-This example shows a sample 'tool calling' agent, built using Google's Agent Development Kit (ADK) framework.
-
-## References
-
-- [Google Agent Development Kit (ADK)](https://google.github.io/adk-docs/)
-
+This example connects [Google Agent Development Kit (ADK)](https://google.github.io/adk-docs/) to Nebius Token Factory through ADK's `LiteLlm` model wrapper. It demonstrates a small currency-conversion tool agent without adding a native ADK provider.
 
 ## Prerequisites
 
-- Nebius API key (get it from [Nebius Token Factory](http://tokenfactory.nebius.com/))
-- Python 3.10 or higher dev environment.
-
+- Python 3.12 or later
+- A [Token Factory API key](https://tokenfactory.nebius.com/)
+- A current tool-capable model ID from the [public model catalog](https://tokenfactory.nebius.com/api/public/models_info)
 
 ## Setup
 
-**1 - get the code**
-
 ```bash
-git   clone    https://github.com/nebius/token-factory-cookbook/
-cd  agents/google-adk-tool-calling
-```
-**2 - Install dependencies**
-
-using `uv`
-
-```bash
-# create a venv and install dependencies
-uv  sync
-source   .venv/bin/activate
-
-# Verify ADK installation
-adk --version
+git clone https://github.com/nebius/token-factory-cookbook.git
+cd token-factory-cookbook/agents/google-adk-tool-calling
+cp env.sample .env
 ```
 
-Or install using python pip
+Set both required values in `.env`:
+
+```dotenv
+NEBIUS_API_KEY=your_nebius_api_key_here
+NEBIUS_MODEL=moonshotai/Kimi-K2.7-Code
+```
+
+The suggested model was current and advertised function calling when this example was updated on August 13, 2026. `NEBIUS_MODEL` is required so the example does not silently keep using that ID after the public catalog changes.
+
+Install with `uv`:
 
 ```bash
+uv sync
+```
+
+Or with `pip`:
+
+```bash
+python -m venv .venv
+source .venv/bin/activate
 pip install -r requirements.txt
-
-# Verify ADK installation
-adk --version
 ```
 
-**3 - Create .env file**
+## Run
 
-Create a `.env` file in the project root and add your Nebius API key:
+From this directory:
 
 ```bash
-cp env.example .env
+uv run adk run .
 ```
 
-```text
-NEBIUS_API_KEY=your_api_key_here
+If you used `pip`, activate the virtual environment and run `adk run .` instead. Try:
+
+> Convert 100 USD to EUR.
+
+The agent calls `convert_to_currency` and uses its result in the answer. The conversion rate is fixed test data for demonstrating tool use, not a financial quote.
+
+## Connection details
+
+`config.py` passes all connection settings directly to ADK's `LiteLlm` wrapper:
+
+```python
+{
+    "model": f"openai/{model_id}",
+    "api_base": "https://api.tokenfactory.nebius.com/v1",
+    "api_key": api_key,
+}
 ```
 
+The `openai/` prefix selects LiteLLM's generic OpenAI-compatible Chat Completions route. The Token Factory model ID follows the prefix unchanged. This example does not add an ADK provider or use stateful Responses API behavior.
 
-## Running the agent in CLI
+## Offline validation
 
-Switch to project dir:
+The configuration tests do not contact Token Factory or require credentials:
 
 ```bash
-cd  agents/google-adk-tool-calling
+python -m unittest test_config.py -v
+python -m compileall -q agent.py config.py test_config.py
 ```
 
-**Using `uv`**
+## ADK web UI
 
-```bash
-uv  sync
-uv  run   adk run .
-```
-
-or 
-
-```bash
-uv sync
-source   .venv/bin/activate
-adk run .
-```
-
-**Using python pip**
-
-```bash
-adk run .
-```
-
-## Interacting with the Agent
-
-Once the agent is running, we can try the following:
-
-**Find out what the agent can do**
-
-> What are your capabilities?
-
-> What can you do?
-
-**Ask the agent questions**
-
-> What is $100 in EUR?
-
-You should get answer like 
-
-`The converted amount is 200 EUR`
-
-Ask another:
-
-> Convert $100 into AUD
-
-Since the agent can only convert from USD --> EUR, you may get an answer like this
-
-`I currently only support converting USD to EUR (Euro). Conversion to AUD (Australian Dollar) isn't available yet`
-
-## ADK UI Runner
-
-ADK has a [web ui](https://google.github.io/adk-docs/get-started/quickstart/#dev-ui-adk-web) that can show you details of agent's inner working.  This is a great tool for debugging.
-
-![](adk-web-1.png)
-
-Here is how to run the web ui.
-
-**Go to parent dir** (This is important!)
-
-```bash
-# go project's parent directory
-cd ..  
-
-# and run
-adk web
-```
-
-Go to URL : [localhost:8000](http://localhost:8000/)
-
-**Select the agent from drop down list**
-
-**And interact with the agent**
-
-**Look at `Trace` and `Events` tabs**
-
-
-## Dev Notes
-
-**Preparing the dev env using UV**
-
-```bash
-cd google-adk-tool-calling
-uv init .
-mv main.py   agent.py
-uv  add -r requirements.txt
-uv sync
-```
+To use the development UI, run `adk web` from the parent `agents` directory, then select `google-adk-tool-calling` at [localhost:8000](http://localhost:8000/).
