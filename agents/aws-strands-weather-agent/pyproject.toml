@@ -1,12 +1,10 @@
 [project]
-name = "aws-strands-starter"
+name = "strands-token-factory-smoke"
 version = "0.1.0"
-description = "Add your description here"
+description = "Strands Agents tool and streaming smoke recipe for Nebius Token Factory"
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
-    "python-dotenv>=1.1.1",
-    "strands-agents-builder>=0.1.7",
-    "strands-agents-tools>=0.2.1",
-    "strands-agents[litellm]>=1.0.1",
+    "python-dotenv>=1.2.2,<2",
+    "strands-agents[openai]>=1.52.0,<2",
 ]
