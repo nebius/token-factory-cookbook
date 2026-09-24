@@ -46,6 +46,7 @@ Jump to:
 | [Meeting Briefing Agent](langchain/meeting_briefing_agent/) | Research a company and generate a cited pre-meeting brief with iterative gap analysis | LangChain + LangGraph + Nebius TF + Tavily + Streamlit |
 | [Nebius Travel Planner](langchain/nebius_travel_planner/) | Build grounded itineraries with weather, web research, budgets, currency conversion, and packing prep | LangChain + Nebius TF + Streamlit |
 | [Insurance Claims Assistant](langchain/insurance-claims-assistant/) | Drop-any-folder multimodal claims triage: reads PDFs + photos + forms, auto-classifies the documents, confirms the claim with the user, reconciles stated vs evidence, and emits an assessor verdict | LangChain + Nebius TF (Nemotron Ultra 253B + Cosmos3 VLM) + PyMuPDF + Streamlit |
+| [Jev-Style Typed Decision Model](jev-style-decision-model-glm/) | Typed, probabilistic decisions (route, yes/no, score) read from GLM-5.3 Flash logprobs, with rotation debiasing and a confidence gate for human escalation | Nebius TF (GLM-5.3 Flash) + OpenAI SDK |
 
 ## Agents by Framework
 

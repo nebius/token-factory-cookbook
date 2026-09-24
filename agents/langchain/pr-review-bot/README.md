@@ -81,9 +81,3 @@ GitHub pull_request webhook
 - The delivery cache is in memory, so it blocks immediate duplicates on one Railway instance. Use a durable queue/idempotency store before horizontally scaling.
 - GitHub can omit patches for binary or very large files. Those files cannot receive model-generated inline comments.
 - Start with a test repository and tune `MAX_PATCH_CHARS`, `MAX_FILES`, and `MAX_FINDINGS` to match your review-depth and cost target.
-
-## Writing scratchpad
-
-The temporary long-form source document for a future project blog is available at
-[docs/SCRATCHPAD_BLOG.md](docs/SCRATCHPAD_BLOG.md). It includes the build and deployment process,
-testing guide, troubleshooting notes, and replaceable image placeholders.

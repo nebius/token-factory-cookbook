@@ -1,0 +1,14 @@
+[project]
+name = "jev-style-decision-model-glm"
+version = "0.1.0"
+description = "Typed, probabilistic decisions from GLM-5.3 Flash logprobs on Nebius Token Factory"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "openai>=1.40",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8",
+]
