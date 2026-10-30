@@ -16,7 +16,7 @@ Build agents with open models on Nebius Token Factory. Choose a starter example 
 
 | Agent                                                               | Description                                         | Tech Stack                 |
 | ------------------------------------------------------------------- | --------------------------------------------------- | -------------------------- |
-| [CrewAI Research agent](crewai-research-agent/)                     | CrewAI research agent                               | CrewAI                     |
+| [CrewAI Research agent](crewai-research-agent/)                     | Multi-agent research crew with a local tool          | CrewAI + Token Factory     |
 | [Google ADK Tool calling agent](google-adk-tool-calling/)           | Function calling agent                              | Google ADK                 |
 | [Agno Hacker News Agent](agno-hacker-news-agent/)                   | Analyze hacker news                                 | AgnoAI                     |
 | [Agno websearch agent](agno-agents-examples/)                       | Use web search to do research                       | Agno + Duckduckgo          |
@@ -48,7 +48,7 @@ https://www.crewai.com/
 
 | Agent                                           | Description           | Tech Stack |
 | ----------------------------------------------- | --------------------- | ---------- |
-| [CrewAI Research agent](crewai-research-agent/) | CrewAI research agent | CrewAI     |
+| [CrewAI Research agent](crewai-research-agent/) | Multi-agent research crew with a local tool | CrewAI + Token Factory |
 
 ### Google ADK (Agent Development Kit)
 
