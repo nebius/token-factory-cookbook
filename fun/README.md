@@ -11,5 +11,6 @@ Explore image generation, vision, and creative applications with open models.
 | [Image LoRA notebook](../image_lora.ipynb) | Explore image generation with LoRA |
 | [Image-to-video notebook](../image2video_higgsfield.ipynb) | Explore an image-to-video workflow |
 | [Webcam commentary](nebius-realtime-webcam/) | Generate commentary from live camera frames |
+| [Haunted Datacenter escape room](haunted-datacenter/) | Run a three-room game with Tavily research, Token Factory vision and dialogue, and Serverless AI GPU training |
 
 Follow the individual README for model access, dependencies, and run instructions. For complete application demos, see [applications](../apps/README.md).
