@@ -45,6 +45,7 @@ Prefer a notebook? Open the [native API example](api/api_native.ipynb). For mode
 | --- | --- |
 | Make API calls and connect SDKs | [APIs](api/README.md) |
 | Choose and run an open model | [Model guides](models/README.md) |
+| Compare models on your own prompt | [Comparing models](api/comparing-models/README.md) |
 | Build an agent or a team of agents | [Agents](agents/README.md) |
 | Give models tools and functions | [Tool calling](tool-calling/README.md) |
 | Search and answer over your data | [Retrieval and RAG](rag/README.md) |

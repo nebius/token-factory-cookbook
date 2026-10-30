@@ -9,6 +9,7 @@ Start with [environment setup](../start-here/setup.md). Each notebook lists its 
 | Example | Purpose | Dependencies |
 | --- | --- | --- |
 | [Native API](api_native.ipynb) | Make a direct request with the OpenAI SDK | [requirements.txt](requirements.txt) |
+| [Comparing models](comparing-models/README.md) | Run the same text prompt across models and save answers, time, and token usage | [requirements.txt](comparing-models/requirements.txt) |
 | [LiteLLM](api_litellm.ipynb) | Use Token Factory through LiteLLM | [requirements-litellm.txt](requirements-litellm.txt) |
 | [aisuite](api_aisuite.ipynb) | Call Token Factory through a provider interface | [requirements-aisuite.txt](requirements-aisuite.txt) |
 | [LlamaIndex](api_llamaindex.ipynb) | Use chat and embeddings in a LlamaIndex workflow | [requirements-llamaindex.txt](requirements-llamaindex.txt) |
