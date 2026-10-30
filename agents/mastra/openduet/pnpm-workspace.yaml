@@ -1,0 +1,19 @@
+allowBuilds:
+  agent-browser: true
+  edgedriver: false
+  geckodriver: false
+  sharp: false
+  unrs-resolver: false
+overrides:
+  '@modelcontextprotocol/client@2.2.0': 2.4.0
+  '@modelcontextprotocol/server@2.2.0': 2.4.0
+  '@modelcontextprotocol/core@2.2.0': 2.4.0
+  'undici@7.30.0': 7.30.1
+  '@modelcontextprotocol/node@2.0.0': 2.1.2
+  're2js@2.8.6': 2.8.7
+  'agent-browser>zod': 4.6.7
+  # OpenDuet uses BrowserManager over CDP, not the mobile/CLI exports.
+  'agent-browser>node-simctl': '-'
+  'agent-browser>webdriverio': '-'
+patchedDependencies:
+  agent-browser@0.19.0: patches/agent-browser@0.19.0.patch

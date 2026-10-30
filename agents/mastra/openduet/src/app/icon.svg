@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <rect x=".75" y=".75" width="62.5" height="62.5" rx="17.5" fill="#fff" stroke="#e4e0d8" stroke-width="1.5"/>
+  <g transform="translate(12 12) scale(.9)">
+    <path d="M20 2.5c9.9 0 17.5 7.4 17.5 17.1 0 10-7.7 17.9-17.5 17.9S2.5 29.6 2.5 19.6C2.5 9.9 10.1 2.5 20 2.5z" fill="#e0663d"/>
+    <ellipse cx="13" cy="11" rx="4.5" ry="2.6" fill="#fff" opacity=".22" transform="rotate(-28 13 11)"/>
+    <rect x="16.2" y="14.2" width="3.4" height="6.6" rx="1.7" fill="#101010"/>
+    <rect x="23.4" y="13.6" width="3.4" height="6.6" rx="1.7" fill="#101010"/>
+    <path d="M18.2 25.6c1.1 1.1 2.3 1.6 3.6 1.6s2.5-.5 3.6-1.6" stroke="#101010" stroke-width="1.7" stroke-linecap="round" fill="none"/>
+  </g>
+  <g transform="translate(35 35) scale(.6)">
+    <path d="M20 2.5c9.9 0 17.5 7.4 17.5 17.1 0 10-7.7 17.9-17.5 17.9S2.5 29.6 2.5 19.6C2.5 9.9 10.1 2.5 20 2.5z" fill="#f5cbb9" stroke="#fff" stroke-width="3"/>
+    <rect x="16.2" y="14.2" width="3.4" height="6.6" rx="1.7" fill="#161616"/>
+    <rect x="23.4" y="13.6" width="3.4" height="6.6" rx="1.7" fill="#161616"/>
+    <path d="M18.2 25.6c1.1 1.1 2.3 1.6 3.6 1.6s2.5-.5 3.6-1.6" stroke="#161616" stroke-width="1.7" stroke-linecap="round" fill="none"/>
+  </g>
+</svg>
