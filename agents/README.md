@@ -39,6 +39,7 @@ Build agents with open models on Nebius Token Factory. Choose a starter example 
 | [OpenCrewBot](mastra/opencrewbot/) | A chat app for your own team of AI bots: each bot has its own open model, tools, `MEMORY.md` and cloud browser, and bots work together in rooms with @mentions and hand-offs | Mastra + Nebius TF + Tavily + Browserbase + Next.js |
 | [Jev-Style Typed Decision Model](jev-style-decision-model-glm/) | Typed, probabilistic decisions (route, yes/no, score) read from GLM-5.3 Flash logprobs, with rotation debiasing and a confidence gate for human escalation | Nebius TF (GLM-5.3 Flash) + OpenAI SDK |
 | [KubeTrace AI: Kubernetes incident repair with Beam](kubetrace-ai/) | Investigate a checkout failure, patch code, run sandboxed tests and verify a deployed repair with hidden checks | Beam + Nebius TF + OpenAI SDK + Kubernetes |
+| [Python AI Agent With Reflection Beam](beam-python-ai-agent/) | A data analyst agent: Beam answers business questions about a sales CSV by writing and running pandas code through tool calls, with per-run cost tracking and a reasoning-effort sweep | Nebius TF (Reflection Beam) + OpenAI SDK + pandas |
 
 ## Agents by framework
 
