@@ -28,7 +28,7 @@ client = OpenAI(
 )
 
 response = client.chat.completions.create(
-    model="nvidia/nvidia-nemotron-3-nano-30b-a3b",
+    model="nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B",
     messages=[{"role": "user", "content": "Explain quantum computing in one sentence."}]
 )
 print(response.choices[0].message.content)
@@ -50,7 +50,7 @@ if choice.finish_reason == "length":
 
 ## Try it Out
 
-[▶ Try it in the Token Factory Playground](https://tokenfactory.nebius.com/playground?models=nvidia/nvidia-nemotron-3-nano-30b-a3b)
+[▶ Try it in the Token Factory Playground](https://tokenfactory.nebius.com/playground?models=nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B)
 
 ## TL;DR
 
@@ -73,10 +73,10 @@ Nemotron-3-Nano-30B-A3B is a small, efficient MoE model from NVIDIA, designed fo
 
 ## Performance and Benchmarks
 
-See official benchmarks on the [Nemotron HuggingFace page](https://huggingface.co/nvidia/nvidia-nemotron-3-nano-30b-a3b).
+See official benchmarks on the [Nemotron HuggingFace page](https://huggingface.co/nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B-BF16).
 
 ---
 
 ## References
 
-- [Nemotron-3-Nano-30B-A3B on HuggingFace](https://huggingface.co/nvidia/nvidia-nemotron-3-nano-30b-a3b)
+- [Nemotron-3-Nano-30B-A3B on HuggingFace](https://huggingface.co/nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B-BF16)
