@@ -58,10 +58,10 @@ Nemotron-3-Nano-30B-A3B is a small, efficient MoE model from NVIDIA, designed fo
 
 ## Performance and Benchmarks
 
-See official benchmarks on the [Nemotron HuggingFace page](https://huggingface.co/nvidia/nvidia-nemotron-3-nano-30b-a3b).
+See official benchmarks on the [Nemotron HuggingFace page](https://huggingface.co/nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B-BF16).
 
 ---
 
 ## References
 
-- [Nemotron-3-Nano-30B-A3B on HuggingFace](https://huggingface.co/nvidia/nvidia-nemotron-3-nano-30b-a3b)
+- [Nemotron-3-Nano-30B-A3B on HuggingFace](https://huggingface.co/nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B-BF16)
