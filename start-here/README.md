@@ -1,85 +1,31 @@
-# Nebius Token Factory : Start Here
+[Cookbook](../README.md) / Start here
 
-## Table of Contents
+# Start building with Token Factory
 
-- [0 - Sign up](#0-sign-up)
-- [1 - Try the UI](#1---try-the-ui)
-- [2 - Your first API call](#2---your-first-api-call)
-- [3 - Building Your First Agents](#3---building-your-first-agents)
-- [4 - Understanding Agentic Operations and Cost](#4---understanding-agentic-operations-and-cost)
-- [5 - Deep Research Agents](#5---deep-research-agents)
-- [6 - Coding with Token Factory Models](#6---coding-with-token-factory-models)
-- [7 - Build a fun app / demo with your coding agent](#7---build-a-fun-app--demo-with-your-coding-agent)
-- [8 - Collect Production logs using Data Lab](#8---collect-production-logs-using-data-lab)
-- [9 - Post training your models](#9---post-training-your-models)
+Follow a path from your first model call to an application. Complete the [environment setup](setup.md) first, or explore models in the [Token Factory console](https://tokenfactory.nebius.com/).
 
-## 0 - Sign up
+## Choose your starting point
 
-- Sign up at https://tokenfactory.nebius.com
-- If you have credits, apply them. [how to video](https://www.youtube.com/watch?v=YKY6k6kSDZY)
-- Get your API key
+| Goal | Next step |
+| --- | --- |
+| Explore models without writing code | Use the console playground and compare responses |
+| Make a first API request | Follow the [root quickstart](../README.md#start-building) or the [API notebooks](../api/README.md) |
+| Build your first agent | Try the [LangChain research agent](../agents/langchain/deep-agent-example-1/) |
+| Give an agent web search | Try the [Tavily research variant](../agents/langchain/deep-agent-example-1/tavily_agent.py) |
+| Work inside a coding tool | Follow the [coding agent guides](../coding/README.md) |
+| Run an application | Browse [applications and demos](../apps/README.md) |
 
-## 1 - Explore models in Playground
-https://tokenfactory.nebius.com/
+## Explore agent workflows
 
-- Inspect model cards (pricing, context .etc)
-- Take a model for a spin.
-- Compare two models side by side
-- Checkout [Artificial Analysis Index](https://artificialanalysis.ai/#intelligence) page.  Compare open vs closed models.
+- [Agent cost comparison](../agents/agent-cost-comparison-1/) — examine the steps and cost of an agent run.
+- [Competitive intelligence agent](../agents/langchain/competitive-intelligence-agent/) — research a company and its competitors.
+- [Pull request reviewer](../agents/langchain/pr-review-bot/) — inspect code changes with an agent workflow.
+- [OpenCrewBot](../agents/mastra/opencrewbot/) — try a team of bots in one chat interface, including a credential-free mock mode.
 
-## 2 - Your first API call
+Each example lists its required service keys. For example, the Tavily agent also needs a `TAVILY_API_KEY`.
 
-[api call](../api/README.md)
+## Adapt and evaluate
 
-## 3 - Building Your First Agents
+When you have a working example, explore [model evaluation](../evaluations/inspect-ai/README.md), [production log collection](../workshops/token-factory-workshop/collecting-production-logs.md), [fine-tuning](../post-training/fine-tuning-1/), and [distillation](../distillation/distillation-1/).
 
-**Simple research agent**
-
-Try [simple research agent](../agents/langchain/deep-agent-example-1/research_agent_1.py).  This  agent will only use built in knowledge.
-
-Follow instructions from [this project](../agents/langchain/deep-agent-example-1/README.md).  
-
-
-**Tavily powered agent**
-
-In the same example, we have a [research agent powered by Tavily](../agents/langchain/deep-agent-example-1/tavily_agent.py).  It will use web search in real time to fetch results.
-
-Run them both and compare the resulting outputs.
-
-Note: Using Tavily Agent will require TAVILY_API_KEY.  You can get a free one here : https://app.tavily.com/
-
-## 4 - Understanding Agentic Operations and Cost
-
-How many turns does it take for an agent to accomplish a task?  How much does it cost?
-
-Try this [example](../agents/agent-cost-comparison-1/)
-
-## 5 - Deep Research Agents
-
-Here are couple of examples of **deep research agents** 
-
-- [competitive research agent](../agents/langchain/competitive-intelligence-agent/) - built with Tavily + Langchain + Token Factory
-- [pr review bot](../agents/langchain/pr-review-bot/)
-
-## 6 - Coding with Token Factory Models
-
-Connect your coding agent (claude, codex, opencode .etc) with models running on Token Factory.
-
-[Here is the guide](../coding/README.md)
-
-## 7 - Build a fun app / demo with your coding agent
-
-Browse [Cool Apps / Demos](../apps/README.md) for inspiration, then build your own.
-
----
-
-## Advanced
-
-## 8 - Collect Production logs using Data Lab
-
-[Turn your production logs into training data](../workshops/token-factory-workshop/collecting-production-logs.md)
-
-## 9 - Post training your models
-
-- [fine tuning example](../post-training/fine-tuning-1)
-- [distillation example](../distillation/distillation-1)
+For a guided session, open the [workshop index](../workshops/README.md). For current platform behavior, refer to the [Token Factory documentation](https://docs.tokenfactory.nebius.com/).

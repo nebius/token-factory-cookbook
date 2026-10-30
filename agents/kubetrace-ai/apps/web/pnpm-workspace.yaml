@@ -1,0 +1,3 @@
+# esbuild's platform setup is required for Vite builds with pnpm 11+.
+allowBuilds:
+  esbuild: true

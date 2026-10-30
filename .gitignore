@@ -11,3 +11,11 @@ tmp/
 .DS_Store
 agents/langchain/customer_support_resolution_agent/kb_index/
 .gstack/
+
+# Local application dependencies and generated output
+node_modules/
+.next/
+dist/
+*.tsbuildinfo
+playwright-report/
+test-results/

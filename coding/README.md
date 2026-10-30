@@ -1,3 +1,5 @@
+[Cookbook](../README.md) / Coding agents
+
 # Using Token Factory Models with Coding Agents
 
 Token Factory has integrations with many coding agents and allows you to run state-of-the-art open-source models.

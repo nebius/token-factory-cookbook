@@ -1,13 +1,15 @@
-# Fun and Cool Stuff
+[Cookbook](../README.md) / Creative examples
 
-## Pelican Riding a Bicycle
+# Creative examples
 
-"Pelican riding a bicycle" is a cool 'vibe benchmark' for LLMs.
+Explore image generation, vision, and creative applications with open models.
 
-[pelican-riding-bicycle](./pelican-riding-bicycle/)
+| Example | Focus |
+| --- | --- |
+| [LoRA image generation](../lora/lora-1/README.md) | Create images with LoRA adapters |
+| [Pelican riding a bicycle](pelican-riding-bicycle/) | Compare generated images for a shared prompt |
+| [Image LoRA notebook](../image_lora.ipynb) | Explore image generation with LoRA |
+| [Image-to-video notebook](../image2video_higgsfield.ipynb) | Explore an image-to-video workflow |
+| [Webcam commentary](nebius-realtime-webcam/) | Generate commentary from live camera frames |
 
-## Nebius Realtime Webcam
-
-Point your webcam at something and get a running commentary from a Token Factory vision model. Streaming responses, no dependencies, no build step — just Node 22.9+ and a browser with a camera.
-
-[nebius-realtime-webcam](./nebius-realtime-webcam/)
+Follow the individual README for model access, dependencies, and run instructions. For complete application demos, see [applications](../apps/README.md).

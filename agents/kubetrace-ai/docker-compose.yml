@@ -1,0 +1,24 @@
+# Local startup. Binds to 127.0.0.1 only. Read docs/SECURITY.md before exposing it anywhere else.
+#
+# The API container gets the Docker socket because it hosts the image-build adapter. The agent's
+# test runner is a separate throwaway container with no socket, no network and no credentials.
+#
+# Works as-is for a Civo cluster (public API endpoint). For kind on macOS, the kubeconfig points at
+# 127.0.0.1 on the host, which a container cannot reach: run the API on the host instead
+# (`uv run kubetrace serve`) and use `pnpm dev` for the UI. See README.
+services:
+  api:
+    build: { context: ., dockerfile: deploy/docker/api.Dockerfile }
+    env_file: .env
+    environment:
+      DOCKER_BIN: docker
+      KUBECONFIG: /kube/config
+    volumes:
+      - ${KUBECONFIG_HOST:-~/.kube/config}:/kube/config:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./artifacts:/app/artifacts
+    ports: ["127.0.0.1:8000:8000"]
+  web:
+    build: { context: ., dockerfile: deploy/docker/web.Dockerfile }
+    depends_on: [api]
+    ports: ["127.0.0.1:8080:8080"]

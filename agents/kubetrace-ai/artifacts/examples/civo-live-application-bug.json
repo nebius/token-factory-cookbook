@@ -1,0 +1,300 @@
+{
+ "report_version": 1,
+ "generated_at": "2026-10-16T13:24:55Z",
+ "run_id": "20261016-184345-6728f5",
+ "scenario_id": "application-bug",
+ "provenance": "civo-live",
+ "provenance_label": "Live run on a Civo cluster",
+ "replay_of": null,
+ "provider": "nebius-token-factory",
+ "model": "meta-models/muse-spark-open",
+ "is_fixture": false,
+ "repo_commit": "6f8bbd81cc2d",
+ "cluster": {
+  "kind": "civo",
+  "context": "[hidden]",
+  "server": "[hidden]",
+  "kubernetes_version": "v1.35.0+k3s1",
+  "civo_cluster": {
+   "id": "[id]",
+   "name": "kubetrace-demo",
+   "status": "ACTIVE",
+   "kubernetes_version": "1.35.0-k3s1",
+   "nodes": 2,
+   "size": "g4s.kube.medium",
+   "region": "LON1"
+  },
+  "capacity": {
+   "nodes": 2,
+   "kubelet_version": "v1.35.0+k3s1",
+   "allocatable": [
+    {
+     "name": "k3s-kubetrace-demo-cc91-52bf34-node-pool-b14e-2zv2y",
+     "cpu": "1880m",
+     "memory": "2364008Ki"
+    },
+    {
+     "name": "k3s-kubetrace-demo-cc91-52bf34-node-pool-b14e-ve391",
+     "cpu": "1880m",
+     "memory": "2364020Ki"
+    }
+   ]
+  },
+  "namespace": "kubetrace-demo"
+ },
+ "settings": {
+  "prompt_version": "2026-10-16.1",
+  "tool_schema_version": "2026-10-16.1",
+  "generation_settings": {
+   "max_tokens": 2048,
+   "temperature": 0.2
+  },
+  "limits": {
+   "max_steps": 40,
+   "max_seconds": 900,
+   "max_tokens": 600000,
+   "max_output_chars": 4000,
+   "verification_retries": 1
+  },
+  "policy_mode": "auto",
+  "test_runner": "docker",
+  "fixture_label": null
+ },
+ "policy_mode": "auto",
+ "timing": {
+  "created_at": 1792156425.8294091,
+  "started_at": 1792156522.020898,
+  "ended_at": 1792156644.501837,
+  "agent_elapsed_s": 122.13
+ },
+ "final_state": "resolved",
+ "reason": "independent verification passed (reconstructed from recorded events)",
+ "first_attempt_success": true,
+ "eventual_success": true,
+ "baseline": [
+  {
+   "name": "storefront and probe rolled out",
+   "ok": true,
+   "detail": "Deployments available"
+  },
+  {
+   "name": "checkout [{\"sku\": \"MUG-01\", \"qty\": 2}]",
+   "ok": true,
+   "detail": "HTTP 200, total 31.92, expected 31.92"
+  },
+  {
+   "name": "checkout [{\"sku\": \"CAP-03\", \"qty\": 12}]",
+   "ok": true,
+   "detail": "HTTP 200, total 227.77, expected 227.77"
+  },
+  {
+   "name": "checkout [{\"sku\": \"TEE-02\", \"qty\": 1}, {\"sku\": \"STK-04\", \"qty\": 3}] SAVE10",
+   "ok": true,
+   "detail": "HTTP 200, total 41.72, expected 41.72"
+  }
+ ],
+ "issue": {
+  "incident": "Large checkout orders fail with 500",
+  "symptom": "POST /api/checkout returns HTTP 500 for orders of 30 or more units of one item; smaller orders work.",
+  "fault_proof": [
+   {
+    "name": "30-unit order returns 500",
+    "ok": true,
+    "detail": "HTTP 500"
+   },
+   {
+    "name": "small order still works",
+    "ok": true,
+    "detail": "HTTP 200"
+   }
+  ]
+ },
+ "observations": [
+  {
+   "text": "Large checkout (qty 30) returns 500, small qty 5 returns 200. Logs show IndexError in pricing.py bulk_rate: BULK_TIERS[qty//10] out of range for qty 30.",
+   "evidence": [
+    "http_check POST /api/checkout qty30 500",
+    "http_check POST qty5 200",
+    "get_logs storefront-6b56b9c4c4-hkkd5 IndexError bulk_rate"
+   ]
+  }
+ ],
+ "hypotheses": [
+  {
+   "text": "bulk_rate uses BULK_TIERS[qty//10] with only 3 entries (indices 0,1,2). For qty>=30, index >=3 out of range. Per docs/pricing.md, 20+ units should be 10% with no upper limit. Fix is to cap index at len(BULK_TIERS)-1.",
+   "evidence": [
+    "storefront/pricing.py line 15 BULK_TIERS 3 entries",
+    "storefront/pricing.py line 43 bulk_rate",
+    "docs/pricing.md line 9 20 or more units 10%"
+   ]
+  }
+ ],
+ "agent_conclusion": null,
+ "attempted_changes": [
+  {
+   "id": "8ec5478bef",
+   "kind": "Deployment",
+   "name": "storefront",
+   "source": "deploy_image",
+   "reason": "Fix bulk_rate IndexError for qty>=30 per pricing.md",
+   "diff": "--- live/deployment/storefront\n+++ proposed/deployment/storefront\n@@ -30,8 +30,8 @@\n       containers:\n       - env:\n         - name: APP_VERSION\n-          value: 4e62557f47902f6c4fd7ebaf9b822face8078c62b5044b5ba0a9fc80f348799\n-        image: [registry]/storefront@sha256:4e62557f47902f6c4fd7ebaf9b822face8078c62b5044b5ba0a9fc80f3487992\n+          value: dfcd21c1ce98d7d752e07a79239df3af69d6f6cdba3743bc6bf840566148eda\n+        image: [registry]/storefront@sha256:dfcd21c1ce98d7d752e07a79239df3af69d6f6cdba3743bc6bf840566148edac\n         imagePullPolicy: IfNotPresent\n         livenessProbe:\n           failureThreshold: 3\n",
+   "decision": {
+    "allowed": true,
+    "reasons": [],
+    "changed_paths": [
+     "spec.template.spec.containers[name=storefront].env[name=APP_VERSION].value",
+     "spec.template.spec.containers[name=storefront].image"
+    ]
+   },
+   "status": "applied",
+   "error": "",
+   "duration_s": 0.692
+  }
+ ],
+ "source_diff": "diff --git a/storefront/pricing.py b/storefront/pricing.py\nindex 95ff59a..3ebc77e 100644\n--- a/storefront/pricing.py\n+++ b/storefront/pricing.py\n@@ -40,7 +40,10 @@ def money(value: Decimal) -> Decimal:\n \n \n def bulk_rate(qty: int) -> Decimal:\n-    return BULK_TIERS[qty // 10]\n+    idx = qty // 10\n+    if idx >= len(BULK_TIERS):\n+        idx = len(BULK_TIERS) - 1\n+    return BULK_TIERS[idx]\n \n \n def quote(items: list[dict], coupon: str | None, config: PricingConfig) -> dict:\ndiff --git a/tests/test_regression_bulk.py b/tests/test_regression_bulk.py\nnew file mode 100644\nindex 0000000..11dda20\n--- /dev/null\n+++ b/tests/test_regression_bulk.py\n@@ -0,0 +1,21 @@\n+from decimal import Decimal\n+from storefront.pricing import PricingConfig, quote\n+\n+CFG = PricingConfig(currency=\"USD\", tax_rate=Decimal(\"0.08\"), shipping_flat=Decimal(\"6.00\"),\n+                    free_shipping_threshold=Decimal(\"75\"))\n+\n+def test_bulk_30_mugs_ten_percent():\n+    # 30 mugs at $12 = $360 gross, 10% bulk = $36 discount, after_bulk $324, free shipping, tax 8% = $25.92, total $349.92\n+    q = quote([{\"sku\": \"MUG-01\", \"qty\": 30}], None, CFG)\n+    assert q[\"bulk_discount\"] == \"36.00\"\n+    assert q[\"shipping\"] == \"0.00\"\n+    assert q[\"total\"] == \"349.92\"\n+\n+def test_bulk_500_max_qty():\n+    q = quote([{\"sku\": \"MUG-01\", \"qty\": 500}], None, CFG)\n+    # 500*12=6000 gross, 10% =600 discount\n+    assert q[\"bulk_discount\"] == \"600.00\"\n+\n+def test_bulk_20_boundary():\n+    q = quote([{\"sku\": \"MUG-01\", \"qty\": 20}], None, CFG)\n+    assert q[\"bulk_discount\"] == \"24.00\"  # 240*0.10\n",
+ "tests": [
+  {
+   "suite": "unit",
+   "command": "python -m pytest -q -p no:cacheprovider tests",
+   "exit_code": 0,
+   "passed": true,
+   "duration_s": 0.4,
+   "isolation": "docker: --network none, read-only source, no credentials, no Docker socket",
+   "output": "................                                                         [100%]\n16 passed in 0.03s\n",
+   "commit_of_tested_tree": "f27434478691fb771767b521095d9f055f65ef41"
+  }
+ ],
+ "builds": [
+  {
+   "image": "[registry]/storefront@sha256:dfcd21c1ce98d7d752e07a79239df3af69d6f6cdba3743bc6bf840566148edac",
+   "tag": "[registry]/storefront:20261016-184345-6728f5-40a85957-b1",
+   "image_id": "sha256:dfcd21c1ce98d7d752e07a79239df3af69d6f6cdba3743bc6bf840566148edac",
+   "digest": "sha256:dfcd21c1ce98d7d752e07a79239df3af69d6f6cdba3743bc6bf840566148edac",
+   "source_commit": "40a8595788012c695979d6d8ebd4f841543eb788",
+   "duration_s": 22.8,
+   "build_output_tail": "b445: Waiting\nbf9868427a21: Waiting\nc208de401f94: Waiting\nbbc5a1223747: Waiting\n4063c9d81d6e: Waiting\ne969d33e9732: Waiting\necc510c1e359: Waiting\n75b6a36c64a1: Waiting\n6912e23eb445: Waiting\nbf9868427a21: Waiting\nc208de401f94: Waiting\nc208de401f94: Waiting\nbbc5a1223747: Waiting\n4063c9d81d6e: Waiting\ne969d33e9732: Waiting\necc510c1e359: Waiting\n75b6a36c64a1: Waiting\n6912e23eb445: Waiting\nbf9868427a21: Waiting\nbf9868427a21: Waiting\nc208de401f94: Waiting\nbbc5a1223747: Waiting\n4063c9d81d6e: Waiting\ne969d33e9732: Waiting\necc510c1e359: Waiting\n75b6a36c64a1: Waiting\n6912e23eb445: Waiting\necc510c1e359: Waiting\n75b6a36c64a1: Waiting\n6912e23eb445: Waiting\nbf9868427a21: Waiting\nc208de401f94: Waiting\nbbc5a1223747: Waiting\n4063c9d81d6e: Waiting\ne969d33e9732: Waiting\nbf9868427a21: Waiting\nc208de401f94: Waiting\nbbc5a1223747: Waiting\n4063c9d81d6e: Waiting\ne969d33e9732: Waiting\necc510c1e359: Waiting\n75b6a36c64a1: Waiting\n6912e23eb445: Waiting\nc208de401f94: Waiting\nbbc5a1223747: Waiting\n4063c9d81d6e: Wait\n\u2026 [2500 characters omitted] \u2026\ng\nc208de401f94: Waiting\nbf9868427a21: Waiting\nc208de401f94: Waiting\nbf9868427a21: Waiting\nc208de401f94: Waiting\nbf9868427a21: Waiting\nc208de401f94: Waiting\nbf9868427a21: Waiting\nc208de401f94: Waiting\nbf9868427a21: Waiting\nc208de401f94: Waiting\nbf9868427a21: Waiting\nc208de401f94: Waiting\nbf9868427a21: Waiting\nc208de401f94: Waiting\nc208de401f94: Pushed\nbf9868427a21: Pushed\n20261016-184345-6728f5-40a85957-b1: digest: sha256:dfcd21c1ce98d7d752e07a79239df3af69d6f6cdba3743bc6bf840566148edac size: 856\n"
+  }
+ ],
+ "rollouts": [
+  {
+   "deployment": "storefront",
+   "complete": true,
+   "waited_s": 17.3,
+   "ready": 2,
+   "replicas": 2
+  }
+ ],
+ "verifications": [
+  {
+   "attempt": 1,
+   "ok": true,
+   "checks": [
+    {
+     "name": "running a new image built in this run",
+     "ok": true,
+     "detail": "deployment image [registry]/storefront@sha256:dfcd21c1ce98d7d752e07a79239df3af69d6f6cdba3743bc6bf840566148edac"
+    },
+    {
+     "name": "rollout complete",
+     "ok": true,
+     "detail": "all replicas updated and ready"
+    },
+    {
+     "name": "pods ready and stable",
+     "ok": true,
+     "detail": "2/2 Ready; restarts 0\u21920 over 5 s"
+    },
+    {
+     "name": "service endpoints",
+     "ok": true,
+     "detail": "2 ready endpoints"
+    },
+    {
+     "name": "checkout [{\"sku\": \"MUG-01\", \"qty\": 2}]",
+     "ok": true,
+     "detail": "HTTP 200, total 31.92, expected 31.92"
+    },
+    {
+     "name": "checkout [{\"sku\": \"CAP-03\", \"qty\": 12}]",
+     "ok": true,
+     "detail": "HTTP 200, total 227.77, expected 227.77"
+    },
+    {
+     "name": "checkout [{\"sku\": \"TEE-02\", \"qty\": 1}, {\"sku\": \"STK-04\", \"qty\": 3}] SAVE10",
+     "ok": true,
+     "detail": "HTTP 200, total 41.72, expected 41.72"
+    },
+    {
+     "name": "checkout [{\"sku\": \"MUG-01\", \"qty\": 30}]",
+     "ok": true,
+     "detail": "HTTP 200, total 349.92, expected 349.92"
+    },
+    {
+     "name": "checkout [{\"sku\": \"TEE-02\", \"qty\": 45}] SAVE10",
+     "ok": true,
+     "detail": "HTTP 200, total 944.78, expected 944.78"
+    },
+    {
+     "name": "checkout [{\"sku\": \"CAP-03\", \"qty\": 500}]",
+     "ok": true,
+     "detail": "HTTP 200, total 8991.00, expected 8991.00"
+    },
+    {
+     "name": "no exception handling added to hide the error",
+     "ok": true,
+     "detail": "added lines: no try/except added in storefront/"
+    },
+    {
+     "name": "hidden pricing tests pass on the final source",
+     "ok": true,
+     "detail": "................................                                         [100%]\n32 passed in 0.04s\n"
+    },
+    {
+     "name": "original tests kept",
+     "ok": true,
+     "detail": "every original test function is still present"
+    },
+    {
+     "name": "agent-added regression test fails on the buggy code",
+     "ok": true,
+     "detail": "tests added: tests/test_regression_bulk.py; on buggy code exit 1"
+    },
+    {
+     "name": "source manifest records the deployed image",
+     "ok": true,
+     "detail": "manifest [registry]/storefront@sha256:dfcd21c1ce98d7d752e07a79239df3af69d6f6cdba3743bc6bf840566148edac"
+    }
+   ],
+   "agent_outcome": "resolved"
+  }
+ ],
+ "drift": [],
+ "metrics": {
+  "model_calls": 21,
+  "model_latency_s": 62.28,
+  "prompt_tokens": 267585,
+  "completion_tokens": 5038,
+  "total_tokens": 272623,
+  "usage_reported_calls": 21,
+  "tool_calls": 42,
+  "tool_time_s": 48.81,
+  "tool_errors": 1,
+  "rejected_actions": 0,
+  "verification_attempts": 1,
+  "token_usage": "reported by provider",
+  "reconstructed_from_events": true
+ },
+ "cost": {
+  "usd": 0.3559,
+  "label": "estimate",
+  "rate_source": "Nebius Token Factory GET /v1/models?verbose=true (pricing.prompt / pricing.completion)",
+  "rate_date": "2026-10-16",
+  "input_per_m": 1.25,
+  "output_per_m": 4.25,
+  "note": "Cached-token discounts, if any, are not applied."
+ },
+ "errors": [],
+ "limitations": [
+  "Metrics and outcome were reconstructed from the recorded events: the headless runner exited before saving them (fixed 2026-10-16). Verification results are the recorded ones."
+ ]
+}

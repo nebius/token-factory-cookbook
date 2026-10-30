@@ -1,1 +1,2 @@
 NEBIUS_API_KEY=your_api_key_here
+NEBIUS_MODEL=replace-with-a-text-model-id

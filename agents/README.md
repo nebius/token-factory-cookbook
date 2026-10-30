@@ -1,26 +1,16 @@
-# Agent Examples
+[Cookbook](../README.md) / Agents
 
-Extensive example of agents using Nebius AI and various agentic frameworks.
+# Agent examples
 
-Jump to:
+Build agents with open models on Nebius Token Factory. Choose a starter example to learn one pattern, an intermediate workflow to extend, or a framework index to work with a familiar stack.
 
-- [Agent Examples](#agent-examples)
-  - [Agents by Functionality](#agents-by-functionality)
-    - [🧩 Starter Agents](#-starter-agents)
-    - [Intermediate Agents](#intermediate-agents)
-  - [Agents by Framework](#agents-by-framework)
-    - [CrewAI](#crewai)
-    - [Google ADK (Agent Development Kit)](#google-adk-agent-development-kit)
-    - [Agno](#agno)
-    - [LangChain](#langchain)
-    - [Llama-index](#llama-index)
-    - [Pydantic AI](#pydantic-ai)
-    - [Strands Agent](#strands-agent)
-    - [Camel AI](#camel-ai)
+[Starter agents](#starter-agents) · [Intermediate agents](#intermediate-agents) · [Frameworks](#agents-by-framework) · [Environment setup](../start-here/setup.md)
 
-## Agents by Functionality
+## Agents by functionality
 
-### 🧩 Starter Agents
+<a id="-starter-agents"></a>
+
+### Starter agents
 
 **Quick-start agents for learning and extending:**
 
@@ -36,7 +26,7 @@ Jump to:
 | [AWS Strands Weather Agent](aws-strands-weather-agent/)             | Weather assistant using Strands SDK and Nebius LLMs | Strands + Nebius + NWS     |
 | [Camel AI Model Comparison Agent](camel-ai-model-comparison-agent/) | Model Comparison Agent using Camel AI Framework     | Camel AI + Nebius + OpenAI |
 
-### Intermediate Agents
+### Intermediate agents
 
 | Agent                                     | Description                                             | Tech Stack                        |
 | ----------------------------------------- | ------------------------------------------------------- | --------------------------------- |
@@ -46,10 +36,12 @@ Jump to:
 | [Meeting Briefing Agent](langchain/meeting_briefing_agent/) | Research a company and generate a cited pre-meeting brief with iterative gap analysis | LangChain + LangGraph + Nebius TF + Tavily + Streamlit |
 | [Nebius Travel Planner](langchain/nebius_travel_planner/) | Build grounded itineraries with weather, web research, budgets, currency conversion, and packing prep | LangChain + Nebius TF + Streamlit |
 | [Insurance Claims Assistant](langchain/insurance-claims-assistant/) | Drop-any-folder multimodal claims triage: reads PDFs + photos + forms, auto-classifies the documents, confirms the claim with the user, reconciles stated vs evidence, and emits an assessor verdict | LangChain + Nebius TF (Nemotron Ultra 253B + Cosmos3 VLM) + PyMuPDF + Streamlit |
+| [OpenCrewBot](mastra/opencrewbot/) | A chat app for your own team of AI bots: each bot has its own open model, tools, `MEMORY.md` and cloud browser, and bots work together in rooms with @mentions and hand-offs | Mastra + Nebius TF + Tavily + Browserbase + Next.js |
 | [Jev-Style Typed Decision Model](jev-style-decision-model-glm/) | Typed, probabilistic decisions (route, yes/no, score) read from GLM-5.3 Flash logprobs, with rotation debiasing and a confidence gate for human escalation | Nebius TF (GLM-5.3 Flash) + OpenAI SDK |
+| [KubeTrace AI: Kubernetes incident repair with Beam](kubetrace-ai/) | Investigate a checkout failure, patch code, run sandboxed tests and verify a deployed repair with hidden checks | Beam + Nebius TF + OpenAI SDK + Kubernetes |
 | [Python AI Agent With Reflection Beam](beam-python-ai-agent/) | A data analyst agent: Beam answers business questions about a sales CSV by writing and running pandas code through tool calls, with per-run cost tracking and a reasoning-effort sweep | Nebius TF (Reflection Beam) + OpenAI SDK + pandas |
 
-## Agents by Framework
+## Agents by framework
 
 ### CrewAI
 
@@ -81,9 +73,9 @@ https://www.agno.com/
 
 https://docs.langchain.com/
 
- [All langchain examples](langchain/) are here.
+Browse the [LangChain examples](langchain/README.md).
 
-**😎 Deep Agents Examples**
+**Deep research examples**
 
 | Agent | Description | Tech Stack |
 | ----- | ----------- | ---------- |
@@ -92,7 +84,7 @@ https://docs.langchain.com/
 | [Competitive Intelligence Agent](langchain/competitive-intelligence-agent/) | Single-company input → 2-3 competitors picked automatically → pricing/news/sentiment sub-agents → synthesized markdown brief, streamed live in the terminal | LangChain deepagents · Nebius TF · Tavily |
 | [Deep PR Reviewer](langchain/pr-review-bot/) | Self-hosted GitHub webhook service that reviews pull requests with correctness and security sub-agents, validates every finding against the diff, and posts a walkthrough plus inline comments | LangChain deepagents · Nebius TF · FastAPI |
 
-**Langchain Agents**
+**LangChain agents**
 
 | Agent | Description | Tech Stack |
 | ----- | ----------- | ---------- |
@@ -140,3 +132,11 @@ https://www.camel-ai.org/
 | Agent                    | Description                                                         | Tech Stack |
 | ------------------------ | ------------------------------------------------------------------- | ---------- |
 | [Camel AI Model Comparison Agent](camel-ai-model-comparison-agent/) | Compare  multiple AI models | Camel AI   |
+
+### Mastra
+
+https://mastra.ai/
+
+| Agent | Description | Tech Stack |
+| ----- | ----------- | ---------- |
+| [OpenCrewBot](mastra/opencrewbot/) | A chat app for your own team of AI bots: each bot has its own open model, tools, `MEMORY.md` and cloud browser, and bots work together in rooms with @mentions and hand-offs | Mastra + Nebius TF + Tavily + Browserbase + Next.js |

@@ -1,0 +1,109 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 640" font-family="Inter, -apple-system, Segoe UI, Helvetica, Arial, sans-serif" role="img" aria-label="KubeTrace AI architecture: the browser talks to the FastAPI backend over REST and server-sent events. The backend runs the bounded agent loop, which calls Nebius Token Factory and uses typed tools. Reads and writes go to the cluster through a namespace-scoped ServiceAccount; writes pass through the policy engine and executor. Tests run in a disposable sandbox container; images are built by a separate adapter. The experiment harness uses privileged credentials for setup, injection and hidden verification. Civo credentials stay in the backend.">
+  <style>
+    .box{fill:#ffffff;stroke:#cfd5e2;stroke-width:1.4}
+    .dark{fill:#0d1424}
+    .warn{fill:#fff7ed;stroke:#f2b36b;stroke-width:1.4}
+    .t{fill:#0b1120;font-size:14px;font-weight:600}
+    .s{fill:#55607a;font-size:11.5px}
+    .w{fill:#fff;font-size:14px;font-weight:600}
+    .ws{fill:#aeb8cf;font-size:11.5px}
+    .l{stroke:#8b95ad;stroke-width:1.5;fill:none}
+    .lab{fill:#55607a;font-size:11px}
+    .grp{fill:none;stroke:#b8c0d2;stroke-dasharray:5 4;stroke-width:1.2}
+    .gl{fill:#7a849c;font-size:11px;font-weight:600;letter-spacing:.04em}
+  </style>
+  <defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10z" fill="#8b95ad"/></marker></defs>
+  <rect width="1100" height="640" fill="#f6f7fb"/>
+
+  <rect class="box" x="30" y="40" width="200" height="86" rx="10"/>
+  <text class="t" x="130" y="72" text-anchor="middle">Browser UI</text>
+  <text class="s" x="130" y="92" text-anchor="middle">React · React Flow · shadcn/ui</text>
+  <text class="s" x="130" y="110" text-anchor="middle">no credentials, no storage</text>
+
+  <path class="l" d="M230 83 H300" marker-end="url(#a)"/>
+  <text class="lab" x="236" y="74">REST + SSE</text>
+  <text class="lab" x="236" y="100">(Last-Event-ID)</text>
+
+  <rect class="grp" x="300" y="22" width="500" height="430" rx="14"/>
+  <text class="gl" x="316" y="42">BACKEND (FastAPI, localhost)</text>
+
+  <rect class="box" x="320" y="56" width="200" height="74" rx="10"/>
+  <text class="t" x="420" y="86" text-anchor="middle">API + run manager</text>
+  <text class="s" x="420" y="106" text-anchor="middle">SQLite events · artifacts</text>
+
+  <rect class="dark" x="560" y="56" width="220" height="74" rx="10"/>
+  <text class="w" x="670" y="86" text-anchor="middle">Bounded agent loop</text>
+  <text class="ws" x="670" y="106" text-anchor="middle">steps · seconds · tokens · cancel</text>
+  <path class="l" d="M520 93 H556" marker-end="url(#a)"/>
+
+  <rect class="box" x="560" y="160" width="220" height="70" rx="10"/>
+  <text class="t" x="670" y="188" text-anchor="middle">Typed tools</text>
+  <text class="s" x="670" y="207" text-anchor="middle">read · code · test · remediate</text>
+  <path class="l" d="M670 130 V156" marker-end="url(#a)"/>
+
+  <rect class="warn" x="560" y="258" width="220" height="74" rx="10"/>
+  <text class="t" x="670" y="287" text-anchor="middle">Policy + executor</text>
+  <text class="s" x="670" y="306" text-anchor="middle">dry run → allowlist → approve</text>
+  <text class="s" x="670" y="321" text-anchor="middle">→ write with resourceVersion</text>
+  <path class="l" d="M670 230 V254" marker-end="url(#a)"/>
+
+  <rect class="box" x="320" y="160" width="200" height="70" rx="10"/>
+  <text class="t" x="420" y="188" text-anchor="middle">Per-run Git workspace</text>
+  <text class="s" x="420" y="207" text-anchor="middle">source + manifests (truth)</text>
+  <path class="l" d="M556 195 H524" marker-end="url(#a)"/>
+
+  <rect class="box" x="320" y="258" width="200" height="74" rx="10"/>
+  <text class="t" x="420" y="286" text-anchor="middle">Experiment harness</text>
+  <text class="s" x="420" y="305" text-anchor="middle">baseline · inject · prove</text>
+  <text class="s" x="420" y="320" text-anchor="middle">hidden verification · reset</text>
+  <path class="l" d="M320 112 H308 V295 H316" marker-end="url(#a)"/>
+
+  <rect class="box" x="320" y="360" width="200" height="74" rx="10"/>
+  <text class="t" x="420" y="388" text-anchor="middle">Image build adapter</text>
+  <text class="s" x="420" y="407" text-anchor="middle">unique tags / digests</text>
+  <text class="s" x="420" y="422" text-anchor="middle">kind load or registry push</text>
+
+  <rect class="box" x="560" y="360" width="220" height="74" rx="10"/>
+  <text class="t" x="670" y="388" text-anchor="middle">Test sandbox</text>
+  <text class="s" x="670" y="407" text-anchor="middle">throwaway container, no network,</text>
+  <text class="s" x="670" y="422" text-anchor="middle">no credentials, no Docker socket</text>
+  <path class="l" d="M780 210 H794 V397 H784" marker-end="url(#a)"/>
+  <path class="l" d="M560 215 H540 V397 H524" marker-end="url(#a)"/>
+
+  <rect class="box" x="870" y="56" width="200" height="74" rx="10"/>
+  <text class="t" x="970" y="86" text-anchor="middle">Nebius Token Factory</text>
+  <text class="s" x="970" y="104" text-anchor="middle">OpenAI-compatible API</text>
+  <text class="s" x="970" y="119" text-anchor="middle">model = NEBIUS_MODEL</text>
+  <path class="l" d="M780 93 H866" marker-end="url(#a)"/>
+  <text class="lab" x="792" y="84">text only</text>
+
+  <rect class="grp" x="840" y="200" width="240" height="400" rx="14"/>
+  <text class="gl" x="856" y="220">KUBERNETES (Civo or kind)</text>
+  <rect class="box" x="860" y="234" width="200" height="120" rx="10"/>
+  <text class="t" x="960" y="260" text-anchor="middle">Demo namespace</text>
+  <text class="s" x="960" y="280" text-anchor="middle">storefront Deployment,</text>
+  <text class="s" x="960" y="296" text-anchor="middle">Service, ConfigMap</text>
+  <text class="s" x="960" y="312" text-anchor="middle">in-cluster HTTP probe</text>
+  <text class="s" x="960" y="336" text-anchor="middle">agent SA: namespace Role only</text>
+  <rect class="box" x="860" y="380" width="200" height="64" rx="10"/>
+  <text class="t" x="960" y="406" text-anchor="middle">Partner namespace</text>
+  <text class="s" x="960" y="425" text-anchor="middle">outside the agent's RBAC</text>
+  <rect class="box" x="860" y="470" width="200" height="64" rx="10"/>
+  <text class="t" x="960" y="496" text-anchor="middle">Registry (Civo)</text>
+  <text class="s" x="960" y="515" text-anchor="middle">images by digest</text>
+
+  <path class="l" d="M780 300 H856" marker-end="url(#a)"/>
+  <text class="lab" x="790" y="291">scoped token</text>
+  <path class="l" d="M320 320 H312 V466 H822 V336 H856" marker-end="url(#a)"/>
+  <text class="lab" x="560" y="482">privileged kubeconfig (harness only)</text>
+  <path class="l" d="M420 434 V516 H856" marker-end="url(#a)"/>
+  <text class="lab" x="560" y="510">image push (Civo) / kind load</text>
+
+  <rect class="box" x="30" y="300" width="200" height="74" rx="10"/>
+  <text class="t" x="130" y="328" text-anchor="middle">Civo API</text>
+  <text class="s" x="130" y="347" text-anchor="middle">list clusters, fetch kubeconfig</text>
+  <text class="s" x="130" y="362" text-anchor="middle">key stays in the backend</text>
+  <path class="l" d="M316 120 C 260 160, 230 250, 200 296" marker-end="url(#a)"/>
+
+  <text class="s" x="30" y="620">Only hidden harness checks can mark a run Resolved. The model sees text and tool results; never images, credentials or the answer key.</text>
+</svg>

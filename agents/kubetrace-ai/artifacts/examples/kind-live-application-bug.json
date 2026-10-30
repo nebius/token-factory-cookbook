@@ -1,0 +1,297 @@
+{
+ "report_version": 1,
+ "generated_at": "2026-10-16T13:24:55Z",
+ "run_id": "20261016-153509-68ae37",
+ "scenario_id": "application-bug",
+ "provenance": "local-live",
+ "provenance_label": "Live run on a local kind cluster",
+ "replay_of": null,
+ "provider": "nebius-token-factory",
+ "model": "meta-models/muse-spark-open",
+ "is_fixture": false,
+ "repo_commit": "uncommitted-dirty",
+ "cluster": {
+  "kind": "kind",
+  "context": "[hidden]",
+  "server": "[hidden]",
+  "kubernetes_version": "v1.27.3",
+  "civo_cluster": null,
+  "capacity": {
+   "nodes": 1,
+   "kubelet_version": "v1.27.3",
+   "allocatable": [
+    {
+     "name": "kubetrace-control-plane",
+     "cpu": "4",
+     "memory": "16356580Ki"
+    }
+   ]
+  },
+  "namespace": "kubetrace-demo"
+ },
+ "settings": {
+  "prompt_version": "2026-10-16.1",
+  "tool_schema_version": "2026-10-16.1",
+  "generation_settings": {
+   "max_tokens": 2048,
+   "temperature": 0.2
+  },
+  "limits": {
+   "max_steps": 40,
+   "max_seconds": 900,
+   "max_tokens": 400000,
+   "max_output_chars": 4000,
+   "verification_retries": 1
+  },
+  "policy_mode": "auto",
+  "test_runner": "docker",
+  "fixture_label": null
+ },
+ "policy_mode": "auto",
+ "timing": {
+  "created_at": 1792145109.321138,
+  "started_at": 1792145169.685591,
+  "ended_at": 1792145384.070595,
+  "agent_elapsed_s": 214.17
+ },
+ "final_state": "resolved",
+ "reason": "independent verification passed",
+ "first_attempt_success": true,
+ "eventual_success": true,
+ "baseline": [
+  {
+   "name": "storefront and probe rolled out",
+   "ok": true,
+   "detail": "Deployments available"
+  },
+  {
+   "name": "checkout [{\"sku\": \"MUG-01\", \"qty\": 2}]",
+   "ok": true,
+   "detail": "HTTP 200, total 31.92, expected 31.92"
+  },
+  {
+   "name": "checkout [{\"sku\": \"CAP-03\", \"qty\": 12}]",
+   "ok": true,
+   "detail": "HTTP 200, total 227.77, expected 227.77"
+  },
+  {
+   "name": "checkout [{\"sku\": \"TEE-02\", \"qty\": 1}, {\"sku\": \"STK-04\", \"qty\": 3}] SAVE10",
+   "ok": true,
+   "detail": "HTTP 200, total 41.72, expected 41.72"
+  }
+ ],
+ "issue": {
+  "incident": "Large checkout orders fail with 500",
+  "symptom": "POST /api/checkout returns HTTP 500 for orders of 30 or more units of one item; smaller orders work.",
+  "fault_proof": [
+   {
+    "name": "30-unit order returns 500",
+    "ok": true,
+    "detail": "HTTP 500"
+   },
+   {
+    "name": "small order still works",
+    "ok": true,
+    "detail": "HTTP 200"
+   }
+  ]
+ },
+ "observations": [
+  {
+   "text": "Large checkout (qty 30) returns 500, small (qty 5) succeeds. Logs show IndexError in bulk_rate: BULK_TIERS[qty//10] out of range for qty 30.",
+   "evidence": [
+    "http_check storefront /api/checkout qty30 500",
+    "http_check qty5 200",
+    "logs storefront-54b87754b-8w94s IndexError list index out of range at pricing.py:43"
+   ]
+  }
+ ],
+ "hypotheses": [
+  {
+   "text": "bulk_rate uses BULK_TIERS[qty//10] with only 3 entries (indices 0,1,2). For qty>=30, index 3+ out of range. Should cap at last tier per docs: 20+ units = 10%.",
+   "evidence": [
+    "pricing.py:15 BULK_TIERS length 3",
+    "pricing.py:43 bulk_rate qty//10",
+    "docs/pricing.md 20 or more units 10%",
+    "logs IndexError for qty 30"
+   ]
+  }
+ ],
+ "agent_conclusion": {
+  "outcome": "resolved",
+  "root_cause": "Code bug in storefront/pricing.py bulk_rate(): BULK_TIERS has 3 entries (0%,5%,10%) but indexing was BULK_TIERS[qty//10] without capping. For qty 30, index 3 out of range -> IndexError -> 500. Per docs/pricing.md, 20+ units should be 10%.",
+  "summary": "Fixed bulk_rate to cap index at len(BULK_TIERS)-1, added regression test for qty 30 and 500, built and deployed new image kubetrace/storefront:20261016-153509-68ae37-0b0acd84-b1. Verified checkout for 30 mugs now returns 200 with correct totals (360 gross, 36 discount, 349.92 total) and 500 qty also succeeds; rollout complete with 2 ready pods.",
+  "evidence": [
+   "http_check qty30 before 500 after 200",
+   "logs IndexError list index out of range pricing.py:43",
+   "pricing.py BULK_TIERS length 3",
+   "wait_for_rollout generation 3 ready 2",
+   "service_endpoints 2 ready endpoints"
+  ]
+ },
+ "attempted_changes": [
+  {
+   "id": "88b3e8de7f",
+   "kind": "Deployment",
+   "name": "storefront",
+   "source": "deploy_image",
+   "reason": "Deploy fix for large checkout 500",
+   "diff": "--- live/deployment/storefront\n+++ proposed/deployment/storefront\n@@ -30,8 +30,8 @@\n       containers:\n       - env:\n         - name: APP_VERSION\n-          value: release-a3b55329808e\n-        image: kubetrace/storefront:release-a3b55329808e\n+          value: 20261016-153509-68ae37-0b0acd84-b1\n+        image: kubetrace/storefront:20261016-153509-68ae37-0b0acd84-b1\n         imagePullPolicy: IfNotPresent\n         livenessProbe:\n           failureThreshold: 3\n",
+   "decision": {
+    "allowed": true,
+    "reasons": [],
+    "changed_paths": [
+     "spec.template.spec.containers[name=storefront].env[name=APP_VERSION].value",
+     "spec.template.spec.containers[name=storefront].image"
+    ]
+   },
+   "status": "applied",
+   "error": "",
+   "duration_s": 0.019
+  }
+ ],
+ "source_diff": "diff --git a/k8s/deployment.yaml b/k8s/deployment.yaml\nindex 4bf06e8..955173d 100644\n--- a/k8s/deployment.yaml\n+++ b/k8s/deployment.yaml\n@@ -23,7 +23,7 @@ spec:\n         runAsUser: 10001\n       containers:\n         - name: storefront\n-          image: kubetrace/storefront:release-a3b55329808e\n+          image: kubetrace/storefront:20261016-153509-68ae37-0b0acd84-b1\n           imagePullPolicy: IfNotPresent\n           ports:\n             - name: http\ndiff --git a/storefront/pricing.py b/storefront/pricing.py\nindex 95ff59a..3ebc77e 100644\n--- a/storefront/pricing.py\n+++ b/storefront/pricing.py\n@@ -40,7 +40,10 @@ def money(value: Decimal) -> Decimal:\n \n \n def bulk_rate(qty: int) -> Decimal:\n-    return BULK_TIERS[qty // 10]\n+    idx = qty // 10\n+    if idx >= len(BULK_TIERS):\n+        idx = len(BULK_TIERS) - 1\n+    return BULK_TIERS[idx]\n \n \n def quote(items: list[dict], coupon: str | None, config: PricingConfig) -> dict:\ndiff --git a/tests/test_bulk_regression.py b/tests/test_bulk_regression.py\nnew file mode 100644\nindex 0000000..03ef74a\n--- /dev/null\n+++ b/tests/test_bulk_regression.py\n@@ -0,0 +1,17 @@\n+from decimal import Decimal\n+from storefront.pricing import PricingConfig, quote\n+\n+CFG = PricingConfig(currency=\"USD\", tax_rate=Decimal(\"0.08\"), shipping_flat=Decimal(\"6.00\"),\n+                    free_shipping_threshold=Decimal(\"75\"))\n+\n+def test_bulk_30_mugs_ten_percent():\n+    # 30 * 12.00 = 360.00 gross, 10% bulk = 36.00, after_bulk 324, free shipping, tax 25.92, total 349.92\n+    q = quote([{\"sku\": \"MUG-01\", \"qty\": 30}], None, CFG)\n+    assert q[\"bulk_discount\"] == \"36.00\"\n+    assert q[\"shipping\"] == \"0.00\"\n+    assert q[\"total\"] == \"349.92\"\n+\n+def test_bulk_500_max_qty():\n+    q = quote([{\"sku\": \"MUG-01\", \"qty\": 500}], None, CFG)\n+    # 500*12=6000 gross, 10% =600 discount\n+    assert q[\"bulk_discount\"] == \"600.00\"\n",
+ "tests": [
+  {
+   "suite": "unit",
+   "command": "python -m pytest -q -p no:cacheprovider tests",
+   "exit_code": 0,
+   "passed": true,
+   "duration_s": 0.49,
+   "isolation": "docker: --network none, read-only source, no credentials, no Docker socket",
+   "output": "...............                                                          [100%]\n15 passed in 0.02s\n",
+   "commit_of_tested_tree": "d465bb3a2ffbe313cbfec6a8d9220c44b884fafe"
+  }
+ ],
+ "builds": [
+  {
+   "image": "kubetrace/storefront:20261016-153509-68ae37-0b0acd84-b1",
+   "tag": "kubetrace/storefront:20261016-153509-68ae37-0b0acd84-b1",
+   "image_id": "sha256:109c6a3f310a0accdb33a6342d1c127bd0bcd5d4aeae9297c26bb2edbbc722cc",
+   "digest": null,
+   "source_commit": "0b0acd84eab85fc19093683f2f3145fce632602f",
+   "duration_s": 3.7
+  }
+ ],
+ "rollouts": [
+  {
+   "deployment": "storefront",
+   "complete": true,
+   "waited_s": 3.1,
+   "ready": 2,
+   "replicas": 2
+  }
+ ],
+ "verifications": [
+  {
+   "attempt": 1,
+   "ok": true,
+   "checks": [
+    {
+     "name": "running a new image built in this run",
+     "ok": true,
+     "detail": "deployment image kubetrace/storefront:20261016-153509-68ae37-0b0acd84-b1"
+    },
+    {
+     "name": "rollout complete",
+     "ok": true,
+     "detail": "all replicas updated and ready"
+    },
+    {
+     "name": "pods ready and stable",
+     "ok": true,
+     "detail": "2/2 Ready; restarts 0\u21920 over 5 s"
+    },
+    {
+     "name": "service endpoints",
+     "ok": true,
+     "detail": "2 ready endpoints"
+    },
+    {
+     "name": "checkout [{\"sku\": \"MUG-01\", \"qty\": 2}]",
+     "ok": true,
+     "detail": "HTTP 200, total 31.92, expected 31.92"
+    },
+    {
+     "name": "checkout [{\"sku\": \"CAP-03\", \"qty\": 12}]",
+     "ok": true,
+     "detail": "HTTP 200, total 227.77, expected 227.77"
+    },
+    {
+     "name": "checkout [{\"sku\": \"TEE-02\", \"qty\": 1}, {\"sku\": \"STK-04\", \"qty\": 3}] SAVE10",
+     "ok": true,
+     "detail": "HTTP 200, total 41.72, expected 41.72"
+    },
+    {
+     "name": "checkout [{\"sku\": \"MUG-01\", \"qty\": 30}]",
+     "ok": true,
+     "detail": "HTTP 200, total 349.92, expected 349.92"
+    },
+    {
+     "name": "checkout [{\"sku\": \"TEE-02\", \"qty\": 45}] SAVE10",
+     "ok": true,
+     "detail": "HTTP 200, total 944.78, expected 944.78"
+    },
+    {
+     "name": "checkout [{\"sku\": \"CAP-03\", \"qty\": 500}]",
+     "ok": true,
+     "detail": "HTTP 200, total 8991.00, expected 8991.00"
+    },
+    {
+     "name": "no exception handling added to hide the error",
+     "ok": true,
+     "detail": "added lines: no try/except added in storefront/"
+    },
+    {
+     "name": "hidden pricing tests pass on the final source",
+     "ok": true,
+     "detail": "...............................                                          [100%]\n31 passed in 0.03s\n"
+    },
+    {
+     "name": "original tests kept",
+     "ok": true,
+     "detail": "every original test function is still present"
+    },
+    {
+     "name": "agent-added regression test fails on the buggy code",
+     "ok": true,
+     "detail": "tests added: tests/test_bulk_regression.py; on buggy code exit 1"
+    },
+    {
+     "name": "source manifest records the deployed image",
+     "ok": true,
+     "detail": "manifest kubetrace/storefront:20261016-153509-68ae37-0b0acd84-b1"
+    }
+   ],
+   "agent_outcome": "resolved"
+  }
+ ],
+ "drift": [],
+ "metrics": {
+  "model_calls": 23,
+  "model_latency_s": 198.38,
+  "prompt_tokens": 400035,
+  "completion_tokens": 8047,
+  "total_tokens": 408082,
+  "usage_reported_calls": 23,
+  "tool_calls": 66,
+  "tool_time_s": 9.11,
+  "tool_errors": 0,
+  "rejected_actions": 0,
+  "model_retries": 0,
+  "verification_attempts": 1,
+  "nudges": 0,
+  "token_usage": "reported by provider"
+ },
+ "cost": {
+  "usd": 0.5342,
+  "label": "estimate",
+  "rate_source": "Nebius Token Factory GET /v1/models?verbose=true (pricing.prompt / pricing.completion)",
+  "rate_date": "2026-10-16",
+  "input_per_m": 1.25,
+  "output_per_m": 4.25,
+  "note": "Cached-token discounts, if any, are not applied."
+ },
+ "errors": [],
+ "limitations": []
+}

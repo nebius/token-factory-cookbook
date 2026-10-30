@@ -1,0 +1,165 @@
+{
+ "report_version": 1,
+ "generated_at": "2026-10-16T13:24:55Z",
+ "run_id": "20261016-154623-260285",
+ "scenario_id": "partner-outage",
+ "provenance": "fixture",
+ "provenance_label": "FIXTURE run: scripted test double, no model was called",
+ "replay_of": null,
+ "provider": "fixture",
+ "model": "fixture-script",
+ "is_fixture": true,
+ "repo_commit": "uncommitted-dirty",
+ "cluster": {
+  "kind": "kind",
+  "context": "[hidden]",
+  "server": "[hidden]",
+  "kubernetes_version": "v1.27.3",
+  "civo_cluster": null,
+  "capacity": {
+   "nodes": 1,
+   "kubelet_version": "v1.27.3",
+   "allocatable": [
+    {
+     "name": "kubetrace-control-plane",
+     "cpu": "4",
+     "memory": "16356580Ki"
+    }
+   ]
+  },
+  "namespace": "kubetrace-demo"
+ },
+ "settings": {
+  "prompt_version": "2026-10-16.1",
+  "tool_schema_version": "2026-10-16.1",
+  "generation_settings": {
+   "note": "FIXTURE: scripted test double, not a model"
+  },
+  "limits": {
+   "max_steps": 20,
+   "max_seconds": 600,
+   "max_tokens": 600000,
+   "max_output_chars": 4000,
+   "verification_retries": 1
+  },
+  "policy_mode": "auto",
+  "test_runner": "docker",
+  "fixture_label": "FIXTURE: scripted test double, not a model"
+ },
+ "policy_mode": "auto",
+ "timing": {
+  "created_at": 1792145783.740041,
+  "started_at": 1792145864.105324,
+  "ended_at": 1792145864.2396748,
+  "agent_elapsed_s": 0.05
+ },
+ "final_state": "escalated",
+ "reason": "escalation confirmed: the cause is outside the agent's scope",
+ "first_attempt_success": true,
+ "eventual_success": true,
+ "baseline": [
+  {
+   "name": "storefront and probe rolled out",
+   "ok": true,
+   "detail": "Deployments available"
+  },
+  {
+   "name": "checkout [{\"sku\": \"MUG-01\", \"qty\": 2}]",
+   "ok": true,
+   "detail": "HTTP 200, total 31.92, expected 31.92"
+  },
+  {
+   "name": "checkout [{\"sku\": \"CAP-03\", \"qty\": 12}]",
+   "ok": true,
+   "detail": "HTTP 200, total 227.77, expected 227.77"
+  },
+  {
+   "name": "checkout [{\"sku\": \"TEE-02\", \"qty\": 1}, {\"sku\": \"STK-04\", \"qty\": 3}] SAVE10",
+   "ok": true,
+   "detail": "HTTP 200, total 41.72, expected 41.72"
+  }
+ ],
+ "issue": {
+  "incident": "Checkout returns 502",
+  "symptom": "Checkout returns HTTP 502 for every order; the storefront itself is healthy.",
+  "fault_proof": [
+   {
+    "name": "checkout returns 502",
+    "ok": true,
+    "detail": "payment gateway unreachable"
+   }
+  ]
+ },
+ "observations": [],
+ "hypotheses": [
+  {
+   "text": "The partner payment gateway in another namespace is unreachable; the storefront itself is healthy.",
+   "evidence": [
+    "get_logs payment gateway unavailable"
+   ]
+  }
+ ],
+ "agent_conclusion": {
+  "outcome": "escalate",
+  "root_cause": "The partner payment gateway is unreachable from the storefront.",
+  "summary": "Outside my scope: the payments service lives in another namespace. Escalating to its owners.",
+  "evidence": []
+ },
+ "attempted_changes": [],
+ "source_diff": "",
+ "tests": [],
+ "builds": [],
+ "rollouts": [],
+ "verifications": [
+  {
+   "attempt": 1,
+   "ok": true,
+   "checks": [
+    {
+     "name": "agent escalated",
+     "ok": true,
+     "detail": "outcome escalate"
+    },
+    {
+     "name": "diagnosis names the payment gateway",
+     "ok": true,
+     "detail": "The partner payment gateway is unreachable from the storefront."
+    },
+    {
+     "name": "no changes were applied",
+     "ok": true,
+     "detail": "0 applied changes"
+    },
+    {
+     "name": "no recovery was claimed",
+     "ok": true,
+     "detail": "the fault is outside the agent's scope"
+    }
+   ],
+   "agent_outcome": "escalate"
+  }
+ ],
+ "drift": [],
+ "metrics": {
+  "model_calls": 5,
+  "model_latency_s": 0.0,
+  "prompt_tokens": 0,
+  "completion_tokens": 0,
+  "total_tokens": 0,
+  "usage_reported_calls": 0,
+  "tool_calls": 5,
+  "tool_time_s": 0.03,
+  "tool_errors": 0,
+  "rejected_actions": 0,
+  "model_retries": 0,
+  "verification_attempts": 1,
+  "nudges": 0,
+  "token_usage": "unavailable"
+ },
+ "cost": null,
+ "errors": [],
+ "limitations": [
+  "FIXTURE: scripted test double, not a model. It exercises the pipeline, not a model's ability.",
+  "Token usage was not fully reported by the provider; token figures are incomplete."
+ ]
+}

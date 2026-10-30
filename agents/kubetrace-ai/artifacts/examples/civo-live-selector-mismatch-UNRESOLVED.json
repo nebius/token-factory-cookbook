@@ -1,0 +1,150 @@
+{
+ "report_version": 1,
+ "generated_at": "2026-10-16T13:24:55Z",
+ "run_id": "20261016-184008-c142dd",
+ "scenario_id": "selector-mismatch",
+ "provenance": "civo-live",
+ "provenance_label": "Live run on a Civo cluster",
+ "replay_of": null,
+ "provider": "nebius-token-factory",
+ "model": "meta-models/muse-spark-open",
+ "is_fixture": false,
+ "repo_commit": "712b98548ed0-dirty",
+ "cluster": {
+  "kind": "civo",
+  "context": "[hidden]",
+  "server": "[hidden]",
+  "kubernetes_version": "v1.35.0+k3s1",
+  "civo_cluster": {
+   "id": "[id]",
+   "name": "kubetrace-demo",
+   "status": "ACTIVE",
+   "kubernetes_version": "1.35.0-k3s1",
+   "nodes": 2,
+   "size": "g4s.kube.medium",
+   "region": "LON1"
+  },
+  "capacity": {
+   "nodes": 2,
+   "kubelet_version": "v1.35.0+k3s1",
+   "allocatable": [
+    {
+     "name": "k3s-kubetrace-demo-cc91-52bf34-node-pool-b14e-2zv2y",
+     "cpu": "1880m",
+     "memory": "2364008Ki"
+    },
+    {
+     "name": "k3s-kubetrace-demo-cc91-52bf34-node-pool-b14e-ve391",
+     "cpu": "1880m",
+     "memory": "2364020Ki"
+    }
+   ]
+  },
+  "namespace": "kubetrace-demo"
+ },
+ "settings": {
+  "prompt_version": "2026-10-16.1",
+  "tool_schema_version": "2026-10-16.1",
+  "generation_settings": {
+   "max_tokens": 2048,
+   "temperature": 0.2
+  },
+  "limits": {
+   "max_steps": 30,
+   "max_seconds": 600,
+   "max_tokens": 600000,
+   "max_output_chars": 4000,
+   "verification_retries": 1
+  },
+  "policy_mode": "auto",
+  "test_runner": "docker",
+  "fixture_label": null
+ },
+ "policy_mode": "auto",
+ "timing": {
+  "created_at": 1792156208.1640341,
+  "started_at": 1792156280.333812,
+  "ended_at": 1792156421.733066,
+  "agent_elapsed_s": 141.07
+ },
+ "final_state": "unresolved",
+ "reason": "a step or token limit was reached (the events do not record which) (reconstructed from recorded events)",
+ "first_attempt_success": null,
+ "eventual_success": false,
+ "baseline": [
+  {
+   "name": "storefront and probe rolled out",
+   "ok": true,
+   "detail": "Deployments available"
+  },
+  {
+   "name": "checkout [{\"sku\": \"MUG-01\", \"qty\": 2}]",
+   "ok": true,
+   "detail": "HTTP 200, total 31.92, expected 31.92"
+  },
+  {
+   "name": "checkout [{\"sku\": \"CAP-03\", \"qty\": 12}]",
+   "ok": true,
+   "detail": "HTTP 200, total 227.77, expected 227.77"
+  },
+  {
+   "name": "checkout [{\"sku\": \"TEE-02\", \"qty\": 1}, {\"sku\": \"STK-04\", \"qty\": 3}] SAVE10",
+   "ok": true,
+   "detail": "HTTP 200, total 41.72, expected 41.72"
+  }
+ ],
+ "issue": {
+  "incident": "Storefront checkout is down",
+  "symptom": "Checkout requests through the Service fail; the Service has no endpoints while Pods are healthy.",
+  "fault_proof": [
+   {
+    "name": "no ready endpoints",
+    "ok": true,
+    "detail": "0 endpoints"
+   },
+   {
+    "name": "request through the Service fails",
+    "ok": true,
+    "detail": "{\"ok\": false, \"error\": \"URLError: [Errno 111] Connection refused\", \"latency_ms\": 5}"
+   }
+  ]
+ },
+ "observations": [],
+ "hypotheses": [],
+ "agent_conclusion": null,
+ "attempted_changes": [],
+ "source_diff": "",
+ "tests": [],
+ "builds": [],
+ "rollouts": [],
+ "verifications": [],
+ "drift": [],
+ "metrics": {
+  "model_calls": 30,
+  "model_latency_s": 130.36,
+  "prompt_tokens": 597560,
+  "completion_tokens": 10442,
+  "total_tokens": 608002,
+  "usage_reported_calls": 30,
+  "tool_calls": 96,
+  "tool_time_s": 10.13,
+  "tool_errors": 0,
+  "rejected_actions": 0,
+  "verification_attempts": 0,
+  "token_usage": "reported by provider",
+  "reconstructed_from_events": true
+ },
+ "cost": {
+  "usd": 0.7913,
+  "label": "estimate",
+  "rate_source": "Nebius Token Factory GET /v1/models?verbose=true (pricing.prompt / pricing.completion)",
+  "rate_date": "2026-10-16",
+  "input_per_m": 1.25,
+  "output_per_m": 4.25,
+  "note": "Cached-token discounts, if any, are not applied."
+ },
+ "errors": [],
+ "limitations": [
+  "Metrics and outcome were reconstructed from the recorded events: the headless runner exited before saving them (fixed 2026-10-16). Verification results are the recorded ones."
+ ]
+}

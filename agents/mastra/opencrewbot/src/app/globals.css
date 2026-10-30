@@ -1,0 +1,219 @@
+@import "tailwindcss";
+
+/* One dark theme, tuned for long chats. */
+:root {
+  color-scheme: dark;
+  --app: #111111;
+  --side: #161616;
+  --raised: #1d1d1d;
+  --raised-2: #262626;
+  --hover: #1f1f1f;
+  --active: #262626;
+  --line: #262626;
+  --line-strong: #333333;
+  --ink: #ececec;
+  --mute: #9b9b9b;
+  --faint: #6b6b6b;
+  --accent: #3478f6;
+  --accent-hover: #4a88f8;
+  --accent-soft: rgb(52 120 246 / 0.14);
+  --accent-ink: #ffffff;
+  --ok: #34c77b;
+  --warn: #e7a93a;
+  --warn-soft: rgb(231 169 58 / 0.1);
+  --danger: #f2615d;
+  --danger-soft: rgb(242 97 93 / 0.12);
+  --code: #262626;
+  --shadow: 0 10px 40px rgb(0 0 0 / 0.55);
+}
+
+@theme inline {
+  --color-app: var(--app);
+  --color-side: var(--side);
+  --color-raised: var(--raised);
+  --color-raised-2: var(--raised-2);
+  --color-hover: var(--hover);
+  --color-active: var(--active);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-ink: var(--ink);
+  --color-mute: var(--mute);
+  --color-faint: var(--faint);
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-soft: var(--accent-soft);
+  --color-accent-ink: var(--accent-ink);
+  --color-ok: var(--ok);
+  --color-warn: var(--warn);
+  --color-warn-soft: var(--warn-soft);
+  --color-danger: var(--danger);
+  --color-danger-soft: var(--danger-soft);
+  --color-code: var(--code);
+  --shadow-pop: var(--shadow);
+  --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", var(--font-geist-sans), "Segoe UI", system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, "SF Mono", monospace;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  background: var(--app);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+::selection {
+  background: rgb(52 120 246 / 0.35);
+}
+
+/* Quiet scrollbars that only show up when you need them. */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #2e2e2e transparent;
+}
+
+/* Markdown inside messages */
+.prose-chat {
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+.prose-chat > * + * {
+  margin-top: 0.75em;
+}
+.prose-chat strong {
+  font-weight: 600;
+  color: #f5f5f5;
+}
+.prose-chat a {
+  color: #7fb0ff;
+  text-decoration: underline;
+  text-decoration-color: rgb(127 176 255 / 0.4);
+  text-underline-offset: 3px;
+}
+.prose-chat ul {
+  list-style: disc;
+  padding-left: 1.3em;
+}
+.prose-chat ol {
+  list-style: decimal;
+  padding-left: 1.4em;
+}
+.prose-chat li::marker {
+  color: var(--mute);
+}
+.prose-chat li + li {
+  margin-top: 0.35em;
+}
+.prose-chat h1,
+.prose-chat h2,
+.prose-chat h3 {
+  font-weight: 600;
+  line-height: 1.3;
+  color: #f5f5f5;
+}
+.prose-chat h1 {
+  font-size: 1.15em;
+}
+.prose-chat h2 {
+  font-size: 1.07em;
+}
+.prose-chat code {
+  font-family: var(--font-mono);
+  font-size: 0.86em;
+  background: var(--code);
+  padding: 0.12em 0.4em;
+  border-radius: 6px;
+}
+.prose-chat pre {
+  background: #0c0c0c;
+  border: 1px solid var(--line);
+  padding: 0.8em 1em;
+  border-radius: 12px;
+  overflow-x: auto;
+  font-size: 0.85em;
+}
+.prose-chat pre code {
+  background: none;
+  padding: 0;
+}
+.prose-chat blockquote {
+  border-left: 3px solid var(--line-strong);
+  padding-left: 0.9em;
+  color: var(--mute);
+}
+.prose-chat table {
+  border-collapse: collapse;
+  font-size: 0.92em;
+  display: block;
+  overflow-x: auto;
+}
+.prose-chat th,
+.prose-chat td {
+  border: 1px solid var(--line-strong);
+  padding: 0.35em 0.7em;
+  text-align: left;
+}
+.prose-chat hr {
+  border-color: var(--line-strong);
+}
+
+.bubble-user .prose-chat a,
+.bubble-user .prose-chat strong {
+  color: inherit;
+}
+.bubble-user .prose-chat code,
+.bubble-user .prose-chat pre {
+  background: rgb(255 255 255 / 0.16);
+  border-color: transparent;
+}
+
+.typing-dot {
+  animation: typing 1.2s infinite ease-in-out;
+}
+.typing-dot:nth-child(2) {
+  animation-delay: 0.15s;
+}
+.typing-dot:nth-child(3) {
+  animation-delay: 0.3s;
+}
+@keyframes typing {
+  0%,
+  60%,
+  100% {
+    opacity: 0.25;
+    transform: translateY(0);
+  }
+  30% {
+    opacity: 1;
+    transform: translateY(-2px);
+  }
+}
+
+/* Mascots blink now and then. */
+.mascot-eyes {
+  transform-origin: center;
+  transform-box: fill-box;
+  animation: blink 6s infinite;
+}
+@keyframes blink {
+  0%,
+  96%,
+  100% {
+    transform: scaleY(1);
+  }
+  98% {
+    transform: scaleY(0.1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .typing-dot,
+  .mascot-eyes {
+    animation: none;
+  }
+}

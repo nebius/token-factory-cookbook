@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: storefront-config
+  labels:
+    app.kubernetes.io/name: storefront
+    kubetrace.ai/experiment: "true"
+data:
+  config.json: |
+    {
+      "currency": "USD",
+      "tax_rate": 0.08,
+      "shipping_flat": 6.00,
+      "free_shipping_threshold": 75,
+      "cache_warm_mb": 32,
+      "payment_gateway_url": ""
+    }

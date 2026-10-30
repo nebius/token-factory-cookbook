@@ -1,17 +1,25 @@
-# Cool Apps and Demos built with Nebius AI
+[Cookbook](../README.md) / Applications and demos
 
-  - [WhatLLM](#whatllm)
-  - [Allycat](#allycat)
-  - [Customer Support AI](#customer-support-ai)
+# Applications and demos
 
+Explore complete applications built with Nebius Token Factory. Follow the linked project for its runtime, required keys, and deployment instructions.
+
+| Application | Workflow | Source |
+| --- | --- | --- |
+| [Splitter Lite](splitter-lite/) | Read receipts and split bills with vision and calculator tools | Included in this repository |
+| [WhatLLM](https://www.whatllm.org/) | Compare model responses | Hosted application |
+| [Allycat](https://github.com/The-AI-Alliance/allycat) | Search and chat over website content | External repository |
+| [Customer Support AI](https://github.com/amrrs/customer-support-ai) | Answer support questions with domain-restricted web retrieval | External repository |
+
+For agent applications, see [OpenCrewBot](../agents/mastra/opencrewbot/) and [KubeTrace AI](../agents/kubetrace-ai/). For environment help, see [setup](../start-here/setup.md).
 
 ## WhatLLM
 
-A cool and very useful LLM comparision tool
+A model comparison tool.
 
 [whatllm.org](https://www.whatllm.org/)
 
-Built by Dylan Bristot: [demianarc](https://github.com/demianarc)  |  [demian_ai](https://twitter.com/demian_ai)
+Built by Dylan Bristot: [demianarc](https://github.com/demianarc)  · [demian_ai](https://twitter.com/demian_ai)
 
 | ![](images/what-llm-1.png)
 |-
@@ -54,5 +62,20 @@ context, and the interface hyperlinks answers only to those approved sources.
 The demo can be run locally or deployed to Vercel or Render.
 
 Built by [Amrrs](https://github.com/amrrs).
+
+---
+
+## Splitter Lite
+
+[Splitter Lite](splitter-lite/) is a Next.js bill-splitting app. Upload one
+or two bills, say who had what in plain English, and NVIDIA Nemotron 3.5 Super
+VL on Nebius Token Factory reads every line into structured JSON, then works
+out each share by calling calculator tools. The app re-checks the model's
+shares and flags any split that doesn't add up.
+
+| <img src="splitter-lite/screenshots/4-split.png" width="400">
+|-
+
+Built by [Amitesh Anand](https://github.com/Astrodevil).
 
 ---

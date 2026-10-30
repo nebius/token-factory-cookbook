@@ -1,0 +1,15 @@
+name: Recipe suggestion
+description: Suggest a useful Token Factory workflow or documentation improvement.
+body:
+  - type: textarea
+    id: outcome
+    attributes:
+      label: What would you like to build?
+      description: Explain the task, who it helps, and which existing examples you checked.
+    validations:
+      required: true
+  - type: textarea
+    id: approach
+    attributes:
+      label: Suggested approach
+      description: Add relevant models, frameworks, or source links.

@@ -1,5 +1,11 @@
-# Distillation Examples
+[Cookbook](../README.md) / Distillation
 
-| Name | Description                                         | Tech Stack           |
-|-----------|-----------------------------------------------|-----------------------|
-| [Distillation 1](distillation-1/)  | Example of a distilled model to do grammer check   | Nebius AI | 
+# Distillation
+
+Explore an example of adapting model behavior for a specific task on Nebius Token Factory.
+
+| Recipe | Task |
+| --- | --- |
+| [Grammar checking](distillation-1/) | Distill a model for grammar correction |
+
+See [post-training examples](../post-training/README.md) for fine-tuning, and follow the recipe's requirements before running a training job.

@@ -1,0 +1,90 @@
+name: Recipe checks
+
+on:
+  pull_request:
+    paths:
+      - 'agents/kubetrace-ai/**'
+      - 'agents/mastra/opencrewbot/**'
+      - 'apps/splitter-lite/**'
+      - '.github/workflows/recipe-checks.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'agents/kubetrace-ai/**'
+      - 'agents/mastra/opencrewbot/**'
+      - 'apps/splitter-lite/**'
+      - '.github/workflows/recipe-checks.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: recipe-checks-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  kubetrace:
+    name: KubeTrace unit tests and build
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: agents/kubetrace-ai
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+        with:
+          python-version: '3.13'
+      - run: uv sync --frozen
+      - run: uv run pytest tests/unit -q
+      - run: uvx pip-audit --path .venv/lib/python3.13/site-packages --skip-editable
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11.25.0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: pnpm
+          cache-dependency-path: agents/kubetrace-ai/apps/web/pnpm-lock.yaml
+      - run: pnpm install --frozen-lockfile
+        working-directory: agents/kubetrace-ai/apps/web
+      - run: pnpm build && pnpm typecheck
+        working-directory: agents/kubetrace-ai/apps/web
+      - run: pnpm audit --prod --audit-level=high
+        working-directory: agents/kubetrace-ai/apps/web
+
+  splitter:
+    name: Splitter tests and build
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: apps/splitter-lite
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: apps/splitter-lite/package-lock.json
+      - run: npm ci
+      - run: npm test && npm run typecheck && npm run build
+      - run: npm audit --omit=dev --audit-level=high
+
+  opencrewbot:
+    name: OpenCrewBot tests and build
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: agents/mastra/opencrewbot
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11.25.0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: pnpm
+          cache-dependency-path: agents/mastra/opencrewbot/pnpm-lock.yaml
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm test && pnpm typecheck && pnpm lint && pnpm build
+      - run: pnpm audit --prod --audit-level=high

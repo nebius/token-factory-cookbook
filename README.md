@@ -1,213 +1,89 @@
-# Nebius Token Factory Cookbook
-
-<!-- <img src="images/banner-1.jpg"> -->
-
-A collection of guides and examples for building intelligent applications with open models on [Nebius Token Factory](https://tokenfactory.nebius.com/).
-
-> ⭐ If you find this repo useful, give it a star! You'll be notified of new updates and help others discover it too — thank you!
-
----
-
-## Table of Contents
-
-- [Nebius Token Factory Cookbook](#nebius-token-factory-cookbook)
-  - [👉 Start Here](#-start-here)
-  - [😎 Featured](#-featured)
-  - [👷 For Builders](#-for-builders)
-  - [🎁 Models](#-models)
-  - [📘 APIs](#-apis)
-  - [🧪 Evaluations](#-evaluations)
-  - [🎠 Agents](#-agents)
-  - [🔍 RAG](#-rag)
-  - [⛓️ Integrations](#️-integrations)
-  - [🔧 Function / Tool Calling](#-function--tool-calling)
-  - [🛠️ Post Training](#️-post-training)
-  - [🫗 Distillation](#-distillation)
-  - [🏫 Workshops](#-workshops)
-  - [🕶️ Fun and Cool Stuff](#️-fun-and-cool-stuff)
-  - [🤝 Contributing](#-contributing)
-  - [📔 Resources](#-resources)
-  - [📜 License](#-license)
-  - [🌟 GitHub Star History](#-github-star-history)
-  - [✨ Contributors](#-contributors)
-
----
-
-## 👉 Start Here
-
-New to Nebius Token Factory? Start with the [Quick tour of Token Factory](start-here/README.md), then follow the [setup guide](start-here/setup.md) to get your API key and development environment ready.
-
----
-
-## 😎 Featured
-
-- [Token Factory Workshop](workshops/token-factory-workshop/README.md)
-- [Office Hours](office-hours/README.md) &nbsp;•&nbsp; [Events](community/events.md) supported by Nebius AI
-- [LangChain deep agent examples](agents/langchain/README.md)
-- [Community contributions](community/README.md)
-- [Post training examples](post-training/)
-- [Distillation guide](distillation/distillation-1/)
-- [Cool Apps / Demos](apps/README.md)
-
----
-
-
-## 👷 [For Builders](community/events.md)
-
-Network, learn, and build with fellow builders - including hackathons, workshops, and community events.
-
-Join [Office Hour](office-hours/README.md) online.
-
-[Events / hackathons / workshops](community/events.md)
-
----
-
-## 🎁 [Models](models/)
-
-Checkout the latest [model guides and sample code](models/README.md).
-
-**Featuring:** [Kimi-K3](models/kimi-k3.md) &nbsp;•&nbsp; [DeepSeek V4 Pro](models/deepseek-v4.md) &nbsp;•&nbsp; [GLM-5.2](models/glm-5.2.md) &nbsp;•&nbsp; [Qwen3.5-397B-A17B](models/qwen-3.5.md) &nbsp;•&nbsp; [Nemotron family](models/nemotron/README.md)
-
----
-
-## 📘 [APIs](api/)
-
-Access Token Factory using various APIs:
-
-[OpenAI-compatible API](api/api_native.ipynb)
-&nbsp; • &nbsp; [LiteLLM](api/api_litellm.ipynb)
-&nbsp; • &nbsp; [ai-suite](api/api_aisuite.ipynb)
-&nbsp; • &nbsp; [Llama-index](api/api_llamaindex.ipynb)
-
----
-
-## 🧪 Evaluations
-
-- [Inspect AI smoke evaluation](evaluations/inspect-ai/README.md) — run a small, reproducible evaluation through Token Factory's OpenAI-compatible endpoint
-
----
-
-## 🎠 [Agents](agents/)
-
-Numerous agent examples ranging from [starter](agents/README.md#-starter-agents) to [intermediate](agents/README.md#intermediate-agents) and [advanced](agents/README.md#advanced-agents).
-
-**Featured AI Agent frameworks:**
-
-[<img src="images/crewai-icon.svg" width="20" height="20"> CrewAI](agents/README.md#crewai)
-&nbsp; • &nbsp; [<img src="images/agno-icon.png" width="20" height="20"> Agno](agents/README.md#agno)
-&nbsp; • &nbsp; [<img src="images/langchain-icon.svg" width="20" height="20"> LangChain](agents/README.md#langchain)
-&nbsp; • &nbsp; [<img src="images/google-adk-icon.png" width="20" height="20"> Google ADK](agents/README.md#google-adk-agent-development-kit)
-&nbsp; • &nbsp; [<img src="images/llama-index-icon.jpeg" width="20" height="20"> Llama-index](agents/README.md#llama-index)
-&nbsp; • &nbsp; [<img src="images/pydantic-icon.png" width="20" height="20"> Pydantic](agents/README.md#pydantic-ai)
-&nbsp; • &nbsp; [<img src="images/aws-strands-agent-icon.png" width="20" height="20"> AWS Strands](agents/README.md#strands-agent)
-
----
-
-## 🔍 [RAG](rag/)
-
-| Example | Description | Tech Stack |
-|---------|-------------|------------|
-| [PDF RAG](rag/rag-pdf-llama-index/) | Simple PDF RAG application | LlamaIndex + Nebius AI |
-| [Chat with Documents](rag/chat-with-pdf) | Web app to chat interactively with PDF documents | LlamaIndex + Nebius AI + Streamlit |
-| [Internal Content Generation Platform](rag/content-gen-pipeline-qdrant/) | Create social posts, articles, and demos with a RAG pipeline | Qdrant + Nebius AI + Qwen3-Embedding |
-| [End-to-end RAG Pipeline for PDFs](rag/rag-milvus-1/) | Process and query PDF documents using vector DB and open-source embeddings | LlamaIndex + Milvus + Nebius AI + Qwen3-Embedding + GPT-OSS |
-| [Internal Support Agent](rag/support-agent-weaviate/) | Multi-agent support agent with web search, document RAG, Notion/Calendly tools, and Slack bot | Nebius AI + LangGraph + Weaviate |
-
-
----
-
-## ⛓️ [Integrations](integrations/README.md)
-
-Guides for connecting third-party tools to Token Factory:
-
-- [OpenClaw](integrations/openclaw/README.md) — self-hosted AI agents on open models
-- [Tavily](integrations/tavily/README.md) — LLM-optimized search API for agentic research
-- [Pixeltable](integrations/pixeltable/README.md) — multimodal AI data infrastructure with native Token Factory chat + embeddings
-- [OpenEnv prompt optimization](integrations/openenv/prompt-optimization/README.md) — build an OpenEnv agent environment and optimize an agent's prompt against its reward with open models
-
-See also the official catalog: [docs.tokenfactory.nebius.com/integrations](https://docs.tokenfactory.nebius.com/integrations/overview)
-
----
-
-## 🔧 [Function / Tool Calling](tool-calling/)
-
-| Example | Description | Tech Stack |
-|---------|-------------|------------|
-| [Simple function calling](tool-calling/function_calling_1.ipynb) | Demonstrates how to call functions | Nebius AI |
-
----
-
-## 🛠️ [Post Training](post-training/)
-
-Post-training lets you customize and improve pre-trained language models for your specific use cases through fine-tuning and other optimization methods.
-
-[View post training examples →](post-training/)
-
----
-
-## 🫗 [Distillation](distillation/)
-
-| Name | Description | Tech Stack |
-|------|-------------|------------|
-| [Distillation 1](distillation/distillation-1/) | Example of a distilled model for grammar checking | Nebius AI |
-
-
----
-
-## 🏫 [Workshops](workshops/)
-
-Hands-on, guided learning sessions:
-
-- [Token Factory Workshop](workshops/token-factory-workshop/README.md)
-- [Deep Research + Writing Agents Workshop with Nebius and Okahu](workshops/deep-research-writing-agents-nebius-okahu/README.md)
-
----
-
-## 🕶️ [Fun and Cool Stuff](fun/)
-
-Have some fun with models:
-
-- [Creating cool images using LORA adapters](lora/lora-1/README.md)
-- [Try the "Pelican Riding a Bicycle" benchmark](fun/pelican-riding-bicycle/)
-- [Real-time webcam commentary with vision models](fun/nebius-realtime-webcam/)
-
----
-
-## 🤝 [Contributing](community/README.md)
-
-We welcome your contributions! Open issues, submit pull requests, and share your experience.
-
-🧑🏻‍🤝‍🧑🏼 **[View community contributions](community/README.md)**
-
----
-
-## 📔 Resources
-
-- [Nebius Token Factory Docs](https://docs.tokenfactory.nebius.com/)
-- [Nebius AI Blog](https://nebius.com/blog)
-
----
-
-## 📜 License
-
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
-
----
-
-## 🌟 GitHub Star History
-
-[![Star History Chart](https://api.star-history.com/svg?repos=nebius/token-factory-cookbook&type=Date)](https://www.star-history.com/#nebius/token-factory-cookbook&Date)
-
----
-
-## ✨ Contributors
-
-Thanks to all of our amazing contributors!
-
-<a href="https://github.com/nebius/token-factory-cookbook/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=nebius/token-factory-cookbook" />
+<a href="https://tokenfactory.nebius.com/">
+  <img src=".github/brand/cookbook-banner.svg" alt="Nebius Token Factory Cookbook" width="100%">
 </a>
 
----
+# Nebius Token Factory Cookbook
 
-© Nebius BV, 2025
+Runnable examples for building applications with open models on [Nebius Token Factory](https://tokenfactory.nebius.com/). Explore an API, build an agent, evaluate a model, or adapt a complete application.
+
+[Start here](start-here/README.md) · [Browse recipes](#browse-recipes) · [Model guides](models/README.md) · [Documentation](https://docs.tokenfactory.nebius.com/) · [Contribute](CONTRIBUTING.md)
+
+## Start building
+
+**New to Token Factory?** Follow the [quick tour](start-here/README.md) and [environment setup](start-here/setup.md). Each recipe has its own dependencies and run instructions.
+
+```bash
+git clone https://github.com/nebius/token-factory-cookbook.git
+cd token-factory-cookbook
+cp env_sample.txt .env
+```
+
+Add your API key and choose a text model from the [live model catalog](https://tokenfactory.nebius.com/models). Then make a first call with [uv](https://docs.astral.sh/uv/):
+
+```bash
+uv run --with openai --env-file .env python - <<'PYTHON'
+import os
+from openai import OpenAI
+
+client = OpenAI(
+    api_key=os.environ["NEBIUS_API_KEY"],
+    base_url="https://api.tokenfactory.nebius.com/v1/",
+)
+response = client.chat.completions.create(
+    model=os.environ["NEBIUS_MODEL"],
+    messages=[{"role": "user", "content": "Explain tool calling in one paragraph."}],
+)
+print(response.choices[0].message.content)
+PYTHON
+```
+
+Prefer a notebook? Open the [native API example](api/api_native.ipynb). For model availability, pricing, and supported features, use the live catalog and [product documentation](https://docs.tokenfactory.nebius.com/).
+
+## Browse recipes
+
+| You want to… | Start with |
+| --- | --- |
+| Make API calls and connect SDKs | [APIs](api/README.md) |
+| Choose and run an open model | [Model guides](models/README.md) |
+| Build an agent or a team of agents | [Agents](agents/README.md) |
+| Give models tools and functions | [Tool calling](tool-calling/README.md) |
+| Search and answer over your data | [Retrieval and RAG](rag/README.md) |
+| Run a complete application | [Applications and demos](apps/README.md) |
+| Connect a framework or external tool | [Integrations](integrations/README.md) |
+| Use Token Factory in a coding agent | [Coding agents](coding/README.md) |
+| Evaluate model behavior | [Inspect AI evaluation](evaluations/inspect-ai/README.md) |
+| Adapt a model to your task | [Post-training](post-training/README.md) · [Distillation](distillation/README.md) |
+| Follow a guided session | [Workshops](workshops/README.md) · [Office hours](office-hours/README.md) |
+| Explore vision, images, and creative examples | [Creative examples](fun/README.md) |
+
+## Featured recipes
+
+| Recipe | What you will build | Stack |
+| --- | --- | --- |
+| [OpenCrewBot](agents/mastra/opencrewbot/) | A chat app with model-specific bots, tools, memory, and shared rooms | Mastra · Next.js |
+| [Splitter Lite](apps/splitter-lite/) | A receipt reader that splits bills with vision and calculator tools | Nemotron 3.5 Super VL · Next.js |
+| [KubeTrace AI](agents/kubetrace-ai/) | A Kubernetes incident investigation and repair workflow with review controls | Beam · Python · React |
+| [Deep research agent](agents/langchain/deep-agent-example-1/) | A research workflow with planning and web search | LangChain · Tavily |
+| [Internal support agent](rag/support-agent-weaviate/) | A support workflow with retrieval and external tools | LangGraph · Weaviate |
+| [Typed decision model](agents/jev-style-decision-model-glm/) | Structured routing decisions with confidence-based escalation | GLM · OpenAI SDK |
+
+These are independent examples. The recipe README explains required keys, optional services, validation, and deployment assumptions. Run and test the recipe you choose before adapting it to your environment.
+
+## Contribute
+
+Have a useful example or a fix? Read the [contribution guide](CONTRIBUTING.md), start from the [recipe template](.github/RECIPE_TEMPLATE.md), and include the checks you ran in your pull request.
+
+Use [GitHub issues](https://github.com/nebius/token-factory-cookbook/issues) for reproducible recipe problems and suggestions. Report vulnerabilities through the [security policy](SECURITY.md).
+
+## Community and resources
+
+- [Community projects and articles](community/README.md)
+- [Events and workshops](community/events.md)
+- [Office hours](office-hours/README.md)
+- [Token Factory documentation](https://docs.tokenfactory.nebius.com/)
+- [Nebius blog](https://nebius.com/blog)
+- [Contributors](https://github.com/nebius/token-factory-cookbook/graphs/contributors)
+
+## License
+
+The cookbook is [MIT licensed](LICENSE). Imported applications, fonts, and third-party assets may carry their own licenses; retained license and provenance files take precedence for those files.

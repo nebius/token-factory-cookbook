@@ -1,0 +1,29 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg: 222 24% 7%;
+  --panel: 222 20% 10%;
+  --raised: 222 18% 13%;
+  --line: 222 14% 20%;
+  --ink: 220 20% 92%;
+  --muted: 220 10% 64%;
+  --faint: 220 8% 44%;
+  --accent: 199 89% 60%;
+  --ok: 152 58% 50%;
+  --warn: 38 92% 58%;
+  --bad: 0 76% 63%;
+  --info: 258 80% 72%;
+}
+
+html, body, #root { height: 100%; }
+body {
+  @apply bg-bg text-ink font-sans antialiased;
+  font-feature-settings: "cv11", "ss01";
+}
+::selection { background: hsl(var(--accent) / 0.35); }
+* { scrollbar-width: thin; scrollbar-color: hsl(var(--line)) transparent; }
+
+.react-flow__attribution { display: none; }
+.react-flow__controls button { background: hsl(var(--raised)); border-color: hsl(var(--line)); fill: hsl(var(--muted)); }

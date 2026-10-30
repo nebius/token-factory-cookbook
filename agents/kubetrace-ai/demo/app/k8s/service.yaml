@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: storefront
+  labels:
+    app.kubernetes.io/name: storefront
+    kubetrace.ai/experiment: "true"
+spec:
+  selector:
+    app.kubernetes.io/name: storefront
+  ports:
+    - name: http
+      port: 80
+      targetPort: http

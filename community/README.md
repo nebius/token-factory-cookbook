@@ -1,12 +1,15 @@
-# Community Contributions
+[Cookbook](../README.md) / Community
+
+# Community projects and articles
 
 Here are some examples and guides contributed by the community.
 
-Also check [events](events.md) supported by Nebius AI.
+Explore [community events](events.md) and [office hours](../office-hours/README.md).
 
 
 | Example                                                                                                                                                                                                                               | Description                                                                                                                                                    | Author                                         |
 |---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------|
+| [KubeTrace AI: Kubernetes incident repair with Beam](../agents/kubetrace-ai/) | Hands-on code repair and Kubernetes remediation with Beam on Token Factory, policy-checked execution, sandboxed tests and independent recovery checks. | [Studio1 team](https://studio1hq.com) |
 | [Evaluating Nebius Token Factory Models with OpenBench](./openbench-evaluation-guide/)                                                                                                                                                    | A guide on how to evaluate Nebius Token Factory-hosted open models using OpenBench.                                                                                | [@demianarc](https://github.com/demianarc)     |
 | [Agentic RAG Application to Brainstorm Conference Talk Ideas](https://dev.to/couchbase/how-i-built-an-agentic-rag-application-to-brainstorm-conference-talk-ideas-42oo)                                                               | Agentic RAG application                                                                                                                                        | [Shivay Lamba](https://github.com/shivaylamba) |
 | [Find a Job from YC or Wellfound by Just Uploading Resume](https://medium.com/data-science-collective/i-tested-deepseek-r1-0528-built-a-job-finding-agent-with-adk-nebius-ai-linkup-76e6e62bdbba?sk=fa84bd0038671f6988e58368e14f2233) | Upload your resume and let the agent find jobs from YC or Wellfound automatically.<br> (Nebius AI + Linkup + Google ADK)                                       | [Amitesh Anand](https://github.com/Astrodevil) |
