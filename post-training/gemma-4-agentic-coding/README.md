@@ -14,6 +14,8 @@ What we measured on 45 bugs from 17 repositories that were not in the training d
 
 The accuracy is the same, with fewer calls. With the one-epoch adapter, the same server fixes 41% more bugs per hour. The LoRA does not raise the solve rate: it makes Gemma 4 a more economical agent, not a stronger one.
 
+![Four bar panels comparing the base Gemma 4 31B with the LoRA after epoch 1 and epoch 2 on 45 bugs from 17 repositories not seen in training. Bugs solved out of 45: 36, 36 and 36. Tool calls per task: 22.9, 16.5 and 18.4. Model calls per task: 26.4, 17.3 and 19.0. Seconds per task: 255, 180 and 214](images/efficiency.png)
+
 ## What you will build
 
 ```mermaid
@@ -46,6 +48,7 @@ Token Factory and vLLM both serve an OpenAI-compatible API, so one agent loop co
 | [`train_lora.py`](train_lora.py) | LoRA training with FSDP2 and spot-safe checkpoints |
 | [`evaluate.py`](evaluate.py) | Runs a model over held-out tasks and compares two runs task by task |
 | [`tests/`](tests/) | Offline tests with a scripted model and a local git repository: no Docker, no key, no GPU |
+| [`images/`](images/) | The charts in this README, as PNGs with their SVG sources |
 
 ## The agent and its limits
 
@@ -135,6 +138,8 @@ Our run made 3,777 attempts: Kimi-K3 and DeepSeek-V4.1-Flash on every task, and 
 | GLM-5.3 | 57.8M (80%) | 4.6M | $48 |
 
 An agent loop re-sends its growing history on every call, so prompt caching matters. Without caching, the same tokens would have cost $1,121 instead of $516.
+
+![Horizontal bars of teacher cost at Token Factory list prices, billed with prompt caching against the same tokens without caching. Kimi-K3: $418 billed, $924 without caching, 896 tasks solved, $0.47 per solved task. DeepSeek-V4.1-Flash: $50 billed, $97 without caching, 946 solved, $0.05 per solved task. GLM-5.3, which ran only on 249 tasks the other two had failed: $48 billed, $101 without caching, 22 solved, $2.19 per solved task](images/teacher-cost.png)
 
 ### 3. Quality gates and selection
 
@@ -231,6 +236,8 @@ seconds      -29%  (95% CI -41% to -17%)
 
 **The test set.** We evaluated on [OOD-45](https://www.kaggle.com/datasets/rodrigospalma/ood45-bugfix-split) by Rodrigo Stachlewski Palma (CC BY 4.0). It holds 45 real bugs fixed in 17 open-source Python projects, merged upstream between 2026-09-18 and 2026-10-03, after Gemma 4 was released. None of the 17 repositories was in our teacher tasks. The upstream fixes are small: a median of 6 changed lines in 1 file.
 
+![Interval plot of the change against the base model with paired bootstrap 95% intervals. Tool calls: epoch 1 minus 28% (minus 37% to minus 18%), epoch 2 minus 20% (minus 29% to minus 10%). Model calls: minus 35% (minus 43% to minus 26%) and minus 28% (minus 36% to minus 18%). Time per task: minus 29% (minus 41% to minus 17%) and minus 16% (minus 29% to minus 1%). Bugs fixed per hour: plus 41% (plus 21% to plus 69%) and plus 19% (plus 1% to plus 41%). No interval crosses zero](images/change-intervals.png)
+
 **Efficiency.** Bootstrap 95% intervals for the change in totals over the 45 tasks:
 
 | | 1 epoch | 2 epochs |
@@ -241,6 +248,8 @@ seconds      -29%  (95% CI -41% to -17%)
 | Bugs fixed per hour | +41% (+21% to +69%) | +19% (+1% to +41%) |
 
 **Solve rate.** All three runs solved 36/45, but not the same 36: each LoRA run gained 4 tasks and lost 4. With one run per model on 45 tasks, that is consistent with noise.
+
+![Two bar panels of medians per run on the 45 held-out bugs, with a white line at the teacher-run median. Tool call of the first edit: base model 9, LoRA epoch 1 6, LoRA epoch 2 6, teacher runs 6. Tool calls after the last edit: base model 9, LoRA epoch 1 3, LoRA epoch 2 5, teacher runs 3](images/teacher-pace.png)
 
 **Behaviour.** The student picked up the teachers' rhythm almost exactly. Medians per run, with tool calls excluding `submit_patch` and `get_status`:
 
