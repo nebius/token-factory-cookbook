@@ -4,8 +4,9 @@
 
 Find setup notes and examples for open models on Nebius Token Factory. The [live model catalog](https://tokenfactory.nebius.com/models) is the reference for current availability, capabilities, context limits, and pricing.
 
-| Guide and playground | Provider |
+| Guide and try links | Provider |
 | --- | --- |
+| [Kimi K3.1 Pro](kimi-k3.1-pro.md) · [Open model details](https://tokenfactory.nebius.com/?modals=endpoint-details&model-id=moonshotai/Kimi-K3.1-Pro) | Moonshot AI |
 | [Kimi-K3](kimi-k3.md) · [Open playground](https://tokenfactory.nebius.com/playground?models=moonshotai/Kimi-K3) | Moonshot AI |
 | [Kimi K2.7 Code](kimi-k2.7-code.md) · [Open playground](https://tokenfactory.nebius.com/playground?models=moonshotai/Kimi-K2.7-Code) | Moonshot AI |
 | [MiniMax M3](minimax-m3.md) · [Open playground](https://tokenfactory.nebius.com/playground?models=MiniMaxAI/MiniMax-M3) | MiniMax |

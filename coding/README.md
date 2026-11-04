@@ -27,6 +27,8 @@ References:
 
 ## Top Coding Models @ Token Factory
 
+For **Kimi K3.1 Pro**, start with the [Python quickstart](../models/kimi-k3.1-pro.md) or the [OpenCode setup](opencode.md#kimi-k31-pro). The API model ID is `moonshotai/Kimi-K3.1-Pro`; check its current served specifications on the [model details page](https://tokenfactory.nebius.com/?modals=endpoint-details&model-id=moonshotai/Kimi-K3.1-Pro).
+
 | Model | Context Window | Parameters |
 | --- | --- | --- |
 | `zai-org/GLM-5.3-Flash` | 1 M | 320 B (18 B active) |
