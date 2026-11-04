@@ -84,7 +84,7 @@ print()
 
 ## Next steps
 
-- Change the prompt to your own coding or document-analysis task.
+- Send the model an image: the [chart agent example](kimi-k3.1-pro-chart-agent/README.md) reads a bar chart and records each bar through a declared tool.
 - Follow the [OpenCode setup guide](../coding/opencode.md#kimi-k31-pro) to use the model in a coding agent.
 - See the [API examples](../api/README.md) for more SDK integrations.
 - Read [Moonshot's technical overview](https://www.kimi.ai/blog/kimi-k3-1-pro) for model background.
