@@ -29,7 +29,7 @@ Environment variables:
 | `KIMI_REASONING_EFFORT` | unset (model default) | `low`, `medium`, `high`, `max` or `none` |
 | `CHART_IMAGE` | `chart.png` next to the script | Local PNG path or a public image URL |
 
-Expected output:
+Measured on November 4, 2026 at the default reasoning effort:
 
 ```
 recorded Jan: 12 thousands
@@ -50,9 +50,11 @@ Wording varies between runs. The six recorded values and the `metrics=6` count a
 
 ## Troubleshooting
 
+- `401`: the key is missing or the Authorization header is malformed; check that NEBIUS_API_KEY is exported in the shell you run from.
 - `404` model not found: the ID is `moonshotai/Kimi-K3.1-Pro`, case matters.
 - `429` tokens quota: request more quota for the model on the Token Factory console.
 - Empty answer with `finish_reason: length`: raise `max_tokens`; reasoning tokens count against it.
 - `422` on an image URL: the host refused Token Factory's fetcher. Download the file and pass a local path.
+- Slow first token: the model reasons before it answers; use `KIMI_REASONING_EFFORT=low` for interactive work.
 
 The script creates no cloud resources. `unset NEBIUS_API_KEY` and delete `.venv` when done.
