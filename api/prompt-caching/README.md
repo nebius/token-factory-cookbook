@@ -50,19 +50,27 @@ anti-pattern: timestamp in system prompt -> prompt=35046 cached=0 miss 2.5s
 catalog: cached input discounts (USD per 1M, read live)
   deepseek-ai/DeepSeek-V4.1-Flash-1017     in=0.3    cached=0.006    98%
   deepseek-ai/DeepSeek-V4-Pro-0813         in=1.32   cached=0.04     97%
-  ... 16 more models; the script prints all 26 in the catalog, this shows the first ten rows.
+  deepseek-ai/DeepSeek-V4.1-Flash          in=0.3    cached=0.01     97%
+  deepseek-ai/DeepSeek-V4-Flash-0731       in=0.14   cached=0.01     93%
+  MiniMaxAI/MiniMax-M3.1-Flash             in=0.15   cached=0.015    90%
+  moonshotai/Kimi-K3                       in=3      cached=0.3      90%
+  moonshotai/Kimi-K3.1-Pro                 in=2      cached=0.2      90%
+  zai-org/GLM-5.2                          in=1.4    cached=0.14     90%
+  meta-models/muse-spark-open              in=1.25   cached=0.15     88%
+  nvidia/Nemotron-3-Ultra-550b-a55b        in=1      cached=0.12     88%
+  ... 16 more rows; the script prints all 26 models.
 ```
 
-Costs are list prices from the catalog on the run date and will change. A run with the defaults cost
-under two cents.
+Costs are list prices from the catalog on the run date and will change. The seven measured calls cost $0.0117 at list price on November 5, 2026, and the anti-pattern call
+adds one more uncached call of about the warm-up's cost.
 
 ## Read the numbers
 
 - `cached` is `usage.prompt_tokens_details.cached_tokens`. It is a multiple of 64 because the cache
   works in 64-token blocks, so the changing question at the end is always uncached.
-- The warm-up call misses and writes the prefix. Later calls hit and run several times faster.
-- `cached=0` on a repeat is a valid answer. The cache is best effort, shared per model on Serverless,
-  and an idle prefix can be evicted within minutes.
+- The warm-up call misses and writes the prefix. On November 5, 2026 the warm-up miss took 3.8 s and the six hits took 1.2 to 2.2 s.
+- `cached=0` on a repeat is a valid answer. The cache is best effort, the docs say the Serverless cache
+  is shared per model, and an idle prefix can be evicted at any time.
 - The anti-pattern line shows a timestamp placed before the document dropping the cached count to
   zero, because the prefix no longer matches byte for byte.
 
@@ -76,12 +84,12 @@ Eleven tests run against a fake client and a fixture catalog. None of them call 
 
 ## Troubleshooting
 
-- `401`: the key is missing or wrong. Check `NEBIUS_API_KEY`.
-- `429`: you are over your rate limit. Wait and rerun; the cached prefix may be gone by then.
+- `error: AuthenticationError: ...`, exit 1: the key is missing or wrong. Check `NEBIUS_API_KEY`.
+- `error: RateLimitError: ...`, exit 1: you are over your rate limit. Wait and rerun; the cached prefix may be gone by then.
 - Every call shows `cached=0`: the prefix was evicted, another replica served the call, or the prefix
-  is too short. Rerun once; use at least a few thousand tokens of prefix.
-- `warning: could not read ...models_info`: the catalog is unreachable. Set the three price variables
-  to run without it; the catalog table is skipped.
+  is too short. Rerun once; this run used a 35k-token prefix; much shorter prefixes hit less reliably.
+- The catalog is unreachable: the script prints `warning: could not read ...` and then
+  `catalog: skipped (catalog unavailable)`. Set the three price variables to run without it.
 - `error: ...` with exit code 1 or 2: the line names the API exception or the setting that is wrong.
 - Streaming callers: set `stream_options={"include_usage": True}` or usage, including cached tokens,
   may not be returned.
