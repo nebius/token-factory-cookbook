@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc --noEmit && vite build",
+    "build": "tsc --noEmit && vite build --base=./",
     "preview": "vite preview",
     "test:browser": "node scripts/browser-check.mjs"
   },
@@ -16,6 +16,6 @@
     "@playwright/test": "1.56.1",
     "@types/three": "0.180.0",
     "typescript": "5.9.3",
-    "vite": "7.1.9"
+    "vite": "7.3.7"
   }
 }

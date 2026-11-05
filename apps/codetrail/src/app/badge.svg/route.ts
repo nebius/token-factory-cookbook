@@ -1,0 +1,5 @@
+// /badge.svg: an "Explore with Codetrail" badge for a README, next to the diagram image.
+export function GET() {
+  const body = `<svg xmlns="http://www.w3.org/2000/svg" width="178" height="20" role="img" aria-label="Explore with Codetrail"><title>Explore with Codetrail</title><linearGradient id="s" x2="0" y2="100%"><stop offset="0" stop-color="#bbb" stop-opacity=".1"/><stop offset="1" stop-opacity=".1"/></linearGradient><clipPath id="r"><rect width="178" height="20" rx="3" fill="#fff"/></clipPath><g clip-path="url(#r)"><rect width="90" height="20" fill="#16171a"/><rect x="90" width="88" height="20" fill="#ffb020"/><rect width="178" height="20" fill="url(#s)"/></g><g fill="#fff" text-anchor="middle" font-family="Verdana,Geneva,DejaVu Sans,sans-serif" font-size="11"><text x="45" y="14">Explore with</text><text x="133" y="14" fill="#16171a" font-weight="bold">Codetrail</text></g></svg>`;
+  return new Response(body, { headers: { "content-type": "image/svg+xml; charset=utf-8", "cache-control": "public, max-age=86400" } });
+}

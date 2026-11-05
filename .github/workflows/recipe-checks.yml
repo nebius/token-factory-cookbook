@@ -7,7 +7,6 @@ on:
       - 'agents/mastra/opencrewbot/**'
       - 'agents/mastra/openduet/**'
       - 'apps/splitter-lite/**'
-      - 'apps/explode-anything/**'
       - 'apps/sketch-to-walkthrough/**'
       - '.github/workflows/recipe-checks.yml'
   push:
@@ -17,7 +16,6 @@ on:
       - 'agents/mastra/opencrewbot/**'
       - 'agents/mastra/openduet/**'
       - 'apps/splitter-lite/**'
-      - 'apps/explode-anything/**'
       - 'apps/sketch-to-walkthrough/**'
       - '.github/workflows/recipe-checks.yml'
 
@@ -115,23 +113,19 @@ jobs:
       - run: pnpm test && pnpm typecheck && pnpm lint && pnpm build
       - run: pnpm audit --prod --audit-level=high
 
-  kimi-node-apps:
-    name: ${{ matrix.app }} tests and build
+  sketch-to-walkthrough:
+    name: Sketch to Walkthrough tests and build
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        app: [explode-anything, sketch-to-walkthrough]
     defaults:
       run:
-        working-directory: apps/${{ matrix.app }}
+        working-directory: apps/sketch-to-walkthrough
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
           cache: npm
-          cache-dependency-path: apps/${{ matrix.app }}/package-lock.json
+          cache-dependency-path: apps/sketch-to-walkthrough/package-lock.json
       - run: npm ci
       - run: npm test --if-present
       - run: npm run build

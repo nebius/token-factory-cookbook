@@ -5,7 +5,7 @@ import path from 'node:path';
 const BASE = process.env.BASE_URL ?? 'http://127.0.0.1:5173';
 const OUT = process.env.SCREENSHOTS ?? 'screenshots';
 fs.mkdirSync(OUT, { recursive: true });
-const CHROME_FULL = process.env.CHROME_PATH ?? `${process.env.HOME}/Library/Caches/ms-playwright/chromium-1234/chrome-mac-arm64/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing`;
+const CHROME_FULL = `${process.env.HOME}/Library/Caches/ms-playwright/chromium-1234/chrome-mac-arm64/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing`;
 const BROWSER_BIN = fs.existsSync(CHROME_FULL) ? CHROME_FULL : undefined;
 
 const browser = await chromium.launch({

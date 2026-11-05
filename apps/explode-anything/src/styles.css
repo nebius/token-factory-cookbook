@@ -1,4 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap');
 
 :root {
   --bg: #151719;
@@ -189,3 +188,70 @@ input[type=range]::-moz-range-thumb { width: 12px; height: 12px; border: 2px sol
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; }
 }
+
+/* Official Token Factory design tokens; original application structure preserved. */
+@font-face{font-family:Gramatika;src:url('/brand/fonts/GramatikaBold.otf') format('opentype');font-weight:700;font-display:swap}
+@font-face{font-family:Inter;src:url('/brand/fonts/Inter-Regular.ttf') format('truetype');font-weight:400;font-display:swap}
+:root {
+  /* — Brand palette (shared with Nebius) — */
+  --color-lime:           #DAFF33;
+  --color-lime-alt:       #D6F34C;
+  --color-lime-logo:      #E0FF4F; /* exact pill fill used in the Token Factory logo mark */
+  --color-deep-blue:      #052B42;
+  --color-light-blue:     #F0F8FF;
+  --color-lavender:       #C1C1FF;
+
+  /* — Neutrals — */
+  --color-white:          #FFFFFF;
+  --color-black:          #052B42; /* always use Deep Blue, never #000 */
+
+  /* — Dark-surface scale (Token Factory is dark-theme-first; #001A2B is the exact slide-master navy used across real decks) — */
+  --color-navy-900:       #001A2B;
+  --color-navy-800:       #002638;
+  --color-navy-700:       #003044;
+  --color-navy-600:       #0A4566;
+  --color-navy-border:    rgba(255, 255, 255, 0.12);
+  --color-accent-purple:  #C996FC; /* deck highlight accent, seen across real Token Factory decks */
+
+  /* — Semantic: backgrounds (dark-first) — */
+  --color-bg-primary:     #001A2B;
+  --color-bg-secondary:   #002638;
+  --color-bg-tertiary:    #003044;
+  --color-bg-elevated:    #0A4566;
+  --color-bg-light:       #FFFFFF;   /* for light-mode / print surfaces only */
+  --color-bg-lime:        #DAFF33;
+  --color-bg-overlay:     rgba(0, 26, 43, 0.64);
+
+  /* — Semantic: text — */
+  --color-text-primary:   #FFFFFF;
+  --color-text-secondary: rgba(255, 255, 255, 0.68);
+  --color-text-muted:     rgba(255, 255, 255, 0.48);
+  --color-text-on-light:  #052B42;
+  --color-text-on-dark:   #FFFFFF;
+  --color-text-on-lime:   #052B42;
+  --color-text-on-violet: #FFFFFF;
+
+  /* — Semantic: borders — */
+  --color-border:         rgba(255, 255, 255, 0.12);
+  --color-border-strong:  rgba(255, 255, 255, 0.24);
+  --color-border-dark:    rgba(255, 255, 255, 0.14);
+
+  /* — Gradient (Token Factory signature — violet → cyan → green → lime, confirmed across real decks) — */
+  /* RULE: if 2+ gradient-filled/outlined elements (text, pills, card borders, bars) appear on one slide/page,
+     they must read as one continuous sweep, not each restarting its own 0%-100%.
+     Implementation: background-size:1920px 1080px; background-attachment:fixed; on every such element
+     (canvas-fixed gradient — works for background-clip:text, solid fills, and gradient borders alike).
+     Never give a short/narrow gradient element its own auto-sized 0-100% gradient — it samples the wrong slice. */
+  --gradient-brand:        linear-gradient(257deg, #9E9DFF 0%, #31FCF6 35.19%, #8DFF62 70.53%, #E0FF4F 100%); /* @kind color */
+  --gradient-brand-radial: radial-gradient(120% 140% at 97% 11%, #7781EE 0%, #3AB8F9 20%, #40DDD0 40%, #88FA93 61%, #BAFC72 80%, #E0FF4F 100%); /* @kind color */
+  --gradient-dark-lime:    linear-gradient(191deg, #003044 15%, #001A2B 100%); /* @kind color */
+  --gradient-accent:       linear-gradient(257deg, #9E9DFF 0%, #31FCF6 35.19%, #8DFF62 70.53%, #E0FF4F 100%); /* @kind color */
+  --gradient-base:         linear-gradient(180deg, #CEFF74 0%, #99FEAB 25%, #5EEFDE 50%, #53C4FD 75%, #7E9BFF 100%); /* @kind color */
+}
+
+:root{--bg:var(--color-navy-900);--surface:var(--color-navy-800);--surface2:var(--color-navy-700);--border:rgba(255,255,255,.14);--text:#fff;--text-dim:#b9cbd8;--text-muted:#91aabb;--accent:var(--color-lime);--accent-dim:#a1bc24;--accent-glow:rgba(218,255,51,.1);--font-display:Gramatika,Arial,sans-serif;--font-ui:Inter,system-ui,sans-serif}
+.view-container{background:radial-gradient(ellipse at 48% 42%,#0a3d54 0%,#002638 48%,#001a2b 100%)}
+.btn-preset,.btn-mode,.mobile-panel-toggle{background:rgba(0,38,56,.9)}
+.tf-lockup{display:flex;align-items:center;gap:14px}.tf-lockup img{width:154px;height:21px}.tf-exhibit-name{border-left:1px solid var(--border);padding-left:14px;font-family:var(--font-display);font-size:15px;white-space:nowrap}
+.tf-credit{color:var(--text-muted);font-size:10px;line-height:1.5}.tf-credit a{color:var(--text-dim);text-underline-offset:3px}.tf-credit a:hover{color:var(--accent)}
+@media(max-width:760px){.tf-lockup img{width:120px;height:auto}.tf-lockup{gap:8px}.tf-exhibit-name{font-size:11px;padding-left:8px}.top-bar{height:66px}.app-shell{grid-template-rows:66px minmax(0,1fr) auto}.tf-credit{font-size:10px}}

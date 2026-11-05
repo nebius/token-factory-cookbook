@@ -52,8 +52,8 @@ function buildUI() {
     <div class="app-shell mode-materials" data-assembled="true">
       <header class="top-bar">
         <div class="brand-lockup">
-          <h1 class="wordmark">EXPLODE<span class="accent">ANYTHING</span></h1>
-          <span class="eyebrow brand-subtitle">Inside a mirrorless camera</span>
+          <div class="tf-lockup"><a href="https://tokenfactory.nebius.com/" aria-label="Nebius Token Factory"><img src="./brand/token-factory.svg" alt="Nebius Token Factory" width="154" height="21"></a><h1 class="tf-exhibit-name">Explode Anything</h1></div>
+
         </div>
         <p class="intro">Pull it apart. Discover what makes the image.</p>
         <div class="header-actions" id="headerActions">
@@ -129,6 +129,11 @@ function buildUI() {
             <div class="section-label">Parts</div>
             <div class="parts-list" id="partsList"></div>
           </section>
+          <section class="inspector-section tf-credit">
+            Original build by <a href="https://github.com/shivaylamba" target="_blank" rel="noreferrer">Shivay Lamba</a>.<br>
+            <a href="https://github.com/shivaylamba/explode-anything" target="_blank" rel="noreferrer">Original source</a> · <a href="https://github.com/demianarc/token-factory-explode" target="_blank" rel="noreferrer">TF edition</a><br>
+            Educational exhibit. No model request runs while you explore.
+          </section>
         </aside>
       </main>
 
@@ -196,7 +201,7 @@ function initScene() {
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
   renderer.toneMappingExposure = 1.08;
   // An opaque clear color gives isolated transmissive optics a dark transmission backdrop.
-  renderer.setClearColor('#17191b', 1);
+  renderer.setClearColor('#001a2b', 1);
 
   scene = new THREE.Scene();
   const room = new RoomEnvironment();
