@@ -138,7 +138,7 @@ app.post('/api/review', async (c) => {
       imagePart(body.sketch),
       { type: 'text', text: `DETERMINISTIC RESULTS:\n${checks}\n\nCURRENT GENERATOR:\n${body.code}\n\n${body.buildError ? `BUILD OR VALIDATION ERROR: ${String(body.buildError).slice(0, 1000)}` : 'The generator executed and validated. The following image is the top-down orthographic capture from the app canvas.'}` },
     ];
-    if (typeof body.render === 'string' && body.render.startsWith('data:image/png')) content.push(imagePart(body.render));
+    if (typeof body.render === 'string' && body.render.startsWith('data:image/png') && body.render.length <= 18_000_000) content.push(imagePart(body.render));
     const result = await completion([{ role: 'system', content: reviewPrompt }, { role: 'user', content }], 'review', REVIEW_MAX_TOKENS);
     const candidates = recoverReviewResponses(result.text), selected = candidates.at(-1);
     if (!selected) return c.json({ ...result, error: 'The model returned malformed review JSON. Please try again.', malformedResponse: result.text, recoveredReviewCount: 0 }, 502);

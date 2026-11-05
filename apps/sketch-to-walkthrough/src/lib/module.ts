@@ -8,6 +8,9 @@ export class SourceError extends Error {}
 
 /** The generator is data-in/data-out. Imports and access to ambient globals are not allowed. */
 export function validateGeneratorSource(source: string) {
+  // Acorn parses a module, where <!-- and --> are operators; new Function parses a script, where they
+  // start comments. Code hidden behind them would be checked one way and run another.
+  if (source.includes('<!--') || source.includes('-->')) throw new SourceError('HTML-style comments (<!-- or -->) are not allowed in a generator.');
   let ast;
   try {
     ast = parse(source, { ecmaVersion: 2022, sourceType: 'module', locations: true, ranges: true });

@@ -67,6 +67,6 @@ export function furnitureToSVG(item: FurnitureItem, u: (x: number) => number, v:
       symbol += rect(-w * 0.2, -d * 0.3, w * 0.4, d * 0.25, `fill="#c5d3ce"`);
       break;
   }
-  return `<g class="furniture-symbol" data-furniture-id="${escape(item.id)}" data-source="${item.source}" data-type="${item.type}" transform="translate(${u(item.position[0])} ${v(item.position[1])}) rotate(${-item.rotation})" opacity="${item.source === 'auto' ? 0.78 : 0.95}">${symbol}</g>`;
+  return `<g class="furniture-symbol" data-furniture-id="${escape(item.id)}" data-source="${escape(String(item.source))}" data-type="${escape(String(item.type))}" transform="translate(${u(item.position[0])} ${v(item.position[1])}) rotate(${-item.rotation})" opacity="${item.source === 'auto' ? 0.78 : 0.95}">${symbol}</g>`;
 }
 function escape(value: string) { return value.replace(/[<>&"']/g, (c) => ({ '<': '&lt;', '>': '&gt;', '&': '&amp;', '"': '&quot;', "'": '&apos;' }[c]!)); }

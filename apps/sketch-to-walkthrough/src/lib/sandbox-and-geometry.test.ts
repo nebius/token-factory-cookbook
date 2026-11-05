@@ -33,6 +33,11 @@ describe('generator sandbox', () => {
     expect(() => validateGeneratorSource(wrap('return Math[`constructor`];'))).toThrow(SourceError);
   });
 
+  it('rejects HTML-style comments, which Acorn and new Function read differently', () => {
+    expect(() => validateGeneratorSource(wrap('let b = 1; b = b <!--c\n return P;'))).toThrow(/HTML-style comments/);
+    expect(() => validateGeneratorSource(wrap('let b = 1;\n--> hidden\n return P;'))).toThrow(/HTML-style comments/);
+  });
+
   it('blocks a run-time computed constructor key once the worker realm is locked down', () => {
     const escape = "Math['con' + 'structor']['con' + 'structor']('return globalThis')()";
     expect(validateGeneratorSource(wrap(`return ${escape};`))).toBe(true); // can't be seen statically
