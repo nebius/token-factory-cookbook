@@ -8,6 +8,7 @@ or sends corrected code. Build errors go back to Kimi with the traceback.
 from __future__ import annotations
 
 import json
+import os
 import re
 import subprocess
 import sys
@@ -153,6 +154,34 @@ def strip_code(text: str) -> str:
     return re.sub(r"```.*?```", "", text, flags=re.S).strip()
 
 
+SANDBOX_EXEC = Path("/usr/bin/sandbox-exec")
+
+
+def _sbpl(path: str | Path) -> str:
+    return json.dumps(os.path.realpath(path), ensure_ascii=False)  # a quoted, escaped profile string
+
+
+def os_sandbox(tmp: str) -> list[str]:
+    """macOS: run the build under sandbox-exec, an OS boundary on top of cad_runner's code guard.
+
+    No network, no new processes, writes only inside this build's temp directory, and no reading
+    file contents under the home directory except the Python install and the runner (so model
+    code can't read .env or ~/.ssh). Elsewhere it returns [] and the guard is the only layer:
+    run the app in a container there. Set NAPKIN_OS_SANDBOX=0 to turn it off.
+    """
+    if sys.platform != "darwin" or not SANDBOX_EXEC.exists() or os.getenv("NAPKIN_OS_SANDBOX") == "0":
+        return []
+    readable = " ".join(f"(subpath {_sbpl(p)})" for p in {sys.prefix, sys.base_prefix, sys.exec_prefix})
+    profile = (
+        "(version 1)(allow default)"
+        "(deny network*)(deny process-fork)"
+        f"(deny file-write*)(allow file-write* (subpath {_sbpl(tmp)}) (literal \"/dev/null\"))"
+        f"(deny file-read-data (subpath {_sbpl(Path.home())}))"
+        f"(allow file-read-data {readable} (literal {_sbpl(RUNNER)}) (subpath {_sbpl(tmp)}))"
+    )
+    return [str(SANDBOX_EXEC), "-p", profile]
+
+
 def execute(code: str, overrides: dict | None = None) -> Build:
     with tempfile.TemporaryDirectory(prefix="napkin_") as tmp:
         tmp_path = Path(tmp)
@@ -162,14 +191,18 @@ def execute(code: str, overrides: dict | None = None) -> Build:
         # Empty environment on purpose: generated code never sees NEBIUS_API_KEY or anything else.
         child_env = {"PATH": "/usr/bin:/bin", "HOME": tmp, "TMPDIR": tmp, "LANG": "C.UTF-8"}
         try:
-            subprocess.run(
-                [sys.executable, "-I", str(RUNNER), str(tmp_path / "model.py"), str(tmp_path / "params.json"), str(out)],
+            proc = subprocess.run(
+                [*os_sandbox(tmp), sys.executable, "-I", str(RUNNER),
+                 str(tmp_path / "model.py"), str(tmp_path / "params.json"), str(out)],
                 timeout=BUILD_TIMEOUT_S, capture_output=True, text=True, cwd=tmp, env=child_env,
             )
         except subprocess.TimeoutExpired:
             return Build(ok=False, error=f"Build timed out after {BUILD_TIMEOUT_S}s (geometry too complex?)")
         result_file = out / "result.json"
         if not result_file.exists():
+            if "sandbox" in proc.stderr.lower():
+                return Build(ok=False, error="The macOS build sandbox failed to start: " + proc.stderr.strip()[-500:]
+                             + "\nSet NAPKIN_OS_SANDBOX=0 to build without it.")
             return Build(ok=False, error="The CAD runner crashed before writing a result (OpenCascade segfault?)")
         res = json.loads(result_file.read_text())
         if not res["ok"]:

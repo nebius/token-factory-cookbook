@@ -15,7 +15,7 @@ Sketch a part on paper, snap a photo, and get a printable, parametric STL.
 A Streamlit app that turns one sketch into a part you can print:
 
 1. **Design.** Kimi reads the sketch image and your optional notes and writes one Python module: a `PARAMS` dict of the dimensions worth tweaking and a `build(p)` function that returns a CadQuery solid.
-2. **Build.** `cad_runner.py` checks the code against an import allowlist and an AST denylist, builds it in a separate process with a timeout and an empty environment, sits the part on the print bed, and exports STL and STEP. If the build fails, Kimi gets the traceback and up to three tries to fix it.
+2. **Build.** `cad_runner.py` checks the code against an import allowlist and an AST denylist, builds it in a separate process with a timeout and an empty environment (inside an OS sandbox on macOS), sits the part on the print bed, and exports STL and STEP. If the build fails, Kimi gets the traceback and up to three tries to fix it.
 3. **Review.** `render.py` draws front, right, top and isometric views with the measured size printed on them. Kimi sees the sketch and the render side by side and answers `VERDICT: PASS` or `VERDICT: REVISE` with corrected code. This repeats for the number of self-review rounds you choose.
 4. **Use it.** The part prints itself layer by layer in a Three.js viewer. Every `PARAMS` entry becomes a slider that rebuilds the part locally with no model call. A chat box applies edits such as "add a 10 mm cable hole through the back". Download the STL, the STEP, or the CadQuery source.
 
@@ -110,7 +110,7 @@ Tips:
 
 ## Validate
 
-Credential-free tests cover the code guard (allowed imports, blocked builtins, dunder and private access, frame introspection, CadQuery and NumPy file I/O, the runtime import hook and module proxies), parameter clamping, reply parsing, and a real CadQuery build of a small bracket through the same sandboxed subprocess the app uses, including STL and STEP export, mesh checks and the four-view render. They make no network or Token Factory calls:
+Credential-free tests cover the code guard (allowed imports, blocked builtins, dunder and private access, frame introspection, `match` and `str.format` attribute reads, CadQuery and NumPy file I/O, the runtime import hook and module proxies), the macOS build sandbox (skipped on other systems), parameter clamping, reply parsing, and a real CadQuery build of a small bracket through the same guarded subprocess the app uses, including STL and STEP export, mesh checks and the four-view render. They make no network or Token Factory calls:
 
 ```bash
 uv sync --frozen
@@ -119,7 +119,7 @@ uv run python -m unittest discover -s tests
 
 What was verified for this recipe:
 
-- The 10 offline tests pass with Python 3.12 on macOS, using the committed `uv.lock`. The first run after a fresh install can take a few minutes while the OS loads the OpenCascade libraries for the first time; later runs take a few seconds.
+- The 13 offline tests pass with Python 3.12 on macOS (12 run on Linux, where the sandbox test is skipped), using the committed `uv.lock`. The first run after a fresh install can take a few minutes while the OS loads the OpenCascade libraries for the first time; later runs take a few seconds.
 - Live Token Factory calls were not re-run for this cookbook copy. Run a design yourself to confirm your key's model access and cost.
 
 ## Limitations and cleanup
@@ -128,9 +128,12 @@ What was verified for this recipe:
   - imports other than the top-level `cadquery`, `math` and `numpy` modules
   - builtins such as `open`, `exec`, `eval` and `getattr`, called or not, and as attribute names
   - dunder names, private (`_`-prefixed) attributes, and frame, generator, coroutine, traceback and code introspection (`gi_frame`, `f_back`, `f_globals`, `tb_frame`...)
+  - `match` statements and `.format`/`.format_map`, which read attributes by name where the check can't see them
   - names and attributes starting with `export`, `import`, `save`, `load`, `read`, `write` or `dump` (the CadQuery and NumPy file I/O methods), and the `cqgi`, `occ_impl`, `OCP` and `ctypeslib` modules
 
-  At run time the code gets reduced builtins whose `__import__` enforces the same rules, and it sees `cadquery`, `math` and `numpy` through proxies that refuse to hand out submodules other than `numpy.linalg`, `numpy.random`, `numpy.fft`, `numpy.polynomial` and `cadquery.selectors`. A breadth-first scan of the module and class attributes reachable from those objects found no path to `os`, `sys`, `builtins`, `inspect`, `pathlib` or file objects. Python can't be fully sandboxed from inside Python, though, so this is a guardrail for a local demo, not a security sandbox. Don't expose the app to other people as is. For a shared deployment, run `cad_runner.py` inside a real isolation boundary, such as a container or remote sandbox with no network and a read-only filesystem.
+  At run time the code gets reduced builtins whose `__import__` enforces the same rules, and it sees `cadquery`, `math` and `numpy` through proxies that refuse to hand out submodules other than `numpy.linalg`, `numpy.random`, `numpy.fft`, `numpy.polynomial` and `cadquery.selectors`. A breadth-first scan of the module and class attributes reachable from those objects found no path to `os`, `sys`, `builtins`, `inspect`, `pathlib` or file objects. Python can't be fully sandboxed from inside Python, though, so that check is a guardrail, not a sandbox.
+
+  **On macOS the build also runs under `sandbox-exec`**, an OS-level boundary: no network, no new processes, writes only inside the build's temporary directory, and no reading file contents under your home directory apart from the Python installation and `cad_runner.py`, so model code can't read `.env` or `~/.ssh`. Set `NAPKIN_OS_SANDBOX=0` to turn it off. **On Linux and Windows the static check is the only layer.** Run the app in a container there, and don't expose the app to other people on any system. For a shared deployment, run `cad_runner.py` inside a real isolation boundary, such as a container or remote sandbox with no network and a read-only filesystem.
 - **Localhost only.** `.streamlit/config.toml` binds the server to `localhost`, and the app has no authentication.
 - **Sketch quality matters.** Kimi infers sizes it can't read from the object's purpose. Check the measured size and wall thickness before printing.
 - **Fillets and complex lofts can fail** in OpenCascade. The helpers `safe_fillet` and `safe_chamfer` return the part unchanged rather than failing the build, so a rounded edge may be missing.

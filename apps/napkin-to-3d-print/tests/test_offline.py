@@ -5,10 +5,15 @@ The build test runs CadQuery in the same sandboxed subprocess the app uses.
 """
 
 import math
+import subprocess
+import sys
+import tempfile
+import types
 import unittest
+from pathlib import Path
 
-from cad_agent import execute, extract_code, strip_code
-from cad_runner import GuardError, check_code, resolve_params, safe_builtins
+from cad_agent import execute, extract_code, os_sandbox, strip_code
+from cad_runner import GuardError, check_code, model_namespace, resolve_params, safe_builtins
 
 BRACKET = '''import cadquery as cq
 
@@ -65,6 +70,10 @@ class GuardTest(unittest.TestCase):
             "def peek():\n    yield g.gi_frame.f_back\ng = peek()",
             "fr = None\nfr.f_globals",
             "try:\n    1 / 0\nexcept Exception as e:\n    e.tb_frame",
+            # attribute reads the AST can't see as Attribute nodes
+            "match safe_fillet:\n    case object(f_globals=g):\n        pass",
+            "'{0.f_globals}'.format(x)",
+            "'{f}'.format_map(d)",
         ):
             with self.subTest(source=source), self.assertRaises(GuardError):
                 check_code(source)
@@ -77,6 +86,21 @@ class GuardTest(unittest.TestCase):
         for name, fromlist in (("os", ()), ("numpy.ctypeslib", ()), ("cadquery", ("exporters",))):
             with self.subTest(name=name), self.assertRaises(ImportError):
                 guarded["__import__"](name, None, None, fromlist, 0)
+
+    def test_missing_attribute_error_carries_no_module(self):
+        np = safe_builtins()["__import__"]("numpy")
+        with self.assertRaises(AttributeError) as caught:
+            np.does_not_exist
+        # Python sets .obj to the object the lookup ran on: the proxy, never the real module.
+        self.assertNotIsInstance(caught.exception.obj, types.ModuleType)
+        self.assertIsNone(caught.exception.__context__)
+
+    def test_helpers_live_in_the_restricted_namespace(self):
+        import cadquery as cq
+
+        namespace = model_namespace(cq)
+        self.assertIs(namespace["safe_fillet"].__globals__, namespace)
+        self.assertIs(namespace["safe_chamfer"].__globals__, namespace)
 
     def test_module_proxy_hands_out_values_but_not_modules(self):
         np = safe_builtins()["__import__"]("numpy")
@@ -103,6 +127,33 @@ class ReplyParsingTest(unittest.TestCase):
     def test_extract_code_without_a_block_fails(self):
         with self.assertRaises(ValueError):
             extract_code("VERDICT: PASS")
+
+
+@unittest.skipUnless(os_sandbox("/tmp"), "the OS sandbox is only used on macOS")
+class OsSandboxTest(unittest.TestCase):
+    PROBE = """
+import os, socket, subprocess, sys
+from pathlib import Path
+home, tmp = Path(sys.argv[1]), Path(sys.argv[2])
+def attempt(fn):
+    try:
+        fn()
+        return "allowed"
+    except OSError:
+        return "denied"
+print(attempt(lambda: (home / "napkin_sandbox_probe.txt").write_text("x")),
+      attempt(lambda: os.listdir(home)),
+      attempt(lambda: socket.create_connection(("1.1.1.1", 443), timeout=3)),
+      attempt(lambda: subprocess.run(["/bin/echo"], capture_output=True)),
+      attempt(lambda: (tmp / "ok.txt").write_text("x")))
+"""
+
+    def test_only_the_build_directory_is_writable(self):
+        with tempfile.TemporaryDirectory(prefix="napkin_test_") as tmp:
+            proc = subprocess.run([*os_sandbox(tmp), sys.executable, "-I", "-c", self.PROBE, str(Path.home()), tmp],
+                                  capture_output=True, text=True, timeout=60, cwd=tmp)
+        self.assertEqual(proc.stdout.split(), ["denied", "denied", "denied", "denied", "allowed"], proc.stderr)
+        self.assertFalse((Path.home() / "napkin_sandbox_probe.txt").exists())
 
 
 class BuildTest(unittest.TestCase):

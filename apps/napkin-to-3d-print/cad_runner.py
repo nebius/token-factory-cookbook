@@ -53,15 +53,19 @@ def _blocked(name: str) -> bool:
 def _blocked_attr(name: str) -> bool:
     # Attributes are stricter than local names: no private members (np._core reaches sys and
     # builtins), no introspection, and no builtin names such as .open or .eval.
+    # str.format/format_map walk attributes inside "{0.attr}" fields, out of the AST's sight.
     return (_blocked(name) or name.startswith("_") or name in BLOCKED_BUILTINS
-            or name.startswith(INTROSPECTION_PREFIXES))
+            or name.startswith(INTROSPECTION_PREFIXES) or name in ("format", "format_map"))
 
 
 def check_code(source: str) -> None:
     """Static allowlist/denylist check. A guardrail for a local demo, not a sandbox."""
     tree = ast.parse(source)
     for node in ast.walk(tree):
-        if isinstance(node, ast.Import):
+        if isinstance(node, ast.Match):
+            # Class patterns read attributes by name (case object(f_back=x)), out of the AST's sight.
+            raise GuardError("match statements are not allowed")
+        elif isinstance(node, ast.Import):
             for alias in node.names:
                 if alias.name not in ALLOWED_IMPORTS:
                     raise GuardError(f"import of '{alias.name}' is not allowed (only cadquery, math, numpy)")
@@ -80,6 +84,7 @@ def check_code(source: str) -> None:
 # Submodules model code may reach through a proxy. Any other module object (np.ma, np.char,
 # cq.occ_impl...) is refused, because modules import modules: np.ma.core.re.enum.bltns is builtins.
 SAFE_SUBMODULES = {"numpy.linalg", "numpy.random", "numpy.fft", "numpy.polynomial", "cadquery.selectors"}
+_MISSING = object()
 
 
 class ModuleProxy:
@@ -93,7 +98,10 @@ class ModuleProxy:
     def __getattr__(self, name: str):
         if name.startswith("_"):
             raise AttributeError(name)
-        value = getattr(self._module, name)
+        # getattr with a default: a raised AttributeError would carry the real module in .obj.
+        value = getattr(self._module, name, _MISSING)
+        if value is _MISSING:
+            raise AttributeError(f"module has no attribute '{name}'")
         if isinstance(value, types.ModuleType):
             if value.__name__ in SAFE_SUBMODULES:
                 return ModuleProxy(value)
@@ -120,6 +128,9 @@ def safe_builtins() -> dict:
     return allowed
 
 
+# Helpers in scope for the model. They are compiled inside the model's own restricted
+# namespace, so their __globals__ is that namespace and not this module's globals.
+HELPERS = '''
 def safe_fillet(wp, radius, selector=None):
     """Fillet edges, returning the input unchanged if OpenCascade can't do it."""
     try:
@@ -142,6 +153,14 @@ def safe_chamfer(wp, length, selector=None):
     except Exception:
         pass
     return wp
+'''
+
+
+def model_namespace(cq) -> dict:
+    namespace = {"__name__": "napkin_model", "__builtins__": safe_builtins(),
+                 "cq": ModuleProxy(cq), "math": ModuleProxy(math)}
+    exec(compile(HELPERS, "helpers.py", "exec"), namespace)
+    return namespace
 
 
 def resolve_params(spec: dict, overrides: dict) -> dict:
@@ -187,9 +206,7 @@ def main() -> None:
 
         import cadquery as cq
 
-        namespace = {"__name__": "napkin_model", "__builtins__": safe_builtins(),
-                     "cq": ModuleProxy(cq), "math": ModuleProxy(math),
-                     "safe_fillet": safe_fillet, "safe_chamfer": safe_chamfer}
+        namespace = model_namespace(cq)
         exec(compile(source, "model.py", "exec"), namespace)
 
         spec = namespace.get("PARAMS", {})
