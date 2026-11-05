@@ -71,7 +71,7 @@ uncached call of about the warm-up's cost.
 
 - `cached` is `usage.prompt_tokens_details.cached_tokens`. On November 5, 2026 `cached` was always a
   multiple of 64, so the last partial block, including the changing question, stayed uncached.
-- The warm-up call misses and writes the prefix. On November 5, 2026 the warm-up miss took 3.8 s and the six hits took 1.2 to 2.2 s.
+- The warm-up call misses unless the same prefix was sent recently. On November 5, 2026 the warm-up miss took 3.8 s and the six hits took 1.2 to 2.2 s; a second run minutes later hit on all seven calls, including the warm-up, and saved 80%.
 - `cached=0` on a repeat is a valid answer. The cache is best effort, the docs say the Serverless cache
   is shared per model, and an idle prefix can be evicted at any time.
 - The anti-pattern line shows a timestamp placed before the document dropping the cached count to
