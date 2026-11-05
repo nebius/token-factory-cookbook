@@ -188,3 +188,41 @@ def test_main_rejects_non_integer_settings(capsys):
     assert code == 2
     assert "error: CACHE_PARAGRAPHS and CACHE_QUESTIONS must be integers" in capsys.readouterr().out
     assert client.requests == []
+
+
+def test_main_runs_every_model_and_compares(capsys):
+    responses = [_response(1000, 0), _response(1000, 900), _response(1000, 900), _response(1000, 0)]
+    client = FakeClient(responses + [_response(2000, 0), _response(2000, 0), _response(2000, 1984), _response(2000, 0)])
+    env = {"NEBIUS_MODEL": "test/model, test/flat", "CACHE_QUESTIONS": "2", "CACHE_PARAGRAPHS": "3"}
+
+    code = measure.main(client=client, catalog=measure.parse_catalog(CATALOG_DATA), now="2026-01-01 00:00:00", env=env)
+
+    out = capsys.readouterr().out
+    assert code == 0
+    assert len(client.requests) == 8
+    assert [r["model"] for r in client.requests] == ["test/model"] * 4 + ["test/flat"] * 4
+    assert out.count("model: ") == 2
+    assert out.count("summary: ") == 2
+    assert out.count("anti-pattern: ") == 2
+    assert "model: test/flat  prices: in=$0.5 cached=$0.5 out=$1 per 1M (catalog, 2026-01-01)" in out
+    assert "compare: hits, cached tokens and cost per model" in out
+    lines = out.splitlines()
+    assert any(line.startswith("  test/model") and "2/3 hits" in line and " 53% saved" in line for line in lines)
+    assert any(line.startswith("  test/flat") and "1/3 hits" in line and "  0% saved" in line for line in lines)
+    assert out.index("compare:") < out.index("catalog:")
+
+
+def test_main_single_model_prints_no_compare_block(capsys):
+    client = FakeClient([_response(1000, 0), _response(1000, 900), _response(1000, 900), _response(1000, 0)])
+    env = {"NEBIUS_MODEL": "test/model", "CACHE_QUESTIONS": "2", "CACHE_PARAGRAPHS": "3"}
+    assert measure.main(client=client, catalog=measure.parse_catalog(CATALOG_DATA), now="2026-01-01 00:00:00", env=env) == 0
+    assert "compare:" not in capsys.readouterr().out
+
+
+def test_main_rejects_unpriced_model_in_list_before_any_call(capsys):
+    client = FakeClient([])
+    env = {"NEBIUS_MODEL": "test/model,missing/model"}
+    code = measure.main(client=client, catalog=measure.parse_catalog(CATALOG_DATA), now="2026-01-01 00:00:00", env=env)
+    assert code == 2
+    assert "error: no catalog price for missing/model" in capsys.readouterr().out
+    assert client.requests == []
