@@ -132,4 +132,6 @@ Built by [Amitesh Anand](https://github.com/Astrodevil), based on [Cutaway](http
 
 ## License
 
-MIT, under this cookbook's [LICENSE](../../LICENSE).
+MIT, © 2026 Studio1HQ. See [LICENSE](LICENSE).
+
+This copy is based on [Studio1-OSS/Cutaway](https://github.com/Studio1-OSS/Cutaway) at commit `5e8763d` (November 4, 2026). The cookbook changes are the README, `env.example`, `pnpm-workspace.yaml`, and sending no `reasoning_effort` unless `KIMI_EFFORT_<KIND>` is set.

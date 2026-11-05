@@ -8,10 +8,10 @@ Explore complete applications built with Nebius Token Factory. Follow the linked
 | --- | --- | --- |
 | [Splitter Lite](splitter-lite/) | Read receipts and split bills with vision and calculator tools | Included in this repository |
 | [Cutaway](cutaway/) | Explore any machine as a 3D teardown with diagrams, steps and a quiz | Included in this repository |
+| [Codetrail](codetrail/) | Architecture maps, code tours and checked answers for any GitHub repo | Included in this repository |
 | [WhatLLM](https://www.whatllm.org/) | Compare model responses | Hosted application |
 | [Allycat](https://github.com/The-AI-Alliance/allycat) | Search and chat over website content | External repository |
 | [Customer Support AI](https://github.com/amrrs/customer-support-ai) | Answer support questions with domain-restricted web retrieval | External repository |
-| [Codetrail](codetrail/) | Architecture maps, code tours and checked answers for any GitHub repo | Included in this repository |
 
 For agent applications, see [OpenCrewBot](../agents/mastra/opencrewbot/) and [KubeTrace AI](../agents/kubetrace-ai/). For environment help, see [setup](../start-here/setup.md).
 
