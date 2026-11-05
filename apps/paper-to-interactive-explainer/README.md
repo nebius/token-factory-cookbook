@@ -114,7 +114,7 @@ A full build at `high` effort usually takes a few minutes because Kimi writes a 
 
 ## Validate
 
-Credential-free tests cover arXiv ID parsing, PDF text and figure-page extraction (on a PDF generated in memory), plan JSON parsing, section assembly and the SEARCH/REPLACE patcher. They make no network or Token Factory calls:
+Credential-free tests cover arXiv ID parsing, PDF text and figure-page extraction (on a PDF generated in memory), plan JSON parsing, section assembly and the SEARCH/REPLACE patcher and the sandboxed preview wrapper. They make no network or Token Factory calls:
 
 ```bash
 uv sync --frozen
@@ -123,7 +123,7 @@ uv run python -m unittest discover -s tests
 
 What was verified for this recipe:
 
-- The 13 offline tests pass with Python 3.12 on macOS, using the committed `uv.lock`.
+- The 14 offline tests pass with Python 3.12 on macOS, using the committed `uv.lock`.
 - The screenshots above come from an explainer this app generated for arXiv 1706.03762 during development in November 2026. The page was rendered in headless Chrome to take them.
 - Live Token Factory calls were not re-run for this cookbook copy. Run a build yourself to confirm your key's model access and cost.
 
@@ -132,7 +132,7 @@ What was verified for this recipe:
 - **Accuracy.** Kimi is told to use only numbers that appear in the paper and to cite the table or section they come from. Explainers are a teaching aid, not a substitute for the paper. Check important claims against the original.
 - **Long papers.** Text beyond 600,000 characters is cut, and at most eight figure pages are sent. Each parallel section writer sees the first 160,000 characters.
 - **Generated pages need the internet.** They load fonts, KaTeX and sometimes three.js from public CDNs.
-- **Generated code runs in your browser.** The explainer is model-written HTML and JavaScript, shown in a Streamlit component iframe. Review a page before you publish it.
+- **Generated code runs in your browser.** The explainer is model-written HTML and JavaScript, and a paper could carry prompt-injected instructions. The in-app preview runs it in a sandboxed iframe with an opaque origin (`sandbox="allow-scripts"` without `allow-same-origin`), so its scripts can't reach the Streamlit page, its cookies or its storage. A downloaded `.html` file has no such sandbox when you open it, so review a page before you open it outside the app or publish it.
 - **Local demo.** The app has no authentication, and anyone who can reach the Streamlit port can spend your key. Keep it on your machine or put it behind your own auth.
 
 The app creates no cloud resources. To clean up, delete generated pages and the environment:

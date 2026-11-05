@@ -384,6 +384,19 @@ def static_check(html: str, plan: dict | None) -> list[str]:
     return issues
 
 
+def isolated_preview(page: str) -> str:
+    """Wrap model-written HTML for display inside the Streamlit app.
+
+    Streamlit's components.html iframe shares the app's origin, so a page written from a
+    prompt-injected paper could script the app itself. This nested iframe gets an opaque
+    origin (sandbox without allow-same-origin): the explainer's own scripts and CDN
+    libraries still run, but they can't reach the Streamlit page, its cookies or storage.
+    """
+    return ('<style>html,body{margin:0;height:100%;overflow:hidden}</style>'
+            '<iframe title="Explainer preview" sandbox="allow-scripts allow-popups allow-popups-to-escape-sandbox" '
+            f'style="width:100%;height:100vh;border:0" srcdoc="{htmllib.escape(page, quote=True)}"></iframe>')
+
+
 def qa_available() -> bool:
     try:
         import playwright  # noqa: F401

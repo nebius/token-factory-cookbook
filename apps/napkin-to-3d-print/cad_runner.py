@@ -13,45 +13,70 @@ sandbox with no network and a read-only filesystem.
 from __future__ import annotations
 
 import ast
+import builtins
 import json
 import math
 import sys
 import traceback
 from pathlib import Path
 
-ALLOWED_IMPORTS = {"cadquery", "math", "numpy"}
-BLOCKED_CALLS = {
-    "open", "exec", "eval", "compile", "__import__", "input", "breakpoint",
+ALLOWED_IMPORTS = {"cadquery", "math", "numpy"}  # exact module names, no submodules
+BLOCKED_BUILTINS = {
+    "open", "exec", "eval", "compile", "__import__", "input", "breakpoint", "help", "exit", "quit",
     "globals", "locals", "vars", "getattr", "setattr", "delattr",
 }
-BLOCKED_ATTRS = {
-    # file I/O and process escape hatches reachable through cadquery / numpy
-    "exporters", "importers", "system", "popen", "load", "loads", "save", "savez", "savez_compressed",
-    "savetxt", "loadtxt", "genfromtxt", "fromfile", "tofile", "memmap", "ctypeslib", "lib",
-    "os", "sys", "subprocess", "builtins", "importlib", "f2py", "testing",
+BLOCKED_NAMES = {
+    # process, FFI and import escape hatches
+    "os", "sys", "subprocess", "builtins", "importlib", "ctypes", "ctypeslib", "f2py", "testing", "lib",
+    "system", "popen", "memmap", "DataSource",
+    # cadquery modules that execute source (cqgi), open viewers (vis) or reach raw OpenCascade I/O
+    "cqgi", "vis", "occ_impl", "OCP",
 }
+# File I/O on cadquery / numpy objects: export, exportStl, exporters, importStep, save,
+# savetxt, load, loadtxt, tofile, fromfile, fromregex, dump, Write_s, Read_s...
+BLOCKED_PREFIXES = ("export", "import", "save", "load", "dump", "read", "write", "tofile", "fromfile",
+                    "fromregex", "genfromtxt")
 
 
 class GuardError(Exception):
     pass
 
 
+def _blocked(name: str) -> bool:
+    return name.startswith("__") or name in BLOCKED_NAMES or name.lower().startswith(BLOCKED_PREFIXES)
+
+
 def check_code(source: str) -> None:
+    """Static allowlist/denylist check. A guardrail for a local demo, not a sandbox."""
     tree = ast.parse(source)
     for node in ast.walk(tree):
         if isinstance(node, ast.Import):
             for alias in node.names:
-                if alias.name.split(".")[0] not in ALLOWED_IMPORTS:
+                if alias.name not in ALLOWED_IMPORTS:
                     raise GuardError(f"import of '{alias.name}' is not allowed (only cadquery, math, numpy)")
         elif isinstance(node, ast.ImportFrom):
-            if (node.module or "").split(".")[0] not in ALLOWED_IMPORTS:
+            if node.level or node.module not in ALLOWED_IMPORTS:
                 raise GuardError(f"import from '{node.module}' is not allowed (only cadquery, math, numpy)")
-        elif isinstance(node, ast.Call) and isinstance(node.func, ast.Name) and node.func.id in BLOCKED_CALLS:
-            raise GuardError(f"call to '{node.func.id}()' is not allowed")
-        elif isinstance(node, ast.Attribute) and (node.attr.startswith("__") or node.attr in BLOCKED_ATTRS):
+            for alias in node.names:
+                if alias.name == "*" or _blocked(alias.name):
+                    raise GuardError(f"'from {node.module} import {alias.name}' is not allowed")
+        elif isinstance(node, ast.Attribute) and _blocked(node.attr):
             raise GuardError(f"attribute '.{node.attr}' is not allowed")
-        elif isinstance(node, ast.Name) and node.id.startswith("__"):
+        elif isinstance(node, ast.Name) and (node.id in BLOCKED_BUILTINS or _blocked(node.id)):
             raise GuardError(f"name '{node.id}' is not allowed")
+
+
+def _guarded_import(name, globals=None, locals=None, fromlist=(), level=0):
+    # Runtime twin of the import check: the import statements in the model code go through here.
+    if level or name not in ALLOWED_IMPORTS or any(f == "*" or _blocked(f) for f in fromlist or ()):
+        raise ImportError(f"import of '{name}' is not allowed (only cadquery, math, numpy)")
+    return builtins.__import__(name, globals, locals, fromlist, level)
+
+
+def safe_builtins() -> dict:
+    allowed = {k: v for k, v in vars(builtins).items() if k not in BLOCKED_BUILTINS}
+    allowed["__import__"] = _guarded_import
+    return allowed
 
 
 def safe_fillet(wp, radius, selector=None):
@@ -121,7 +146,7 @@ def main() -> None:
 
         import cadquery as cq
 
-        namespace = {"__name__": "napkin_model", "cq": cq, "math": math,
+        namespace = {"__name__": "napkin_model", "__builtins__": safe_builtins(), "cq": cq, "math": math,
                      "safe_fillet": safe_fillet, "safe_chamfer": safe_chamfer}
         exec(compile(source, "model.py", "exec"), namespace)
 

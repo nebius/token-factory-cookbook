@@ -110,7 +110,7 @@ Tips:
 
 ## Validate
 
-Credential-free tests cover the code guard (allowed imports, blocked builtins, dunder access, CadQuery and NumPy file I/O), parameter clamping, reply parsing, and a real CadQuery build of a small bracket through the same sandboxed subprocess the app uses, including STL and STEP export, mesh checks and the four-view render. They make no network or Token Factory calls:
+Credential-free tests cover the code guard (allowed imports, blocked builtins, dunder access, CadQuery and NumPy file I/O, the runtime import hook), parameter clamping, reply parsing, and a real CadQuery build of a small bracket through the same sandboxed subprocess the app uses, including STL and STEP export, mesh checks and the four-view render. They make no network or Token Factory calls:
 
 ```bash
 uv sync --frozen
@@ -119,12 +119,12 @@ uv run python -m unittest discover -s tests
 
 What was verified for this recipe:
 
-- The 7 offline tests pass with Python 3.12 on macOS, using the committed `uv.lock`. The first run after a fresh install can take a few minutes while the OS loads the OpenCascade libraries for the first time; later runs take a few seconds.
+- The 8 offline tests pass with Python 3.12 on macOS, using the committed `uv.lock`. The first run after a fresh install can take a few minutes while the OS loads the OpenCascade libraries for the first time; later runs take a few seconds.
 - Live Token Factory calls were not re-run for this cookbook copy. Run a design yourself to confirm your key's model access and cost.
 
 ## Limitations and cleanup
 
-- **Generated code runs on your machine.** The build step runs model-written Python in a separate process with a 120 s timeout and an empty environment. It refuses imports other than `cadquery`, `math` and `numpy`, builtins such as `open`, `exec` and `eval`, dunder attributes, and NumPy or CadQuery file I/O. That is a guardrail for a local demo, not a security sandbox. Don't expose the app to other people as is. For a shared deployment, run `cad_runner.py` inside a real isolation boundary, such as a container or remote sandbox with no network and a read-only filesystem.
+- **Generated code runs on your machine.** The build step runs model-written Python in a separate process with a 120 s timeout and an empty environment. Before running it, a static check refuses imports other than the top-level `cadquery`, `math` and `numpy` modules, builtins such as `open`, `exec`, `eval` and `getattr` (called or not), dunder names, names and attributes starting with `export`, `import`, `save`, `load`, `read`, `write` or `dump` (the CadQuery and NumPy file I/O methods), and the `cqgi`, `occ_impl`, `OCP` and `ctypeslib` modules. At run time the code also gets a reduced set of builtins whose `__import__` enforces the same import rules. A denylist can't anticipate every path through two large libraries, so this is a guardrail for a local demo, not a security sandbox. Don't expose the app to other people as is. For a shared deployment, run `cad_runner.py` inside a real isolation boundary, such as a container or remote sandbox with no network and a read-only filesystem.
 - **Localhost only.** `.streamlit/config.toml` binds the server to `localhost`, and the app has no authentication.
 - **Sketch quality matters.** Kimi infers sizes it can't read from the object's purpose. Check the measured size and wall thickness before printing.
 - **Fillets and complex lofts can fail** in OpenCascade. The helpers `safe_fillet` and `safe_chamfer` return the part unchanged rather than failing the build, so a rounded edge may be missing.

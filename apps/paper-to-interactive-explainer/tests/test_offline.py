@@ -3,6 +3,8 @@
 Run from the recipe directory: uv run python -m unittest discover -s tests
 """
 
+import html
+import re
 import unittest
 
 import pymupdf
@@ -13,6 +15,7 @@ from explainer_agent import (
     assemble,
     extract_html,
     extract_section,
+    isolated_preview,
     parse_json,
     static_check,
 )
@@ -82,6 +85,16 @@ class AssemblyTest(unittest.TestCase):
     def test_section_without_placeholder_lands_before_main_close(self):
         html = assemble(self.SHELL, {"s1": "<section id='s1'></section>", "s9": "<section id='s9'></section>"})
         self.assertIn("<section id='s9'></section>\n</main>", html)
+
+    def test_preview_runs_in_an_opaque_origin_sandbox(self):
+        page = '<html><body><a href="x">"quoted" & <b>bold</b></a><script>parent.document</script></body></html>'
+        wrapped = isolated_preview(page)
+        sandbox = re.search(r'sandbox="([^"]*)"', wrapped).group(1).split()
+        self.assertIn("allow-scripts", sandbox)
+        self.assertNotIn("allow-same-origin", sandbox)
+        srcdoc = re.search(r'srcdoc="([^"]*)"', wrapped).group(1)
+        self.assertEqual(html.unescape(srcdoc), page)
+        self.assertNotIn("<script>", wrapped)  # the page can't break out of the attribute
 
     def test_static_check_flags_truncation_and_missing_sections(self):
         issues = static_check("<html><section></section>", {"sections": [{}, {}]})

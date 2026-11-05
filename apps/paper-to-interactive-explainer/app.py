@@ -13,7 +13,7 @@ from dotenv import load_dotenv
 APP_DIR = Path(__file__).parent
 load_dotenv(APP_DIR / ".env")
 
-from explainer_agent import AUDIENCES, ExplainerAgent, Version, qa_available  # noqa: E402
+from explainer_agent import AUDIENCES, ExplainerAgent, Version, isolated_preview, qa_available  # noqa: E402
 from kimi import PREFERRED_MODEL, available_kimi_models, get_client, label  # noqa: E402
 from paper import Paper, fetch_arxiv, load_pdf, parse_arxiv_id  # noqa: E402
 
@@ -238,7 +238,7 @@ if ss.versions:
         st.download_button("⬇ Download explainer.html", cur.html, path.name, mime="text/html", type="primary", width="stretch")
         st.caption(f"Saved to `{path.relative_to(APP_DIR)}`")
 
-    components.html(cur.html, height=900, scrolling=True)
+    components.html(isolated_preview(cur.html), height=900)
 
     st.subheader("💬 Refine it")
     with st.form("refine", clear_on_submit=True):
