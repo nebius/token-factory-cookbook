@@ -2,11 +2,15 @@
 
 # Applications and demos
 
-Explore complete applications built with Nebius Token Factory. Follow the linked project for its runtime, required keys, and deployment instructions.
+Explore complete applications and interactive coding examples for Nebius Token Factory. Each recipe states whether it makes runtime model calls. Follow the linked project for its runtime, required keys, and deployment instructions.
 
 | Application | Workflow | Source |
 | --- | --- | --- |
+| [Codetrail](codetrail/) | Repository architecture, source-checked code tours and Q&A; includes a curated preview | Included in this repository |
+| [Cutaway](cutaway/) | Generate and explore machine internals with Kimi; includes a static showcase | Included in this repository |
+| [Explode Anything](explode-anything/) | Inspect a procedural camera assembly; no runtime inference | Included with adaptation permission |
 | [Splitter Lite](splitter-lite/) | Read receipts and split bills with vision and calculator tools | Included in this repository |
+| [Sketch to Walkthrough](sketch-to-walkthrough/) | Turn a hand-drawn floor plan into a checked, walkable 3D model | Included in this repository |
 | [Paper to interactive explainer](paper-to-interactive-explainer/) | Turn a research paper into a self-tested, interactive HTML explainer | Included in this repository |
 | [Napkin to 3D print](napkin-to-3d-print/) | Turn a hand-drawn sketch into a parametric CadQuery model and a printable STL | Included in this repository |
 | [WhatLLM](https://www.whatllm.org/) | Compare model responses | Hosted application |
@@ -79,6 +83,22 @@ shares and flags any split that doesn't add up.
 |-
 
 Built by [Amitesh Anand](https://github.com/Astrodevil).
+
+---
+
+## Sketch to Walkthrough
+
+[Sketch to Walkthrough](sketch-to-walkthrough/) is a Vite, React and Three.js
+app. Upload a photo of a hand-drawn floor plan, and Kimi K3.1 Pro on Nebius
+Token Factory reads every written dimension and writes a layout generator. The
+app runs it in a sandbox, checks it with deterministic engineering checks,
+shows Kimi its own render to review, and opens a plan, dollhouse and
+first-person walkthrough with a slider for every dimension.
+
+| <img src="sketch-to-walkthrough/screenshots/02-dollhouse.png" width="400" alt="Two-bedroom plan in the dollhouse view with room labels and furniture">
+|-
+
+Built by [Shivay Lamba](https://github.com/shivaylamba).
 
 ---
 

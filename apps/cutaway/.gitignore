@@ -1,0 +1,43 @@
+# dependencies
+node_modules/
+
+# Next.js build output
+.next/
+out/
+next-env.d.ts
+*.tsbuildinfo
+
+# local data: your machines, photos, notes and run log
+data/
+*.db
+*.db-shm
+*.db-wal
+
+# the server sandbox's bundled runner (rebuilt on start)
+.sandbox/
+
+# secrets: keep only the example
+.env
+.env.*
+!.env.example
+
+# logs and test output
+*.log
+npm-debug.log*
+pnpm-debug.log*
+coverage/
+
+# editors and OS
+.DS_Store
+.idea/
+.vscode/
+*.swp
+
+# deploys
+.vercel/
+
+# Static hosted companion
+showcase-dist/
+
+# Local browser verification
+qa/
