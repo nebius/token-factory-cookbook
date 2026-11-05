@@ -147,3 +147,101 @@ def discount_table(catalog: list[dict]) -> list[tuple[str, float, float, int]]:
         discount = 0 if row["input"] == 0 else round(100 * (1 - row["cached"] / row["input"]))
         rows.append((row["model_id"], row["input"], row["cached"], discount))
     return sorted(rows, key=lambda r: (-r[3], r[0]))
+
+
+def ask(client, model: str, system: str, question: str, max_tokens: int = 40) -> CallResult:
+    """One chat call. Cached tokens come from usage.prompt_tokens_details.cached_tokens."""
+    started = time.perf_counter()
+    response = client.chat.completions.create(
+        model=model,
+        messages=[{"role": "system", "content": system}, {"role": "user", "content": question}],
+        max_tokens=max_tokens,
+    )
+    seconds = time.perf_counter() - started
+    usage = response.usage
+    details = getattr(usage, "prompt_tokens_details", None)
+    cached = getattr(details, "cached_tokens", None) or 0
+    return CallResult(
+        prompt_tokens=usage.prompt_tokens,
+        cached_tokens=cached,
+        completion_tokens=usage.completion_tokens,
+        seconds=seconds,
+        answer=response.choices[0].message.content or "",
+    )
+
+
+def _call_line(index: int, result: CallResult, prices: Prices) -> str:
+    verdict = "hit " if result.hit else "miss"
+    line = (
+        f"call {index:<2} prompt={result.prompt_tokens:<6} cached={result.cached_tokens:<6} "
+        f"{verdict}  {result.seconds:4.1f}s  ${cost(result, prices):.6f}"
+    )
+    return line + "  (warm-up)" if index == 0 else line
+
+
+def main(argv=None, client=None, catalog=None, now=None, env=None) -> int:
+    env = os.environ if env is None else env
+    now = now or time.strftime("%Y-%m-%d %H:%M:%S")
+    model = env.get("NEBIUS_MODEL", DEFAULT_MODEL)
+    paragraphs = int(env.get("CACHE_PARAGRAPHS", "400"))
+    count = int(env.get("CACHE_QUESTIONS", "6"))
+
+    prices = prices_from_env(env)
+    source = "env"
+    if prices is None:
+        if catalog is None:
+            try:
+                catalog = fetch_catalog(env.get("CATALOG_URL", DEFAULT_CATALOG_URL))
+            except CatalogError as exc:
+                print(f"warning: {exc}")
+                catalog = []
+        try:
+            prices = price_of(catalog, model)
+            source = f"catalog, {now[:10]}"
+        except KeyError:
+            print(
+                f"error: no catalog price for {model}; set NEBIUS_INPUT_PRICE, "
+                "NEBIUS_CACHED_PRICE and NEBIUS_OUTPUT_PRICE (USD per 1M tokens)"
+            )
+            return 2
+
+    if client is None:
+        from openai import OpenAI
+
+        client = OpenAI(api_key=env["NEBIUS_API_KEY"], base_url=env.get("NEBIUS_BASE_URL", DEFAULT_BASE_URL))
+
+    print(f"model: {model}  prices: in=${prices.input:g} cached=${prices.cached:g} out=${prices.output:g} per 1M ({source})")
+
+    system = system_prompt(build_document(paragraphs))
+    asks = questions(count, paragraphs)
+    results = []
+    for index, question in enumerate([asks[0], *asks]):
+        result = ask(client, model, system, question)
+        results.append(result)
+        print(_call_line(index, result, prices))
+
+    summary = summarize(results, prices)
+    saved = 0 if summary.uncached_cost_usd == 0 else round(100 * (1 - summary.cost_usd / summary.uncached_cost_usd))
+    print(
+        f"summary: {summary.calls} calls, {summary.hits} hits, {summary.cached_tokens} cached tokens, "
+        f"${summary.cost_usd:.4f} total vs ${summary.uncached_cost_usd:.4f} uncached, {saved}% saved"
+    )
+
+    broken = ask(client, model, break_the_cache(system, now), asks[0])
+    verdict = "hit" if broken.hit else "miss"
+    print(
+        f"anti-pattern: timestamp in system prompt -> prompt={broken.prompt_tokens} "
+        f"cached={broken.cached_tokens} {verdict} {broken.seconds:.1f}s"
+    )
+
+    if catalog:
+        print("catalog: cached input discounts (USD per 1M, read live)")
+        for model_id, input_price, cached_price, discount in discount_table(catalog):
+            print(f"  {model_id:<40} in={input_price:<6g} cached={cached_price:<7g} {discount:>3}%")
+    else:
+        print("catalog: skipped (catalog unavailable)")
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())
