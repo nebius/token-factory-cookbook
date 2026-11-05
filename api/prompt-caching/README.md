@@ -1,4 +1,4 @@
-[Cookbook](../../README.md) / [API](../README.md) / Prompt caching
+[Cookbook](../../README.md) / [APIs](../README.md) / Prompt caching
 
 # Measure prompt caching on Token Factory
 
@@ -12,13 +12,15 @@ input discount of every model in the public catalog. The full walkthrough is on
 
 ## Run it
 
-Python 3.10 or newer is required (`measure.py` uses `str | None`).
+Python 3.10 or newer is required.
 
 ```bash
 python3 -m venv .venv && .venv/bin/pip install -r requirements.txt
 export NEBIUS_API_KEY="your-key"
 .venv/bin/python measure.py
 ```
+
+Or put `NEBIUS_API_KEY=your-key` in a `.env` file (git-ignored) and load it with `set -a; . .env; set +a`.
 
 With uv instead: `uv venv --python 3.12 .venv && uv pip install -r requirements.txt`.
 
@@ -61,13 +63,14 @@ catalog: cached input discounts (USD per 1M, read live)
   ... 16 more rows; the script prints all 26 models.
 ```
 
-Costs are list prices from the catalog on the run date and will change. The seven measured calls cost $0.0117 at list price on November 5, 2026, and the anti-pattern call
-adds one more uncached call of about the warm-up's cost.
+Costs are list prices from the catalog on the run date and will change. The seven measured
+calls cost $0.0117 at list price on November 5, 2026, and the anti-pattern call adds one more
+uncached call of about the warm-up's cost.
 
 ## Read the numbers
 
-- `cached` is `usage.prompt_tokens_details.cached_tokens`. It is a multiple of 64 because the cache
-  works in 64-token blocks, so the changing question at the end is always uncached.
+- `cached` is `usage.prompt_tokens_details.cached_tokens`. On November 5, 2026 `cached` was always a
+  multiple of 64, so the last partial block, including the changing question, stayed uncached.
 - The warm-up call misses and writes the prefix. On November 5, 2026 the warm-up miss took 3.8 s and the six hits took 1.2 to 2.2 s.
 - `cached=0` on a repeat is a valid answer. The cache is best effort, the docs say the Serverless cache
   is shared per model, and an idle prefix can be evicted at any time.
@@ -84,18 +87,25 @@ Eleven tests run against a fake client and a fixture catalog. None of them call 
 
 ## Troubleshooting
 
-- `error: AuthenticationError: ...`, exit 1: the key is missing or wrong. Check `NEBIUS_API_KEY`.
-- `error: RateLimitError: ...`, exit 1: you are over your rate limit. Wait and rerun; the cached prefix may be gone by then.
-- Every call shows `cached=0`: the prefix was evicted, another replica served the call, or the prefix
-  is too short. Rerun once; this run used a 35k-token prefix; much shorter prefixes hit less reliably.
-- The catalog is unreachable: the script prints `warning: could not read ...` and then
-  `catalog: skipped (catalog unavailable)`. Set the three price variables to run without it.
-- `error: ...` with exit code 1 or 2: the line names the API exception or the setting that is wrong.
-- Streaming callers: set `stream_options={"include_usage": True}` or usage, including cached tokens,
-  may not be returned.
+- `error: NEBIUS_API_KEY is not set`, exit code 2: export the key or load your `.env` file into the shell you run from.
+- `error: AuthenticationError: ...`, exit code 1: the API returned 401. The key is wrong or revoked. Check `NEBIUS_API_KEY`.
+- `error: RateLimitError: ...`, exit code 1: the API returned 429. Wait and rerun. The cached prefix may have been
+  evicted by the time you retry, so the first call may miss again.
+- `error: CACHE_QUESTIONS must be at least 1` or `error: CACHE_PARAGRAPHS and CACHE_QUESTIONS must be integers`,
+  exit code 2: fix the variable the line names.
+- Every call shows `cached=0`: the prefix was evicted, another replica served the call, or something changed the
+  prefix between calls. Rerun once before you debug. On November 5, 2026 a 300-token prefix hit once in four
+  calls, while the 35k-token prefix hit six times out of six after the warm-up.
+- `warning: could not read ...` followed by `error: no catalog price for <model>`, exit code 2: the public catalog
+  was unreachable. Set `NEBIUS_INPUT_PRICE`, `NEBIUS_CACHED_PRICE` and `NEBIUS_OUTPUT_PRICE`. With those set, the
+  run completes and ends with `catalog: skipped (catalog unavailable)`.
+- `error: no catalog price for <model>` with no warning before it, exit code 2: `NEBIUS_MODEL` names a model
+  that the catalog does not list with a cached price. Set the three price variables.
+- Usage is missing when you stream in your own code: pass `stream_options={"include_usage": True}`.
 
 ## Clean up
 
 ```bash
 rm -rf .venv
+rm -f .env
 ```
