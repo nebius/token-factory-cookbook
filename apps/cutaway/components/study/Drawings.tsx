@@ -35,7 +35,7 @@ export function Drawings(p: Props) {
     let alive = true;
     if (!current) return;
     void import("dompurify").then(({ default: DOMPurify }) => {
-      if (alive) setClean(DOMPurify.sanitize(current.svg, { USE_PROFILES: { svg: true, svgFilters: true }, ADD_ATTR: ["data-part"], FORBID_TAGS: ["foreignObject", "image", "a"] }));
+      if (alive) setClean(DOMPurify.sanitize(current.svg, { USE_PROFILES: { svg: true, svgFilters: true }, ADD_ATTR: ["data-part"], FORBID_TAGS: ["foreignObject", "image", "a", "style"] }));
     });
     return () => {
       alive = false;

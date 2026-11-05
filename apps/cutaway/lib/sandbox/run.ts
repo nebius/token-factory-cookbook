@@ -8,6 +8,8 @@ export type WorkerLike = {
 };
 
 export const PART_TIMEOUT_MS = 4000;
+/** How long the worker may stay silent between parts (startup included) before it is replaced. */
+export const IDLE_TIMEOUT_MS = 20_000;
 
 export function browserWorker(): WorkerLike {
   return new Worker(new URL("./worker.ts", import.meta.url), { type: "module" }) as unknown as WorkerLike;
@@ -51,24 +53,34 @@ export function runParts(
         worker.terminate();
       };
       const remaining = () => queue.filter((p) => !results.has(p.id));
+      // Whatever the worker is doing, silence past the limit fails the part it was on (or the next one)
+      // and a fresh worker takes the rest.
+      const arm = (ms: number) => {
+        if (timer) clearTimeout(timer);
+        timer = setTimeout(() => {
+          stop();
+          const id = current ?? remaining()[0]?.id;
+          if (id && !results.has(id)) {
+            const message = current ? `builder ran longer than ${timeoutMs / 1000}s (endless loop?)` : "the sandbox stopped responding";
+            const r = failed(id, message);
+            results.set(id, r);
+            onPart(r);
+          }
+          launch(remaining());
+        }, ms);
+      };
+      const idle = Math.max(timeoutMs, IDLE_TIMEOUT_MS);
 
       worker.onmessage = (e) => {
         const msg = e.data;
         if (msg.type === "start") {
           current = msg.id;
-          if (timer) clearTimeout(timer);
-          timer = setTimeout(() => {
-            stop();
-            const r = failed(msg.id, `builder ran longer than ${timeoutMs / 1000}s (endless loop?)`);
-            results.set(msg.id, r);
-            onPart(r);
-            launch(remaining());
-          }, timeoutMs);
+          arm(timeoutMs);
         } else if (msg.type === "part") {
-          if (timer) clearTimeout(timer);
           current = null;
           results.set(msg.part.id, msg.part);
           onPart(msg.part);
+          arm(idle);
         } else if (msg.type === "done") {
           stop();
           finish();
@@ -85,6 +97,7 @@ export function runParts(
         launch(remaining());
       };
       worker.postMessage({ type: "build", parts: queue, sizeMm });
+      arm(idle);
     };
 
     launch(parts);

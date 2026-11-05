@@ -46,7 +46,8 @@ type Encoded = Omit<BuiltPart, "meshes"> & { meshes: { material: BuiltMesh["mate
 
 /** A sandbox child process that speaks the same messages as the browser Web Worker. */
 function childWorker(runner: string): WorkerLike {
-  const child = spawn(process.execPath, ["--permission", `--allow-fs-read=${path.dirname(runner)}`, runner], { stdio: ["pipe", "pipe", "pipe"] });
+  // An empty environment: the server's own (NEBIUS_API_KEY included) must not reach model-written code.
+  const child = spawn(process.execPath, ["--permission", `--allow-fs-read=${path.dirname(runner)}`, runner], { stdio: ["pipe", "pipe", "pipe"], env: {} });
   let ended = false;
   const w: WorkerLike = {
     onmessage: null,

@@ -124,7 +124,8 @@ pnpm build
 
 - **Speed.** K3.1 Pro reasons by default and the answer is long (every part is code), so a new machine took about 35 minutes in the run above. You can start exploring once its parts are built.
 - **Accuracy.** Kimi designs representative internals for that kind of machine, not an exact copy of one product. Each part shows how sure Kimi is.
-- **Scope.** This is a local app with no accounts. Everything is stored in `data/cutaway.db`; delete that folder to start over. Don't expose it publicly with your own API key.
+- **Scope.** This is a local app with no accounts. It listens on 127.0.0.1, and its API refuses requests from other websites ([`proxy.ts`](proxy.ts)). Everything is stored in `data/cutaway.db`; delete that folder to start over. Don't expose it publicly with your own API key.
+- **Sandbox.** Kimi's code runs in a browser Web Worker and, on the server, in a child process with Node's permission model, no environment variables and no imports or network modules. These are strong guards, not a hard security boundary: only open teardowns and seeds you trust.
 
 ## Credits
 

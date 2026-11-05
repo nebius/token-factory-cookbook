@@ -36,4 +36,22 @@ describe("server sandbox (child process)", () => {
     // A dynamic import is async, so the part itself builds; the import is rejected by the hook.
     expect(res.find((r) => r.id === "imp")!.ok).toBe(true);
   }, 60_000);
+
+  it("gives builders no environment variables and no network modules", async () => {
+    const escape = "const P = (function(){}).constructor('return process')();";
+    process.env.CUTAWAY_TEST_SECRET = "not-for-builders";
+    try {
+      const res = await buildOnServer(
+        [
+          { id: "env", code: `${escape} if (P.env.CUTAWAY_TEST_SECRET) throw new Error('env leaked'); ${ok}` },
+          { id: "https", code: `${escape} P.getBuiltinModule('node:https'); ${ok}` },
+        ],
+        SIZE,
+      );
+      expect(res.find((r) => r.id === "env")!.ok).toBe(true);
+      expect(res.find((r) => r.id === "https")!.ok).toBe(false);
+    } finally {
+      delete process.env.CUTAWAY_TEST_SECRET;
+    }
+  }, 60_000);
 });

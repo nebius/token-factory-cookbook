@@ -111,4 +111,26 @@ describe("runParts", () => {
     expect(seen).toEqual(["a", "spin", "c"]);
     expect(log).toEqual(["start a,spin,c", "terminate", "start c", "terminate"]);
   });
+
+  it("does not wait forever when the worker goes silent between parts", async () => {
+    const ok = "return kit.mesh(kit.box(10,10,10));";
+    // Answers the first part, then never speaks again (as if a builder broke the runner's messages).
+    const mute = (): WorkerLike => {
+      const w: WorkerLike = {
+        onmessage: null,
+        onerror: null,
+        terminate: () => {},
+        postMessage(req: WorkerRequest) {
+          setTimeout(() => {
+            const p = req.parts[0];
+            w.onmessage?.({ data: { type: "start", id: p.id } satisfies WorkerMessage });
+            if (p.id === "a") w.onmessage?.({ data: { type: "part", part: evaluatePart(p.id, p.code, req.sizeMm) } });
+          }, 0);
+        },
+      };
+      return w;
+    };
+    const res = await runParts([{ id: "a", code: ok }, { id: "b", code: ok }], SIZE, () => {}, { createWorker: mute, timeoutMs: 20 });
+    expect(res.map((r) => [r.id, r.ok])).toEqual([["a", true], ["b", false]]);
+  }, 60_000);
 });

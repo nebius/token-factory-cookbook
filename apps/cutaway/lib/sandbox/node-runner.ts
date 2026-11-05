@@ -7,7 +7,8 @@ import { evaluatePart } from "./evaluate";
 import type { BuiltPart, WorkerRequest } from "./types";
 
 const out = process.stdout.write.bind(process.stdout);
-const send = (msg: unknown) => out(JSON.stringify(msg) + "\n");
+const stringify = JSON.stringify;
+const send = (msg: unknown) => out(stringify(msg) + "\n");
 
 registerHooks({
   resolve() {
@@ -24,7 +25,8 @@ for (const name of ["fetch", "WebSocket", "EventSource", "XMLHttpRequest"]) {
 const deny = () => {
   throw new Error("not allowed in the part sandbox");
 };
-for (const name of ["kill", "dlopen", "binding", "chdir"] as const) {
+// getBuiltinModule would hand out node:https and node:net: the permission model doesn't cover the network.
+for (const name of ["kill", "dlopen", "binding", "chdir", "getBuiltinModule"] as const) {
   try {
     Object.defineProperty(process, name, { value: deny, configurable: false, writable: false });
   } catch {
