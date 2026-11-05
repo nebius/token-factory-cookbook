@@ -65,8 +65,10 @@ def build_document(paragraphs: int) -> str:
     return "\n".join(f"Paragraph {i}: " + SENTENCE.format(i=i) * 3 for i in range(paragraphs))
 
 
-def system_prompt(document: str) -> str:
-    return "You answer briefly from the document.\n\nDOCUMENT:\n" + document
+def system_prompt(document: str, salt: str = "") -> str:
+    """The static prefix. A salt in front of it makes every call a fresh prefix."""
+    header = f"Run: {salt}\n" if salt else ""
+    return header + "You answer briefly from the document.\n\nDOCUMENT:\n" + document
 
 
 def questions(n: int, paragraphs: int) -> list[str]:
@@ -262,7 +264,7 @@ def main(argv=None, client=None, catalog=None, now=None, env=None) -> int:
 
         client = OpenAI(api_key=env["NEBIUS_API_KEY"], base_url=env.get("NEBIUS_BASE_URL", DEFAULT_BASE_URL))
 
-    system = system_prompt(build_document(paragraphs))
+    system = system_prompt(build_document(paragraphs), env.get("CACHE_SALT", ""))
     asks = questions(count, paragraphs)
     summaries = {}
     for model in models:

@@ -34,6 +34,7 @@ Environment variables:
 | `NEBIUS_MODEL` | `moonshotai/Kimi-K3.1-Pro,zai-org/GLM-5.3-Flash,deepseek-ai/DeepSeek-V4.1-Flash-1017` | Models to measure, comma separated |
 | `CACHE_PARAGRAPHS` | `400` | Size of the generated document (about 35k tokens, the exact count depends on the model's tokenizer) |
 | `CACHE_QUESTIONS` | `6` | Questions asked after the warm-up call |
+| `CACHE_SALT` | unset | Any text; it goes in front of the system prompt, so a new value forces a cold start on every model |
 | `CATALOG_URL` | `https://tokenfactory.nebius.com/api/public/models_info` | Where prices are read from |
 | `NEBIUS_INPUT_PRICE`, `NEBIUS_CACHED_PRICE`, `NEBIUS_OUTPUT_PRICE` | unset | USD per 1M; set all three to skip the catalog |
 
@@ -132,7 +133,7 @@ measured calls plus about $0.069 for its anti-pattern miss.
 .venv/bin/python -m pytest -q -p no:cacheprovider
 ```
 
-Fourteen tests run against a fake client and a fixture catalog. None of them call the network.
+Fifteen tests run against a fake client and a fixture catalog. None of them call the network.
 
 ## Troubleshooting
 
@@ -153,6 +154,9 @@ Fourteen tests run against a fake client and a fixture catalog. None of them cal
   the run before the first call, and the line names it. Fix the name or set the three price variables,
   which then apply to every listed model.
 - Usage is missing when you stream in your own code: pass `stream_options={"include_usage": True}`.
+
+- A warm-up that hits: the prefix was still cached from an earlier run, and a longer document
+  still shares the first 400 paragraphs. Set `CACHE_SALT` to a new value to start cold.
 
 ## Clean up
 

@@ -226,3 +226,13 @@ def test_main_rejects_unpriced_model_in_list_before_any_call(capsys):
     assert code == 2
     assert "error: no catalog price for missing/model" in capsys.readouterr().out
     assert client.requests == []
+
+
+def test_cache_salt_changes_the_start_of_the_prefix(capsys):
+    assert measure.system_prompt("DOC") == "You answer briefly from the document.\n\nDOCUMENT:\nDOC"
+    assert measure.system_prompt("DOC", "run2") == "Run: run2\nYou answer briefly from the document.\n\nDOCUMENT:\nDOC"
+    client = FakeClient([_response(1000, 0), _response(1000, 900), _response(1000, 900), _response(1000, 0)])
+    env = {"NEBIUS_MODEL": "test/model", "CACHE_QUESTIONS": "2", "CACHE_PARAGRAPHS": "3", "CACHE_SALT": "run2"}
+    assert measure.main(client=client, catalog=measure.parse_catalog(CATALOG_DATA), now="2026-01-01 00:00:00", env=env) == 0
+    assert client.requests[0]["messages"][0]["content"].startswith("Run: run2\nYou answer briefly")
+    assert client.requests[3]["messages"][0]["content"].startswith("Current time: 2026-01-01 00:00:00\nRun: run2\n")
