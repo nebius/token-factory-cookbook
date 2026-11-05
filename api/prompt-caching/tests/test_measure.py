@@ -96,7 +96,10 @@ class FakeClient:
 
     def _create(self, **kwargs):
         self.requests.append({**kwargs, "messages": list(kwargs["messages"])})
-        return self.responses.pop(0)
+        response = self.responses.pop(0)
+        if isinstance(response, Exception):
+            raise response
+        return response
 
 
 def test_main_prints_summary_and_anti_pattern(capsys):
@@ -111,6 +114,9 @@ def test_main_prints_summary_and_anti_pattern(capsys):
     assert client.requests[0]["model"] == "test/model"
     assert client.requests[0]["messages"][0]["content"].startswith("You answer briefly")
     assert client.requests[1]["messages"][1]["content"] == client.requests[0]["messages"][1]["content"]
+    for index in (1, 2):
+        assert client.requests[index]["messages"][0]["content"] == client.requests[0]["messages"][0]["content"]
+    assert client.requests[3]["messages"][1]["content"] == client.requests[0]["messages"][1]["content"]
     assert client.requests[3]["messages"][0]["content"].startswith("Current time: 2026-01-01 00:00:00\n")
     assert "model: test/model  prices: in=$1 cached=$0.1 out=$2 per 1M (catalog, 2026-01-01)" in out
     assert "call 0  prompt=1000   cached=0      miss" in out
@@ -119,7 +125,7 @@ def test_main_prints_summary_and_anti_pattern(capsys):
     assert "summary: 3 calls, 2 hits, 1800 cached tokens, $0.0014 total vs $0.0031 uncached, 53% saved" in out
     assert "anti-pattern: timestamp in system prompt -> prompt=1000 cached=0 miss" in out
     assert "catalog: cached input discounts (USD per 1M, read live)" in out
-    assert "test/model" in out and "90%" in out
+    assert any("  test/model" in line and " 90%" in line for line in out.splitlines())
 
 
 def test_main_exits_2_without_prices(capsys):
@@ -127,4 +133,58 @@ def test_main_exits_2_without_prices(capsys):
     code = measure.main(client=client, catalog=[], now="2026-01-01 00:00:00", env={"NEBIUS_MODEL": "x/y"})
     assert code == 2
     assert "NEBIUS_INPUT_PRICE" in capsys.readouterr().out
+    assert client.requests == []
+
+
+def test_main_reports_api_error_and_exits_1(capsys):
+    client = FakeClient([_response(1000, 0), RuntimeError("boom")])
+    env = {"NEBIUS_MODEL": "test/model", "CACHE_QUESTIONS": "2", "CACHE_PARAGRAPHS": "3"}
+
+    code = measure.main(client=client, catalog=measure.parse_catalog(CATALOG_DATA), now="2026-01-01 00:00:00", env=env)
+
+    out = capsys.readouterr().out
+    assert code == 1
+    assert "error: RuntimeError: boom" in out
+    assert any(line.startswith("call 0 ") for line in out.splitlines())
+
+
+def test_main_requires_api_key_before_any_request(capsys):
+    code = measure.main(catalog=measure.parse_catalog(CATALOG_DATA), now="2026-01-01 00:00:00",
+                        env={"NEBIUS_MODEL": "test/model"})
+    assert code == 2
+    assert "error: NEBIUS_API_KEY is not set" in capsys.readouterr().out
+
+
+def test_main_env_prices_still_print_catalog_table(capsys):
+    client = FakeClient([_response(1000, 0), _response(1000, 900), _response(1000, 900), _response(1000, 0)])
+    env = {"NEBIUS_MODEL": "test/model", "CACHE_QUESTIONS": "2", "CACHE_PARAGRAPHS": "3",
+           "NEBIUS_INPUT_PRICE": "1", "NEBIUS_CACHED_PRICE": "0.1", "NEBIUS_OUTPUT_PRICE": "2"}
+
+    code = measure.main(client=client, catalog=measure.parse_catalog(CATALOG_DATA),
+                        now="2026-01-01 00:00:00", env=env)
+
+    lines = capsys.readouterr().out.splitlines()
+    assert code == 0
+    assert any(line.startswith("model: test/model") and line.endswith("(env)") for line in lines)
+    assert "catalog: cached input discounts (USD per 1M, read live)" in lines
+    assert any(line.startswith("  test/model") for line in lines)
+
+
+def test_main_rejects_zero_questions(capsys):
+    client = FakeClient([])
+    env = {"NEBIUS_MODEL": "test/model", "CACHE_QUESTIONS": "0"}
+    code = measure.main(client=client, catalog=measure.parse_catalog(CATALOG_DATA),
+                        now="2026-01-01 00:00:00", env=env)
+    assert code == 2
+    assert "error: CACHE_QUESTIONS must be at least 1" in capsys.readouterr().out
+    assert client.requests == []
+
+
+def test_main_rejects_non_integer_settings(capsys):
+    client = FakeClient([])
+    env = {"NEBIUS_MODEL": "test/model", "CACHE_PARAGRAPHS": "many"}
+    code = measure.main(client=client, catalog=measure.parse_catalog(CATALOG_DATA),
+                        now="2026-01-01 00:00:00", env=env)
+    assert code == 2
+    assert "error: CACHE_PARAGRAPHS and CACHE_QUESTIONS must be integers" in capsys.readouterr().out
     assert client.requests == []

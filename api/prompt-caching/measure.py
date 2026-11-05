@@ -183,18 +183,26 @@ def main(argv=None, client=None, catalog=None, now=None, env=None) -> int:
     env = os.environ if env is None else env
     now = now or time.strftime("%Y-%m-%d %H:%M:%S")
     model = env.get("NEBIUS_MODEL", DEFAULT_MODEL)
-    paragraphs = int(env.get("CACHE_PARAGRAPHS", "400"))
-    count = int(env.get("CACHE_QUESTIONS", "6"))
+    try:
+        paragraphs = int(env.get("CACHE_PARAGRAPHS", "400"))
+        count = int(env.get("CACHE_QUESTIONS", "6"))
+    except ValueError:
+        print("error: CACHE_PARAGRAPHS and CACHE_QUESTIONS must be integers")
+        return 2
+    if count < 1:
+        print("error: CACHE_QUESTIONS must be at least 1")
+        return 2
+
+    if catalog is None:
+        try:
+            catalog = fetch_catalog(env.get("CATALOG_URL", DEFAULT_CATALOG_URL))
+        except CatalogError as exc:
+            print(f"warning: {exc}")
+            catalog = []
 
     prices = prices_from_env(env)
     source = "env"
     if prices is None:
-        if catalog is None:
-            try:
-                catalog = fetch_catalog(env.get("CATALOG_URL", DEFAULT_CATALOG_URL))
-            except CatalogError as exc:
-                print(f"warning: {exc}")
-                catalog = []
         try:
             prices = price_of(catalog, model)
             source = f"catalog, {now[:10]}"
@@ -206,6 +214,9 @@ def main(argv=None, client=None, catalog=None, now=None, env=None) -> int:
             return 2
 
     if client is None:
+        if "NEBIUS_API_KEY" not in env:
+            print("error: NEBIUS_API_KEY is not set")
+            return 2
         from openai import OpenAI
 
         client = OpenAI(api_key=env["NEBIUS_API_KEY"], base_url=env.get("NEBIUS_BASE_URL", DEFAULT_BASE_URL))
@@ -216,7 +227,11 @@ def main(argv=None, client=None, catalog=None, now=None, env=None) -> int:
     asks = questions(count, paragraphs)
     results = []
     for index, question in enumerate([asks[0], *asks]):
-        result = ask(client, model, system, question)
+        try:
+            result = ask(client, model, system, question)
+        except Exception as exc:
+            print(f"error: {type(exc).__name__}: {exc}")
+            return 1
         results.append(result)
         print(_call_line(index, result, prices))
 
@@ -227,7 +242,11 @@ def main(argv=None, client=None, catalog=None, now=None, env=None) -> int:
         f"${summary.cost_usd:.4f} total vs ${summary.uncached_cost_usd:.4f} uncached, {saved}% saved"
     )
 
-    broken = ask(client, model, break_the_cache(system, now), asks[0])
+    try:
+        broken = ask(client, model, break_the_cache(system, now), asks[0])
+    except Exception as exc:
+        print(f"error: {type(exc).__name__}: {exc}")
+        return 1
     verdict = "hit" if broken.hit else "miss"
     print(
         f"anti-pattern: timestamp in system prompt -> prompt={broken.prompt_tokens} "
@@ -241,6 +260,7 @@ def main(argv=None, client=None, catalog=None, now=None, env=None) -> int:
     else:
         print("catalog: skipped (catalog unavailable)")
     return 0
+
 
 
 if __name__ == "__main__":
