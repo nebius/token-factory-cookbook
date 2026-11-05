@@ -144,6 +144,7 @@ def attempt(fn):
 print(attempt(lambda: (home / "napkin_sandbox_probe.txt").write_text("x")),
       attempt(lambda: os.listdir(home)),
       attempt(lambda: socket.create_connection(("1.1.1.1", 443), timeout=3)),
+      attempt(lambda: socket.getaddrinfo("example.com", 443)),  # needs mach IPC to mDNSResponder
       attempt(lambda: subprocess.run(["/bin/echo"], capture_output=True)),
       attempt(lambda: (tmp / "ok.txt").write_text("x")))
 """
@@ -152,7 +153,7 @@ print(attempt(lambda: (home / "napkin_sandbox_probe.txt").write_text("x")),
         with tempfile.TemporaryDirectory(prefix="napkin_test_") as tmp:
             proc = subprocess.run([*os_sandbox(tmp), sys.executable, "-I", "-c", self.PROBE, str(Path.home()), tmp],
                                   capture_output=True, text=True, timeout=60, cwd=tmp)
-        self.assertEqual(proc.stdout.split(), ["denied", "denied", "denied", "denied", "allowed"], proc.stderr)
+        self.assertEqual(proc.stdout.split(), ["denied"] * 5 + ["allowed"], proc.stderr)
         self.assertFalse((Path.home() / "napkin_sandbox_probe.txt").exists())
 
 

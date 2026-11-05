@@ -164,7 +164,8 @@ def _sbpl(path: str | Path) -> str:
 def os_sandbox(tmp: str) -> list[str]:
     """macOS: run the build under sandbox-exec, an OS boundary on top of cad_runner's code guard.
 
-    No network, no new processes, writes only inside this build's temp directory, and no reading
+    Deny by default: no network, no mach or Apple Event IPC, no shared memory, no new processes
+    other than exec'ing this Python, writes only inside this build's temp directory, and no reading
     file contents under the home directory except the Python install and the runner (so model
     code can't read .env or ~/.ssh). Elsewhere it returns [] and the guard is the only layer:
     run the app in a container there. Set NAPKIN_OS_SANDBOX=0 to turn it off.
@@ -172,12 +173,17 @@ def os_sandbox(tmp: str) -> list[str]:
     if sys.platform != "darwin" or not SANDBOX_EXEC.exists() or os.getenv("NAPKIN_OS_SANDBOX") == "0":
         return []
     readable = " ".join(f"(subpath {_sbpl(p)})" for p in {sys.prefix, sys.base_prefix, sys.exec_prefix})
+    # The venv's python is a symlink: allow exec of both the link and its target.
+    pythons = {os.path.abspath(sys.executable), os.path.realpath(sys.executable)}
+    python = " ".join(f"(literal {json.dumps(p, ensure_ascii=False)})" for p in pythons)
     profile = (
-        "(version 1)(allow default)"
-        "(deny network*)(deny process-fork)"
-        f"(deny file-write*)(allow file-write* (subpath {_sbpl(tmp)}) (literal \"/dev/null\"))"
+        "(version 1)(deny default)"
+        f"(allow process-exec {python})"
+        "(allow sysctl-read)"
+        "(allow file-read*)"
         f"(deny file-read-data (subpath {_sbpl(Path.home())}))"
         f"(allow file-read-data {readable} (literal {_sbpl(RUNNER)}) (subpath {_sbpl(tmp)}))"
+        f"(allow file-write* (subpath {_sbpl(tmp)}) (literal \"/dev/null\"))"
     )
     return [str(SANDBOX_EXEC), "-p", profile]
 
