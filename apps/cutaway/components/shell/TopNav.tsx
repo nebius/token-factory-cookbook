@@ -25,7 +25,7 @@ export function TopNav() {
       <div className="tf-builder-credit">
         <span>Original build by <a href="https://github.com/Astrodevil" target="_blank" rel="noreferrer">Amitesh Anand</a> / <a href="https://studio1hq.com" target="_blank" rel="noreferrer">Studio1HQ</a>.</span>
         <a href="https://github.com/Studio1-OSS/Cutaway" target="_blank" rel="noreferrer">Original source</a>
-        <span>·</span><a href="https://github.com/demianarc/token-factory-cutaway" target="_blank" rel="noreferrer">TF edition</a>
+        <span>·</span><a href="https://github.com/nebius/token-factory-cookbook/tree/main/apps/cutaway" target="_blank" rel="noreferrer">TF edition</a>
       </div>
     </header>
   );

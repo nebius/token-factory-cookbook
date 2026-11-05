@@ -83,4 +83,4 @@ Stop the local server with Ctrl+C. Local state is stored in `codetrail.db` and r
 
 Original build: [Studio1HQ](https://studio1hq.com), [Codetrail](https://github.com/Studio1-OSS/Codetrail), revision `6ee13736c7e6636e65d9ef2a4741c0323965af5a`.
 
-[TF edition](https://github.com/demianarc/token-factory-codetrail), revision `b7bcdcb`, adds official branding, self-hosted fonts, visible attribution, a patched Next.js version and the curated sample. The original [MIT license](LICENSE) is retained. The Polka source is pinned to `c36cf8b5d1a57164e64fdd7d4e0d0f80ab262dc0` and retains [Luke Edwards' MIT notice](showcase/POLKA-LICENSE.txt). Nebius brand assets are not covered by a general grant to reuse the brand.
+[TF edition](.), imported adaptation revision `b7bcdcb`, adds official branding, self-hosted fonts, visible attribution, a patched Next.js version and the curated sample. The original [MIT license](LICENSE) is retained. The Polka source is pinned to `c36cf8b5d1a57164e64fdd7d4e0d0f80ab262dc0` and retains [Luke Edwards' MIT notice](showcase/POLKA-LICENSE.txt). Nebius brand assets are not covered by a general grant to reuse the brand.
