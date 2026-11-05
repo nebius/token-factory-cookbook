@@ -3,18 +3,22 @@ name: Recipe checks
 on:
   pull_request:
     paths:
+      - 'apps/codetrail/**'
       - 'agents/kubetrace-ai/**'
       - 'agents/mastra/opencrewbot/**'
       - 'agents/mastra/openduet/**'
       - 'apps/splitter-lite/**'
+      - 'apps/cutaway/**'
       - '.github/workflows/recipe-checks.yml'
   push:
     branches: [main]
     paths:
+      - 'apps/codetrail/**'
       - 'agents/kubetrace-ai/**'
       - 'agents/mastra/opencrewbot/**'
       - 'agents/mastra/openduet/**'
       - 'apps/splitter-lite/**'
+      - 'apps/cutaway/**'
       - '.github/workflows/recipe-checks.yml'
 
 permissions:
@@ -71,6 +75,26 @@ jobs:
       - run: npm test && npm run typecheck && npm run build
       - run: npm audit --omit=dev --audit-level=high
 
+  cutaway:
+    name: Cutaway tests and build
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: apps/cutaway
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11.25.0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: pnpm
+          cache-dependency-path: apps/cutaway/pnpm-lock.yaml
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm test && pnpm typecheck && pnpm build
+      - run: pnpm audit --prod --audit-level=high
+
   opencrewbot:
     name: OpenCrewBot tests and build
     runs-on: ubuntu-latest
@@ -109,4 +133,24 @@ jobs:
           cache-dependency-path: agents/mastra/openduet/pnpm-lock.yaml
       - run: pnpm install --frozen-lockfile
       - run: pnpm test && pnpm typecheck && pnpm lint && pnpm build
+      - run: pnpm audit --prod --audit-level=high
+
+  codetrail:
+    name: Codetrail tests and build
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: apps/codetrail
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11.25.0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: pnpm
+          cache-dependency-path: apps/codetrail/pnpm-lock.yaml
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm test && pnpm typecheck && pnpm build
       - run: pnpm audit --prod --audit-level=high

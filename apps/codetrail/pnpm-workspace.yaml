@@ -1,0 +1,10 @@
+# pnpm 11+ asks about each install script. None is needed: esbuild ships prebuilt binaries,
+# sharp is unused, and @openuidev/lang-core's postinstall only sends telemetry.
+allowBuilds:
+  '@openuidev/lang-core': false
+  esbuild: false
+  sharp: false
+# Patched versions of Next.js's own dependencies (pnpm audit).
+overrides:
+  postcss: 8.5.31
+  sharp: 0.35.5

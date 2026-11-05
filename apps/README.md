@@ -7,9 +7,11 @@ Explore complete applications built with Nebius Token Factory. Follow the linked
 | Application | Workflow | Source |
 | --- | --- | --- |
 | [Splitter Lite](splitter-lite/) | Read receipts and split bills with vision and calculator tools | Included in this repository |
+| [Cutaway](cutaway/) | Explore any machine as a 3D teardown with diagrams, steps and a quiz | Included in this repository |
 | [WhatLLM](https://www.whatllm.org/) | Compare model responses | Hosted application |
 | [Allycat](https://github.com/The-AI-Alliance/allycat) | Search and chat over website content | External repository |
 | [Customer Support AI](https://github.com/amrrs/customer-support-ai) | Answer support questions with domain-restricted web retrieval | External repository |
+| [Codetrail](codetrail/) | Architecture maps, code tours and checked answers for any GitHub repo | Included in this repository |
 
 For agent applications, see [OpenCrewBot](../agents/mastra/opencrewbot/) and [KubeTrace AI](../agents/kubetrace-ai/). For environment help, see [setup](../start-here/setup.md).
 
@@ -65,6 +67,21 @@ Built by [Amrrs](https://github.com/amrrs).
 
 ---
 
+## Codetrail
+
+[Codetrail](codetrail/) is a Next.js app for reading code. Paste a GitHub link,
+and Moonshot AI's Kimi K3.1 Pro on Nebius Token Factory reads the whole repo in
+one prompt with its 1M-token context window. It returns an architecture map,
+code tours and answers, and the app checks every quoted line against the code.
+Follow-up calls reuse the same repo prefix, so it can be billed as cached input.
+
+| <img src="codetrail/docs/screenshots/tour-light.png" width="400">
+|-
+
+Built by [Amitesh Anand](https://github.com/Astrodevil).
+
+---
+
 ## Splitter Lite
 
 [Splitter Lite](splitter-lite/) is a Next.js bill-splitting app. Upload one
@@ -74,6 +91,21 @@ out each share by calling calculator tools. The app re-checks the model's
 shares and flags any split that doesn't add up.
 
 | <img src="splitter-lite/screenshots/4-split.png" width="400">
+|-
+
+Built by [Amitesh Anand](https://github.com/Astrodevil).
+
+---
+
+## Cutaway
+
+[Cutaway](cutaway/) is a Next.js app for seeing inside machines. Show it a
+photo or type a name, and Moonshot AI's Kimi K3.1 Pro on Nebius Token Factory
+designs every part inside as three.js code, with flows, SVG diagrams, a guided
+teardown and a quiz. The app builds each part in a sandbox and lets Kimi review
+renders of its own model.
+
+| <img src="cutaway/docs/explore.png" width="400">
 |-
 
 Built by [Amitesh Anand](https://github.com/Astrodevil).

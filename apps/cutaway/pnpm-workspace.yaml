@@ -1,0 +1,9 @@
+# better-sqlite3 compiles its native binding and esbuild bundles the server sandbox (pnpm 11+).
+allowBuilds:
+  better-sqlite3: true
+  esbuild: true
+  sharp: false
+# Patched versions of Next.js's own dependencies (pnpm audit).
+overrides:
+  postcss: 8.5.31
+  sharp: 0.35.5

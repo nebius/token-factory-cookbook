@@ -63,8 +63,10 @@ Prefer a notebook? Open the [native API example](api/api_native.ipynb). For mode
 | --- | --- | --- |
 | [OpenCrewBot](agents/mastra/opencrewbot/) | A chat app with model-specific bots, tools, memory, and shared rooms | Mastra · Next.js |
 | [Splitter Lite](apps/splitter-lite/) | A receipt reader that splits bills with vision and calculator tools | Nemotron 3.5 Super VL · Next.js |
+| [Cutaway](apps/cutaway/) | A 3D teardown of any machine, with diagrams, steps and a quiz | Kimi K3.1 Pro · Next.js · three.js |
 | [KubeTrace AI](agents/kubetrace-ai/) | A Kubernetes incident investigation and repair workflow with review controls | Beam · Python · React |
 | [Deep research agent](agents/langchain/deep-agent-example-1/) | A research workflow with planning and web search | LangChain · Tavily |
+| [Codetrail](apps/codetrail/) | Architecture maps, code tours and line-checked answers for any GitHub repo, read in one prompt | Kimi K3.1 Pro · Next.js |
 | [Internal support agent](rag/support-agent-weaviate/) | A support workflow with retrieval and external tools | LangGraph · Weaviate |
 | [Typed decision model](agents/jev-style-decision-model-glm/) | Structured routing decisions with confidence-based escalation | GLM · OpenAI SDK |
 

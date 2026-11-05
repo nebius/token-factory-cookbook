@@ -1,0 +1,559 @@
+@import "tailwindcss";
+
+/* Codetrail, design C: a night hike with a headlamp. A near-black ground (or a paper map by day), hairlines,
+   Martian Mono for anything that reads like a trail sign, and one amber that only ever means "here, now". */
+@theme {
+  --font-sans: var(--font-geist), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-martian), var(--font-geist-mono), ui-monospace, monospace;
+  --font-mono: var(--font-geist-mono), ui-monospace, "SF Mono", Menlo, monospace;
+
+  --color-ink: #08090b;
+  --color-night: #0c0d10;
+  --color-panel: #111317;
+  --color-raised: #171a1f;
+  --color-raised-2: #20242b;
+  --color-code: #0d0f12;
+  --color-outline: #2c3038;
+  --color-line: #1d2026;
+  --color-fg: #eeece6;
+  --color-fg-2: #a9abb2;
+  --color-fg-3: #868993;
+  --color-trail: #ffb020;
+  /* Amber as text (links, labels) and the focus ring: the same amber in the dark, a deeper one on paper. */
+  --color-trail-text: #ffb020;
+  --color-focus: #ffb020;
+  --color-trail-strong: #ffc451;
+  --color-trail-soft: rgb(255 176 32 / 0.12);
+  --color-trail-ink: #2e2004;
+  --color-paper: #fbf7ee;
+  --color-paper-ink: #24211b;
+  --color-contour: rgb(255 176 32 / 0.18);
+  --color-verified: #3987e5;
+  --color-ok: #4ccf8f;
+  --color-warn: #f0b429;
+  --color-danger: #ff6b6b;
+
+  --radius-card: 14px;
+}
+
+/* Light mode: the same trail map on paper. Tailwind's colour utilities read these variables, so redefining
+   them here re-themes the whole app. The code panel stays dark in both modes. */
+/* Day mode: the same trail map on paper. Tailwind's colour utilities read these variables, so redefining them
+   re-themes the whole app. The code panel stays dark in both modes. */
+:root[data-theme="light"] {
+  color-scheme: light;
+  --color-ink: #f4f0e6;
+  --color-night: #ede7d8;
+  --color-panel: #fbf8f1;
+  --color-raised: #ece5d4;
+  --color-raised-2: #e2d9c4;
+  --color-outline: #cfc7b4;
+  --color-line: #e2dccd;
+  --color-fg: #17181b;
+  --color-fg-2: #4a4d55;
+  --color-fg-3: #5f626a;
+  --color-trail: #e39400;
+  --color-trail-strong: #f2a20c;
+  --color-trail-soft: rgb(227 148 0 / 0.16);
+  --color-trail-text: #935000;
+  --color-focus: #935000;
+  --color-contour: rgb(160 110 20 / 0.28);
+  --color-verified: #1f62b5;
+  /* Status colours deep enough to read on paper (4.5:1 or more on every surface). */
+  --color-ok: #17703f;
+  --color-warn: #8a5a00;
+  --color-danger: #b42318;
+}
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    color-scheme: light;
+    --color-ink: #f4f0e6;
+    --color-night: #ede7d8;
+    --color-panel: #fbf8f1;
+    --color-raised: #ece5d4;
+    --color-raised-2: #e2d9c4;
+    --color-outline: #cfc7b4;
+    --color-line: #e2dccd;
+    --color-fg: #17181b;
+    --color-fg-2: #4a4d55;
+    --color-fg-3: #5f626a;
+    --color-trail: #e39400;
+    --color-trail-strong: #f2a20c;
+    --color-trail-soft: rgb(227 148 0 / 0.16);
+    --color-trail-text: #935000;
+    --color-focus: #935000;
+    --color-contour: rgb(160 110 20 / 0.28);
+    --color-verified: #1f62b5;
+    /* Status colours deep enough to read on paper (4.5:1 or more on every surface). */
+    --color-ok: #17703f;
+    --color-warn: #8a5a00;
+    --color-danger: #b42318;
+  }
+}
+:root {
+  color-scheme: dark;
+}
+
+html,
+body {
+  background: var(--color-ink);
+  color: var(--color-fg);
+}
+
+/* The code panel keeps its own dark palette in both themes. */
+.code-surface {
+  --color-fg: #f4f1e8;
+  --color-fg-2: #b9b6c8;
+  --color-fg-3: #8a88a0;
+  color: #f4f1e8;
+}
+
+body {
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Keyboard focus is always visible: an amber ring that clears the element (3:1 or more on both themes). */
+:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+svg :focus-visible,
+[role="dialog"]:focus-visible {
+  outline: none;
+}
+/* Diagram boxes and graph nodes: a thick ring on the shape itself. */
+svg g[role="button"]:focus-visible > circle:nth-of-type(1),
+svg g[role="button"]:focus-visible > rect:first-of-type {
+  stroke: var(--color-focus);
+  stroke-width: 4px;
+}
+
+/* Amber text reads in the deeper amber on paper; amber fills stay bright. The code panel stays dark, so its amber
+   stays bright too (the :not() below). */
+:root[data-theme="light"] .text-trail:not(.code-surface *),
+:root[data-theme="light"] .hover\:text-trail:hover,
+:root[data-theme="light"] .group:hover .group-hover\:text-trail {
+  color: var(--color-trail-text);
+}
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) .text-trail:not(.code-surface *),
+  :root:not([data-theme="dark"]) .hover\:text-trail:hover,
+  :root:not([data-theme="dark"]) .group:hover .group-hover\:text-trail {
+    color: var(--color-trail-text);
+  }
+}
+
+/* Windows high contrast and other forced colours: keep focus, selection and the diagram legible. */
+@media (forced-colors: active) {
+  :focus-visible {
+    outline-color: Highlight;
+  }
+  svg g[role="button"] rect,
+  svg g[role="button"] circle {
+    stroke: CanvasText;
+    forced-color-adjust: none;
+  }
+  svg g[role="button"]:focus-visible > rect:first-of-type,
+  svg g[role="button"]:focus-visible > circle:nth-of-type(1) {
+    stroke: Highlight;
+  }
+  [aria-selected="true"],
+  [aria-checked="true"],
+  [aria-current="step"],
+  [aria-current="page"] {
+    outline: 2px solid Highlight;
+  }
+}
+
+::selection {
+  background: rgb(255 176 32 / 0.35);
+}
+
+/* Card and control surfaces: a hairline and a soft shadow. */
+@utility toon {
+  border: 1px solid var(--color-line);
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.12);
+}
+@utility toon-sm {
+  border: 1px solid var(--color-line);
+}
+@utility toon-lg {
+  border: 1px solid var(--color-line);
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.1), 0 24px 48px -24px rgb(0 0 0 / 0.35);
+}
+/* A small lift on hover and a press on click. */
+@utility toon-press {
+  transition: transform 0.18s cubic-bezier(0.2, 0.8, 0.2, 1), border-color 0.18s, background-color 0.18s;
+  &:hover:not(:disabled) {
+    transform: translateY(-1px);
+  }
+  &:active:not(:disabled) {
+    transform: translateY(0) scale(0.98);
+  }
+}
+
+.dot-grid {
+  background-image: radial-gradient(color-mix(in srgb, var(--color-fg) 9%, transparent) 1.5px, transparent 1.5px);
+  background-size: 24px 24px;
+}
+
+/* Shiki output inside the code panel. */
+.code-view pre {
+  background: transparent !important;
+  margin: 0;
+  padding: 10px 0;
+  font-size: 12.5px;
+  line-height: 20px;
+  counter-reset: line;
+}
+.code-view code {
+  display: block;
+  min-width: max-content;
+}
+.code-view .line {
+  display: inline-block;
+  width: 100%;
+  padding-right: 24px;
+}
+.code-view .line::before {
+  counter-increment: line;
+  content: counter(line);
+  display: inline-block;
+  width: 3.2em;
+  margin-right: 1.2em;
+  text-align: right;
+  color: #7d7c94;
+}
+.code-view .line.hl {
+  background: var(--color-trail-soft);
+  box-shadow: inset 3px 0 0 var(--color-trail);
+}
+.code-view .line.hl::before {
+  color: var(--color-trail);
+}
+/* Lines outside the step recede but stay readable (4.5:1 or more for every token colour). */
+.code-view .line.dim {
+  opacity: 0.86;
+}
+/* Pull requests: added lines get a green bar and a "+" next to the line number; removed lines a red rule. */
+.code-view .line.add {
+  background: rgba(46, 160, 67, 0.12);
+  box-shadow: inset 3px 0 0 #2ea043;
+}
+.code-view .line.add.hl {
+  box-shadow: inset 3px 0 0 var(--color-trail);
+}
+.code-view .line.add::before {
+  content: "+" counter(line);
+  color: #3fb950;
+}
+.code-view .line.del-above {
+  border-top: 2px solid #f85149;
+}
+.code-view .line.del {
+  background: rgba(248, 81, 73, 0.12);
+}
+/* The patch itself has no file line numbers of its own. */
+.code-view.diff .line::before {
+  content: "";
+  width: 1em;
+}
+.code-view .line.hunk {
+  color: #7a7d86;
+}
+
+@keyframes draw {
+  from {
+    stroke-dashoffset: var(--len, 1200);
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+.draw {
+  stroke-dasharray: var(--len, 1200);
+  animation: draw 2.4s cubic-bezier(0.6, 0, 0.2, 1) both;
+}
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.rise {
+  animation: rise 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+.marquee {
+  animation: marquee 40s linear infinite;
+}
+
+@keyframes route-draw {
+  from {
+    stroke-dashoffset: 2400;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+/* The dotted route draws itself: a long dash reveals the dotted pattern underneath via a mask-like offset. */
+.route-draw {
+  stroke-dasharray: 1 12;
+  animation: route-fade 3.2s cubic-bezier(0.6, 0, 0.2, 1) 0.4s both;
+}
+@keyframes route-fade {
+  from {
+    clip-path: inset(0 100% 0 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+@keyframes waypoint-pop {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  70% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+.waypoint {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: waypoint-pop 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+@keyframes step-fill {
+  from {
+    width: 0%;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+@keyframes caret {
+  50% {
+    opacity: 0;
+  }
+}
+/* Blinks a few times, then holds still (WCAG 2.2.2). */
+.caret {
+  animation: caret 1s steps(1) 4;
+}
+
+@keyframes trail-dash {
+  to {
+    stroke-dashoffset: -24;
+  }
+}
+.trail-dash {
+  animation: trail-dash 0.9s linear infinite;
+}
+
+@keyframes pulse-ring {
+  0% {
+    r: var(--r0);
+    opacity: 0.7;
+  }
+  100% {
+    r: var(--r1);
+    opacity: 0;
+  }
+}
+.pulse-ring {
+  animation: pulse-ring 1.8s ease-out infinite;
+}
+
+@keyframes bob {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+.bob {
+  animation: bob 1.6s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .trail-dash,
+  .pulse-ring,
+  .bob,
+  .draw,
+  .rise,
+  .marquee,
+  .route-draw,
+  .waypoint,
+  .caret {
+    animation: none;
+  }
+  /* Inline animations (the step countdown fill, dots popping in, the indeterminate bar) stop too. */
+  [style*="animation"],
+  .indeterminate {
+    animation: none !important;
+  }
+}
+
+@keyframes indeterminate {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(300%);
+  }
+}
+.indeterminate {
+  animation: indeterminate 1.6s ease-in-out infinite;
+}
+
+/* The user guide (/guide): Markdown rendered as a readable page. */
+.guide {
+  max-width: 78ch;
+  font-size: 15.5px;
+  line-height: 1.7;
+  color: var(--color-fg-2);
+}
+.guide > * + * {
+  margin-top: 0.9em;
+}
+.guide h2 {
+  margin-top: 2.6em;
+  padding-top: 0.6em;
+  border-top: 1px solid var(--color-line);
+  font-family: var(--font-display);
+  font-size: 26px;
+  font-weight: 500;
+  letter-spacing: -0.03em;
+  font-stretch: 85%;
+  color: var(--color-fg);
+  scroll-margin-top: 16px;
+}
+.guide h3 {
+  margin-top: 1.8em;
+  font-weight: 600;
+  color: var(--color-fg);
+  scroll-margin-top: 16px;
+}
+.guide h2 a,
+.guide h3 a {
+  color: inherit;
+  text-decoration: none;
+}
+.guide a {
+  color: var(--color-trail-text);
+  text-decoration: underline;
+  text-decoration-color: rgb(255 176 32 / 0.4);
+  text-underline-offset: 3px;
+}
+.guide strong {
+  color: var(--color-fg);
+  font-weight: 600;
+}
+.guide ul,
+.guide ol {
+  padding-left: 1.3em;
+}
+.guide ul {
+  list-style: disc;
+}
+.guide ol {
+  list-style: decimal;
+}
+.guide li + li {
+  margin-top: 0.3em;
+}
+.guide li > ul {
+  margin-top: 0.3em;
+}
+.guide code {
+  font-family: var(--font-mono);
+  font-size: 0.86em;
+  padding: 0.12em 0.38em;
+  border-radius: 5px;
+  background: var(--color-raised);
+  color: var(--color-fg);
+}
+.guide pre {
+  overflow-x: auto;
+  padding: 14px 16px;
+  border-radius: 12px;
+  background: var(--color-code);
+  border: 1px solid var(--color-line);
+  font-size: 13px;
+  line-height: 1.6;
+}
+.guide pre code {
+  padding: 0;
+  background: none;
+  color: #cfd0d6;
+}
+.guide-scroll {
+  overflow-x: auto;
+}
+.guide table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+.guide th,
+.guide td {
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--color-line);
+  text-align: left;
+  vertical-align: top;
+}
+.guide th {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-fg-3);
+}
+
+/* The current step's bar fills while autoplay waits; with reduced motion it simply shows full. */
+.step-fill-bar {
+  animation-name: step-fill;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
+}
+@media (prefers-reduced-motion: reduce) {
+  .step-fill-bar {
+    width: 100%;
+  }
+}
+
+/* An image drawn once per theme (the slides' diagrams): show the one matching the page. */
+.theme-light-img {
+  display: none;
+}
+:root[data-theme="light"] .theme-light-img {
+  display: block;
+}
+:root[data-theme="light"] .theme-dark-img {
+  display: none;
+}
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) .theme-light-img {
+    display: block;
+  }
+  :root:not([data-theme="dark"]) .theme-dark-img {
+    display: none;
+  }
+}

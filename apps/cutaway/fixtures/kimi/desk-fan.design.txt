@@ -1,0 +1,581 @@
+<meta>
+{
+  "device": {
+    "name": "Oscillating desk fan",
+    "category": "home-appliances",
+    "summary": "A 300 mm three-blade desk fan with a PSC induction motor, worm-gear oscillation and a weighted base.",
+    "sizeMm": [340, 480, 300],
+    "disclaimer": "Hand-made development fixture showing representative internals of a typical desk fan."
+  },
+  "parts": [
+    {
+      "id": "guard-rim-clip", "name": "Guard rim clip", "parentId": null,
+      "function": "Clamps the front and rear wire guards together around their rims.",
+      "howItWorks": "A plastic ring with a hinged clasp wraps the two guard rims. Closing the clasp pulls the ring tight so the guards cannot separate while the blade spins.",
+      "engineering": "Snap-fit ring in ABS or PP; clamping force must survive the vibration of an imbalanced blade (typ. 0.1-0.3 g·m residual imbalance).",
+      "material": "ABS plastic", "shell": true,
+      "explode": { "direction": [0, 0, 1], "distance": 150, "order": 0 },
+      "specs": [{ "label": "Inner diameter", "value": "≈332 mm" }],
+      "failureModes": ["Clasp tab snaps, letting the front guard fall off"],
+      "confidence": "high"
+    },
+    {
+      "id": "front-guard", "name": "Front wire guard", "parentId": null,
+      "function": "Keeps fingers out of the blade while letting air through.",
+      "howItWorks": "Thin steel wires form a domed grille. The gaps are small enough that a finger can't reach the blade, but the wires are thin so they block little of the airflow.",
+      "engineering": "Open area ratio ≈85-90%. Spoke spacing at the rim is set by finger-probe safety standards (e.g. IEC 60335 test finger, Ø12 mm).",
+      "material": "Chrome-plated steel wire", "shell": true,
+      "explode": { "direction": [0, 0, 1], "distance": 230, "order": 1 },
+      "specs": [{ "label": "Wire diameter", "value": "≈2.2 mm" }, { "label": "Spokes", "value": "40" }],
+      "failureModes": ["Bent wires touch the blade and rattle"],
+      "confidence": "high"
+    },
+    {
+      "id": "spinner", "name": "Spinner cap", "parentId": null,
+      "function": "Locks the blade onto the motor shaft.",
+      "howItWorks": "The cap screws onto the threaded front of the shaft and presses the blade hub against a flat on the shaft. It is threaded against the direction of rotation so spinning tightens it.",
+      "engineering": "Left-hand thread on a counter-clockwise (viewed from front) blade so inertial torque at start-up tightens the cap.",
+      "material": "ABS plastic", "shell": false,
+      "explode": { "direction": [0, 0, 1], "distance": 175, "order": 2 },
+      "specs": [{ "label": "Thread", "value": "reverse (left-hand)" }],
+      "failureModes": ["Stripped thread lets the blade slip on the shaft"],
+      "confidence": "high"
+    },
+    {
+      "id": "blade-assembly", "name": "Blade assembly", "parentId": null,
+      "function": "Pushes air forward when the motor turns it.",
+      "howItWorks": "Each blade is tilted and slightly curved, like a small wing. As it turns it pushes air backwards-to-forwards, which creates the breeze. Wider tips move more air because they travel fastest.",
+      "engineering": "Blade pitch ≈28° at root twisting to ≈16° at tip keeps the angle of attack roughly constant along the span. Airflow Q ∝ n·D³ and power P ∝ n³·D⁵ (fan affinity laws).",
+      "material": "Polypropylene / AS plastic", "shell": false,
+      "explode": { "direction": [0, 0, 1], "distance": 120, "order": 3 },
+      "specs": [{ "label": "Diameter", "value": "300 mm" }, { "label": "Blades", "value": "3" }, { "label": "Speed", "value": "900-1,300 rpm" }],
+      "failureModes": ["Cracked blade causes wobble and noise", "Dust build-up adds imbalance"],
+      "confidence": "high"
+    },
+    {
+      "id": "rear-guard", "name": "Rear wire guard", "parentId": null,
+      "function": "Closes the back of the blade cage and mounts it to the motor.",
+      "howItWorks": "A flatter wire grille behind the blade. Its centre plate slides over the motor nose and is held by the guard nut.",
+      "engineering": "Shallow profile keeps ≥10 mm clearance behind the blade at every radius.",
+      "material": "Chrome-plated steel wire", "shell": false,
+      "explode": { "direction": [0, 0, 1], "distance": 75, "order": 4 },
+      "specs": [{ "label": "Wire diameter", "value": "≈2.2 mm" }],
+      "failureModes": ["Loose mounting plate lets the cage sag onto the blade"],
+      "confidence": "high"
+    },
+    {
+      "id": "guard-nut", "name": "Guard mounting nut", "parentId": null,
+      "function": "Holds the rear guard against the front of the motor.",
+      "howItWorks": "A large ribbed plastic nut screws onto a threaded collar on the motor housing, clamping the rear guard's centre plate.",
+      "engineering": "Coarse thread (≈3 mm pitch) for tool-free assembly.",
+      "material": "ABS plastic", "shell": false,
+      "explode": { "direction": [0, 0, 1], "distance": 45, "order": 5 },
+      "specs": [{ "label": "Outer diameter", "value": "84 mm" }],
+      "failureModes": ["Cross-threading"],
+      "confidence": "high"
+    },
+    {
+      "id": "motor-front-housing", "name": "Motor front housing", "parentId": null,
+      "function": "Front half of the motor shell; holds the front bearing.",
+      "howItWorks": "A moulded bell that surrounds the stator. Its nose carries the front bearing so the shaft stays centred.",
+      "engineering": "Bearing seat concentricity to the stator bore ≈0.05 mm keeps the air gap even.",
+      "material": "ABS plastic", "shell": true,
+      "explode": { "direction": [0, 0, 1], "distance": 25, "order": 9 },
+      "specs": [],
+      "failureModes": ["Cracked bearing seat causes shaft wobble"],
+      "confidence": "medium"
+    },
+    {
+      "id": "motor-rear-housing", "name": "Motor rear housing", "parentId": null,
+      "function": "Back half of the motor shell; covers the gearbox and capacitor and lets heat out.",
+      "howItWorks": "The rear cover encloses the oscillation gearbox and run capacitor. Slots in the back let warm air escape from the motor.",
+      "engineering": "Vent area sized so winding temperature stays below Class B (130 °C) limits at locked-oscillation.",
+      "material": "ABS plastic", "shell": true,
+      "explode": { "direction": [0, 0, -1], "distance": 110, "order": 6 },
+      "specs": [],
+      "failureModes": ["Blocked vents raise winding temperature"],
+      "confidence": "medium"
+    },
+    {
+      "id": "front-bearing", "name": "Front sleeve bearing", "parentId": null,
+      "function": "Supports the shaft just behind the blade.",
+      "howItWorks": "A porous bronze sleeve soaked in oil. As the shaft turns, oil seeps out and forms a thin film the shaft rides on.",
+      "engineering": "Sintered bronze, ≈20% porosity, oil-impregnated; running clearance ≈10-20 µm.",
+      "material": "Sintered bronze", "shell": false,
+      "explode": { "direction": [0, 0, 1], "distance": 55, "order": 10 },
+      "specs": [{ "label": "Bore", "value": "8 mm" }],
+      "failureModes": ["Oil dries out: the fan starts slowly, squeaks, then seizes"],
+      "confidence": "high"
+    },
+    {
+      "id": "rear-bearing", "name": "Rear sleeve bearing", "parentId": null,
+      "function": "Supports the rear end of the shaft.",
+      "howItWorks": "Same oil-filled bronze sleeve as the front, so the shaft is held at two points and spins true.",
+      "engineering": "Bearing span ≈86 mm; the two bearings are line-bored for alignment.",
+      "material": "Sintered bronze", "shell": false,
+      "explode": { "direction": [0, 0, -1], "distance": 165, "order": 10 },
+      "specs": [{ "label": "Bore", "value": "8 mm" }],
+      "failureModes": ["Dry bearing: hot motor, slow start"],
+      "confidence": "high"
+    },
+    {
+      "id": "shaft", "name": "Motor shaft", "parentId": null,
+      "function": "Carries the rotor and transmits its torque to the blade and the worm.",
+      "howItWorks": "A ground steel rod running through the rotor. The blade is fixed to its front end and a worm thread is cut into its back end.",
+      "engineering": "Ø8 mm ground steel, h6 tolerance; front flat for the blade hub.",
+      "material": "Ground carbon steel", "shell": false,
+      "explode": { "direction": [0, 0, -1], "distance": 70, "order": 11 },
+      "specs": [{ "label": "Diameter", "value": "8 mm" }, { "label": "Length", "value": "≈198 mm" }],
+      "failureModes": ["Bent shaft from a drop causes wobble"],
+      "confidence": "high"
+    },
+    {
+      "id": "rotor", "name": "Squirrel-cage rotor", "parentId": "shaft",
+      "function": "The spinning part of the motor; turns the shaft.",
+      "howItWorks": "Aluminium bars are cast into a stack of steel sheets and shorted by end rings. The stator's rotating magnetic field induces currents in the bars, and those currents push the rotor round.",
+      "engineering": "Induction: rotor runs at slip s = (ns − n)/ns ≈ 5-10%. Skewed bars reduce cogging and hum.",
+      "material": "Laminated silicon steel + cast aluminium", "shell": false,
+      "explode": { "direction": [0, 0, 1], "distance": 0, "order": 11 },
+      "specs": [{ "label": "Bars", "value": "18 (skewed)" }],
+      "failureModes": ["Broken rotor bar: weak torque, vibration"],
+      "confidence": "high"
+    },
+    {
+      "id": "worm", "name": "Worm", "parentId": "shaft",
+      "function": "Turns the fast shaft rotation into slow oscillation.",
+      "howItWorks": "A screw thread on the back of the shaft meshes with the worm gear. Every shaft turn advances the gear by only one tooth.",
+      "engineering": "Single-start worm with a 30-tooth wheel: 30:1 first-stage reduction.",
+      "material": "Steel", "shell": false,
+      "explode": { "direction": [0, 0, 1], "distance": 0, "order": 11 },
+      "specs": [{ "label": "Starts", "value": "1" }],
+      "failureModes": ["Worn thread slips under load"],
+      "confidence": "medium"
+    },
+    {
+      "id": "stator-core", "name": "Stator core", "parentId": null,
+      "function": "Guides the magnetic field produced by the windings.",
+      "howItWorks": "A stack of thin steel sheets with teeth on the inside. The windings sit between the teeth, and the steel concentrates their magnetic field across the small air gap to the rotor.",
+      "engineering": "Laminations ≈0.5 mm to limit eddy-current loss; 24 slots; air gap ≈0.5-1 mm.",
+      "material": "Laminated silicon steel", "shell": false,
+      "explode": { "direction": [0, 1, 0], "distance": 0, "order": 12 },
+      "specs": [{ "label": "Slots", "value": "24" }, { "label": "Stack length", "value": "34 mm" }],
+      "failureModes": ["Rust on laminations increases noise"],
+      "confidence": "high"
+    },
+    {
+      "id": "stator-windings", "name": "Stator windings", "parentId": "stator-core",
+      "function": "Turn mains current into a rotating magnetic field.",
+      "howItWorks": "Two coil sets (main and auxiliary) wound through the slots. The capacitor makes the auxiliary current lag behind the main one, so the field rotates and drags the rotor round.",
+      "engineering": "PSC motor: main and auxiliary windings 90° apart electrically; speed taps on the main winding give the 3 speeds. Synchronous speed ns = 120·f/p.",
+      "material": "Enamelled copper wire", "shell": false,
+      "explode": { "direction": [0, 1, 0], "distance": 0, "order": 12 },
+      "specs": [{ "label": "Poles", "value": "4 (ns = 1,500 rpm at 50 Hz)" }, { "label": "Input power", "value": "35-45 W" }],
+      "failureModes": ["Overheated enamel shorts turns", "Open winding: motor hums but won't start"],
+      "confidence": "high"
+    },
+    {
+      "id": "thermal-fuse", "name": "Thermal fuse", "parentId": null,
+      "function": "Cuts power if the motor overheats.",
+      "howItWorks": "A one-time fuse tied against the windings. If a jammed blade makes the motor overheat, the fuse melts and opens the circuit before the insulation can burn.",
+      "engineering": "Rated opening temperature ≈115-130 °C; non-resettable.",
+      "material": "Ceramic body, alloy element", "shell": false,
+      "explode": { "direction": [0, 1, 0], "distance": 40, "order": 9 },
+      "specs": [{ "label": "Opens at", "value": "≈120 °C" }],
+      "failureModes": ["Opened fuse: fan completely dead"],
+      "confidence": "medium"
+    },
+    {
+      "id": "run-capacitor", "name": "Run capacitor", "parentId": null,
+      "function": "Creates the phase shift that lets the single-phase motor start and run.",
+      "howItWorks": "Connected in series with the auxiliary winding, it shifts that winding's current in time so the two windings together make a rotating field.",
+      "engineering": "Film capacitor, ≈1-2 µF, 400-450 VAC. Too little capacitance means a weak, slow start.",
+      "material": "Metallised polypropylene film", "shell": false,
+      "explode": { "direction": [-1, 0.4, -0.6], "distance": 95, "order": 7 },
+      "specs": [{ "label": "Capacitance", "value": "1.2 µF" }, { "label": "Rating", "value": "450 VAC" }],
+      "failureModes": ["Aged capacitor: fan needs a push to start or runs slow"],
+      "confidence": "high"
+    },
+    {
+      "id": "gearbox-casing", "name": "Gearbox casing", "parentId": null,
+      "function": "Holds the worm gear in mesh and keeps grease in.",
+      "howItWorks": "A small plastic box behind the motor. It positions the worm gear exactly against the worm and holds grease around the teeth.",
+      "engineering": "Centre distance tolerance ≈±0.1 mm for quiet meshing.",
+      "material": "Glass-filled nylon", "shell": true,
+      "explode": { "direction": [0.6, 0, -0.8], "distance": 120, "order": 7 },
+      "specs": [],
+      "failureModes": ["Dried grease: grinding noise during oscillation"],
+      "confidence": "medium"
+    },
+    {
+      "id": "worm-gear", "name": "Worm gear", "parentId": null,
+      "function": "Slows the motor's rotation down for oscillation.",
+      "howItWorks": "This gear is turned slowly by the worm. A crank pin on its underside moves the link that swings the motor head.",
+      "engineering": "30-tooth wheel; total reduction to the crank ≈200-400:1 gives a 6-10 s oscillation cycle.",
+      "material": "Nylon", "shell": false,
+      "explode": { "direction": [1, 0, -0.3], "distance": 70, "order": 8 },
+      "specs": [{ "label": "Teeth", "value": "30" }],
+      "failureModes": ["Stripped teeth: head stops oscillating"],
+      "confidence": "medium"
+    },
+    {
+      "id": "oscillation-knob", "name": "Oscillation knob", "parentId": null,
+      "function": "Turns oscillation on or off.",
+      "howItWorks": "Pushing the knob down engages a clutch between the worm gear and its output; pulling it up lets the gear spin freely so the head stays still.",
+      "engineering": "Dog clutch on the output spindle.",
+      "material": "ABS plastic", "shell": false,
+      "explode": { "direction": [0, 1, 0], "distance": 70, "order": 6 },
+      "specs": [],
+      "failureModes": ["Worn clutch slips"],
+      "confidence": "medium"
+    },
+    {
+      "id": "crank-link", "name": "Crank and link rod", "parentId": null,
+      "function": "Turns the gear's rotation into a side-to-side swing.",
+      "howItWorks": "A pin off-centre on the gear pushes and pulls a rod fixed to the stand. Because the rod's end can't move, the motor head swings left and right instead.",
+      "engineering": "Four-bar linkage; crank radius and link length set the sweep angle (≈80-90°).",
+      "material": "Steel", "shell": false,
+      "explode": { "direction": [1, -0.3, 0], "distance": 70, "order": 8 },
+      "specs": [{ "label": "Sweep", "value": "≈85°" }],
+      "failureModes": ["Pin pops out of the link"],
+      "confidence": "medium"
+    },
+    {
+      "id": "tilt-joint", "name": "Tilt joint", "parentId": null,
+      "function": "Lets you tilt the head up and down and lets it swivel on the stand.",
+      "howItWorks": "A hinge under the motor gives tilt; the block below it turns on the top of the stand so the head can oscillate.",
+      "engineering": "Friction hinge; swivel bearing is a plastic bushing on the pole.",
+      "material": "ABS plastic", "shell": false,
+      "explode": { "direction": [0, -1, 0], "distance": 40, "order": 12 },
+      "specs": [{ "label": "Tilt range", "value": "≈ −10° to +25°" }],
+      "failureModes": ["Worn friction washer: head droops"],
+      "confidence": "medium"
+    },
+    {
+      "id": "tilt-knob", "name": "Tilt lock knob", "parentId": "tilt-joint",
+      "function": "Tightens the hinge to hold the chosen tilt.",
+      "howItWorks": "Turning the knob squeezes friction washers in the hinge so the head stays at the angle you set.",
+      "engineering": "M6 thread clamping fibre washers.",
+      "material": "Rubber-coated plastic", "shell": false,
+      "explode": { "direction": [1, 0, 0], "distance": 40, "order": 12 },
+      "specs": [],
+      "failureModes": ["Stripped thread"],
+      "confidence": "medium"
+    },
+    {
+      "id": "stand-pole", "name": "Stand pole", "parentId": null,
+      "function": "Holds the head above the base and carries the motor wires.",
+      "howItWorks": "A hollow tube. The power wires run up inside it to the motor.",
+      "engineering": "Ø28 mm steel tube; hollow for the cable run.",
+      "material": "Chrome-plated steel", "shell": false,
+      "explode": { "direction": [0, -1, 0], "distance": 25, "order": 13 },
+      "specs": [{ "label": "Height", "value": "≈200 mm" }],
+      "failureModes": ["Cable chafes at the top of the tube"],
+      "confidence": "high"
+    },
+    {
+      "id": "base-housing", "name": "Base housing", "parentId": null,
+      "function": "Keeps the fan stable and holds the speed switch.",
+      "howItWorks": "A wide shell that houses the switch and a steel weight low down, so the fan doesn't tip as the head swings.",
+      "engineering": "Tip-over check: centre of mass must stay inside the base footprint at full tilt and swing.",
+      "material": "ABS plastic", "shell": true,
+      "explode": { "direction": [0, -1, 0], "distance": 70, "order": 13 },
+      "specs": [{ "label": "Diameter", "value": "≈244 mm" }],
+      "failureModes": ["Cracked base from a drop"],
+      "confidence": "high"
+    },
+    {
+      "id": "base-weight", "name": "Base weight", "parentId": "base-housing",
+      "function": "Lowers the centre of mass so the fan doesn't tip.",
+      "howItWorks": "A heavy steel disc at the very bottom of the base.",
+      "engineering": "≈0.4-0.6 kg steel plate.",
+      "material": "Steel", "shell": false,
+      "explode": { "direction": [0, -1, 0], "distance": 40, "order": 14 },
+      "specs": [{ "label": "Mass", "value": "≈0.5 kg" }],
+      "failureModes": [],
+      "confidence": "medium"
+    },
+    {
+      "id": "switch-block", "name": "Speed switch block", "parentId": "base-housing",
+      "function": "Connects mains power to the chosen speed tap of the motor.",
+      "howItWorks": "Each button closes a different contact. Each contact feeds a different tap on the main winding: fewer turns in circuit gives a stronger field and a higher speed.",
+      "engineering": "Interlocking piano-key switch, 250 VAC / 2 A; OFF releases all keys.",
+      "material": "Phenolic body, brass contacts", "shell": false,
+      "explode": { "direction": [0, 0, 1], "distance": 35, "order": 14 },
+      "specs": [{ "label": "Positions", "value": "OFF, 1, 2, 3" }],
+      "failureModes": ["Burnt contact: one speed stops working"],
+      "confidence": "high"
+    },
+    {
+      "id": "speed-buttons", "name": "Speed buttons", "parentId": "switch-block",
+      "function": "The keys you press to pick the speed.",
+      "howItWorks": "Pressing one key latches it down and releases the others, so only one speed contact is closed at a time.",
+      "engineering": "Mechanical interlock bar.",
+      "material": "ABS plastic", "shell": false,
+      "explode": { "direction": [0, 1, 0], "distance": 30, "order": 14 },
+      "specs": [],
+      "failureModes": ["Interlock spring breaks; keys don't latch"],
+      "confidence": "high"
+    },
+    {
+      "id": "motor-wiring", "name": "Motor wiring", "parentId": null,
+      "function": "Carries power from the switch up the pole to the motor.",
+      "howItWorks": "Insulated wires run from the switch, through the hollow pole and the tilt joint, into the motor housing.",
+      "engineering": "Flexible stranded wire with slack at the swivel so oscillation doesn't fatigue it.",
+      "material": "PVC-insulated copper", "shell": false,
+      "explode": { "direction": [-1, 0, 0], "distance": 45, "order": 12 },
+      "specs": [],
+      "failureModes": ["Fatigue break at the swivel: intermittent power"],
+      "confidence": "medium"
+    },
+    {
+      "id": "power-cord", "name": "Power cord", "parentId": "base-housing",
+      "function": "Brings mains electricity into the fan.",
+      "howItWorks": "A two-core cord with a strain relief where it enters the base so pulling the cord doesn't pull on the connections.",
+      "engineering": "2 × 0.5 mm² double-insulated (Class II) cord.",
+      "material": "PVC-insulated copper", "shell": false,
+      "explode": { "direction": [0, 0, -1], "distance": 40, "order": 14 },
+      "specs": [{ "label": "Rating", "value": "250 VAC" }],
+      "failureModes": ["Damaged insulation near the strain relief"],
+      "confidence": "high"
+    }
+  ],
+  "systems": [
+    { "id": "power-path", "name": "Electrical power path", "kind": "current", "path": ["power-cord", "switch-block", "motor-wiring", "thermal-fuse", "stator-windings", "run-capacitor"], "explanation": "Mains comes in through the cord, the selected key routes it to one speed tap, and it flows through the thermal fuse into the windings. The capacitor feeds the auxiliary winding." },
+    { "id": "torque-path", "name": "Torque path", "kind": "force", "path": ["stator-windings", "rotor", "shaft", "blade-assembly"], "explanation": "The rotating magnetic field drags the rotor round; the shaft carries that torque to the blade." },
+    { "id": "airflow", "name": "Airflow", "kind": "air", "path": ["rear-guard", "blade-assembly", "front-guard"], "explanation": "Air is drawn in through the rear guard, pushed by the tilted blades and thrown forward through the front guard." },
+    { "id": "oscillation", "name": "Oscillation drive", "kind": "force", "path": ["shaft", "worm", "worm-gear", "crank-link", "tilt-joint"], "explanation": "The worm slows the shaft by 30:1, the gear turns the crank, and the fixed link makes the whole head swing on the stand." },
+    { "id": "heat-path", "name": "Heat path", "kind": "heat", "path": ["stator-windings", "stator-core", "motor-rear-housing"], "explanation": "Copper and iron losses heat the windings and core; the heat leaves through the rear vents." }
+  ],
+  "steps": [
+    { "title": "Unclip the guard", "narration": "Open the rim clip and lift off the front guard to reach the blade.", "removePartIds": ["guard-rim-clip", "front-guard"], "focusPartIds": ["spinner", "blade-assembly"], "view": "front" },
+    { "title": "Remove the blade", "narration": "Unscrew the spinner. It has a reverse thread. Then slide the blade off the shaft.", "removePartIds": ["spinner", "blade-assembly"], "focusPartIds": ["rear-guard", "guard-nut"], "view": "iso" },
+    { "title": "Take off the rear guard", "narration": "Undo the guard nut and lift the rear guard away. Now the motor is exposed.", "removePartIds": ["rear-guard", "guard-nut"], "focusPartIds": ["motor-front-housing"], "view": "iso" },
+    { "title": "Open the rear cover", "narration": "Pull the oscillation knob off and remove the rear housing. Behind the motor are the gearbox and the run capacitor.", "removePartIds": ["motor-rear-housing", "oscillation-knob"], "focusPartIds": ["gearbox-casing", "run-capacitor"], "view": "back" },
+    { "title": "Inside the gearbox", "narration": "With the casing off you can see the worm on the shaft driving the worm gear, and the crank that swings the head.", "removePartIds": ["gearbox-casing"], "focusPartIds": ["worm", "worm-gear", "crank-link"], "view": "iso" },
+    { "title": "Pull the rotor", "narration": "Slide the shaft out backwards with the rotor on it. The stator and its copper windings stay in the front housing.", "removePartIds": ["shaft", "rotor", "worm", "rear-bearing", "worm-gear", "crank-link"], "focusPartIds": ["stator-core", "stator-windings", "thermal-fuse"], "view": "iso" },
+    { "title": "Inside the base", "narration": "Below, the base hides the piano-key speed switch and the steel weight that keeps the fan upright.", "removePartIds": ["base-housing"], "focusPartIds": ["switch-block", "speed-buttons", "base-weight"], "view": "iso" }
+  ],
+  "study": {
+    "overview": "A desk fan is an induction motor with a propeller on it. Mains current flows into copper windings in the stator; a capacitor delays the current in one winding so the two windings make a magnetic field that rotates. That field induces currents in the rotor's aluminium bars, and those currents chase the field, turning the shaft at a little under 1,500 rpm. The tilted blades push air forward. Separately, a worm on the back of the shaft drives a slow gear and crank, and because the crank's rod is tied to the stand, the whole head swings side to side. The speed keys pick different taps on the winding, and a thermal fuse cuts power if the motor ever overheats.",
+    "keyConcepts": [
+      { "title": "Rotating magnetic field", "body": "Two windings, fed with currents shifted in time, add up to a field that turns, with no moving contacts needed." },
+      { "title": "Induction and slip", "body": "The rotor only gets current if it turns slower than the field. That small speed difference (slip) is what makes torque." },
+      { "title": "Blade pitch and twist", "body": "Blades are angled to push air; they twist because the tip moves faster than the root." },
+      { "title": "Worm reduction", "body": "A worm gives a big speed reduction in one stage and can't easily be back-driven." },
+      { "title": "Four-bar linkage", "body": "Fixing one end of a crank-driven rod turns rotation into a swing." },
+      { "title": "Speed taps", "body": "Using fewer winding turns strengthens the field and raises speed; it is cheap speed control with no electronics." }
+    ],
+    "principles": [
+      { "title": "Synchronous speed", "body": "ns = 120 · f / p. For 50 Hz and 4 poles, ns = 1,500 rpm; the rotor runs at n = ns · (1 − s), with s ≈ 0.05-0.1." },
+      { "title": "Fan affinity laws", "body": "Q ∝ n, pressure ∝ n², power ∝ n³. Halving speed cuts airflow by half but power to one eighth." },
+      { "title": "Capacitor phase shift", "body": "Xc = 1 / (2πfC). With C ≈ 1.2 µF at 50 Hz, Xc ≈ 2.65 kΩ; it shifts the auxiliary current close to 90° from the main." },
+      { "title": "Worm gear ratio", "body": "Ratio = wheel teeth / worm starts = 30 / 1 = 30:1." }
+    ],
+    "glossary": [
+      { "term": "Stator", "definition": "The stationary part of a motor that carries the windings." },
+      { "term": "Rotor", "definition": "The rotating part of a motor." },
+      { "term": "PSC motor", "definition": "Permanent split capacitor motor: a single-phase induction motor with a capacitor permanently in series with its auxiliary winding." },
+      { "term": "Slip", "definition": "How much slower the rotor turns than the magnetic field, as a fraction." },
+      { "term": "Lamination", "definition": "Thin insulated steel sheets stacked to make a core, used to cut eddy-current losses." },
+      { "term": "Sleeve bearing", "definition": "A plain bearing where the shaft rides on an oil film inside a bushing." },
+      { "term": "Worm", "definition": "A screw-shaped gear that drives a wheel at right angles." },
+      { "term": "Pitch angle", "definition": "The angle between the blade chord and the plane of rotation." },
+      { "term": "Thermal fuse", "definition": "A one-time safety fuse that opens at a set temperature." },
+      { "term": "Speed tap", "definition": "A connection partway along a winding used to select speed." }
+    ],
+    "quiz": [
+      { "question": "Why does the fan need a capacitor?", "options": ["To store energy for when power is lost", "To shift the current in one winding so the field rotates", "To smooth AC into DC", "To reduce noise"], "answer": 1, "explanation": "A single-phase supply alone makes a pulsing field. The capacitor shifts the auxiliary winding's current so the combined field rotates.", "partIds": ["run-capacitor", "stator-windings"] },
+      { "question": "Why can't the rotor ever spin exactly as fast as the magnetic field?", "options": ["Friction in the bearings", "It would induce no current and so make no torque", "The blade is too heavy", "The capacitor limits it"], "answer": 1, "explanation": "Torque comes from currents induced by the field sweeping past the bars. At the same speed nothing sweeps past, so there is no current and no torque.", "partIds": ["rotor"] },
+      { "question": "What makes the head swing side to side?", "options": ["A second small motor", "The airflow pushing on the guard", "A worm gear driving a crank whose link is tied to the stand", "Magnets in the base"], "answer": 2, "explanation": "The worm reduces speed, the crank moves the link, and since the link's far end is fixed to the stand the head swings.", "partIds": ["worm", "worm-gear", "crank-link"] },
+      { "question": "If the fan only starts when you flick the blade, what is the most likely fault?", "options": ["Blown thermal fuse", "Weak run capacitor", "Broken speed key", "Bent guard"], "answer": 1, "explanation": "Without enough phase shift the field barely rotates at standstill, so the motor can run once spinning but won't self-start.", "partIds": ["run-capacitor"] },
+      { "question": "Halving fan speed changes power use roughly how?", "options": ["Halves it", "Quarters it", "Cuts it to one eighth", "No change"], "answer": 2, "explanation": "Fan power scales with speed cubed: (1/2)³ = 1/8.", "partIds": ["blade-assembly"] },
+      { "question": "Why is the stator made of thin stacked sheets instead of solid iron?", "options": ["It is cheaper to cut", "To reduce eddy-current losses and heat", "To make it lighter only", "So it can flex"], "answer": 1, "explanation": "Insulated laminations break up the circulating eddy currents that a changing field would drive through solid iron.", "partIds": ["stator-core"] }
+    ]
+  }
+}
+</meta>
+<part id="guard-rim-clip">
+const m = kit.mat("plastic", { color: "#d9d6cf" });
+const g = kit.group(kit.at(kit.mesh(new THREE.TorusGeometry(166, 3.2, 10, 160), m), [0, 70, 60]));
+g.add(kit.at(kit.mesh(kit.box(22, 10, 12), m), [0, 70 - 168, 60]));
+return g;
+</part>
+<part id="front-guard">
+const A = 70;
+const wire = kit.mat("steel", { color: "#c8ccd0", roughness: 0.3 });
+const z = (r) => 60 + 36 * (1 - (r / 165) ** 2);
+const g = kit.group();
+for (let i = 0; i < 40; i++) {
+  const a = (i / 40) * Math.PI * 2;
+  const pts = [165, 130, 95, 60, 34].map((r) => [Math.cos(a) * r, A + Math.sin(a) * r, z(r)]);
+  g.add(kit.mesh(kit.sweep(pts, 1.1, 20), wire));
+}
+for (const r of [34, 70, 105, 140, 164]) g.add(kit.at(kit.mesh(new THREE.TorusGeometry(r, 1.3, 6, 120), wire), [0, A, z(r)]));
+g.add(kit.at(kit.mesh(kit.cyl(33, 33, 4), kit.mat("plastic", { color: "#2f6fd1" })), [0, A, z(33) + 1], [90, 0, 0]));
+return g;
+</part>
+<part id="spinner">
+const prof = [[0, 12], [6, 11.5], [11, 9], [14, 5], [15, 0], [0, 0]];
+return kit.at(kit.mesh(kit.lathe(prof, 48), kit.mat("plastic", { color: "#2f6fd1" })), [0, 70, 55], [90, 0, 0]);
+</part>
+<part id="blade-assembly">
+const m = kit.mat("plastic", { color: "#4c7fd0", roughness: 0.4 });
+const hub = kit.mesh(kit.cyl(28, 28, 22, 48), m);
+const blades = kit.radial(3, () => kit.mesh(kit.blade({ span: 125, rootChord: 62, tipChord: 96, thickness: 2.6, twistDeg: 12, pitchDeg: 28, camber: 0.05, sweep: 10 }), m), 24);
+return kit.at(kit.group(hub, blades), [0, 70, 44], [90, 0, 0]);
+</part>
+<part id="rear-guard">
+const A = 70;
+const wire = kit.mat("steel", { color: "#c8ccd0", roughness: 0.3 });
+const P = [[40, 8], [100, 11], [140, 17], [157, 30], [165, 60]];
+const z = (r) => {
+  for (let i = 1; i < P.length; i++) {
+    if (r <= P[i][0]) {
+      const [r0, z0] = P[i - 1];
+      const [r1, z1] = P[i];
+      return z0 + ((z1 - z0) * (r - r0)) / (r1 - r0);
+    }
+  }
+  return 60;
+};
+const g = kit.group();
+for (let i = 0; i < 36; i++) {
+  const a = (i / 36) * Math.PI * 2;
+  const pts = [165, 157, 140, 100, 42].map((r) => [Math.cos(a) * r, A + Math.sin(a) * r, z(r)]);
+  g.add(kit.mesh(kit.sweep(pts, 1.1, 20), wire));
+}
+for (const r of [45, 75, 105, 130, 150]) g.add(kit.at(kit.mesh(new THREE.TorusGeometry(r, 1.3, 6, 120), wire), [0, A, z(r)]));
+g.add(kit.at(kit.mesh(kit.tube(44, 12, 4), kit.mat("plastic", { color: "#d9d6cf" })), [0, A, 8], [90, 0, 0]));
+return g;
+</part>
+<part id="guard-nut">
+const m = kit.mat("plastic", { color: "#2b2d30" });
+const g = kit.group(kit.mesh(kit.tube(40, 13, 10), m));
+g.add(kit.radial(16, () => kit.at(kit.mesh(kit.box(3, 10, 4), m), [41, 0, 0])));
+return kit.at(g, [0, 70, 1], [90, 0, 0]);
+</part>
+<part id="motor-front-housing">
+const prof = [[12, -10], [40, -10], [52, -16], [58, -26], [58, -60]];
+return kit.at(kit.mesh(kit.lathe(prof, 72), kit.mat("plastic", { color: "#e8e5de" })), [0, 70, 0], [90, 0, 0]);
+</part>
+<part id="motor-rear-housing">
+const shell = kit.mesh(kit.lathe([[58, -60], [58, -122], [53, -140], [38, -152], [0, -154]], 72), kit.mat("plastic", { color: "#e8e5de" }));
+const dark = kit.mat("plastic", { color: "#2b2d30" });
+const vents = kit.radial(20, () => kit.at(kit.mesh(kit.box(18, 1.6, 3), dark), [46, -146.5, 0], [0, 0, -37]));
+return kit.at(kit.group(shell, vents), [0, 70, 0], [90, 0, 0]);
+</part>
+<part id="front-bearing">
+return kit.at(kit.mesh(kit.tube(10, 4.2, 10, 32), kit.mat("brass")), [0, 70, -18], [90, 0, 0]);
+</part>
+<part id="rear-bearing">
+return kit.at(kit.mesh(kit.tube(10, 4.2, 10, 32), kit.mat("brass")), [0, 70, -104], [90, 0, 0]);
+</part>
+<part id="shaft">
+return kit.at(kit.mesh(kit.cyl(4, 4, 198, 24), kit.mat("steel")), [0, 70, -33], [90, 0, 0]);
+</part>
+<part id="rotor">
+const g = kit.group(kit.mesh(kit.cyl(23.5, 23.5, 34, 64), kit.mat("steel", { color: "#6f767d" })));
+const al = kit.mat("aluminium");
+g.add(kit.at(kit.mesh(kit.tube(24, 14, 4), al), [0, 19, 0]));
+g.add(kit.at(kit.mesh(kit.tube(24, 14, 4), al), [0, -19, 0]));
+g.add(kit.radial(18, () => kit.at(kit.mesh(kit.cyl(1.8, 1.8, 38, 8), al), [22.6, 0, 0], [0, 0, 6])));
+return kit.at(g, [0, 70, -66], [90, 0, 0]);
+</part>
+<part id="worm">
+const g = kit.group(kit.mesh(kit.cyl(4.6, 4.6, 16, 24), kit.mat("steel")));
+g.add(kit.mesh(kit.helix({ radius: 5, pitch: 3.2, turns: 5, wire: 2.4 }), kit.mat("steel", { color: "#b8bec4" })));
+return kit.at(g, [0, 70, -122], [90, 0, 0]);
+</part>
+<part id="stator-core">
+const st = kit.mat("steel", { color: "#59606a", roughness: 0.5 });
+const g = kit.group(kit.mesh(kit.tube(50, 34, 34, 72), st));
+g.add(kit.radial(24, () => kit.at(kit.mesh(kit.box(9, 34, 4.5), st), [30, 0, 0])));
+return kit.at(g, [0, 70, -66], [90, 0, 0]);
+</part>
+<part id="stator-windings">
+const cu = kit.mat("copper");
+const g = kit.group();
+for (const y of [-22, 22]) g.add(kit.at(kit.mesh(kit.tube(45, 29, 10), cu), [0, y, 0]));
+g.add(kit.at(kit.radial(12, () => kit.at(kit.mesh(kit.cyl(3, 3, 36, 12), cu), [31, 0, 0])), [0, 0, 0], [0, 7.5, 0]));
+return kit.at(g, [0, 70, -66], [90, 0, 0]);
+</part>
+<part id="thermal-fuse">
+const g = kit.group(kit.mesh(kit.cyl(2.5, 2.5, 12, 16), kit.mat("ceramic", { color: "#d8c9a0" })));
+g.add(kit.mesh(kit.cyl(0.4, 0.4, 24, 6), kit.mat("steel")));
+return kit.at(g, [0, 117.5, -88], [0, 0, 90]);
+</part>
+<part id="run-capacitor">
+const g = kit.group(kit.mesh(kit.cyl(11, 11, 34, 32), kit.mat("plastic", { color: "#e3e1dc" })));
+g.add(kit.at(kit.mesh(kit.cyl(11.3, 11.3, 4, 32), kit.mat("plastic", { color: "#d94b2b" })), [0, 15, 0]));
+g.add(kit.at(kit.mesh(kit.cyl(0.6, 0.6, 10, 6), kit.mat("copper")), [4, 21, 0]));
+g.add(kit.at(kit.mesh(kit.cyl(0.6, 0.6, 10, 6), kit.mat("copper")), [-4, 21, 0]));
+return kit.at(g, [-24, 100, -124], [0, 0, 90]);
+</part>
+<part id="gearbox-casing">
+return kit.at(kit.mesh(kit.box(48, 24, 36), kit.mat("plastic", { color: "#3a3d42" })), [15, 70, -122]);
+</part>
+<part id="worm-gear">
+return kit.at(kit.mesh(kit.gear({ teeth: 30, radius: 16, thickness: 6, bore: 3 }), kit.mat("plastic", { color: "#f0ede4" })), [21, 70, -122]);
+</part>
+<part id="oscillation-knob">
+const m = kit.mat("plastic", { color: "#2b2d30" });
+const g = kit.group(kit.at(kit.mesh(kit.cyl(3, 3, 70, 16), kit.mat("steel")), [0, 35, 0]));
+g.add(kit.at(kit.mesh(kit.cyl(9, 8, 10, 32), m), [0, 74, 0]));
+return kit.at(g, [21, 70, -122]);
+</part>
+<part id="crank-link">
+const st = kit.mat("steel");
+const g = kit.group(kit.at(kit.mesh(kit.cyl(3, 3, 8, 16), st), [31, 64, -122]));
+g.add(kit.mesh(kit.sweep([[31, 62, -122], [33, 44, -108], [30, 22, -88], [24, 8, -72]], 2, 32), st));
+return g;
+</part>
+<part id="tilt-joint">
+const m = kit.mat("plastic", { color: "#d9d6cf" });
+const g = kit.group();
+g.add(kit.at(kit.mesh(kit.box(46, 10, 34), m), [0, 9, -66]));
+g.add(kit.at(kit.mesh(kit.cyl(9, 9, 52, 32), m), [0, 0, -66], [0, 0, 90]));
+g.add(kit.at(kit.mesh(kit.box(22, 16, 22), m), [0, -9, -66]));
+return g;
+</part>
+<part id="tilt-knob">
+const m = kit.mat("rubber");
+const g = kit.group(kit.mesh(kit.cyl(12, 12, 10, 32), m));
+g.add(kit.radial(10, () => kit.at(kit.mesh(kit.box(3, 10, 3), m), [12.5, 0, 0])));
+return kit.at(g, [32, 0, -66], [0, 0, 90]);
+</part>
+<part id="stand-pole">
+const st = kit.mat("steel", { color: "#d3d7db", roughness: 0.2 });
+const g = kit.group(kit.at(kit.mesh(kit.tube(14, 11, 200), st), [0, -105, 0]));
+g.add(kit.at(kit.mesh(kit.tube(18, 14, 14), kit.mat("plastic", { color: "#d9d6cf" })), [0, -14, 0]));
+g.add(kit.at(kit.mesh(kit.tube(26, 14, 6), kit.mat("plastic", { color: "#d9d6cf" })), [0, -203, 0]));
+return kit.at(g, [0, 0, -66]);
+</part>
+<part id="base-housing">
+const prof = [[0, -240], [118, -240], [122, -236], [121, -226], [108, -212], [0, -205]];
+return kit.at(kit.mesh(kit.lathe(prof, 96), kit.mat("plastic", { color: "#e8e5de" })), [0, 0, -40]);
+</part>
+<part id="base-weight">
+return kit.at(kit.mesh(kit.cyl(96, 96, 8, 64), kit.mat("steel", { color: "#55595e" })), [0, -233, -40]);
+</part>
+<part id="switch-block">
+const g = kit.group(kit.mesh(kit.box(84, 12, 24), kit.mat("carbon", { color: "#5a3b2a" })));
+g.add(kit.linear(4, [19, 0, 0], () => kit.mesh(kit.box(6, 3, 8), kit.mat("brass"))));
+g.children[1].position.set(-28.5, -7, 6);
+return kit.at(g, [0, -219, 40]);
+</part>
+<part id="speed-buttons">
+const keys = kit.linear(4, [19, 0, 0], (i) => kit.mesh(kit.box(15, 9, 20), kit.mat("plastic", { color: i === 0 ? "#d94b2b" : "#f2f0eb" })));
+return kit.at(keys, [-28.5, -207, 40], [-8, 0, 0]);
+</part>
+<part id="motor-wiring">
+const route = [[0, -222, 30], [0, -224, -20], [0, -212, -60], [0, -150, -66], [0, -40, -66], [0, 0, -70], [0, 30, -80], [0, 45, -92]];
+const g = kit.group();
+g.add(kit.mesh(kit.sweep(route.map(([x, y, z]) => [x - 2.2, y, z]), 1.6, 120), kit.mat("plastic", { color: "#c0392b" })));
+g.add(kit.mesh(kit.sweep(route.map(([x, y, z]) => [x + 2.2, y, z]), 1.6, 120), kit.mat("plastic", { color: "#22252a" })));
+return g;
+</part>
+<part id="power-cord">
+const g = kit.group(kit.mesh(kit.sweep([[0, -226, -150], [0, -232, -170], [15, -238, -190], [45, -239, -205]], 3, 48), kit.mat("rubber")));
+g.add(kit.at(kit.mesh(kit.cyl(5, 4, 16, 16), kit.mat("rubber")), [0, -224, -150], [90, 0, 0]));
+return g;
+</part>
