@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 316" width="960" height="316" font-family="Inter, Arial, sans-serif">
+<title>DeepSeek solved slightly more tasks for an eighth of the cost</title>
+<rect x="0" y="0" width="960" height="316" rx="16" fill="#001A2B"/>
+<text x="32.0" y="48.0" font-size="20" font-weight="600" fill="#FFFFFF" text-anchor="start">DeepSeek solved slightly more tasks for an eighth of the cost</text>
+<text x="32.0" y="74.0" font-size="14" font-weight="400" fill="rgba(255,255,255,0.68)" text-anchor="start">Teacher runs on Token Factory at list prices (2026-10-30). GLM-5.3 ran only on 249 tasks the other two had failed.</text>
+<rect x="32" y="102" width="12" height="12" rx="2" fill="#9E9DFF"/>
+<text x="52.0" y="112.0" font-size="14" font-weight="400" fill="#FFFFFF" text-anchor="start">Billed, with prompt caching</text>
+<rect x="258" y="102" width="12" height="12" rx="2" fill="rgba(255,255,255,0.12)"/>
+<text x="278.0" y="112.0" font-size="14" font-weight="400" fill="#FFFFFF" text-anchor="start">The same tokens without caching</text>
+<text x="788.0" y="146.0" font-size="12" font-weight="400" fill="rgba(255,255,255,0.48)" text-anchor="end">Tasks solved</text>
+<text x="928.0" y="146.0" font-size="12" font-weight="400" fill="rgba(255,255,255,0.48)" text-anchor="end">Per solved task</text>
+<line x1="200" y1="160" x2="200" y2="284" stroke="rgba(255,255,255,0.24)" stroke-width="1"/>
+<text x="32.0" y="183.0" font-size="14" font-weight="400" fill="#FFFFFF" text-anchor="start">Kimi-K3</text>
+<path d="M 200.0 168.0 H 491.7 Q 495.7 168.0 495.7 172.0 V 184.0 Q 495.7 188.0 491.7 188.0 H 200.0 Z" fill="rgba(255,255,255,0.12)"/>
+<path d="M 200.0 168.0 H 329.8 Q 333.8 168.0 333.8 172.0 V 184.0 Q 333.8 188.0 329.8 188.0 H 200.0 Z" fill="#9E9DFF"/>
+<text x="503.7" y="183.0" font-size="14" font-weight="400" fill="#FFFFFF" text-anchor="start">$418, or $924 without caching</text>
+<text x="788.0" y="183.0" font-size="14" font-weight="400" fill="#FFFFFF" text-anchor="end">896</text>
+<text x="928.0" y="183.0" font-size="14" font-weight="400" fill="#FFFFFF" text-anchor="end">$0.47</text>
+<text x="32.0" y="227.0" font-size="14" font-weight="400" fill="#FFFFFF" text-anchor="start">DeepSeek-V4.1-Flash</text>
+<path d="M 200.0 212.0 H 227.0 Q 231.0 212.0 231.0 216.0 V 228.0 Q 231.0 232.0 227.0 232.0 H 200.0 Z" fill="rgba(255,255,255,0.12)"/>
+<path d="M 200.0 212.0 H 212.0 Q 216.0 212.0 216.0 216.0 V 228.0 Q 216.0 232.0 212.0 232.0 H 200.0 Z" fill="#9E9DFF"/>
+<text x="239.0" y="227.0" font-size="14" font-weight="400" fill="#FFFFFF" text-anchor="start">$50, or $97 without caching</text>
+<text x="788.0" y="227.0" font-size="14" font-weight="400" fill="#FFFFFF" text-anchor="end">946</text>
+<text x="928.0" y="227.0" font-size="14" font-weight="400" fill="#FFFFFF" text-anchor="end">$0.05</text>
+<text x="32.0" y="271.0" font-size="14" font-weight="400" fill="#FFFFFF" text-anchor="start">GLM-5.3</text>
+<path d="M 200.0 256.0 H 228.3 Q 232.3 256.0 232.3 260.0 V 272.0 Q 232.3 276.0 228.3 276.0 H 200.0 Z" fill="rgba(255,255,255,0.12)"/>
+<path d="M 200.0 256.0 H 211.4 Q 215.4 256.0 215.4 260.0 V 272.0 Q 215.4 276.0 211.4 276.0 H 200.0 Z" fill="#9E9DFF"/>
+<text x="240.3" y="271.0" font-size="14" font-weight="400" fill="#FFFFFF" text-anchor="start">$48, or $101 without caching</text>
+<text x="788.0" y="271.0" font-size="14" font-weight="400" fill="#FFFFFF" text-anchor="end">22</text>
+<text x="928.0" y="271.0" font-size="14" font-weight="400" fill="#FFFFFF" text-anchor="end">$2.19</text>
+</svg>
