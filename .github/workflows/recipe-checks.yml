@@ -12,6 +12,7 @@ on:
       - 'apps/napkin-to-3d-print/**'
       - 'apps/image-to-3d/**'
       - 'post-training/gemma-4-agentic-coding/**'
+      - 'models/kimi-k3.1-pro-vision-showcase/**'
       - '.github/workflows/recipe-checks.yml'
   push:
     branches: [main]
@@ -25,6 +26,7 @@ on:
       - 'apps/napkin-to-3d-print/**'
       - 'apps/image-to-3d/**'
       - 'post-training/gemma-4-agentic-coding/**'
+      - 'models/kimi-k3.1-pro-vision-showcase/**'
       - '.github/workflows/recipe-checks.yml'
 
 permissions:
@@ -185,3 +187,17 @@ jobs:
       - run: uv sync --frozen
       - run: uv run python -m pytest -q -p no:cacheprovider
       - run: uvx pip-audit --path .venv/lib/python3.12/site-packages --skip-editable
+
+  kimi-vision-showcase:
+    name: Kimi K3.1 Pro vision showcase offline tests
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: models/kimi-k3.1-pro-vision-showcase
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install -r requirements.txt
+      - run: python -m unittest discover -s tests -v

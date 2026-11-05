@@ -88,6 +88,7 @@ print()
 - Build a machine explorer: [Cutaway](../apps/cutaway/) generates structured parts and Three.js geometry, then reviews rendered views.
 
 - Send the model an image: the [chart agent example](kimi-k3.1-pro-chart-agent/README.md) reads a bar chart and records each bar through a declared tool.
+- Measure what it sees: the [vision showcase](kimi-k3.1-pro-vision-showcase/README.md) runs ten vision tasks, from object detection to GUI grounding, on benchmark samples and scores each answer against the labels.
 - Turn a floor-plan sketch into 3D: the [sketch to walkthrough app](../apps/sketch-to-walkthrough/README.md) has Kimi write a layout generator that deterministic checks and its own vision review verify.
 - Read a whole paper with its figures: the [paper to interactive explainer app](../apps/paper-to-interactive-explainer/README.md) turns an arXiv paper into an interactive HTML lesson.
 - Turn a sketch into CAD: the [napkin to 3D print app](../apps/napkin-to-3d-print/README.md) writes and self-reviews a parametric CadQuery model.
