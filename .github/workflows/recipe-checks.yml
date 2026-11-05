@@ -10,6 +10,7 @@ on:
       - 'apps/sketch-to-walkthrough/**'
       - 'apps/paper-to-interactive-explainer/**'
       - 'apps/napkin-to-3d-print/**'
+      - 'apps/image-to-3d/**'
       - '.github/workflows/recipe-checks.yml'
   push:
     branches: [main]
@@ -21,6 +22,7 @@ on:
       - 'apps/sketch-to-walkthrough/**'
       - 'apps/paper-to-interactive-explainer/**'
       - 'apps/napkin-to-3d-print/**'
+      - 'apps/image-to-3d/**'
       - '.github/workflows/recipe-checks.yml'
 
 permissions:
@@ -153,3 +155,16 @@ jobs:
       - run: uv sync --frozen
       - run: uv run python -m unittest discover -s tests -v
       - run: uvx pip-audit --path .venv/lib/python3.12/site-packages --skip-editable
+
+  image-to-3d:
+    name: Image to 3D server tests
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: apps/image-to-3d
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm test
