@@ -85,6 +85,8 @@ print()
 ## Next steps
 
 - Send the model an image: the [chart agent example](kimi-k3.1-pro-chart-agent/README.md) reads a bar chart and records each bar through a declared tool.
+- Read a whole paper with its figures: the [paper to interactive explainer app](../apps/paper-to-interactive-explainer/README.md) turns an arXiv paper into an interactive HTML lesson.
+- Turn a sketch into CAD: the [napkin to 3D print app](../apps/napkin-to-3d-print/README.md) writes and self-reviews a parametric CadQuery model.
 - Follow the [OpenCode setup guide](../coding/opencode.md#kimi-k31-pro) to use the model in a coding agent.
 - See the [API examples](../api/README.md) for more SDK integrations.
 - Read [Moonshot's technical overview](https://www.kimi.ai/blog/kimi-k3-1-pro) for model background.

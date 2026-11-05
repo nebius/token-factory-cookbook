@@ -7,6 +7,8 @@ Explore complete applications built with Nebius Token Factory. Follow the linked
 | Application | Workflow | Source |
 | --- | --- | --- |
 | [Splitter Lite](splitter-lite/) | Read receipts and split bills with vision and calculator tools | Included in this repository |
+| [Paper to interactive explainer](paper-to-interactive-explainer/) | Turn a research paper into a self-tested, interactive HTML explainer | Included in this repository |
+| [Napkin to 3D print](napkin-to-3d-print/) | Turn a hand-drawn sketch into a parametric CadQuery model and a printable STL | Included in this repository |
 | [WhatLLM](https://www.whatllm.org/) | Compare model responses | Hosted application |
 | [Allycat](https://github.com/The-AI-Alliance/allycat) | Search and chat over website content | External repository |
 | [Customer Support AI](https://github.com/amrrs/customer-support-ai) | Answer support questions with domain-restricted web retrieval | External repository |
@@ -77,5 +79,36 @@ shares and flags any split that doesn't add up.
 |-
 
 Built by [Amitesh Anand](https://github.com/Astrodevil).
+
+---
+
+## Paper to interactive explainer
+
+[Paper to interactive explainer](paper-to-interactive-explainer/) is a
+Streamlit app. Paste an arXiv link or upload a PDF, and Kimi K3.1 Pro on
+Nebius Token Factory reads the whole paper, figure pages included, plans a
+lesson, and writes a single-file HTML explainer with one interactive widget per
+idea. A headless Chrome self-test feeds JavaScript errors back to Kimi, which
+fixes them with SEARCH/REPLACE patches.
+
+| <img src="paper-to-interactive-explainer/screenshots/1-hero.png" width="400" alt="Explainer generated for Attention Is All You Need">
+|-
+
+Built by [Arindam Majumder](https://github.com/Arindam200).
+
+---
+
+## Napkin to 3D print
+
+[Napkin to 3D print](napkin-to-3d-print/) is a Streamlit app. Upload a photo
+of a hand-drawn part, and Kimi K3.1 Pro on Nebius Token Factory writes a
+parametric CadQuery model, builds it in a guarded subprocess, compares a
+four-view render with your sketch, and revises it. You get sliders for every
+dimension and STL, STEP and Python downloads.
+
+| <img src="napkin-to-3d-print/samples/phone_stand.png" width="400" alt="Hand-drawn phone stand sketch with dimensions">
+|-
+
+Built by [Arindam Majumder](https://github.com/Arindam200).
 
 ---
