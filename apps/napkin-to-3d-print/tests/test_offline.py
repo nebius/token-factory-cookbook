@@ -29,6 +29,7 @@ def build(p):
 class GuardTest(unittest.TestCase):
     def test_allows_a_normal_model(self):
         check_code(BRACKET)
+        check_code("for _ in range(3):\n    pass\ndef _rib(w):\n    return w")  # throwaway and private local names
         check_code("import math\nimport numpy as np\nfrom math import radians, tan\nfrom cadquery import Workplane")
 
     def test_blocks_escape_hatches(self):
@@ -57,6 +58,13 @@ class GuardTest(unittest.TestCase):
             # modules that run source or reach raw OpenCascade
             "import cadquery as cq\ncq.cqgi.parse('import os').build()",
             "import cadquery as cq\ncq.occ_impl.shapes.BRepTools.Write_s(None, 'x')",
+            # private members (np._core reaches sys and builtins) and builtin names as attributes
+            "import numpy as np\nnp._core.overrides",
+            "x = p.open",
+            # frame introspection reaching the runner's globals
+            "def peek():\n    yield g.gi_frame.f_back\ng = peek()",
+            "fr = None\nfr.f_globals",
+            "try:\n    1 / 0\nexcept Exception as e:\n    e.tb_frame",
         ):
             with self.subTest(source=source), self.assertRaises(GuardError):
                 check_code(source)
@@ -65,10 +73,19 @@ class GuardTest(unittest.TestCase):
         guarded = safe_builtins()
         self.assertNotIn("open", guarded)
         self.assertNotIn("exec", guarded)
-        self.assertIs(guarded["__import__"]("math"), math)
+        self.assertEqual(guarded["__import__"]("math").pi, math.pi)
         for name, fromlist in (("os", ()), ("numpy.ctypeslib", ()), ("cadquery", ("exporters",))):
             with self.subTest(name=name), self.assertRaises(ImportError):
                 guarded["__import__"](name, None, None, fromlist, 0)
+
+    def test_module_proxy_hands_out_values_but_not_modules(self):
+        np = safe_builtins()["__import__"]("numpy")
+        self.assertEqual(float(np.linalg.norm(np.array([3.0, 4.0]))), 5.0)  # allowlisted submodule
+        for name in ("ma", "char", "emath"):  # np.ma.core.re.enum.bltns is the builtins module
+            with self.subTest(name=name), self.assertRaises(AttributeError):
+                getattr(np, name)
+        with self.assertRaises(AttributeError):
+            np.anything_new = 1
 
     def test_params_are_clamped_and_typed(self):
         spec = {"w": {"value": 40.0, "min": 20.0, "max": 80.0}, "n": {"value": 2, "type": "int", "max": 4}}
@@ -102,6 +119,14 @@ class BuildTest(unittest.TestCase):
         build = execute("import os\nos.system('echo hi')\n")
         self.assertFalse(build.ok)
         self.assertIn("GuardError", build.error)
+
+    def test_submodule_escape_fails_at_runtime(self):
+        # Passes the static check (only public names), but the module proxy refuses np.ma.
+        source = BRACKET.replace("import cadquery as cq", "import cadquery as cq\nimport numpy as np\nrx = np.ma.core.re")
+        check_code(source)
+        build = execute(source)
+        self.assertFalse(build.ok)
+        self.assertIn("not available to model code", build.error)
 
 
 if __name__ == "__main__":

@@ -18,6 +18,7 @@ import json
 import math
 import sys
 import traceback
+import types
 from pathlib import Path
 
 ALLOWED_IMPORTS = {"cadquery", "math", "numpy"}  # exact module names, no submodules
@@ -36,6 +37,9 @@ BLOCKED_NAMES = {
 # savetxt, load, loadtxt, tofile, fromfile, fromregex, dump, Write_s, Read_s...
 BLOCKED_PREFIXES = ("export", "import", "save", "load", "dump", "read", "write", "tofile", "fromfile",
                     "fromregex", "genfromtxt")
+# Frame, generator, coroutine, traceback, code and function introspection: g.gi_frame.f_back.f_globals
+# would otherwise reach this runner's own globals.
+INTROSPECTION_PREFIXES = ("gi_", "cr_", "ag_", "f_", "tb_", "co_", "func_")
 
 
 class GuardError(Exception):
@@ -44,6 +48,13 @@ class GuardError(Exception):
 
 def _blocked(name: str) -> bool:
     return name.startswith("__") or name in BLOCKED_NAMES or name.lower().startswith(BLOCKED_PREFIXES)
+
+
+def _blocked_attr(name: str) -> bool:
+    # Attributes are stricter than local names: no private members (np._core reaches sys and
+    # builtins), no introspection, and no builtin names such as .open or .eval.
+    return (_blocked(name) or name.startswith("_") or name in BLOCKED_BUILTINS
+            or name.startswith(INTROSPECTION_PREFIXES))
 
 
 def check_code(source: str) -> None:
@@ -58,19 +69,49 @@ def check_code(source: str) -> None:
             if node.level or node.module not in ALLOWED_IMPORTS:
                 raise GuardError(f"import from '{node.module}' is not allowed (only cadquery, math, numpy)")
             for alias in node.names:
-                if alias.name == "*" or _blocked(alias.name):
+                if alias.name == "*" or _blocked_attr(alias.name):
                     raise GuardError(f"'from {node.module} import {alias.name}' is not allowed")
-        elif isinstance(node, ast.Attribute) and _blocked(node.attr):
+        elif isinstance(node, ast.Attribute) and _blocked_attr(node.attr):
             raise GuardError(f"attribute '.{node.attr}' is not allowed")
         elif isinstance(node, ast.Name) and (node.id in BLOCKED_BUILTINS or _blocked(node.id)):
             raise GuardError(f"name '{node.id}' is not allowed")
 
 
+# Submodules model code may reach through a proxy. Any other module object (np.ma, np.char,
+# cq.occ_impl...) is refused, because modules import modules: np.ma.core.re.enum.bltns is builtins.
+SAFE_SUBMODULES = {"numpy.linalg", "numpy.random", "numpy.fft", "numpy.polynomial", "cadquery.selectors"}
+
+
+class ModuleProxy:
+    """What model code gets instead of a module: public attributes pass through, modules don't."""
+
+    __slots__ = ("_module",)  # private, so the static check stops model code from reading it
+
+    def __init__(self, module: types.ModuleType):
+        object.__setattr__(self, "_module", module)
+
+    def __getattr__(self, name: str):
+        if name.startswith("_"):
+            raise AttributeError(name)
+        value = getattr(self._module, name)
+        if isinstance(value, types.ModuleType):
+            if value.__name__ in SAFE_SUBMODULES:
+                return ModuleProxy(value)
+            raise AttributeError(f"module '{value.__name__}' is not available to model code")
+        return value
+
+    def __setattr__(self, name, value):
+        raise AttributeError("model code can't modify modules")
+
+    def __dir__(self):
+        return [n for n in dir(self._module) if not n.startswith("_")]
+
+
 def _guarded_import(name, globals=None, locals=None, fromlist=(), level=0):
     # Runtime twin of the import check: the import statements in the model code go through here.
-    if level or name not in ALLOWED_IMPORTS or any(f == "*" or _blocked(f) for f in fromlist or ()):
+    if level or name not in ALLOWED_IMPORTS or any(f == "*" or _blocked_attr(f) for f in fromlist or ()):
         raise ImportError(f"import of '{name}' is not allowed (only cadquery, math, numpy)")
-    return builtins.__import__(name, globals, locals, fromlist, level)
+    return ModuleProxy(builtins.__import__(name, globals, locals, fromlist, level))
 
 
 def safe_builtins() -> dict:
@@ -146,7 +187,8 @@ def main() -> None:
 
         import cadquery as cq
 
-        namespace = {"__name__": "napkin_model", "__builtins__": safe_builtins(), "cq": cq, "math": math,
+        namespace = {"__name__": "napkin_model", "__builtins__": safe_builtins(),
+                     "cq": ModuleProxy(cq), "math": ModuleProxy(math),
                      "safe_fillet": safe_fillet, "safe_chamfer": safe_chamfer}
         exec(compile(source, "model.py", "exec"), namespace)
 

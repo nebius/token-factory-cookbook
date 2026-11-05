@@ -51,7 +51,7 @@ def build(p):
 - Printability: walls >= 1.6 mm, a flat stable base, avoid unsupported overhangs steeper than 45 degrees where the design allows.
 - Read any dimensions written on the sketch and honour them exactly. Otherwise infer realistic real-world sizes from the object's purpose (a phone stand must hold a ~75 mm wide, ~9 mm thick phone; an M4 screw needs a ~4.4 mm clearance hole).
 - Fillets and chamfers fail easily in OpenCascade. Apply them last, keep radii below half the thinnest adjacent wall, and use the helpers `safe_fillet(wp, radius, selector=None)` and `safe_chamfer(wp, length, selector=None)`. They are already in scope (don't import or define them) and return the part unchanged if the operation fails.
-- Only `import cadquery as cq`, `import math` and `import numpy as np` (no submodules). No file I/O, no exporters, no print(), no show_object. A code guard rejects any name or attribute that starts with export, import, save, load, read, write or dump, so don't use such names for your own variables.
+- Only `import cadquery as cq`, `import math` and `import numpy as np` (no submodules). No file I/O, no exporters, no print(), no show_object. A code guard rejects any name or attribute that starts with export, import, save, load, read, write or dump, so don't use such names for your own variables. It also rejects private (underscore) attributes, so use only the public CadQuery API.
 - Prefer robust operations: box, cylinder, polyline().close().extrude(), revolve, hole, cutThruAll, union, cut, mirror. Avoid loft and sweep unless the shape needs them.
 
 ## Response format
