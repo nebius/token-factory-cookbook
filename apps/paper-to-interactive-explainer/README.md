@@ -55,6 +55,7 @@ paper-to-interactive-explainer/
 ├── qa.py                # Headless Chrome self-test (Playwright), run as a subprocess
 ├── kimi.py              # Token Factory client, model fallback and streaming
 ├── tests/               # Credential-free unit tests
+├── .streamlit/          # Binds the server to localhost
 ├── screenshots/         # README images
 ├── env.example
 ├── pyproject.toml
@@ -133,7 +134,7 @@ What was verified for this recipe:
 - **Long papers.** Text beyond 600,000 characters is cut, and at most eight figure pages are sent. Each parallel section writer sees the first 160,000 characters.
 - **Generated pages need the internet.** They load fonts, KaTeX and sometimes three.js from public CDNs.
 - **Generated code runs in your browser.** The explainer is model-written HTML and JavaScript, and a paper could carry prompt-injected instructions. The in-app preview runs it in a sandboxed iframe with an opaque origin (`sandbox="allow-scripts"` without `allow-same-origin`), so its scripts can't reach the Streamlit page, its cookies or its storage. A downloaded `.html` file has no such sandbox when you open it, so review a page before you open it outside the app or publish it.
-- **Local demo.** The app has no authentication, and anyone who can reach the Streamlit port can spend your key. Keep it on your machine or put it behind your own auth.
+- **Local demo.** The app has no authentication, and anyone who can reach the Streamlit port can spend your key. `.streamlit/config.toml` binds the server to `localhost`; keep it that way, or put the app behind your own auth.
 
 The app creates no cloud resources. To clean up, delete generated pages and the environment:
 
