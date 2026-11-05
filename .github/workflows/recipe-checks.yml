@@ -7,6 +7,7 @@ on:
       - 'agents/mastra/opencrewbot/**'
       - 'agents/mastra/openduet/**'
       - 'apps/splitter-lite/**'
+      - 'apps/sketch-to-walkthrough/**'
       - '.github/workflows/recipe-checks.yml'
   push:
     branches: [main]
@@ -15,6 +16,7 @@ on:
       - 'agents/mastra/opencrewbot/**'
       - 'agents/mastra/openduet/**'
       - 'apps/splitter-lite/**'
+      - 'apps/sketch-to-walkthrough/**'
       - '.github/workflows/recipe-checks.yml'
 
 permissions:
@@ -110,3 +112,21 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - run: pnpm test && pnpm typecheck && pnpm lint && pnpm build
       - run: pnpm audit --prod --audit-level=high
+
+  sketch-to-walkthrough:
+    name: Sketch to Walkthrough tests and build
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: apps/sketch-to-walkthrough
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: apps/sketch-to-walkthrough/package-lock.json
+      - run: npm ci
+      - run: npm test --if-present
+      - run: npm run build
+      - run: npm audit --omit=dev --audit-level=high

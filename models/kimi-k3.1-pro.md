@@ -88,6 +88,7 @@ print()
 - Build a machine explorer: [Cutaway](../apps/cutaway/) generates structured parts and Three.js geometry, then reviews rendered views.
 
 - Send the model an image: the [chart agent example](kimi-k3.1-pro-chart-agent/README.md) reads a bar chart and records each bar through a declared tool.
+- Turn a floor-plan sketch into 3D: the [sketch to walkthrough app](../apps/sketch-to-walkthrough/README.md) has Kimi write a layout generator that deterministic checks and its own vision review verify.
 - Follow the [OpenCode setup guide](../coding/opencode.md#kimi-k31-pro) to use the model in a coding agent.
 - See the [API examples](../api/README.md) for more SDK integrations.
 - Read [Moonshot's technical overview](https://www.kimi.ai/blog/kimi-k3-1-pro) for model background.
