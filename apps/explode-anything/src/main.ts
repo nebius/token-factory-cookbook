@@ -131,7 +131,7 @@ function buildUI() {
           </section>
           <section class="inspector-section tf-credit">
             Original build by <a href="https://github.com/shivaylamba" target="_blank" rel="noreferrer">Shivay Lamba</a>.<br>
-            <a href="https://github.com/shivaylamba/explode-anything" target="_blank" rel="noreferrer">Original source</a> · <a href="https://github.com/demianarc/token-factory-explode" target="_blank" rel="noreferrer">TF edition</a><br>
+            <a href="https://github.com/shivaylamba/explode-anything" target="_blank" rel="noreferrer">Original source</a> · <a href="https://github.com/nebius/token-factory-cookbook/tree/main/apps/explode-anything" target="_blank" rel="noreferrer">TF edition</a><br>
             Educational exhibit. No model request runs while you explore.
           </section>
         </aside>

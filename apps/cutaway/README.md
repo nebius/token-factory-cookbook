@@ -75,4 +75,4 @@ The geometry is an educational interpretation, not manufacturer-accurate CAD. Th
 
 Original build: [Amitesh Anand](https://github.com/Astrodevil) / [Studio1HQ](https://studio1hq.com), [Cutaway](https://github.com/Studio1-OSS/Cutaway), revision `5e8763d30e03e08606de81b031596c3625bbd3a4`.
 
-[TF edition](https://github.com/demianarc/token-factory-cutaway), revision `41da4b0`, adds the official design, self-hosted fonts, visible credits, dependency fixes and the static showcase. The original [MIT license](LICENSE) is retained. Nebius brand assets are not covered by a general grant to reuse the brand. The [upstream application guide](UPSTREAM.md) documents the full architecture.
+[TF edition](.), imported adaptation revision `41da4b0`, adds the official design, self-hosted fonts, visible credits, dependency fixes and the static showcase. The original [MIT license](LICENSE) is retained. Nebius brand assets are not covered by a general grant to reuse the brand. The [upstream application guide](UPSTREAM.md) documents the full architecture.
