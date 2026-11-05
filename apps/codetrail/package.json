@@ -1,14 +1,14 @@
 {
   "name": "codetrail",
   "version": "0.1.0",
-  "description": "Diagram, wiki, code tour and Q&A for any repo, read whole by DeepSeek V4.1 Flash 1017. Every line checked.",
+  "description": "Diagram, wiki, code tour and Q&A for any repo, read whole by Kimi K3.1 Pro. Every line checked.",
   "license": "MIT",
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "next dev --turbopack",
+    "dev": "next dev --turbopack -H 127.0.0.1",
     "build": "next build",
-    "start": "next start",
+    "start": "next start -H 127.0.0.1",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "smoke:nebius": "tsx scripts/nebius-smoke.mts",

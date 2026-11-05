@@ -9,12 +9,13 @@ All it needs is a [Nebius Token Factory](https://tokenfactory.nebius.com) API ke
 [Docker](https://www.docker.com/products/docker-desktop) packages Codetrail with everything it needs (Node.js, its dependencies, the built app) into one image, so you don't install anything else. Build the image once, then run it whenever you want:
 
 ```bash
-git clone https://github.com/Studio1-OSS/Codetrail.git
-cd Codetrail
+git clone https://github.com/nebius/token-factory-cookbook.git
+cd token-factory-cookbook/apps/codetrail
 docker build -t codetrail .
 
-docker run --name codetrail -p 3000:3000 \
+docker run --name codetrail -p 127.0.0.1:3000:3000 \
   -e NEBIUS_API_KEY=your-key \
+  -e NEBIUS_MODEL=moonshotai/Kimi-K3.1-Pro \
   -v codetrail-data:/data \
   -v ~/code:/repos:ro \
   codetrail
@@ -24,9 +25,9 @@ Then open **http://localhost:3000**. What each part does:
 
 | Part | What it's for |
 | --- | --- |
-| `-p 3000:3000` | Opens the app at localhost:3000 |
+| `-p 127.0.0.1:3000:3000` | Opens the app at localhost:3000, for this machine only. Nobody signs in by default, so don't publish the port to your network |
 | `-e NEBIUS_API_KEY=…` | Your key, used for the model calls. Add `-e GITHUB_TOKEN=…` for private GitHub repos and GitHub's higher rate limit |
-| `-e NEBIUS_MODEL=…` | Optional. `moonshotai/Kimi-K3.1-Pro` runs on Kimi K3.1 Pro instead of the default, DeepSeek V4.1 Flash 1017 |
+| `-e NEBIUS_MODEL=…` | `moonshotai/Kimi-K3.1-Pro` runs on Kimi K3.1 Pro, as this recipe describes. Without it, Codetrail uses DeepSeek V4.1 Flash 1017 |
 | `-v codetrail-data:/data` | A Docker volume that keeps the database (repos read, tours, answers, costs) when the container stops or you update it |
 | `-v ~/code:/repos:ro` | Optional. Shares a folder of your projects, read-only. Each folder inside it appears under **Your folders** on the home page, uncommitted changes included |
 
@@ -34,13 +35,15 @@ New to Codetrail? The **[user guide](user-guide.md)** walks through every part o
 
 Stop it with `docker stop codetrail` and start it again with `docker start codetrail`. To update: `git pull`, `docker build -t codetrail .`, `docker rm codetrail`, then the same `docker run`. The volume keeps your data.
 
+With `AUTH_MODE=none`, the API answers only on localhost or the host in `SITE_URL`, and refuses writes sent from other websites ([`src/proxy.ts`](../src/proxy.ts)).
+
 ## From source
 
 Use Node.js 22.13+ and pnpm:
 
 ```bash
-git clone https://github.com/Studio1-OSS/Codetrail.git
-cd Codetrail
+git clone https://github.com/nebius/token-factory-cookbook.git
+cd token-factory-cookbook/apps/codetrail
 pnpm install
 cp env.example .env          # add NEBIUS_API_KEY
 pnpm dev                  # http://localhost:3000
@@ -53,6 +56,8 @@ Nobody signs in by default (`AUTH_MODE=none`) and there are no limits: no quotas
 **Private repos.** Self-hosted, Codetrail opens any private repo your `GITHUB_TOKEN` can read (a fine-grained token with "Contents: read" on those repos is enough). Its files, maps, tours and docs stay in your own database; the only thing that leaves your machine is the model call to Nebius Token Factory. Token Factory's prompt cache keeps derived model state, not your code, and only a request that starts with exactly the same content can reuse it ([their caching docs](https://docs.tokenfactory.nebius.com/cached-tokens)). The hosted app (`AUTH_MODE=github`) stays public-only, because stored tours there are open to every visitor.
 
 ## Hosted mode (sign-in and free quotas)
+
+This cookbook copy is set up for local use. Before hosting it publicly, use the upstream [Codetrail](https://github.com/Studio1-OSS/Codetrail) and check how your proxy sets `X-Forwarded-For`: the MCP endpoint's quota is per client IP.
 
 Set `AUTH_MODE=github`, `BETTER_AUTH_SECRET` (any long random string), `BETTER_AUTH_URL` (your site's URL) and a GitHub OAuth app's `GITHUB_CLIENT_ID` and `GITHUB_CLIENT_SECRET` (callback: `<your site>/api/auth/callback/github`). Anyone can open stored repos, tours and answers. Reading a new repo or asking needs sign-in, with `QUOTA_READS_PER_DAY` and `QUOTA_ASKS_PER_DAY` per account; set `DAILY_BUDGET_USD` to cap total spend. For Vercel, point `DATABASE_URL` and `DATABASE_AUTH_TOKEN` at a Turso database.
 

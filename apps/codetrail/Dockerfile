@@ -1,11 +1,12 @@
 # Codetrail in one container: your Nebius key, a data volume, and (optionally) your code folders.
 #   docker build -t codetrail .
-#   docker run -p 3000:3000 -e NEBIUS_API_KEY=... -v codetrail-data:/data -v ~/code:/repos:ro codetrail
+#   docker run -p 127.0.0.1:3000:3000 -e NEBIUS_API_KEY=... -e NEBIUS_MODEL=moonshotai/Kimi-K3.1-Pro \
+#     -v codetrail-data:/data -v ~/code:/repos:ro codetrail
 
 FROM node:22-slim AS build
 WORKDIR /app
-RUN corepack enable && corepack prepare pnpm@10.10.0 --activate
-COPY package.json pnpm-lock.yaml ./
+RUN corepack enable && corepack prepare pnpm@11.25.0 --activate
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 RUN pnpm install --frozen-lockfile
 COPY . .
 ENV NEXT_OUTPUT=standalone NEXT_TELEMETRY_DISABLED=1
