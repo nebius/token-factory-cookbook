@@ -13,7 +13,7 @@ Every model call sends the **same prefix**: a system prompt, a repo header (GitH
 
 **Code, not the model, does:** download and filtering, secret scanning, the import graph and entry points, line numbers, token estimates, checking every step and code reference against the real file, marking import-backed links, pricing, storage and rendering.
 
-**Settings:** strict JSON-schema output (JSON mode as a fallback), `reasoning_effort: medium` (Kimi K3.1 Pro always reasons; Token Factory accepts the same setting), and one repair turn only when an answer is invalid or loses more than 30% of its steps. A repair resends the whole repo, so it's rare by design.
+**Settings:** strict JSON-schema output (JSON mode as a fallback), `reasoning_effort: medium`, and up to two repair turns only when an answer is invalid or loses more than 30% of its steps. A repair resends the whole repo, so it's rare by design.
 
 ## What it costs (measured)
 

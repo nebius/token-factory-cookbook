@@ -77,8 +77,8 @@ To work on the app without a key, `KIMI_PROVIDER=replay pnpm dev` streams a stor
 | --- | --- |
 | Model | `moonshotai/Kimi-K3.1-Pro` ([model page](https://tokenfactory.nebius.com/?modals=endpoint-details&model-id=moonshotai/Kimi-K3.1-Pro)) |
 | Endpoint | `https://api.tokenfactory.us-north1.nebius.com/v1/`, through the OpenAI-compatible `openai` SDK, streamed with `stream_options.include_usage` |
-| Reasoning | K3.1 Pro always reasons; no reasoning setting is sent, so every call uses Token Factory's default |
-| Sampling | Nothing is sent: K3.1 Pro fixes its own temperature |
+| Reasoning | No reasoning setting is sent, so every call uses Token Factory's default, which has reasoning on |
+| Sampling | No temperature or other sampling settings are sent |
 | `max_tokens` | 64,000 for the design and diagram calls (reasoning tokens count toward this) |
 | Answer format | Tagged blocks (above); the metadata is validated with zod, small slips fall back to defaults, and real schema errors get one repair call |
 | Self-review | Up to two rounds, each with four renders from the server's software renderer |
@@ -101,11 +101,11 @@ To work on the app without a key, `KIMI_PROVIDER=replay pnpm dev` streams a stor
 
 A two-spool high-bypass turbofan, generated from its name on November 4, 2026. Times and costs are from the app's run log:
 
-| Step | Time | Output tokens (of which reasoning) | Cost |
+| Step | Time | Output tokens | Cost |
 | --- | --- | --- | --- |
-| Design: 47 parts, 5 flows, 10 steps, a quiz | 23 min | 38,477 (12,979) | $0.39 |
-| Self-review from four rendered views, 12 parts rewritten | 11.5 min | 28,501 (25,212) | $0.32 |
-| Diagrams, alongside the review | 12 min | 40,000 (20,572) | $0.41 |
+| Design: 47 parts, 5 flows, 10 steps, a quiz | 23 min | 38,477 | $0.39 |
+| Self-review from four rendered views, 12 parts rewritten | 11.5 min | 28,501 | $0.32 |
+| Diagrams, alongside the review | 12 min | 40,000 | $0.41 |
 | **Whole machine** | **35 min** | | **$1.12** |
 
 Two of the three diagrams fit in the 40,000-token output limit used for that run; the limit for diagrams is now 64,000. This machine is included in [`seed/`](seed/).
@@ -122,7 +122,7 @@ pnpm build
 
 ## Limitations
 
-- **Speed.** K3.1 Pro always reasons and the answer is long (every part is code), so a new machine took about 35 minutes in the run above. You can start exploring once its parts are built.
+- **Speed.** K3.1 Pro reasons by default and the answer is long (every part is code), so a new machine took about 35 minutes in the run above. You can start exploring once its parts are built.
 - **Accuracy.** Kimi designs representative internals for that kind of machine, not an exact copy of one product. Each part shows how sure Kimi is.
 - **Scope.** This is a local app with no accounts. Everything is stored in `data/cutaway.db`; delete that folder to start over. Don't expose it publicly with your own API key.
 

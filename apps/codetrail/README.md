@@ -74,7 +74,7 @@ To use it from a coding agent, start the app and point an MCP client at `http://
 | Model | `moonshotai/Kimi-K3.1-Pro` ([model page](https://tokenfactory.nebius.com/?modals=endpoint-details&model-id=moonshotai/Kimi-K3.1-Pro)), set with `NEBIUS_MODEL` in `env.example`. Any Token Factory model ID works there; every call records the model that made it. |
 | Context | 1,048,576 tokens. The app reads repos up to `MAX_REPO_TOKENS` (700,000 by default) and compresses files to their signatures when a repo is larger. |
 | Endpoint | `https://api.tokenfactory.us-north1.nebius.com/v1/`, through the OpenAI-compatible `openai` SDK, streamed |
-| Reasoning | K3.1 Pro always reasons. JSON calls send `reasoning_effort: "medium"`, plain-text calls `"low"`. |
+| Reasoning | JSON calls send `reasoning_effort: "medium"`, plain-text calls `"low"`. |
 | Output | `response_format: json_schema` (strict), falling back to `json_object`; validated with zod and the app's own checks, with up to two repair turns when an answer fails them |
 | Caching | Every call on a repo sends the same prefix (system prompt plus the packed repo) with a `prompt_cache_key`; only the last message changes. Cached input comes back in `prompt_tokens_details.cached_tokens`. |
 | Streaming usage | K3.1 Pro sends a running usage total on every chunk, so the app keeps only the latest one per stream ([`src/server/ai/nebius.ts`](src/server/ai/nebius.ts)) |
@@ -116,7 +116,7 @@ pnpm build
 
 ## Limitations
 
-- **Speed.** K3.1 Pro reasons on every call; reading a repo of about 110K tokens took 159 s.
+- **Speed.** Reading a repo of about 110K tokens took 159 s.
 - **Size.** Repos above `MAX_REPO_TOKENS` are read with large files compressed to signatures, so some code is not quoted in full.
 - **Cache.** Cached input is best-effort; each receipt shows the real cached share.
 - **Scope.** The default `AUTH_MODE=none` is for local use: anyone who can reach the app can spend your API key. Everything is stored in `codetrail.db`; delete it to start over.
