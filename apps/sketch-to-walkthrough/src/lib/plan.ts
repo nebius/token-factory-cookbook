@@ -1,6 +1,10 @@
 import { z } from 'zod';
 
-export const pointSchema = z.tuple([z.number(), z.number()]);
+// Coordinates are bounded so grid-based checks (200 mm cells) stay cheap on the main thread.
+export const MAX_COORDINATE = 1_000_000;
+export const MAX_PLAN_EXTENT = 100_000; // 100 m in either direction
+const coordinate = z.number().finite().min(-MAX_COORDINATE).max(MAX_COORDINATE);
+export const pointSchema = z.tuple([coordinate, coordinate]);
 
 export const FURNITURE_TYPES = [
   'bed_double', 'bed_single', 'nightstand', 'wardrobe', 'sofa', 'armchair',
@@ -59,7 +63,7 @@ export const planSchema = z.object({
     id: z.string().min(1).max(80),
     wallId: z.string().min(1).max(80),
     type: z.enum(['door', 'window', 'opening']),
-    offset: z.number().min(0),
+    offset: z.number().min(0).max(MAX_PLAN_EXTENT),
     width: z.number().min(300).max(5000),
     height: z.number().min(300).max(3500),
     sill: z.number().min(0).optional(),
@@ -67,6 +71,13 @@ export const planSchema = z.object({
   })).max(400),
   furniture: z.array(furnitureSchema).max(1000).default([]),
   entry: z.object({ position: pointSchema, facing: z.number().min(0).max(360) }),
+}).superRefine((plan, context) => {
+  const points = [...plan.walls.flatMap((wall) => [wall.a, wall.b]), ...plan.rooms.flatMap((room) => room.polygon)];
+  const xs = points.map((p) => p[0]), ys = points.map((p) => p[1]);
+  const width = Math.max(...xs) - Math.min(...xs), depth = Math.max(...ys) - Math.min(...ys);
+  if (width > MAX_PLAN_EXTENT || depth > MAX_PLAN_EXTENT) {
+    context.addIssue({ code: 'custom', message: `The plan spans ${Math.round(width / 1000)} m × ${Math.round(depth / 1000)} m; the limit is ${MAX_PLAN_EXTENT / 1000} m in each direction.` });
+  }
 });
 export type PlanSpec = z.infer<typeof planSchema>;
 export type Opening = PlanSpec['openings'][number];

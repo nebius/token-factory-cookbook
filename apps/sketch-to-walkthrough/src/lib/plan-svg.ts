@@ -47,9 +47,20 @@ export function planToSVG(plan: PlanSpec, options: { width?: number; dark?: bool
         const normal = [-dy / length * wall.thickness * 0.18, dx / length * wall.thickness * 0.18];
         return `<line x1="${u(a[0])}" y1="${v(a[1])}" x2="${u(b[0])}" y2="${v(b[1])}" stroke="${colors.opening}" stroke-width="${wall.thickness * scale + 2}"/><line x1="${u(a[0] + normal[0])}" y1="${v(a[1] + normal[1])}" x2="${u(b[0] + normal[0])}" y2="${v(b[1] + normal[1])}" stroke="${colors.interior}" stroke-width="1.5"/><line x1="${u(a[0] - normal[0])}" y1="${v(a[1] - normal[1])}" x2="${u(b[0] - normal[0])}" y2="${v(b[1] - normal[1])}" stroke="${colors.interior}" stroke-width="1.5"/>`;
       }
-      const angle = Math.atan2(v(wall.b[1]) - v(wall.a[1]), u(wall.b[0]) - u(wall.a[0]));
-      const end = [u(a[0]) + Math.cos(angle + Math.PI / 2) * o.width * scale, v(a[1]) + Math.sin(angle + Math.PI / 2) * o.width * scale];
-      return `<line x1="${u(a[0])}" y1="${v(a[1])}" x2="${u(b[0])}" y2="${v(b[1])}" stroke="${colors.opening}" stroke-width="${wall.thickness * scale + 2}"/><path d="M ${u(b[0])} ${v(b[1])} A ${o.width * scale} ${o.width * scale} 0 0 1 ${end[0]} ${end[1]}" fill="none" stroke="${colors.dim}" stroke-width="1"/><line x1="${u(a[0])}" y1="${v(a[1])}" x2="${end[0]}" y2="${end[1]}" stroke="${colors.dim}" stroke-width="1.3"/>`;
+      const cutout = `<line x1="${u(a[0])}" y1="${v(a[1])}" x2="${u(b[0])}" y2="${v(b[1])}" stroke="${colors.opening}" stroke-width="${wall.thickness * scale + 2}"/>`;
+      if (o.type !== 'door') return cutout; // A doorless opening is just the gap in the wall.
+      // Same geometry as the clearance check (doorSwingPolygons): hinge at the offset end, leaf
+      // swinging to the left of the wall direction, or to the right for swing "right".
+      const side = o.swing === 'right' ? -1 : 1;
+      const tangent = [dx / length, dy / length], normal = [-tangent[1] * side, tangent[0] * side];
+      const arc = Array.from({ length: 13 }, (_, i) => {
+        const t = i / 12 * Math.PI / 2;
+        const x = a[0] + (tangent[0] * Math.cos(t) + normal[0] * Math.sin(t)) * o.width;
+        const y = a[1] + (tangent[1] * Math.cos(t) + normal[1] * Math.sin(t)) * o.width;
+        return `${i ? 'L' : 'M'} ${u(x)} ${v(y)}`;
+      }).join(' ');
+      const leaf = [a[0] + normal[0] * o.width, a[1] + normal[1] * o.width];
+      return `${cutout}<path d="${arc}" fill="none" stroke="${colors.dim}" stroke-width="1" data-door-swing="${o.swing ?? 'left'}"/><line x1="${u(a[0])}" y1="${v(a[1])}" x2="${u(leaf[0])}" y2="${v(leaf[1])}" stroke="${colors.dim}" stroke-width="1.3"/>`;
     }).join('');
     return wallMarkup + openings;
   }).join('');

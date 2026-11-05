@@ -1,5 +1,9 @@
 /// <reference lib="webworker" />
 import { buildFromModule, SourceError } from './module';
+import { lockDownFunctionConstructors } from './sandbox';
+
+// Before any generated code runs in this worker: no route from a value to the Function constructor.
+lockDownFunctionConstructors();
 
 export type WorkerResult = { id: number } & (
   { ok: true; result: ReturnType<typeof buildFromModule>; elapsed: number } |

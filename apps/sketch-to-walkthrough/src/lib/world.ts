@@ -100,7 +100,7 @@ export function buildWorld(plan: PlanSpec, options: { labels?: boolean; ceiling?
       const mid = opening.offset + opening.width / 2 - length / 2, sill = opening.sill ?? 0;
       if (opening.type === 'window') {
         box(parent, opening.width, sill, wall.thickness, mid, sill / 2);
-        box(parent, opening.width, sill + 38, wall.thickness + 35, mid, sill + 19, frameMaterial);
+        box(parent, opening.width, 38, wall.thickness + 35, mid, sill + 19, frameMaterial);
         box(parent, opening.width, 35, wall.thickness + 25, mid, sill + opening.height - 17, frameMaterial);
         box(parent, 45, opening.height, wall.thickness + 25, opening.offset + 24 - length / 2, sill + opening.height / 2, frameMaterial);
         box(parent, 45, opening.height, wall.thickness + 25, opening.offset + opening.width - 24 - length / 2, sill + opening.height / 2, frameMaterial);

@@ -1,5 +1,7 @@
 import { parse } from 'acorn';
 import * as walk from 'acorn-walk';
+import { analyze, type Reference } from 'eslint-scope';
+import type { Program } from 'estree';
 import { assumptionsSchema, paramsSchema, planSchema, type Assumption, type ParamDef, type ParamValues, type PlanSpec } from './plan';
 
 export class SourceError extends Error {}
@@ -8,7 +10,7 @@ export class SourceError extends Error {}
 export function validateGeneratorSource(source: string) {
   let ast;
   try {
-    ast = parse(source, { ecmaVersion: 2022, sourceType: 'module', locations: true });
+    ast = parse(source, { ecmaVersion: 2022, sourceType: 'module', locations: true, ranges: true });
   } catch (error) {
     throw new SourceError(`JavaScript syntax: ${(error as Error).message}`);
   }
@@ -31,42 +33,59 @@ export function validateGeneratorSource(source: string) {
   if (!['PARAMS', 'ASSUMPTIONS', 'buildPlan'].every((name) => declarations.includes(name)) || declarations.length !== 3) {
     throw new SourceError('Module must export exactly PARAMS, ASSUMPTIONS, and buildPlan.');
   }
-  const locals = new Set(['PARAMS', 'ASSUMPTIONS', 'buildPlan', 'Math', 'Number', 'undefined']);
+  const dangerous = ['constructor', 'prototype', '__proto__'];
   walk.full(ast, (node) => {
-    if (node.type === 'VariableDeclarator' && node.id.type === 'Identifier') locals.add(node.id.name);
     if (node.type === 'FunctionDeclaration' || node.type === 'FunctionExpression' || node.type === 'ArrowFunctionExpression') {
-      if ((node.type === 'FunctionDeclaration' || node.type === 'FunctionExpression') && node.id) locals.add(node.id.name);
+      if (node.async || node.generator) throw new SourceError('Async and generator functions are not allowed in a generator.');
       for (const param of node.params) {
         if (param.type !== 'Identifier') throw new SourceError('Use a simple identifier for each function parameter.');
-        locals.add(param.name);
       }
     }
-    if (node.type === 'MemberExpression' && ((node.property.type === 'Identifier' && !node.computed && ['constructor', 'prototype', '__proto__'].includes(node.property.name)) || (node.property.type === 'Literal' && typeof node.property.value === 'string' && ['constructor', 'prototype', '__proto__'].includes(node.property.value)))) {
-      throw new SourceError('Prototype and dynamic-constructor access are not allowed in a generator.');
+    if (node.type === 'MemberExpression') {
+      const key = node.property;
+      const literalKey = key.type === 'Literal' ? key.value : key.type === 'TemplateLiteral' && key.expressions.length === 0 ? key.quasis[0].value.cooked : undefined;
+      if ((key.type === 'Identifier' && !node.computed && dangerous.includes(key.name)) || (typeof literalKey === 'string' && dangerous.includes(literalKey))) {
+        throw new SourceError('Prototype and dynamic-constructor access are not allowed in a generator.');
+      }
+      // Keys computed at run time (obj[a + b]) can't be checked here; the sandbox worker removes the
+      // function constructors they could reach (see lockDownFunctionConstructors in sandbox.ts).
     }
-    if (['ImportExpression', 'AwaitExpression', 'ThisExpression', 'NewExpression', 'DebuggerStatement', 'TryStatement', 'ClassDeclaration'].includes(node.type)) {
+    if (['ImportExpression', 'AwaitExpression', 'YieldExpression', 'ThisExpression', 'NewExpression', 'DebuggerStatement', 'TryStatement', 'ClassDeclaration', 'ClassExpression', 'MetaProperty', 'TaggedTemplateExpression', 'WithStatement'].includes(node.type)) {
       throw new SourceError(`${node.type} is not allowed in a generator.`);
     }
   });
-  // Assignments are fine on the generator's own variables (and their properties); never on shared bindings.
-  const shared = new Set(['PARAMS', 'ASSUMPTIONS', 'buildPlan', 'Math', 'Number', 'undefined']);
+
+  // Resolve every name in its real lexical scope. A parameter or variable declared in one helper
+  // must not make the same name "safe" inside another function, where it would reach the global.
+  const scopes = analyze(ast as unknown as Program, { ecmaVersion: 2022, sourceType: 'module' });
+  const ambient = new Set(['Math', 'Number', 'undefined']);
+  const shared = new Set(['PARAMS', 'ASSUMPTIONS', 'buildPlan']);
+  const line = (ref: Reference) => (ref.identifier as { loc?: { start: { line: number } } }).loc?.start.line;
+  for (const ref of scopes.globalScope!.through) {
+    const name = ref.identifier.name;
+    if (!ambient.has(name)) throw new SourceError(`Unknown or unsafe global “${name}” at line ${line(ref)}.`);
+    if (ref.isWrite()) throw new SourceError(`Assign only to the generator's own variables (line ${line(ref)}); ${name} cannot be changed.`);
+  }
+  const isSharedBinding = (ref: Reference) => !ref.resolved || (shared.has(ref.identifier.name) && ref.resolved.scope.type === 'module');
+  const referenceOf = new Map<unknown, Reference>();
+  for (const scope of scopes.scopes) {
+    for (const ref of scope.references) {
+      referenceOf.set(ref.identifier, ref);
+      if (ref.isWrite() && !ref.init && isSharedBinding(ref)) {
+        throw new SourceError(`Assign only to the generator's own variables (line ${line(ref)}); ${ref.identifier.name} cannot be changed.`);
+      }
+    }
+  }
+  // Property assignment (o.x = 1, a[i]++) must start from a variable the generator declared itself.
   walk.full(ast, (node) => {
     if (node.type !== 'AssignmentExpression' && node.type !== 'UpdateExpression') return;
     let target = (node.type === 'AssignmentExpression' ? node.left : node.argument) as { type: string; name?: string; object?: unknown; loc?: { start: { line: number } } };
-    const line = target.loc?.start.line;
+    const at = target.loc?.start.line;
     while (target.type === 'MemberExpression') target = target.object as typeof target;
-    if (target.type !== 'Identifier' || !target.name || !locals.has(target.name) || shared.has(target.name)) {
-      throw new SourceError(`Assign only to the generator's own variables (line ${line}); ${target.name ?? 'this target'} cannot be changed.`);
+    const ref = target.type === 'Identifier' ? referenceOf.get(target) : undefined;
+    if (!ref || isSharedBinding(ref)) {
+      throw new SourceError(`Assign only to the generator's own variables (line ${at}); ${target.name ?? 'this target'} cannot be changed.`);
     }
-  });
-  walk.ancestor(ast, {
-    Identifier(node, _state, ancestors) {
-      const parent = ancestors[ancestors.length - 2];
-      if (parent?.type === 'MemberExpression' && parent.property === node && !parent.computed) return;
-      if (parent?.type === 'Property' && parent.key === node && !parent.computed && !parent.shorthand) return;
-      if (parent?.type === 'FunctionDeclaration' && parent.id === node) return;
-      if (!locals.has(node.name)) throw new SourceError(`Unknown or unsafe global “${node.name}” at line ${node.loc?.start.line}.`);
-    },
   });
   return true;
 }
@@ -134,10 +153,15 @@ export function buildFromModule(source: string, values?: ParamValues): { plan: P
   return { plan, params, assumptions, repairs };
 }
 
-export function extractModule(text: string): string {
+/** Strips a Markdown code fence from a model response, if present. */
+export function stripFences(text: string): string {
   const clean = text.trim();
   const fenced = clean.match(/```(?:javascript|js|typescript|ts)?\s*\n([\s\S]*?)```/i);
-  const source = (fenced ? fenced[1] : clean).trim();
+  return (fenced ? fenced[1] : clean).trim();
+}
+
+export function extractModule(text: string): string {
+  const source = stripFences(text);
   validateGeneratorSource(source);
   return source;
 }

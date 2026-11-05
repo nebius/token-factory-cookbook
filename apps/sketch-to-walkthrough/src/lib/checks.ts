@@ -100,24 +100,29 @@ export function adjacencyProblems(plan: PlanSpec): string[] {
 export type LeftoverRegion = { area: number; center: [number, number]; nearestRooms: string[] };
 export type LeftoverSpace = { percentage: number; uncoveredArea: number; enclosedArea: number; regions: LeftoverRegion[] };
 
+/**
+ * Area of one grid cell inside the exterior. Sutherland-Hodgman needs a convex clip window, so the
+ * (possibly concave) exterior is the subject and the square cell is the clip window.
+ */
 function clippedCellArea(minX: number, minY: number, step: number, exterior: [number, number][]) {
-  let polygon: [number, number][] = [[minX, minY], [minX + step, minY], [minX + step, minY + step], [minX, minY + step]];
-  for (let i = 0; i < exterior.length && polygon.length; i++) {
-    const a = exterior[i], b = exterior[(i + 1) % exterior.length];
-    const signedDistance = (point: [number, number]) => (b[0] - a[0]) * (point[1] - a[1]) - (b[1] - a[1]) * (point[0] - a[0]);
-    const clipped: [number, number][] = [];
+  const maxX = minX + step, maxY = minY + step;
+  const clip = (polygon: [number, number][], inside: (p: [number, number]) => boolean, cross: (p: [number, number], q: [number, number]) => [number, number]) => {
+    const out: [number, number][] = [];
     for (let j = 0; j < polygon.length; j++) {
       const p = polygon[j], q = polygon[(j + 1) % polygon.length];
-      const pDistance = signedDistance(p), qDistance = signedDistance(q);
-      const pInside = pDistance >= -EPS, qInside = qDistance >= -EPS;
-      if (pInside !== qInside) {
-        const t = pDistance / (pDistance - qDistance);
-        clipped.push([p[0] + (q[0] - p[0]) * t, p[1] + (q[1] - p[1]) * t]);
-      }
-      if (qInside) clipped.push(q);
+      const pIn = inside(p), qIn = inside(q);
+      if (pIn !== qIn) out.push(cross(p, q));
+      if (qIn) out.push(q);
     }
-    polygon = clipped;
-  }
+    return out;
+  };
+  const atX = (x: number) => (p: [number, number], q: [number, number]): [number, number] => [x, p[1] + (q[1] - p[1]) * (x - p[0]) / (q[0] - p[0])];
+  const atY = (y: number) => (p: [number, number], q: [number, number]): [number, number] => [p[0] + (q[0] - p[0]) * (y - p[1]) / (q[1] - p[1]), y];
+  let polygon: [number, number][] = exterior.map((p) => [p[0], p[1]]);
+  polygon = clip(polygon, (p) => p[0] >= minX - EPS, atX(minX));
+  if (polygon.length) polygon = clip(polygon, (p) => p[0] <= maxX + EPS, atX(maxX));
+  if (polygon.length) polygon = clip(polygon, (p) => p[1] >= minY - EPS, atY(minY));
+  if (polygon.length) polygon = clip(polygon, (p) => p[1] <= maxY + EPS, atY(maxY));
   return polygon.length >= 3 ? Math.min(step * step, polygonArea(polygon)) : 0;
 }
 
@@ -284,7 +289,7 @@ export function runChecks(plan: PlanSpec): CheckResults {
     if (!wall) { badOpenings.push(`Opening ${opening.id} references missing wall ${opening.wallId}.`); continue; }
     const wallLength = length(wall.a, wall.b);
     if (opening.offset < 100 || opening.offset + opening.width > wallLength - 100) badOpenings.push(`Opening ${opening.id} must fit its wall with at least 100 mm at both ends.`);
-    if (opening.sill! + opening.height > plan.wallHeight - 100) badOpenings.push(`Opening ${opening.id} extends through the top of its wall.`);
+    if ((opening.sill ?? 0) + opening.height > plan.wallHeight - 100) badOpenings.push(`Opening ${opening.id} extends through the top of its wall.`);
     if (opening.type === 'door') {
       if (opening.width < 800) badOpenings.push(`Door ${opening.id} is ${opening.width} mm; doors need at least 800 mm.`);
       if ((opening.sill ?? 0) > 10) badOpenings.push(`Door ${opening.id} needs a sill at floor level.`);

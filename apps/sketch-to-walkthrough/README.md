@@ -15,7 +15,7 @@ Upload a photo of a hand-drawn floor plan and walk through it in 3D in your brow
 A Vite + React + Three.js app with a small Hono server that keeps the API key:
 
 1. **Generate.** The sketch goes to Kimi with [`prompts/generate.md`](prompts/generate.md). Kimi lists every written dimension and room schedule entry, converts units exactly, and returns a module that exports `PARAMS` (every dimension, with min and max), `ASSUMPTIONS` (what it filled in where the sketch was silent) and `buildPlan(P)`. `buildPlan` returns a `PlanSpec`: walls, rooms, openings, furniture, written room sizes and room neighbours, all in millimetres.
-2. **Build in a sandbox.** The source is parsed with Acorn and rejected if it uses imports, globals, dynamic code or prototype access. It then runs in a disposable Web Worker with a 500 ms limit, and the result is validated with zod. Small slips, such as a parameter outside its range, are repaired locally and listed in the UI.
+2. **Build in a sandbox.** The source is parsed with Acorn and every name is resolved in its lexical scope with eslint-scope; it is rejected if it uses imports, globals, dynamic code or prototype access. It then runs in a disposable Web Worker with a 500 ms limit and no reachable function constructor, and the result is validated with zod. Small slips, such as a parameter outside its range, are repaired locally and listed in the UI.
 3. **Check.** Deterministic checks run on every version: a closed exterior, valid non-overlapping rooms, room sizes within ±10% of the written sizes, rooms touching the neighbours the sketch shows, no leftover space inside the house, openings that fit their walls, every room reachable from the entry, and furniture that stays inside its room and clear of door swings with a 600 mm path.
 4. **Review.** The plan is rendered to PNG. Kimi gets the sketch, the render, the check results and the source with [`prompts/review.md`](prompts/review.md), and answers `PASS` or `REVISE` with a corrected module. The app keeps up to three versions.
 5. **Use it.** The first version that passes the checks opens straight away while review continues in the background. Explore it as a plan, a dollhouse or a first-person walkthrough with collision. Every `PARAMS` entry becomes a slider that rebuilds the plan locally with no model call. Download `.glb`, `plan.json`, `plan.js` or `plan.svg`.
@@ -61,6 +61,7 @@ sketch-to-walkthrough/
 │   ├── App.tsx            # Upload, versions, model loop, inspector
 │   ├── lib/plan.ts        # zod PlanSpec schema
 │   ├── lib/module.ts      # Source validation, sandboxed evaluation, local repairs
+│   ├── lib/sandbox.ts     # Worker lockdown of function constructors
 │   ├── lib/checks.ts      # Deterministic checks
 │   ├── lib/furniture*.ts  # 25-type furniture catalogue, auto-furnish, 3D and SVG symbols
 │   ├── lib/world.ts       # Three.js scene from a PlanSpec
@@ -122,7 +123,7 @@ npm run qa        # Browser checks with mocked model responses; writes screensho
 
 What was verified for this recipe:
 
-- `npm ci`, `npm test` (112 tests), `npm run build` and `npm audit --omit=dev --audit-level=high` pass on Node.js 24.
+- `npm ci`, `npm test` (122 tests), `npm run build` and `npm audit --omit=dev --audit-level=high` pass on Node.js 24.
 - `npm run qa` passed all 51 browser checks in full headless Chromium on macOS, with no runtime or WebGL errors.
 - The full loop was run against `moonshotai/Kimi-K3.1-Pro` on Token Factory with the bundled two-bedroom sample and the courtyard house sketch.
 
@@ -132,7 +133,8 @@ What was verified for this recipe:
 - **The checks are for exploration,** not structural, building-code, fire-safety or accessibility certification. The output is not a construction document.
 - **Not supported:** curved walls, multiple storeys, stairs or roofs.
 - **Generated code runs in your browser.** It is source-checked and run in a disposable worker with a time limit. That is a guardrail for a local demo, not a hardened sandbox for untrusted code.
-- **Localhost only.** Both servers bind to 127.0.0.1, and the API has no authentication and sends no CORS headers. Don't expose it to other people as is, because it spends your key.
+- **Localhost only.** Both servers bind to 127.0.0.1. The API has no authentication; it sends no CORS headers and accepts only JSON requests from a local origin. Don't expose it to other people as is, because it spends your key.
+- Plans are limited to 100 m in each direction.
 - Sessions are not saved; reloading the page loses the current plan.
 
 The app creates no cloud resources and stores no sketches on disk. To clean up:

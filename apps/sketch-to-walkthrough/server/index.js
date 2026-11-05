@@ -93,9 +93,24 @@ async function completion(messages, kind, maxTokens = 18000) {
   throw new Error('Model stream was interrupted three times. Please try again.');
 }
 
-// No CORS headers: the browser reaches /api through the Vite proxy (same origin), so other sites cannot spend the key.
+// No CORS headers: the browser reaches /api through the Vite proxy (same origin). Missing CORS only stops
+// other sites from READING responses, not from sending a "simple" POST (e.g. text/plain), so model calls
+// also require a JSON content type (which forces a CORS preflight that fails) and a local Origin.
+const LOCAL_HOSTS = new Set(['127.0.0.1', 'localhost', '[::1]']);
+const isLocalOrigin = (origin) => {
+  try { return LOCAL_HOSTS.has(new URL(origin).hostname); } catch { return false; }
+};
 app.use('*', async (c, next) => {
   c.header('X-Content-Type-Options', 'nosniff');
+  if (c.req.method === 'POST') {
+    const type = (c.req.header('content-type') || '').toLowerCase();
+    if (!type.startsWith('application/json')) return c.json({ error: 'Send JSON with Content-Type: application/json.' }, 415);
+    const origin = c.req.header('origin');
+    const site = c.req.header('sec-fetch-site');
+    if ((origin && !isLocalOrigin(origin)) || (site && site !== 'same-origin' && site !== 'none')) {
+      return c.json({ error: 'Cross-origin requests are not allowed.' }, 403);
+    }
+  }
   await next();
 });
 app.get('/api/health', (c) => c.json({ ok: true, configured: Boolean(API_KEY), model: MODEL, baseUrl: BASE_URL, generateReasoningEffort: GENERATE_REASONING_EFFORT, reviewReasoningEffort: REVIEW_REASONING_EFFORT }));

@@ -88,7 +88,9 @@ function App() {
   }, []);
 
   const goHome = () => { runRef.current++; setScreen('home'); setProgress(null); setError(''); setMode('dollhouse'); setLocked(false); setVersions([]); };
-  const loadDemo = async (sample = SAMPLES[0]) => {
+  // The prepared plan (SAMPLE_SOURCE) is the two-bedroom sample, so the demo always opens that sketch.
+  const loadDemo = async () => {
+    const sample = SAMPLES[0];
     const id = ++runRef.current; setScreen('studio'); setSketch(sample.image); setSketchName(`${sample.id}.png`); setError(''); setProgress({ title: 'Opening your sample', detail: 'A ready-made plan. No model call needed.', step: 1 });
     try {
       const result = demo ?? await runGenerator(SAMPLE_SOURCE); if (runRef.current !== id) return;
@@ -136,8 +138,14 @@ function App() {
         if (runRef.current !== id) return;
         setUsage((u) => [...u, { ...review, completion: review.usage.completion, total: review.usage.total, kind: `Review v${number}` }]);
         lastReview = { verdict: review.verdict, issues: review.issues, improvements: review.improvements };
-        const updated = { ...next, verdict: review.verdict, issues: review.issues, improvements: review.improvements };
-        setVersions((old) => old.map((v) => v.id === number ? updated : v));
+        // Attach the verdict only to the exact snapshot that was reviewed. If the user moved a slider or
+        // toggled furnishing meanwhile, keep their edits and don't apply an old verdict to new geometry.
+        // (The updater may run after this line, so the notice is raised from inside it; repeating it is harmless.)
+        setVersions((old) => old.map((v) => {
+          if (v.id !== number) return v;
+          if (v !== next) { setToast(`Review of v${number} finished. Your edits are kept, so its verdict isn't applied to them.`); return v; }
+          return { ...v, verdict: review.verdict, issues: review.issues, improvements: review.improvements };
+        }));
         const wantsRefinement = review.verdict === 'PASS' && review.improvements.length > 0;
         if ((review.verdict === 'REVISE' || (wantsRefinement && !usedRefinement && Boolean(review.code))) && number < 3) {
           if (wantsRefinement) usedRefinement = true;
@@ -235,8 +243,8 @@ function App() {
       <section className="process-strip"><div><span className="process-number">01</span><span><b>Sketch it</b><small>A photo is all you need.</small></span></div><span className="process-line" /><div><span className="process-number">02</span><span><b>See it take shape</b><small>Every dimension, understood.</small></span></div><span className="process-line" /><div><span className="process-number">03</span><span><b>Step inside</b><small>Move in before you build.</small></span></div></section>
 
       <section className="samples-section" id="samples"><div className="section-title"><div><div className="eyebrow"><span /> A PLACE TO START</div><h2>Good plans start with a few lines.</h2></div><p>Pick a sketch. See what Kimi sees.<br />No blank canvas required.</p></div>
-        <div className="sample-grid">{SAMPLES.map((sample, i) => <article className="sample-card" key={sample.id}><button className="sample-image" onClick={() => trySample(sample)} aria-label={`Generate walkthrough from ${sample.title}`}><img src={sample.image} alt={`${sample.title} hand-drawn floor plan`} /><span className="sample-number">0{i + 1}</span><span className="sample-hover">Turn into 3D <Icon name="arrow" size={16} /></span></button><div className="sample-card-copy"><div><h3>{sample.title}</h3><p>{sample.description}</p></div><button className="sample-open" title="Open prepared demo" aria-label={`Open ${sample.title} prepared demo`} onClick={() => loadDemo(sample)}><Icon name="arrow" size={18} /></button></div><div className="sample-meta"><span>{sample.subtitle}</span><span>TRY THIS SKETCH <Icon name="arrow" size={12} /></span></div></article>)}</div>
-        <p className="sample-footnote"><Icon name="spark" size={13} /> Each card generates a real walkthrough. The arrow opens an instant, local example.</p>
+        <div className="sample-grid">{SAMPLES.map((sample, i) => <article className="sample-card" key={sample.id}><button className="sample-image" onClick={() => trySample(sample)} aria-label={`Generate walkthrough from ${sample.title}`}><img src={sample.image} alt={`${sample.title} hand-drawn floor plan`} /><span className="sample-number">0{i + 1}</span><span className="sample-hover">Turn into 3D <Icon name="arrow" size={16} /></span></button><div className="sample-card-copy"><div><h3>{sample.title}</h3><p>{sample.description}</p></div>{sample.id === SAMPLES[0].id && <button className="sample-open" title="Open prepared demo" aria-label={`Open ${sample.title} prepared demo`} onClick={() => loadDemo()}><Icon name="arrow" size={18} /></button>}</div><div className="sample-meta"><span>{sample.subtitle}</span><span>TRY THIS SKETCH <Icon name="arrow" size={12} /></span></div></article>)}</div>
+        <p className="sample-footnote"><Icon name="spark" size={13} /> Each card generates a real walkthrough. The arrow on the first card opens an instant, local example.</p>
       </section>
 
       <section className="how-section" id="how-it-works"><div className="how-copy"><div className="eyebrow"><span /> THOUGHTFUL BY DESIGN</div><h2>Not just a pretty picture.<br /><em>A plan that holds together.</em></h2><p>Kimi understands the drawing. A deterministic geometry engine checks the things a vision model can’t: closed walls, reachable rooms, doors that fit.</p><a href="#open-source">Built in the open. See how it works <Icon name="arrow" size={16} /></a></div><div className="loop-cards"><div className="loop-card"><Icon name="spark" size={20} /><span className="loop-number">1 / GENERATE</span><h3>Read the sketch</h3><p>Dimensions become clean, editable parameters.</p></div><div className="loop-card"><Icon name="check" size={20} /><span className="loop-number">2 / CHECK</span><h3>Test the geometry</h3><p>Every wall, opening, and connection is validated.</p></div><div className="loop-card"><Icon name="plan" size={20} /><span className="loop-number">3 / RENDER</span><h3>Draw the plan</h3><p>A precise, top-down view reveals what changed.</p></div><div className="loop-card"><Icon name="eye" size={20} /><span className="loop-number">4 / REFINE</span><h3>Compare, then improve</h3><p>Original meets render. Up to three versions, kept.</p></div></div></section>

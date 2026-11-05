@@ -3,6 +3,7 @@ import { buildWorld, disposeWorld } from './world';
 import { parse } from 'acorn';
 import type { ParamDef, PlanSpec } from './plan';
 import { planToSVG } from './plan-svg';
+import { stripFences } from './module';
 
 export function download(data: Blob | string, name: string) {
   const url = typeof data === 'string' ? data : URL.createObjectURL(data);
@@ -10,7 +11,9 @@ export function download(data: Blob | string, name: string) {
   if (typeof data !== 'string') setTimeout(() => URL.revokeObjectURL(url), 5000);
 }
 
-export function moduleWithParams(source: string, params: Record<string, ParamDef>) {
+export function moduleWithParams(response: string, params: Record<string, ParamDef>) {
+  // Versions keep the raw model response, which may be fenced; parse and slice the bare module.
+  const source = stripFences(response);
   const ast = parse(source, { ecmaVersion: 2022, sourceType: 'module' });
   const declaration = ast.body.find((node) => node.type === 'ExportNamedDeclaration' && node.declaration?.type === 'VariableDeclaration' && node.declaration.declarations.some((d) => d.id.type === 'Identifier' && d.id.name === 'PARAMS'));
   if (declaration?.type !== 'ExportNamedDeclaration' || declaration.declaration?.type !== 'VariableDeclaration') return source;
