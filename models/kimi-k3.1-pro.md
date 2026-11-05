@@ -84,6 +84,9 @@ print()
 
 ## Next steps
 
+- Explore a repository: [Codetrail](../apps/codetrail/) supports model-backed architecture maps, documentation and tours.
+- Build a machine explorer: [Cutaway](../apps/cutaway/) generates structured parts and Three.js geometry, then reviews rendered views.
+
 - Send the model an image: the [chart agent example](kimi-k3.1-pro-chart-agent/README.md) reads a bar chart and records each bar through a declared tool.
 - Follow the [OpenCode setup guide](../coding/opencode.md#kimi-k31-pro) to use the model in a coding agent.
 - See the [API examples](../api/README.md) for more SDK integrations.

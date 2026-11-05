@@ -2,10 +2,13 @@
 
 # Applications and demos
 
-Explore complete applications built with Nebius Token Factory. Follow the linked project for its runtime, required keys, and deployment instructions.
+Explore complete applications and interactive coding examples for Nebius Token Factory. Each recipe states whether it makes runtime model calls. Follow the linked project for its runtime, required keys, and deployment instructions.
 
 | Application | Workflow | Source |
 | --- | --- | --- |
+| [Codetrail](codetrail/) | Repository architecture, source-checked code tours and Q&A; includes a curated preview | Included in this repository |
+| [Cutaway](cutaway/) | Generate and explore machine internals with Kimi; includes a static showcase | Included in this repository |
+| [Explode Anything](explode-anything/) | Inspect a procedural camera assembly; no runtime inference | Included with adaptation permission |
 | [Splitter Lite](splitter-lite/) | Read receipts and split bills with vision and calculator tools | Included in this repository |
 | [WhatLLM](https://www.whatllm.org/) | Compare model responses | Hosted application |
 | [Allycat](https://github.com/The-AI-Alliance/allycat) | Search and chat over website content | External repository |
