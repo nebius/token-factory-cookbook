@@ -7,6 +7,8 @@ Explore complete applications built with Nebius Token Factory. Follow the linked
 | Application | Workflow | Source |
 | --- | --- | --- |
 | [Splitter Lite](splitter-lite/) | Read receipts and split bills with vision and calculator tools | Included in this repository |
+| [Explode Anything](explode-anything/) | Pull apart a procedural 3D camera, built by Kimi K3.1 Pro as a coding agent | Included in this repository |
+| [Sketch to Walkthrough](sketch-to-walkthrough/) | Turn a hand-drawn floor plan into a checked, walkable 3D model | Included in this repository |
 | [WhatLLM](https://www.whatllm.org/) | Compare model responses | Hosted application |
 | [Allycat](https://github.com/The-AI-Alliance/allycat) | Search and chat over website content | External repository |
 | [Customer Support AI](https://github.com/amrrs/customer-support-ai) | Answer support questions with domain-restricted web retrieval | External repository |
@@ -77,5 +79,36 @@ shares and flags any split that doesn't add up.
 |-
 
 Built by [Amitesh Anand](https://github.com/Astrodevil).
+
+---
+
+## Explode Anything
+
+[Explode Anything](explode-anything/) is a Vite and Three.js page that pulls a
+mirrorless camera and 50 mm lens apart into 36 procedural parts. You can inspect
+each part, operate the aperture and shutter, and switch to technical or X-ray
+views. Kimi K3.1 Pro on Nebius Token Factory wrote the app as a coding agent
+in Claude Code.
+
+| <img src="explode-anything/screenshots/02-exploded.png" width="400" alt="Camera fully exploded with the parts inspector open">
+|-
+
+Built by [Shivay Lamba](https://github.com/shivaylamba).
+
+---
+
+## Sketch to Walkthrough
+
+[Sketch to Walkthrough](sketch-to-walkthrough/) is a Vite, React and Three.js
+app. Upload a photo of a hand-drawn floor plan, and Kimi K3.1 Pro on Nebius
+Token Factory reads every written dimension and writes a layout generator. The
+app runs it in a sandbox, checks it with deterministic engineering checks,
+shows Kimi its own render to review, and opens a plan, dollhouse and
+first-person walkthrough with a slider for every dimension.
+
+| <img src="sketch-to-walkthrough/screenshots/02-dollhouse.png" width="400" alt="Two-bedroom plan in the dollhouse view with room labels and furniture">
+|-
+
+Built by [Shivay Lamba](https://github.com/shivaylamba).
 
 ---

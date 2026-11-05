@@ -1,0 +1,9 @@
+node_modules/
+dist/
+# Browser-check captures are generated; keep only the README images.
+screenshots/*
+!screenshots/02-exploded.png
+!screenshots/17-hero-1280.png
+!screenshots/24-lens-detail-exploded.png
+.gstack/
+.DS_Store
