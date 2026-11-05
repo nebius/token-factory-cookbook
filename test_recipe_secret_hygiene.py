@@ -9,6 +9,7 @@ ENV_TEMPLATES = (
     ROOT / "agents/agno-hacker-news-agent/env.example",
     ROOT / "agents/camel-ai-model-comparison-agent/env.example",
     ROOT / "rag/chat-with-pdf/env.example",
+    ROOT / "apps/image-to-3d/.env.example",
     ROOT / "agents/langchain/nebius_travel_planner/env.example",
     ROOT / "workshops/deep-research-writing-agents-nebius-okahu/.env.example",
     ROOT
