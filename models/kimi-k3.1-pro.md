@@ -92,6 +92,7 @@ print()
 - Turn a floor-plan sketch into 3D: the [sketch to walkthrough app](../apps/sketch-to-walkthrough/README.md) has Kimi write a layout generator that deterministic checks and its own vision review verify.
 - Read a whole paper with its figures: the [paper to interactive explainer app](../apps/paper-to-interactive-explainer/README.md) turns an arXiv paper into an interactive HTML lesson.
 - Turn a sketch into CAD: the [napkin to 3D print app](../apps/napkin-to-3d-print/README.md) writes and self-reviews a parametric CadQuery model.
+- Investigate with tools: the [LeadGuard event ops app](../apps/leadguard-event-ops/README.md) answers conference organizers' questions from tool-call evidence and drafts sponsor messages for approval.
 - Follow the [OpenCode setup guide](../coding/opencode.md#kimi-k31-pro) to use the model in a coding agent.
 - See the [API examples](../api/README.md) for more SDK integrations.
 - Read [Moonshot's technical overview](https://www.kimi.ai/blog/kimi-k3-1-pro) for model background.

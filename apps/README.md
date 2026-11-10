@@ -13,6 +13,7 @@ Explore complete applications and interactive coding examples for Nebius Token F
 | [Sketch to Walkthrough](sketch-to-walkthrough/) | Turn a hand-drawn floor plan into a checked, walkable 3D model | Included in this repository |
 | [Paper to interactive explainer](paper-to-interactive-explainer/) | Turn a research paper into a self-tested, interactive HTML explainer | Included in this repository |
 | [Napkin to 3D print](napkin-to-3d-print/) | Turn a hand-drawn sketch into a parametric CadQuery model and a printable STL | Included in this repository |
+| [LeadGuard event ops](leadguard-event-ops/) | Ask Kimi what happened at conference booths; tool calls over check-in and lead-scan evidence, with approval for sponsor messages | Included in this repository |
 | [Image to 3D](image-to-3d/) | Turn a photo into an interactive Three.js scene with Kimi, then refine it in plain language | Included in this repository |
 | [WhatLLM](https://www.whatllm.org/) | Compare model responses | Hosted application |
 | [Allycat](https://github.com/The-AI-Alliance/allycat) | Search and chat over website content | External repository |
@@ -84,6 +85,22 @@ shares and flags any split that doesn't add up.
 |-
 
 Built by [Amitesh Anand](https://github.com/Astrodevil).
+
+---
+
+## LeadGuard event ops
+
+[LeadGuard event ops](leadguard-event-ops/) answers an organizer's questions about a
+conference, such as "Were any leads lost at the Radar booth?". Kimi K3.1 Pro on Token Factory
+gathers evidence through five tools: check-in stats, booth health, a booth's timeline including
+scans made offline, and integrity anomalies. It answers with counts, times and badge ids. It can
+also draft a message to a sponsor, which waits for an organizer to approve it. The integrity checks
+run without a model, and the tools never return names or emails.
+
+| <img src="leadguard-event-ops/screenshots/2-ask-ops.png" width="400">
+|-
+
+Built by [Shivay Lamba](https://github.com/shivaylamba).
 
 ---
 

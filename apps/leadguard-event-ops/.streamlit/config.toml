@@ -1,0 +1,7 @@
+[server]
+# Local demo: keep it on this machine.
+address = "localhost"
+
+[theme]
+base = "dark"
+primaryColor = "#f4b85b"

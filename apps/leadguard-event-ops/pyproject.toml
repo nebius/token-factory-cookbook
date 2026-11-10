@@ -1,0 +1,12 @@
+[project]
+name = "leadguard-event-ops"
+version = "0.1.0"
+description = "Ask Kimi K3.1 Pro on Nebius Token Factory what is happening at a conference's booths: tool calls over check-in and lead-scan evidence, with human approval for sponsor messages"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "streamlit>=1.50.0",
+    "openai>=1.50.0",
+    "python-dotenv>=1.1.1",
+    "pandas>=2.2.0",
+]

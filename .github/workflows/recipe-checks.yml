@@ -10,6 +10,7 @@ on:
       - 'apps/sketch-to-walkthrough/**'
       - 'apps/paper-to-interactive-explainer/**'
       - 'apps/napkin-to-3d-print/**'
+      - 'apps/leadguard-event-ops/**'
       - 'apps/image-to-3d/**'
       - 'post-training/gemma-4-agentic-coding/**'
       - 'models/kimi-k3.1-pro-vision-showcase/**'
@@ -24,6 +25,7 @@ on:
       - 'apps/sketch-to-walkthrough/**'
       - 'apps/paper-to-interactive-explainer/**'
       - 'apps/napkin-to-3d-print/**'
+      - 'apps/leadguard-event-ops/**'
       - 'apps/image-to-3d/**'
       - 'post-training/gemma-4-agentic-coding/**'
       - 'models/kimi-k3.1-pro-vision-showcase/**'
@@ -147,7 +149,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        app: [paper-to-interactive-explainer, napkin-to-3d-print]
+        app: [paper-to-interactive-explainer, napkin-to-3d-print, leadguard-event-ops]
     defaults:
       run:
         working-directory: apps/${{ matrix.app }}
