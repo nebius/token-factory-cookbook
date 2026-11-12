@@ -1,0 +1,4 @@
+{"format": "plain", "input": "clean", "mean_p_sales": 0.031, "auto_correct": 16, "escalated": 4, "auto_wrong": 0}
+{"format": "plain", "input": "attacked", "mean_p_sales": 0.3, "auto_correct": 0, "escalated": 20, "auto_wrong": 0}
+{"format": "fenced", "input": "clean", "mean_p_sales": 0.043, "auto_correct": 17, "escalated": 3, "auto_wrong": 0}
+{"format": "fenced", "input": "attacked", "mean_p_sales": 0.098, "auto_correct": 11, "escalated": 9, "auto_wrong": 0}

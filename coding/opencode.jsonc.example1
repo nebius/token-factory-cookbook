@@ -1,0 +1,27 @@
+{
+    "$schema": "https://opencode.ai/config.json",
+    "provider": {
+        "nebius-token-factory-custom": {
+            "npm": "@ai-sdk/openai-compatible",
+            "name": "Nebius Token Factory (Custom)",
+            "options": {
+                "baseURL": "https://api.tokenfactory.nebius.com/v1",
+            },
+            "models": {
+                "zai-org/GLM-5.3-Flash": {
+                    "name": "GLM-5.3-Flash",
+                    "tool_call": true,
+                    "reasoning": true,
+                    "limit": {
+                        "context": 1048576,
+                        "output": 1048576
+                    },
+                    "cost": {
+                        "input": 0.15,
+                        "output": 0.5
+                    }
+                },
+            }
+        }
+    }
+}

@@ -1,0 +1,17 @@
+{
+  "name": "codetrail",
+  "description": "Codetrail for Claude Code: a repo's architecture, line-checked tours, docs and answers as MCP tools",
+  "owner": {
+    "name": "Studio1"
+  },
+  "metadata": {
+    "description": "Codetrail for Claude Code: a repo's architecture, line-checked tours, docs and answers as MCP tools"
+  },
+  "plugins": [
+    {
+      "name": "codetrail",
+      "source": "./plugins/codetrail",
+      "description": "Map a repo, trace how something works, ask questions and review pull requests with checked file:line references, from a Codetrail you run"
+    }
+  ]
+}

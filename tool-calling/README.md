@@ -1,67 +1,23 @@
-# Function / Tool Calling Examples
+[Cookbook](../README.md) / Tool calling
 
-Some examples showing how to do function/tool calling in Nebius Token Factory
+# Tool calling
 
-## References and Acknowledgements
+Connect model responses to application functions and external tools with Nebius Token Factory.
 
-- [API documentation](https://docs.tokenfactory.nebius.com//inference/quickstart)
-- [Tool calling docs](https://docs.tokenfactory.nebius.com//inference/tool-calling)
+Start with the [function calling explanation](function-calling-explained.md), then choose an example:
 
-## Prerequisites
-
-- Nebius API key (get it from [Nebius Token Factory](http://tokenfactory.nebius.com/))
-
-## Function Calling Explained
-
-[Function calling explained](function-calling-explained.md)
-
-![](function-calling-explained.svg)
+| Recipe | What it demonstrates |
+| --- | --- |
+| [Simple function calling](function_calling_1.ipynb) | Define a function and handle the model's tool request |
+| [Tavily tool calling](tavily_tool_calling.ipynb) | Give a research workflow access to web search |
+| [Splitter Lite](../apps/splitter-lite/) | Read bills with a vision model, calculate shares with tools, and validate the result |
 
 ## Setup
 
-**1. Using Google Colab**
+Follow [environment setup](../start-here/setup.md), then install the dependencies specified in the chosen example. Keep API keys in your environment or the recipe's ignored `.env` file. The Tavily example also requires a Tavily key.
 
-No setup needed.  Run the notebook and it will install all dependencies
+## Continue building
 
-
-**2. (Local) Using uv (recommended)**
-
-```bash
-uv venv
-source .venv/bin/activate
-uv  pip install  -r requirements.txt
-python -m ipykernel install --user --name="cookbook-1" --display-name "cookbook-1"
-```
-
-**3. (Local) Using python / pip**
-
-```bash
-python -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
-python -m ipykernel install --user --name="cookbook-1" --display-name "cookbook-1"
-```
-
-## Running the code
-
-**Using Jupyter**
-
-```bash
-jupyter lab
-```
-
-And select the kernel defined above and run notebooks.
-
-**Using vscode and other IDEs**
-
-Restart vscode so it will refresh available kernels.  Then select it and run it.
-
-
-## Examples
-
-
-| Example                             | Description                                         | Tech Stack                         |
-|-------------------------------------|-----------------------------------------------------|------------------------------------|
-| [simple function calling example](function_calling_1.ipynb) | Demonstrates how to call functions                          | Nebius AI     |
-| [Tavily tool calling example](tavily_tool_calling.ipynb) | Demonstrates how to implement research agent with Tavily search                          | Nebius AI, Tavily search    |
-
+- [Agent examples](../agents/README.md)
+- [API examples](../api/README.md)
+- [Token Factory documentation](https://docs.tokenfactory.nebius.com/)

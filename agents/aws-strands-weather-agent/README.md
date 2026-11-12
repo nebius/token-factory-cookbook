@@ -9,7 +9,7 @@ No Strands provider adapter or LiteLLM routing is required. This recipe exercise
 - Python 3.11 or newer.
 - [uv](https://docs.astral.sh/uv/).
 - A Nebius Token Factory API key from [tokenfactory.nebius.com](https://tokenfactory.nebius.com/).
-- A current model that supports function calling. The sample suggests `zai-org/GLM-5.1`; verify it, or choose another model, in the [live model catalog](https://tokenfactory.nebius.com/model-catalog.md).
+- A current model that supports function calling. The sample suggests `openai/gpt-oss-120b`; verify it, or choose another model, in the [live model catalog](https://tokenfactory.nebius.com/model-catalog.md).
 
 ## Setup
 
@@ -23,7 +23,7 @@ Edit `.env` and provide both required values:
 
 ```dotenv
 NEBIUS_API_KEY=your_key_here
-NEBIUS_MODEL=zai-org/GLM-5.1
+NEBIUS_MODEL=openai/gpt-oss-120b
 ```
 
 The model is intentionally required at runtime rather than hard-coded. Model availability changes, and IDs are case-sensitive.

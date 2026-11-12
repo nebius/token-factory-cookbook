@@ -1,0 +1,1813 @@
+{
+ "slug": "rechargeable-sonic-electric-toothbrush",
+ "provider": "moonshotai",
+ "model": "moonshotai/kimi-k3.1-pro",
+ "input": {
+  "kind": "text",
+  "text": "electric toothbrush"
+ },
+ "meta": {
+  "device": {
+   "name": "Rechargeable sonic electric toothbrush",
+   "category": "home-appliances",
+   "summary": "A sealed, induction-charged toothbrush using a resonant magnetic actuator to oscillate a detachable brush head.",
+   "sizeMm": [
+    32,
+    250,
+    34
+   ],
+   "disclaimer": "Representative internals of this kind of device, not an exact copy of one product."
+  },
+  "parts": [
+   {
+    "id": "brush-neck",
+    "name": "Detachable brush neck",
+    "parentId": null,
+    "function": "Transfers shaft motion into the brush head while providing a removable, washable outer neck.",
+    "howItWorks": "The neck pushes onto the handle nose and locks to the drive coupling. Its hollow tapered wall surrounds the moving shaft without rubbing it. A snap fit lets the complete head assembly be replaced when the bristles wear.",
+    "engineering": "The neck must remain concentric with the shaft despite molding shrinkage and repeated removal. Running clearance around the shaft is typically a few tenths of a millimetre, while the snap features require controlled elastic strain.",
+    "material": "Injection-molded polypropylene",
+    "shell": true,
+    "explode": {
+     "direction": [
+      0,
+      1,
+      0
+     ],
+     "distance": 85,
+     "order": 0
+    },
+    "specs": [
+     {
+      "label": "Exposed length",
+      "value": "approximately 32 mm"
+     },
+     {
+      "label": "Attachment",
+      "value": "snap-fit replaceable head"
+     }
+    ],
+    "failureModes": [
+     "Cracked snap features",
+     "Loose fit causing rattling",
+     "Toothpaste deposits restricting the coupling"
+    ],
+    "confidence": "high"
+   },
+   {
+    "id": "brush-head-shell",
+    "name": "Brush head body",
+    "parentId": "brush-neck",
+    "function": "Supports the bristle plate and protects the head-to-neck joint.",
+    "howItWorks": "The rounded body is sized to reach back teeth while presenting a smooth surface to the mouth. It moves as one rigid piece with the neck. Its front face carries the bristle plate and its rear blends into the neck.",
+    "engineering": "Thin walls and generous external radii reduce uncomfortable hard edges. The polymer must tolerate water, toothpaste surfactants and repeated high-frequency acceleration without fatigue cracking.",
+    "material": "Injection-molded polypropylene",
+    "shell": true,
+    "explode": {
+     "direction": [
+      0,
+      1,
+      0
+     ],
+     "distance": 115,
+     "order": 0
+    },
+    "specs": [
+     {
+      "label": "Head length",
+      "value": "38 mm"
+     },
+     {
+      "label": "Maximum width",
+      "value": "15 mm"
+     }
+    ],
+    "failureModes": [
+     "Impact cracks",
+     "Stress whitening near the neck",
+     "Permanent deformation from excessive brushing force"
+    ],
+    "confidence": "high"
+   },
+   {
+    "id": "bristle-plate",
+    "name": "Bristle carrier plate",
+    "parentId": "brush-head-shell",
+    "function": "Holds the bristle tufts in a precise pattern on the front of the brush head.",
+    "howItWorks": "Tufts are anchored into closely spaced holes or molded sockets in the plate. The plate distributes their loads into the head body. In this teardown it is shown separately to expose the tuft anchoring plane.",
+    "engineering": "Real heads commonly integrate this plate with the body or use an in-mold tufting process. Hole position and tuft retention matter because each filament reverses direction hundreds of times per second.",
+    "material": "Polypropylene",
+    "shell": false,
+    "explode": {
+     "direction": [
+      0,
+      0,
+      1
+     ],
+     "distance": 55,
+     "order": 1
+    },
+    "specs": [
+     {
+      "label": "Plate thickness",
+      "value": "approximately 1.2 mm"
+     },
+     {
+      "label": "Tuft field",
+      "value": "approximately 13 x 31 mm"
+     }
+    ],
+    "failureModes": [
+     "Tuft pull-out",
+     "Cracking around anchor holes",
+     "Surface wear from abrasive toothpaste"
+    ],
+    "confidence": "medium"
+   },
+   {
+    "id": "bristle-tufts",
+    "name": "Bristle tuft array",
+    "parentId": "bristle-plate",
+    "function": "Contacts teeth and gums to remove plaque through rapid sweeping motion.",
+    "howItWorks": "Each visible tuft contains many fine flexible filaments. The actuator sweeps the tufts from side to side while their bending lets them conform to tooth surfaces. Slight differences in trim length help the outer filaments reach around the tooth.",
+    "engineering": "For small angular shaft motion, tip displacement is approximately x = L·theta, with theta in radians. At L = 90 mm and theta = 0.017 rad, the geometric displacement is about 1.5 mm before bristle flexibility is considered.",
+    "material": "End-rounded nylon filaments",
+    "shell": false,
+    "explode": {
+     "direction": [
+      0,
+      0,
+      1
+     ],
+     "distance": 85,
+     "order": 2
+    },
+    "specs": [
+     {
+      "label": "Representative tufts",
+      "value": "15 grouped tufts"
+     },
+     {
+      "label": "Visible trim",
+      "value": "11–12 mm"
+     },
+     {
+      "label": "Typical filament diameter",
+      "value": "0.12–0.18 mm"
+     }
+    ],
+    "failureModes": [
+     "Splayed filaments",
+     "Loss of filament stiffness",
+     "Worn or poorly rounded filament tips"
+    ],
+    "confidence": "high"
+   },
+   {
+    "id": "head-coupler",
+    "name": "Brush head drive coupling",
+    "parentId": "brush-neck",
+    "function": "Locks the replaceable head to the oscillating drive shaft.",
+    "howItWorks": "A socket slides over the flattened shaft tip so torque is transmitted without a separate fastener. Flexible features or an interference fit suppress rattling. Pulling the head axially releases the connection for replacement.",
+    "engineering": "The coupling combines low insertion force with very small torsional backlash. Repeated fretting at the shaft tip can enlarge the socket, so a wear-resistant polymer and generous fillet radii are useful.",
+    "material": "Acetal engineering polymer",
+    "shell": false,
+    "explode": {
+     "direction": [
+      0,
+      1,
+      0
+     ],
+     "distance": 50,
+     "order": 1
+    },
+    "specs": [
+     {
+      "label": "Socket length",
+      "value": "approximately 12 mm"
+     },
+     {
+      "label": "Shaft interface",
+      "value": "flattened push-fit tip"
+     }
+    ],
+    "failureModes": [
+     "Socket wear and backlash",
+     "Cracked retention arms",
+     "Head detaching during use"
+    ],
+    "confidence": "medium"
+   },
+   {
+    "id": "outer-housing",
+    "name": "Sealed handle housing",
+    "parentId": null,
+    "function": "Forms the water-resistant handle and protects all internal components.",
+    "howItWorks": "The hollow tapered shell provides the main gripping surface and resists bending loads from brushing. It encloses the actuator, electronics and cell with only small openings for the controls and shaft. Seals at the base and nose keep water outside.",
+    "engineering": "A representative wall thickness is 1.2–1.5 mm. The long shell needs draft for molding, controlled roundness for the base seal and enough stiffness that hand pressure does not make it rub the moving actuator.",
+    "material": "PC/ABS engineering plastic",
+    "shell": true,
+    "explode": {
+     "direction": [
+      0,
+      -1,
+      0
+     ],
+     "distance": 90,
+     "order": 2
+    },
+    "specs": [
+     {
+      "label": "Maximum diameter",
+      "value": "30.4 mm"
+     },
+     {
+      "label": "Nominal wall",
+      "value": "1.3 mm"
+     },
+     {
+      "label": "Handle length",
+      "value": "approximately 183 mm"
+     }
+    ],
+    "failureModes": [
+     "Stress cracks around the nose",
+     "Leaking base joint",
+     "Scratched or chemically attacked surface"
+    ],
+    "confidence": "high"
+   },
+   {
+    "id": "grip-insert",
+    "name": "Elastomer grip insert",
+    "parentId": "outer-housing",
+    "function": "Improves wet grip and cushions the hand from vibration.",
+    "howItWorks": "A soft rear panel sits in a shallow housing recess. Raised ribs increase friction when the handle is wet. The elastomer also provides a small amount of vibration isolation between the shell and the user's hand.",
+    "engineering": "The insert may be bonded, mechanically keyed or produced by two-shot molding. Its hardness is a compromise between secure grip, cleanability and resistance to tearing at the rib roots.",
+    "material": "Thermoplastic elastomer",
+    "shell": false,
+    "explode": {
+     "direction": [
+      0,
+      0,
+      -1
+     ],
+     "distance": 55,
+     "order": 3
+    },
+    "specs": [
+     {
+      "label": "Grip length",
+      "value": "96 mm"
+     },
+     {
+      "label": "Typical hardness",
+      "value": "50–70 Shore A"
+     }
+    ],
+    "failureModes": [
+     "Peeling at the edges",
+     "Torn ribs",
+     "Swelling or discoloration from chemicals"
+    ],
+    "confidence": "high"
+   },
+   {
+    "id": "base-cap",
+    "name": "Induction charging base cap",
+    "parentId": "outer-housing",
+    "function": "Closes the handle base and sits over the external charging stand.",
+    "howItWorks": "The cap is a solid polymer wall rather than an open electrical socket. An alternating magnetic field passes through it to the receiving coil inside. Its inner spigot aligns the cap and compresses the base seal.",
+    "engineering": "The cap-to-coil spacing affects both charging efficiency and mechanical protection. Polymer is used instead of metal because a conductive closed shell would support eddy currents and weaken the charging field.",
+    "material": "PC/ABS engineering plastic",
+    "shell": true,
+    "explode": {
+     "direction": [
+      0,
+      -1,
+      0
+     ],
+     "distance": 70,
+     "order": 1
+    },
+    "specs": [
+     {
+      "label": "Base diameter",
+      "value": "29 mm"
+     },
+     {
+      "label": "Charging interface",
+      "value": "contactless inductive coupling"
+     }
+    ],
+    "failureModes": [
+     "Cracks from dropping",
+     "Poor coil alignment after reassembly",
+     "Leakage around the cap seam"
+    ],
+    "confidence": "high"
+   },
+   {
+    "id": "base-o-ring",
+    "name": "Base sealing ring",
+    "parentId": "base-cap",
+    "function": "Prevents water from entering through the removable base joint.",
+    "howItWorks": "The elastomer ring sits in a shallow groove and is squeezed between the cap and housing. Compression creates a continuous sealing line around the base. Unlike a moving seal, it does not experience repeated shaft rubbing.",
+    "engineering": "Static face or radial seals commonly use roughly 15–25% compression. Groove fill must remain below 100% so the elastomer has somewhere to displace without being cut during assembly.",
+    "material": "Silicone elastomer",
+    "shell": false,
+    "explode": {
+     "direction": [
+      0,
+      -1,
+      0
+     ],
+     "distance": 55,
+     "order": 2
+    },
+    "specs": [
+     {
+      "label": "Representative cord diameter",
+      "value": "1.5 mm"
+     },
+     {
+      "label": "Seal type",
+      "value": "static radial seal"
+     }
+    ],
+    "failureModes": [
+     "Compression set",
+     "Twisting or pinching during assembly",
+     "Leakage from toothpaste or grit on the sealing face"
+    ],
+    "confidence": "high"
+   },
+   {
+    "id": "power-button",
+    "name": "Power and mode button",
+    "parentId": "outer-housing",
+    "function": "Provides the user's sealed mechanical input for starting, stopping and selecting modes.",
+    "howItWorks": "Pressing the outer button moves a short stem against the flexible membrane beneath it. The membrane transmits the force to a small switch on the circuit board. Releasing the button lets the elastomer return it to its rest position.",
+    "engineering": "Button travel is kept small to limit the housing opening and membrane strain. The assembly must provide tactile feedback without creating a direct leak path around the stem.",
+    "material": "Rigid polymer with elastomer-compatible stem",
+    "shell": false,
+    "explode": {
+     "direction": [
+      0,
+      0,
+      1
+     ],
+     "distance": 55,
+     "order": 3
+    },
+    "specs": [
+     {
+      "label": "Button diameter",
+      "value": "8.6 mm"
+     },
+     {
+      "label": "Typical travel",
+      "value": "0.4–0.8 mm"
+     }
+    ],
+    "failureModes": [
+     "Sticking from dried toothpaste",
+     "Worn tactile response",
+     "Cracked or loose button stem"
+    ],
+    "confidence": "high"
+   },
+   {
+    "id": "light-pipe",
+    "name": "Indicator light pipe",
+    "parentId": "outer-housing",
+    "function": "Carries light from an internal LED to the handle surface.",
+    "howItWorks": "The clear polymer rod captures light from the LED below it. Internal reflections guide much of that light to the visible outer face. It communicates operating or charging status without placing an electrical component at the housing surface.",
+    "engineering": "A small air gap and polished optical faces improve transmission, while the surrounding geometry limits stray light. The pipe also needs mechanical support so it cannot press on and damage the LED.",
+    "material": "Clear optical polycarbonate",
+    "shell": false,
+    "explode": {
+     "direction": [
+      0,
+      0,
+      1
+     ],
+     "distance": 70,
+     "order": 3
+    },
+    "specs": [
+     {
+      "label": "Visible window",
+      "value": "approximately 3 x 6 mm"
+     },
+     {
+      "label": "Optical source",
+      "value": "board-mounted LED"
+     }
+    ],
+    "failureModes": [
+     "Scratched optical face",
+     "Misalignment with the LED",
+     "Stress cracking around the housing opening"
+    ],
+    "confidence": "high"
+   },
+   {
+    "id": "button-membrane",
+    "name": "Waterproof button membrane",
+    "parentId": "outer-housing",
+    "function": "Seals the control opening while transmitting button motion to the board switch.",
+    "howItWorks": "A thin silicone flange is trapped against the housing and a flexible dome sits over the switch. The dome deflects when pressed, then supplies the return force. The continuous sheet keeps water away from the switch contacts.",
+    "engineering": "Dome thickness controls actuation force and fatigue life. Compression around the flange must be continuous; a screw boss or molding witness line crossing the sealing land can create a leak.",
+    "material": "Silicone elastomer",
+    "shell": false,
+    "explode": {
+     "direction": [
+      0,
+      0,
+      1
+     ],
+     "distance": 40,
+     "order": 4
+    },
+    "specs": [
+     {
+      "label": "Construction",
+      "value": "flexible dome with sealing flange"
+     },
+     {
+      "label": "Typical actuation force",
+      "value": "1–3 N"
+     }
+    ],
+    "failureModes": [
+     "Torn dome",
+     "Compression set around the flange",
+     "Water ingress causing switch corrosion"
+    ],
+    "confidence": "high"
+   },
+   {
+    "id": "internal-chassis",
+    "name": "Internal structural chassis",
+    "parentId": null,
+    "function": "Locates the cell, circuit board, actuator and shaft supports as one rigid assembly.",
+    "howItWorks": "A rear spine and several annular cradles hold components at fixed positions inside the round handle. The chassis carries brushing loads from the shaft bearings into the housing. It also keeps heavy parts from moving and fatiguing their wires.",
+    "engineering": "Bearing alignment is more important than the chassis's absolute appearance. The design balances stiffness, moldability and open space for wiring; thin ribs are preferred to thick sections that could sink or warp during molding.",
+    "material": "Glass-filled engineering nylon",
+    "shell": false,
+    "explode": {
+     "direction": [
+      0,
+      0,
+      -1
+     ],
+     "distance": 45,
+     "order": 8
+    },
+    "specs": [
+     {
+      "label": "Spine length",
+      "value": "156 mm"
+     },
+     {
+      "label": "Support cradles",
+      "value": "4 representative stations"
+     }
+    ],
+    "failureModes": [
+     "Cracked bearing cradle",
+     "Warping causing shaft misalignment",
+     "Loose component mounts and vibration noise"
+    ],
+    "confidence": "high"
+   },
+   {
+    "id": "chassis-screws",
+    "name": "Chassis retaining screws",
+    "parentId": "internal-chassis",
+    "function": "Clamp the upper carrier and maintain alignment of the internal assembly.",
+    "howItWorks": "Two small screws draw the upper support against the chassis. Their clamp load prevents the bearing carrier from shifting under vibration. They are removed before the shaft and actuator supports can be separated.",
+    "engineering": "Screws into polymer require controlled boss diameter, engagement length and installation torque. Excess torque can strip the thread or crack a boss; too little allows fretting and noise.",
+    "material": "Stainless steel",
+    "shell": false,
+    "explode": {
+     "direction": [
+      0,
+      1,
+      0
+     ],
+     "distance": 55,
+     "order": 4
+    },
+    "specs": [
+     {
+      "label": "Quantity represented",
+      "value": "2"
+     },
+     {
+      "label": "Head diameter",
+      "value": "5 mm"
+     }
+    ],
+    "failureModes": [
+     "Stripped polymer bosses",
+     "Loose screws from vibration",
+     "Corrosion after water ingress"
+    ],
+    "confidence": "medium"
+   },
+   {
+    "id": "seal-carrier",
+    "name": "Nose and seal carrier",
+    "parentId": "internal-chassis",
+    "function": "Centres the dynamic shaft seal and closes the top of the internal chassis.",
+    "howItWorks": "The carrier registers inside the housing nose and provides a rigid bore around the seal. Its outer ring reacts brushing loads into the chassis. The central opening leaves room for the shaft to oscillate.",
+    "engineering": "The carrier controls seal concentricity and compression independently of the flexible outer housing. A stepped bore also prevents the seal from being pushed out by water pressure or shaft motion.",
+    "material": "Acetal engineering polymer",
+    "shell": false,
+    "explode": {
+     "direction": [
+      0,
+      1,
+      0
+     ],
+     "distance": 55,
+     "order": 4
+    },
+    "specs": [
+     {
+      "label": "Outer diameter",
+      "value": "22 mm"
+     },
+     {
+      "label": "Function",
+      "value": "seal retention and nose registration"
+     }
+    ],
+    "failureModes": [
+     "Distorted seal bore",
+     "Cracked carrier",
+     "Poor registration causing shaft rub"
+    ],
+    "confidence": "medium"
+   },
+   {
+    "id": "shaft-seal",
+    "name": "Dynamic shaft seal",
+    "parentId": "seal-carrier",
+    "function": "Blocks water and toothpaste while allowing the drive shaft to oscillate.",
+    "howItWorks": "A flexible lip lightly contacts the moving shaft and follows its small angular and lateral motion. The outer diameter is fixed in the seal carrier. This is the main barrier between the wet brush head and the dry actuator compartment.",
+    "engineering": "Seal friction consumes actuator power and generates heat, so lip interference is very small. Shaft surface finish, lubricant compatibility and concentricity strongly affect both leakage and wear.",
+    "material": "Silicone or fluorosilicone elastomer",
+    "shell": false,
+    "explode": {
+     "direction": [
+      0,
+      1,
+      0
+     ],
+     "distance": 80,
+     "order": 5
+    },
+    "specs": [
+     {
+      "label": "Shaft diameter",
+      "value": "4 mm"
+     },
+     {
+      "label": "Seal type",
+      "value": "flexible dynamic lip"
+     }
+    ],
+    "failureModes": [
+     "Lip wear and leakage",
+     "Abrasive damage from toothpaste",
+     "Hardening or swelling from chemical exposure"
+    ],
+    "confidence": "high"
+   },
+   {
+    "id": "upper-bearing",
+    "name": "Upper shaft bushing",
+    "parentId": "internal-chassis",
+    "function": "Supports the shaft close to the wet end and reacts brushing side loads.",
+    "howItWorks": "A low-friction sleeve surrounds the shaft while leaving it free to oscillate. Its position near the head reduces shaft bending and keeps the dynamic seal aligned. The outer sleeve is fixed in the upper chassis cradle.",
+    "engineering": "A representative running diametral clearance is 0.03–0.10 mm, depending on material and manufacturing process. The two shaft supports must be coaxial; misalignment raises friction and can rapidly wear the seal.",
+    "material": "Stainless carrier with low-friction polymer liner",
+    "shell": false,
+    "explode": {
+     "direction": [
+      1,
+      0,
+      0
+     ],
+     "distance": 55,
+     "order": 5
+    },
+    "specs": [
+     {
+      "label": "Bore",
+      "value": "4.1 mm representative"
+     },
+     {
+      "label": "Support length",
+      "value": "4 mm"
+     }
+    ],
+    "failureModes": [
+     "Bore wear and shaft rattle",
+     "Binding from contamination",
+     "Cracked or misaligned support"
+    ],
+    "confidence": "medium"
+   },
+   {
+    "id": "lower-bearing",
+    "name": "Lower shaft bushing",
+    "parentId": "internal-chassis",
+    "function": "Provides the second shaft support and establishes the actuator's rotation axis.",
+    "howItWorks": "The lower sleeve works with the upper bushing to resist tilting of the shaft. It sits below the magnetic rotor and close to the torsion spring. The shaft rotates through a small angle rather than continuously spinning.",
+    "engineering": "Spacing the two supports apart reduces angular error caused by bearing clearance. Low friction is important because the actuator operates near resonance and bearing losses directly reduce amplitude.",
+    "material": "Sintered bronze or low-friction engineering polymer",
+    "shell": false,
+    "explode": {
+     "direction": [
+      -1,
+      0,
+      0
+     ],
+     "distance": 55,
+     "order": 5
+    },
+    "specs": [
+     {
+      "label": "Bore",
+      "value": "4.1 mm representative"
+     },
+     {
+      "label": "Support spacing",
+      "value": "38 mm"
+     }
+    ],
+    "failureModes": [
+     "Wear increasing backlash",
+     "Dry or contaminated bearing surfaces",
+     "Shaft seizure after corrosion"
+    ],
+    "confidence": "medium"
+   },
+   {
+    "id": "drive-shaft",
+    "name": "Oscillating drive shaft",
+    "parentId": "internal-chassis",
+    "function": "Carries alternating torque from the magnetic rotor to the removable brush head.",
+    "howItWorks": "The slim shaft is supported at two points and twists or rocks through a small angle. Its flattened upper tip engages the head coupling. Its lower region is rigidly attached to the actuator rotor and spring.",
+    "engineering": "The shaft needs adequate torsional stiffness without adding excessive rotary inertia. For a circular shaft, torsional stiffness is k = G·J/L and J = pi·d^4/32; however, the usable output angle is limited by bearings, seal friction and head load.",
+    "material": "Stainless steel",
+    "shell": false,
+    "explode": {
+     "direction": [
+      0,
+      1,
+      0
+     ],
+     "distance": 100,
+     "order": 5
+    },
+    "specs": [
+     {
+      "label": "Diameter",
+      "value": "4 mm"
+     },
+     {
+      "label": "Representative length",
+      "value": "75 mm"
+     },
+     {
+      "label": "Motion",
+      "value": "small-angle oscillation, not continuous rotation"
+     }
+    ],
+    "failureModes": [
+     "Bending from excessive brushing force",
+     "Corrosion after seal leakage",
+     "Wear at the head coupling"
+    ],
+    "confidence": "high"
+   },
+   {
+    "id": "actuator-stator",
+    "name": "Laminated actuator stator",
+    "parentId": "internal-chassis",
+    "function": "Guides magnetic flux from the field coils toward the moving magnets.",
+    "howItWorks": "The soft-magnetic core provides a low-reluctance path around the two coils and ends in pole faces near the rotor magnets. Reversing coil current changes the magnetic polarity at those faces. The stationary core also conducts some coil heat into the chassis.",
+    "engineering": "The exact pole geometry varies considerably between toothbrush designs. Lamination or another loss-control strategy reduces eddy-current heating; tight pole gaps increase force but leave less tolerance for rotor runout.",
+    "material": "Soft-magnetic steel laminations",
+    "shell": false,
+    "explode": {
+     "direction": [
+      -1,
+      0,
+      0
+     ],
+     "distance": 70,
+     "order": 6
+    },
+    "specs": [
+     {
+      "label": "Representative pole gap",
+      "value": "0.2–0.5 mm per side"
+     },
+     {
+      "label": "Core arrangement",
+      "value": "two-pole U-shaped magnetic circuit"
+     }
+    ],
+    "failureModes": [
+     "Loose laminations causing noise",
+     "Corrosion after water ingress",
+     "Pole-face contact from chassis distortion"
+    ],
+    "confidence": "medium"
+   },
+   {
+    "id": "actuator-coils",
+    "name": "Actuator field coils",
+    "parentId": "actuator-stator",
+    "function": "Convert controlled alternating current into the magnetic field that drives the rotor.",
+    "howItWorks": "Two copper windings sit on opposite stator limbs. The electronic driver reverses or redistributes their current at the actuator's operating frequency. Their changing field pulls and pushes the permanent-magnet rotor in alternating directions.",
+    "engineering": "Each winding obeys v = R·i + L·di/dt, with an additional motion-induced voltage. Copper loss is Pcu = I_rms^2·R. The model shows a small number of visible turns; a real winding contains many more turns of finer wire.",
+    "material": "Enamel-insulated copper wire",
+    "shell": false,
+    "explode": {
+     "direction": [
+      1,
+      0,
+      0
+     ],
+     "distance": 85,
+     "order": 6
+    },
+    "specs": [
+     {
+      "label": "Windings",
+      "value": "2"
+     },
+     {
+      "label": "Typical drive frequency",
+      "value": "approximately 200–300 Hz"
+     },
+     {
+      "label": "Visible turns",
+      "value": "simplified for illustration"
+     }
+    ],
+    "failureModes": [
+     "Insulation failure from overheating",
+     "Broken fine lead-out wire",
+     "Open circuit from vibration fatigue"
+    ],
+    "confidence": "medium"
+   },
+   {
+    "id": "actuator-rotor",
+    "name": "Magnet carrier rotor",
+    "parentId": "drive-shaft",
+    "function": "Holds the drive magnets and couples their alternating force into the shaft.",
+    "howItWorks": "The carrier is fixed to the shaft and places a magnet on each side of its axis. Magnetic forces at this offset create a torque about the shaft. The carrier reverses direction on every half-cycle instead of rotating continuously.",
+    "engineering": "Rotor inertia helps set the resonant frequency, so unnecessary mass is undesirable. Magnet retention must survive repeated acceleration without allowing a magnet to shift into a stator pole.",
+    "material": "Rigid acetal or reinforced polymer",
+    "shell": false,
+    "explode": {
+     "direction": [
+      0,
+      0,
+      1
+     ],
+     "distance": 60,
+     "order": 6
+    },
+    "specs": [
+     {
+      "label": "Motion",
+      "value": "oscillating rotary carrier"
+     },
+     {
+      "label": "Magnet stations",
+      "value": "2"
+     }
+    ],
+    "failureModes": [
+     "Cracked magnet pockets",
+     "Loose fit on the shaft",
+     "Carrier imbalance and vibration"
+    ],
+    "confidence": "medium"
+   },
+   {
+    "id": "actuator-magnets",
+    "name": "Actuator permanent magnets",
+    "parentId": "actuator-rotor",
+    "function": "Provide the fixed magnetic poles on which the stator field acts.",
+    "howItWorks": "The two magnets present opposite pole orientations to the nearby stator faces. As coil current changes, attraction and repulsion produce an alternating torque. Their rigid attachment ensures that this torque reaches the rotor and shaft.",
+    "engineering": "High remanence gives useful force in a small volume, but the adhesive joint and corrosion protection are critical. Excess temperature, mechanical impact or exposure to water can permanently reduce magnetic performance.",
+    "material": "Nickel-coated neodymium-iron-boron magnets",
+    "shell": false,
+    "explode": {
+     "direction": [
+      0,
+      0,
+      1
+     ],
+     "distance": 90,
+     "order": 7
+    },
+    "specs": [
+     {
+      "label": "Quantity",
+      "value": "2"
+     },
+     {
+      "label": "Approximate size",
+      "value": "2.4 x 12 x 5 mm each"
+     }
+    ],
+    "failureModes": [
+     "Adhesive failure",
+     "Chipping from pole-face impact",
+     "Corrosion or thermal demagnetization"
+    ],
+    "confidence": "medium"
+   },
+   {
+    "id": "torsion-spring",
+    "name": "Resonant torsion spring",
+    "parentId": "internal-chassis",
+    "function": "Returns the rotor toward centre and stores energy between oscillation half-cycles.",
+    "howItWorks": "One side of the spring reacts against the chassis and the other against the moving shaft assembly. Deflection stores elastic energy and creates a restoring torque. Together with rotor inertia, it sets the frequency at which the toothbrush moves most efficiently.",
+    "engineering": "For torsional stiffness kt and total reflected inertia J, the undamped natural frequency is f0 = sqrt(kt/J)/(2·pi). Operating near f0 increases amplitude for a given input, but worn bearings, head load and temperature shift the response.",
+    "material": "Stainless spring steel",
+    "shell": false,
+    "explode": {
+     "direction": [
+      -1,
+      0,
+      0
+     ],
+     "distance": 90,
+     "order": 6
+    },
+    "specs": [
+     {
+      "label": "Representative natural frequency",
+      "value": "approximately 250 Hz"
+     },
+     {
+      "label": "Visible coil turns",
+      "value": "5"
+     }
+    ],
+    "failureModes": [
+     "Fatigue fracture",
+     "Permanent set reducing amplitude",
+     "Corrosion changing stiffness"
+    ],
+    "confidence": "medium"
+   },
+   {
+    "id": "pressure-sensor",
+    "name": "Brushing pressure sensor",
+    "parentId": "internal-chassis",
+    "function": "Detects excessive brushing force so the controller can warn the user or reduce motion.",
+    "howItWorks": "A representative strain-sensing element sits beside the upper shaft support. Side load on the brush head slightly deflects this support and changes the sensor signal. The controller filters that signal and compares it with a pressure threshold.",
+    "engineering": "Some toothbrushes instead infer pressure from actuator current, so this separate sensor is only one representative implementation. Signal drift, mounting stiffness and head mass must be accounted for during calibration.",
+    "material": "Silicon sensing element on a metal and polymer carrier",
+    "shell": false,
+    "explode": {
+     "direction": [
+      1,
+      0,
+      0
+     ],
+     "distance": 55,
+     "order": 7
+    },
+    "specs": [
+     {
+      "label": "Typical warning threshold",
+      "value": "approximately 2.5–3.5 N"
+     },
+     {
+      "label": "Representative sensing method",
+      "value": "support strain"
+     }
+    ],
+    "failureModes": [
+     "Calibration drift",
+     "Broken sensor leads",
+     "Insensitive readings after chassis creep"
+    ],
+    "confidence": "low"
+   },
+   {
+    "id": "control-pcb",
+    "name": "Main control and charging board",
+    "parentId": "internal-chassis",
+    "function": "Hosts the charging, battery-management, control and actuator-drive electronics.",
+    "howItWorks": "The narrow vertical board connects the receiving coil, cell, user switch and actuator. Charging circuitry rectifies the coil output and regulates cell charging. During brushing, logic and power electronics generate the required coil current while timing the brushing session.",
+    "engineering": "The board is long and narrow to fit beside the cell and within the curved housing. Power components require copper area for heat spreading, while wet-service reliability depends on cleaning flux residues and preventing moisture-driven electrochemical migration.",
+    "material": "FR-4 circuit board with copper traces",
+    "shell": false,
+    "explode": {
+     "direction": [
+      0,
+      0,
+      1
+     ],
+     "distance": 75,
+     "order": 7
+    },
+    "specs": [
+     {
+      "label": "Board outline",
+      "value": "18 x 80 mm"
+     },
+     {
+      "label": "Thickness",
+      "value": "1.2 mm representative"
+     },
+     {
+      "label": "Functions",
+      "value": "charging, protection, control and power drive"
+     }
+    ],
+    "failureModes": [
+     "Corrosion from water ingress",
+     "Cracked solder joints",
+     "Failed charging or power components"
+    ],
+    "confidence": "high"
+   },
+   {
+    "id": "microcontroller",
+    "name": "Controller integrated circuit",
+    "parentId": "control-pcb",
+    "function": "Runs the brushing timer, reads inputs and coordinates drive and indicator behaviour.",
+    "howItWorks": "The controller detects button presses and optionally reads the pressure sensor. It produces timed gate signals for the power driver and changes patterns for different modes. It also manages reminders, automatic shutoff and low-battery indication.",
+    "engineering": "A small low-power controller is sufficient; its clock need not directly determine resonance if the drive uses feedback. Firmware commonly includes debounce, cell-voltage checks and fault handling to prevent continuous unintended coil current.",
+    "material": "Silicon integrated circuit in a molded package",
+    "shell": false,
+    "explode": {
+     "direction": [
+      0,
+      0,
+      1
+     ],
+     "distance": 95,
+     "order": 8
+    },
+    "specs": [
+     {
+      "label": "Typical functions",
+      "value": "timing, input handling, modulation and status"
+     },
+     {
+      "label": "Representative package body",
+      "value": "6 x 6 mm"
+     }
+    ],
+    "failureModes": [
+     "Firmware lockup",
+     "Electrostatic damage",
+     "Corroded solder connections"
+    ],
+    "confidence": "high"
+   },
+   {
+    "id": "h-bridge",
+    "name": "Actuator power driver",
+    "parentId": "control-pcb",
+    "function": "Switches cell power through the actuator coils in the required direction and timing.",
+    "howItWorks": "Power switches inside the driver connect the winding to the supply in alternating polarities. The controller's low-power signals determine when the switches operate. Current limiting and flyback handling protect both the switches and the battery.",
+    "engineering": "An H-bridge applies +V or -V to a load, enabling bidirectional current without a dual supply. Switch loss is approximately Pcond = I_rms^2·RDS(on) per conducting device, plus switching loss during each transition.",
+    "material": "Silicon power integrated circuit",
+    "shell": false,
+    "explode": {
+     "direction": [
+      0,
+      0,
+      1
+     ],
+     "distance": 105,
+     "order": 8
+    },
+    "specs": [
+     {
+      "label": "Topology",
+      "value": "bidirectional switched power stage"
+     },
+     {
+      "label": "Load",
+      "value": "inductive actuator winding"
+     }
+    ],
+    "failureModes": [
+     "Overheating from excessive current",
+     "Switch failure from inductive transients",
+     "Solder-joint cracking at the package"
+    ],
+    "confidence": "medium"
+   },
+   {
+    "id": "indicator-led",
+    "name": "Status indicator LED",
+    "parentId": "control-pcb",
+    "function": "Produces the light used to indicate operation, charging or low battery.",
+    "howItWorks": "The controller switches a small current through the light-emitting diode. The light pipe above it carries that light through the sealed housing. Different flashing patterns can communicate status with only one optical window.",
+    "engineering": "A series resistor or controlled current source sets LED current. Brightness is limited by both user comfort and battery energy, especially during long charging indications.",
+    "material": "Semiconductor LED with polymer lens",
+    "shell": false,
+    "explode": {
+     "direction": [
+      0,
+      0,
+      1
+     ],
+     "distance": 85,
+     "order": 8
+    },
+    "specs": [
+     {
+      "label": "Location",
+      "value": "aligned beneath the light pipe"
+     },
+     {
+      "label": "Typical current",
+      "value": "2–10 mA"
+     }
+    ],
+    "failureModes": [
+     "Failed LED or solder joint",
+     "Dim output after overheating",
+     "Optical misalignment with the light pipe"
+    ],
+    "confidence": "high"
+   },
+   {
+    "id": "lithium-cell",
+    "name": "Rechargeable lithium-ion cell",
+    "parentId": "internal-chassis",
+    "function": "Stores electrical energy for cordless brushing sessions.",
+    "howItWorks": "The cylindrical cell is charged through the induction receiver and charging electronics. During use it supplies the actuator driver and control circuitry. Protection and charge control keep its voltage and current within safe limits.",
+    "engineering": "Usable runtime is approximately t = eta·Vnom·C/Pavg, with capacity C in Ah. Mechanical retention must prevent the relatively heavy cell from hammering its contacts during drops, and the charging system must not continue charging a damaged or excessively hot cell.",
+    "material": "Lithium-ion cell with steel can and polymer sleeve",
+    "shell": false,
+    "explode": {
+     "direction": [
+      -1,
+      0,
+      0
+     ],
+     "distance": 75,
+     "order": 7
+    },
+    "specs": [
+     {
+      "label": "Nominal voltage",
+      "value": "3.6 V"
+     },
+     {
+      "label": "Representative capacity",
+      "value": "700–900 mAh"
+     },
+     {
+      "label": "Approximate cell size",
+      "value": "18 mm diameter x 50 mm class"
+     }
+    ],
+    "failureModes": [
+     "Capacity loss with age",
+     "Swelling from abuse or overcharge",
+     "Internal protection disconnecting the cell"
+    ],
+    "confidence": "high"
+   },
+   {
+    "id": "battery-contacts",
+    "name": "Cell contact springs",
+    "parentId": "internal-chassis",
+    "function": "Maintain low-resistance electrical connections to both ends of the removable cell.",
+    "howItWorks": "Springy metal strips press against the cell terminals and connect them to the board wiring. Their compliance tolerates dimensional variation and small impacts. The contact force must remain high enough to prevent intermittent power during vibration.",
+    "engineering": "Contact resistance causes local heating according to P = I^2·Rcontact. Nickel plating improves corrosion resistance, while adequate elastic deflection prevents relaxation and fretting over the product life.",
+    "material": "Nickel-plated spring steel",
+    "shell": false,
+    "explode": {
+     "direction": [
+      0,
+      -1,
+      0
+     ],
+     "distance": 65,
+     "order": 7
+    },
+    "specs": [
+     {
+      "label": "Connections",
+      "value": "positive and negative spring contacts"
+     },
+     {
+      "label": "Desired contact resistance",
+      "value": "tens of milliohms or less"
+     }
+    ],
+    "failureModes": [
+     "Corrosion and high resistance",
+     "Loss of spring force",
+     "Fatigue fracture after repeated impacts"
+    ],
+    "confidence": "high"
+   },
+   {
+    "id": "wiring-harness",
+    "name": "Internal flexible wiring",
+    "parentId": "internal-chassis",
+    "function": "Connects components that cannot be mounted directly on the rigid circuit board.",
+    "howItWorks": "Insulated conductors join the cell contacts, charging receiver, actuator coils and optional sensor to the board. Gentle bends provide strain relief and leave space for assembly. Routing keeps wires clear of the moving rotor and shaft.",
+    "engineering": "Wire length is a compromise between serviceability and resistance. High-vibration joints need strain relief; repeated bending concentrated directly at a solder joint is a common source of open circuits.",
+    "material": "Copper conductors with polymer insulation",
+    "shell": false,
+    "explode": {
+     "direction": [
+      1,
+      0,
+      0
+     ],
+     "distance": 65,
+     "order": 7
+    },
+    "specs": [
+     {
+      "label": "Represented circuits",
+      "value": "cell, receiver, actuator and sensor"
+     },
+     {
+      "label": "Construction",
+      "value": "flexible insulated stranded wire"
+     }
+    ],
+    "failureModes": [
+     "Broken conductor at a solder joint",
+     "Insulation chafing",
+     "Wire trapped in the moving actuator"
+    ],
+    "confidence": "high"
+   },
+   {
+    "id": "charging-coil",
+    "name": "Induction receiving coil",
+    "parentId": "internal-chassis",
+    "function": "Receives energy wirelessly from the charging stand through the sealed base.",
+    "howItWorks": "An alternating magnetic field from the stand crosses the flat spiral winding and induces an alternating voltage. The board rectifies and regulates that voltage to charge the cell. No exposed metal charging contacts are required.",
+    "engineering": "For sinusoidal excitation, the open-circuit receiver voltage magnitude is approximately |V2| = omega·M·|I1|, where M is mutual inductance. Coil alignment, base thickness and ferrite properties strongly affect M and charging efficiency.",
+    "material": "Enamel-insulated copper wire",
+    "shell": false,
+    "explode": {
+     "direction": [
+      0,
+      -1,
+      0
+     ],
+     "distance": 85,
+     "order": 4
+    },
+    "specs": [
+     {
+      "label": "Representative geometry",
+      "value": "7-turn flat spiral"
+     },
+     {
+      "label": "Outer winding radius",
+      "value": "approximately 10 mm"
+     },
+     {
+      "label": "Received power class",
+      "value": "roughly 1–2 W"
+     }
+    ],
+    "failureModes": [
+     "Broken winding lead",
+     "Slow charging from misalignment",
+     "Heat damage from a shorted turn"
+    ],
+    "confidence": "high"
+   },
+   {
+    "id": "ferrite-disc",
+    "name": "Receiver ferrite backing",
+    "parentId": "charging-coil",
+    "function": "Concentrates the charging magnetic field and shields nearby components from it.",
+    "howItWorks": "The high-permeability disc sits just behind the receiving coil. It provides an easier return path for magnetic flux and increases coupling to the charging stand. It also reduces unwanted alternating field penetration into the cell and chassis region.",
+    "engineering": "Ferrite offers high magnetic permeability with much lower electrical conductivity than steel, limiting eddy-current loss. It is brittle, so the chassis must support it without creating concentrated bending stress.",
+    "material": "Sintered ferrite ceramic",
+    "shell": false,
+    "explode": {
+     "direction": [
+      0,
+      -1,
+      0
+     ],
+     "distance": 65,
+     "order": 5
+    },
+    "specs": [
+     {
+      "label": "Diameter",
+      "value": "22 mm"
+     },
+     {
+      "label": "Thickness",
+      "value": "1.2 mm representative"
+     }
+    ],
+    "failureModes": [
+     "Cracking after a drop",
+     "Poor adhesive bonding",
+     "Reduced charging efficiency from incorrect placement"
+    ],
+    "confidence": "high"
+   }
+  ],
+  "systems": [
+   {
+    "id": "charging-current",
+    "name": "Wireless charging path",
+    "kind": "current",
+    "path": [
+     "charging-coil",
+     "control-pcb",
+     "lithium-cell"
+    ],
+    "explanation": "The receiving coil produces AC in the charger's magnetic field; the board rectifies and regulates it before delivering controlled charge current to the cell."
+   },
+   {
+    "id": "drive-current",
+    "name": "Actuator power path",
+    "kind": "current",
+    "path": [
+     "lithium-cell",
+     "control-pcb",
+     "h-bridge",
+     "actuator-coils"
+    ],
+    "explanation": "Stored cell energy passes through protection and switching electronics, then the bidirectional driver energizes the field coils with timed alternating current."
+   },
+   {
+    "id": "control-signal",
+    "name": "User command and drive control",
+    "kind": "signal",
+    "path": [
+     "power-button",
+     "microcontroller",
+     "h-bridge",
+     "actuator-coils"
+    ],
+    "explanation": "A button press becomes a logic input; the controller selects a mode and timing pattern, and the power driver turns those low-power commands into coil excitation."
+   },
+   {
+    "id": "mechanical-force",
+    "name": "Magnetic torque to bristle motion",
+    "kind": "force",
+    "path": [
+     "actuator-coils",
+     "actuator-magnets",
+     "actuator-rotor",
+     "drive-shaft",
+     "head-coupler",
+     "bristle-tufts"
+    ],
+    "explanation": "The coil-stator field exerts force on the rotor magnets, producing alternating shaft torque that passes through the replaceable-head coupling and sweeps the bristles."
+   },
+   {
+    "id": "heat-rejection",
+    "name": "Actuator heat path",
+    "kind": "heat",
+    "path": [
+     "actuator-coils",
+     "actuator-stator",
+     "internal-chassis",
+     "outer-housing"
+    ],
+    "explanation": "Copper and magnetic losses warm the actuator; conduction through its mounting and chassis spreads that heat before it dissipates through the handle surface."
+   }
+  ],
+  "steps": [
+   {
+    "title": "Remove the replaceable brush head",
+    "narration": "Pull the head straight off the shaft. The exploded head separates into its neck, body, bristle carrier, tufts and drive coupling so the motion interface is visible.",
+    "removePartIds": [
+     "brush-neck",
+     "brush-head-shell",
+     "bristle-plate",
+     "bristle-tufts",
+     "head-coupler"
+    ],
+    "focusPartIds": [
+     "drive-shaft",
+     "shaft-seal"
+    ],
+    "view": "front"
+   },
+   {
+    "title": "Open the sealed charging base",
+    "narration": "Release the base cap and its static sealing ring. Beneath them are the flat receiving coil and ferrite backing, with no exposed electrical charging contacts.",
+    "removePartIds": [
+     "base-cap",
+     "base-o-ring",
+     "charging-coil",
+     "ferrite-disc"
+    ],
+    "focusPartIds": [
+     "battery-contacts",
+     "lithium-cell",
+     "control-pcb"
+    ],
+    "view": "top"
+   },
+   {
+    "title": "Slide away the handle enclosure",
+    "narration": "Remove the outer housing, soft grip and surface controls. The waterproof membrane and light pipe show how user interaction crosses the enclosure without leaving an open electrical path.",
+    "removePartIds": [
+     "outer-housing",
+     "grip-insert",
+     "power-button",
+     "light-pipe"
+    ],
+    "focusPartIds": [
+     "button-membrane",
+     "control-pcb",
+     "internal-chassis"
+    ],
+    "view": "iso"
+   },
+   {
+    "title": "Release the upper internal carrier",
+    "narration": "Take out the retaining screws, button membrane and nose carrier. The internal chassis now exposes the aligned shaft supports and the compact actuator below them.",
+    "removePartIds": [
+     "chassis-screws",
+     "button-membrane",
+     "seal-carrier"
+    ],
+    "focusPartIds": [
+     "upper-bearing",
+     "lower-bearing",
+     "actuator-stator",
+     "pressure-sensor"
+    ],
+    "view": "front"
+   },
+   {
+    "title": "Extract the shaft and dynamic seal",
+    "narration": "Lift out the shaft, its two bushings and the flexible water seal. Notice that the wet brush interface is separated from the electrical compartment by a very small moving contact zone.",
+    "removePartIds": [
+     "shaft-seal",
+     "upper-bearing",
+     "lower-bearing",
+     "drive-shaft"
+    ],
+    "focusPartIds": [
+     "actuator-rotor",
+     "torsion-spring",
+     "pressure-sensor"
+    ],
+    "view": "right"
+   },
+   {
+    "title": "Disassemble the resonant actuator",
+    "narration": "Separate the field coils, magnetic core, magnets, rotor carrier and torsion spring. These parts exchange electrical and elastic energy to create efficient high-frequency oscillation.",
+    "removePartIds": [
+     "actuator-coils",
+     "actuator-stator",
+     "actuator-magnets",
+     "actuator-rotor",
+     "torsion-spring"
+    ],
+    "focusPartIds": [
+     "pressure-sensor",
+     "internal-chassis"
+    ],
+    "view": "iso"
+   },
+   {
+    "title": "Free the electronics and energy storage",
+    "narration": "Disconnect the flexible wiring and remove the cell, contacts and populated board. The charging receiver, power driver and controller all serve the single cell and actuator.",
+    "removePartIds": [
+     "pressure-sensor",
+     "wiring-harness",
+     "battery-contacts",
+     "lithium-cell",
+     "control-pcb",
+     "microcontroller",
+     "h-bridge",
+     "indicator-led"
+    ],
+    "focusPartIds": [
+     "internal-chassis"
+    ],
+    "view": "left"
+   },
+   {
+    "title": "Review the structural backbone",
+    "narration": "The bare chassis remains as the alignment reference for the entire product. Its bearing locations, component cradles and load path are as important as the electronic parts it carried.",
+    "removePartIds": [],
+    "focusPartIds": [
+     "internal-chassis"
+    ],
+    "view": "iso"
+   }
+  ],
+  "study": {
+   "overview": "This toothbrush stores energy in a small rechargeable lithium-ion cell. Placing the sealed handle on its stand couples magnetic energy into a coil at the base, and the control board uses that energy to charge the cell. When the button is pressed, a controller and bidirectional power driver energize two actuator coils. Their changing magnetic field applies alternating torque to permanent magnets on the shaft. A torsion spring and the moving mass form a resonant system, so modest electrical input can produce rapid bristle motion. Two bushings keep the shaft aligned, while a flexible lip seal transmits that motion through a water barrier. The replaceable head couples to the shaft tip, and the bristles sweep across the teeth. A pressure sensor or actuator-current estimate can detect excessive force, and the indicator reports operating and charging status.",
+   "keyConcepts": [
+    {
+     "title": "Oscillation rather than continuous rotation",
+     "body": "A sonic toothbrush does not need its head to spin through full revolutions. The actuator repeatedly reverses a small shaft angle, and the long distance from shaft to bristles converts that angle into useful linear sweep."
+    },
+    {
+     "title": "Resonance saves actuator power",
+     "body": "The torsion spring stores energy as the rotor moves away from centre and returns it on the next half-cycle. Near the natural frequency, the electronics mainly replace energy lost to bristle drag, bearings and seal friction."
+    },
+    {
+     "title": "A moving seal is a critical compromise",
+     "body": "The shaft seal must be tight enough to block contaminated water but gentle enough not to waste torque. Its friction, alignment and wear directly affect battery life, motion amplitude and long-term leakage."
+    },
+    {
+     "title": "Inductive charging enables a sealed base",
+     "body": "Energy crosses the polymer base as an alternating magnetic field. Eliminating exposed contacts improves water resistance, but charging speed depends on coil alignment, spacing and power conversion losses."
+    },
+    {
+     "title": "The driver controls current, not just voltage",
+     "body": "The coils are inductive, so current does not change instantly. The power stage applies alternating voltage while handling stored magnetic energy and limiting current to protect the windings, switches and cell."
+    },
+    {
+     "title": "Pressure feedback protects teeth and hardware",
+     "body": "Excessive force increases bristle drag, shaft side load and actuator current. A sensor or current-based estimate lets the controller warn the user or reduce drive before the brushing experience and mechanism suffer."
+    },
+    {
+     "title": "Alignment is a system-level requirement",
+     "body": "The chassis, two shaft supports, seal and head coupling form one precision chain. A small displacement that seems harmless in a molded support can cause seal wear, pole-face rubbing, noise or reduced amplitude."
+    }
+   ],
+   "principles": [
+    {
+     "title": "Torsional resonance",
+     "body": "The simplified actuator is an inertia-spring system: f0 = (1/(2·pi))·sqrt(kt/J), where kt is torsional stiffness in N·m/rad and J is total rotary inertia in kg·m^2. Increasing J lowers f0; increasing kt raises it. Damping and head loading reduce the peak amplitude and shift the practical best drive point."
+    },
+    {
+     "title": "Bristle displacement from shaft angle",
+     "body": "For small angles, a point at radius L from the shaft moves approximately x = L·theta, with theta in radians. A shaft amplitude of 1 degree is 0.01745 rad, so at L = 90 mm the ideal tip amplitude is about 1.57 mm. Flexible bristles and contact with teeth modify this free-air value."
+    },
+    {
+     "title": "Coil voltage and copper loss",
+     "body": "A winding approximately follows v = R·i + L·di/dt + e_motion. The inductance term limits how quickly current can reverse, while e_motion represents the voltage induced by rotor movement. Heat from winding resistance is Pcu = I_rms^2·R, so excessive current reduces both runtime and insulation life."
+    },
+    {
+     "title": "Inductive power transfer",
+     "body": "For a sinusoidal transmitter current, receiver open-circuit voltage magnitude is approximately |V2| = omega·M·|I1|. Mutual inductance M depends on turns, geometry, separation and alignment. After rectification and regulation, only part of the transmitted power reaches the cell; the remainder becomes heat in the coils and electronics."
+    },
+    {
+     "title": "Battery runtime estimate",
+     "body": "Cell energy is approximately E = Vnom·C when C is expressed in Ah, giving watt-hours. Average runtime is t = eta·E/Pavg. For example, a 3.6 V, 0.8 Ah cell stores about 2.88 Wh before conversion losses; actuator amplitude, brushing pressure and battery age all change the usable result."
+    }
+   ],
+   "glossary": [
+    {
+     "term": "Actuator",
+     "definition": "A device that converts electrical or another form of input energy into controlled mechanical motion."
+    },
+    {
+     "term": "Backlash",
+     "definition": "Lost motion or play at a coupling, noticeable when the direction of torque reverses."
+    },
+    {
+     "term": "Bushing",
+     "definition": "A sleeve bearing that supports a shaft through sliding contact rather than rolling elements."
+    },
+    {
+     "term": "Dynamic seal",
+     "definition": "A seal that maintains a fluid barrier while one of its contacting surfaces moves."
+    },
+    {
+     "term": "Ferrite",
+     "definition": "A high-permeability, electrically resistive ceramic magnetic material used to guide alternating magnetic flux."
+    },
+    {
+     "term": "H-bridge",
+     "definition": "An arrangement of power switches that can apply either voltage polarity across a load."
+    },
+    {
+     "term": "Inductive charging",
+     "definition": "Contactless energy transfer between coils using a changing magnetic field."
+    },
+    {
+     "term": "Light pipe",
+     "definition": "A transparent optical component that guides light from a source to a remote visible surface."
+    },
+    {
+     "term": "Mutual inductance",
+     "definition": "A measure of how strongly changing current in one coil induces voltage in another."
+    },
+    {
+     "term": "Resonance",
+     "definition": "Enhanced oscillatory response near the natural frequency set by a system's stiffness, inertia and damping."
+    },
+    {
+     "term": "Rotor",
+     "definition": "The moving magnetic or mechanical assembly; here it oscillates rather than rotating continuously."
+    },
+    {
+     "term": "Stator",
+     "definition": "The stationary magnetic structure that guides flux and supports the field windings."
+    },
+    {
+     "term": "Torsion spring",
+     "definition": "A spring that supplies restoring torque in proportion to angular deflection."
+    },
+    {
+     "term": "Strain relief",
+     "definition": "Geometry or support that prevents cable bending and pulling loads from concentrating at an electrical termination."
+    }
+   ],
+   "quiz": [
+    {
+     "question": "Why can a resonant spring-mass actuator produce useful bristle motion with relatively little average electrical power?",
+     "options": [
+      "It eliminates all bearing and seal friction",
+      "It exchanges stored energy between spring and inertia, so the supply mainly replaces losses",
+      "It lets the cell deliver a higher nominal voltage",
+      "It removes the need for a magnetic field"
+     ],
+     "answer": 1,
+     "explanation": "Near resonance, energy alternates between rotor motion and spring deflection. The electronics still supply losses from drag, friction and magnetic or resistive heating.",
+     "partIds": [
+      "torsion-spring",
+      "actuator-rotor",
+      "actuator-coils"
+     ]
+    },
+    {
+     "question": "What is the main advantage of induction charging in this product?",
+     "options": [
+      "It guarantees unlimited charging current",
+      "It makes the battery unnecessary",
+      "It allows charging through a sealed polymer base without exposed contacts",
+      "It makes the brush head oscillate"
+     ],
+     "answer": 2,
+     "explanation": "Magnetic coupling crosses the base wall, avoiding a wet exposed connector. It does not eliminate conversion losses or the need for a cell.",
+     "partIds": [
+      "charging-coil",
+      "base-cap",
+      "control-pcb"
+     ]
+    },
+    {
+     "question": "If rotor inertia increases while torsional stiffness stays constant, what happens to the ideal natural frequency?",
+     "options": [
+      "It decreases",
+      "It increases",
+      "It stays exactly constant",
+      "It becomes zero for any inertia increase"
+     ],
+     "answer": 0,
+     "explanation": "Since f0 = sqrt(kt/J)/(2·pi), increasing J reduces the natural frequency.",
+     "partIds": [
+      "actuator-rotor",
+      "torsion-spring"
+     ]
+    },
+    {
+     "question": "Why is the shaft seal allowed only a small amount of lip interference?",
+     "options": [
+      "To make the shaft electrically conductive",
+      "To increase the cell capacity",
+      "To balance water exclusion against friction, wear and lost actuator power",
+      "To let toothpaste enter and lubricate the motor"
+     ],
+     "answer": 2,
+     "explanation": "More interference can improve sealing initially but increases drag and wear. The design needs enough contact for sealing without excessive loss.",
+     "partIds": [
+      "shaft-seal",
+      "drive-shaft"
+     ]
+    },
+    {
+     "question": "What is the power driver's essential role?",
+     "options": [
+      "To apply controlled bidirectional excitation to the inductive actuator load",
+      "To anchor the bristle filaments",
+      "To align the two charging coils mechanically",
+      "To provide the main water seal"
+     ],
+     "answer": 0,
+     "explanation": "The power switches convert controller commands into higher-power coil excitation and handle the winding's inductive behaviour.",
+     "partIds": [
+      "h-bridge",
+      "microcontroller",
+      "actuator-coils"
+     ]
+    },
+    {
+     "question": "Why do the upper and lower shaft supports need good coaxial alignment?",
+     "options": [
+      "Misalignment can raise friction, cause rattling and accelerate seal wear",
+      "Alignment only affects the handle colour",
+      "It is needed to reverse battery polarity",
+      "It determines whether the bristles are nylon"
+     ],
+     "answer": 0,
+     "explanation": "The two bushings define the shaft axis. Angular or positional error can bind the shaft and move the seal contact unevenly.",
+     "partIds": [
+      "upper-bearing",
+      "lower-bearing",
+      "shaft-seal",
+      "internal-chassis"
+     ]
+    },
+    {
+     "question": "A toothbrush develops much lower amplitude and higher coil temperature under load. Which explanation is most physically consistent?",
+     "options": [
+      "The load has reduced all electrical resistance to zero",
+      "Increased damping and friction require more input power while reducing useful motion",
+      "The bristle length no longer affects displacement",
+      "The ferrite disc has started generating bristle torque directly"
+     ],
+     "answer": 1,
+     "explanation": "Extra drag and possible rubbing dissipate more actuator input as heat, leaving less energy in useful oscillation and moving the system away from efficient operation.",
+     "partIds": [
+      "actuator-coils",
+      "drive-shaft",
+      "upper-bearing",
+      "torsion-spring"
+     ]
+    }
+   ]
+  }
+ },
+ "parts": [
+  {
+   "id": "brush-neck",
+   "code": "const profile = [\n  [8.2, 59], [8.4, 64], [6.5, 78], [5.3, 91],\n  [4.0, 91], [5.2, 77], [6.9, 63], [7.0, 59], [8.2, 59]\n];\nreturn kit.mesh(\n  kit.lathe(profile, 64),\n  kit.mat(\"plastic\", { color: \"#eef1f2\", roughness: 0.32 })\n);"
+  },
+  {
+   "id": "brush-head-shell",
+   "code": "const head = kit.mesh(\n  new THREE.CapsuleGeometry(7.5, 22, 8, 24),\n  kit.mat(\"plastic\", { color: \"#f2f4f4\", roughness: 0.3 })\n);\nhead.scale.z = 0.43;\nreturn kit.at(head, [0, 106, 0.8]);"
+  },
+  {
+   "id": "bristle-plate",
+   "code": "const plate = kit.mesh(\n  new THREE.CapsuleGeometry(6.4, 20, 6, 24),\n  kit.mat(\"plastic\", { color: \"#dce8eb\", roughness: 0.4 })\n);\nplate.scale.z = 0.09;\nreturn kit.at(plate, [0, 106, 4.1]);"
+  },
+  {
+   "id": "bristle-tufts",
+   "code": "const g = kit.group();\nconst pale = kit.mat(\"plastic\", { color: \"#f7fbf8\", roughness: 0.72 });\nconst blue = kit.mat(\"plastic\", { color: \"#62a9c4\", roughness: 0.72 });\nconst xs = [-4, 0, 4];\nconst ys = [94, 100, 106, 112, 118];\nfor (let j = 0; j < ys.length; j++) {\n  for (let i = 0; i < xs.length; i++) {\n    const length = 11 + ((i + j) % 3 === 1 ? 1 : 0);\n    const tuft = kit.mesh(kit.cyl(1.12, 1.28, length, 12), (i + j) % 3 === 0 ? blue : pale);\n    g.add(kit.at(tuft, [xs[i], ys[j], 4.8 + length / 2], [90, 0, 0]));\n  }\n}\nreturn g;"
+  },
+  {
+   "id": "head-coupler",
+   "code": "const g = kit.group();\nconst mat = kit.mat(\"plastic\", { color: \"#87949b\", roughness: 0.38 });\ng.add(kit.at(kit.mesh(kit.tube(4, 2.1, 10), mat), [0, 75, 0]));\ng.add(kit.at(kit.mesh(kit.box(1.2, 7, 3.4), mat), [-2.3, 79, 0]));\ng.add(kit.at(kit.mesh(kit.box(1.2, 7, 3.4), mat), [2.3, 79, 0]));\nreturn g;"
+  },
+  {
+   "id": "outer-housing",
+   "code": "const profile = [\n  [12.6, -121], [14.4, -118], [15.1, -108], [15.2, 22],\n  [14.9, 42], [13.2, 56], [11.2, 62], [9.9, 62],\n  [12.0, 55], [13.6, 41], [13.9, 22], [13.9, -107],\n  [13.3, -115], [12.4, -118], [12.6, -121]\n];\nreturn kit.mesh(\n  kit.lathe(profile, 80),\n  kit.mat(\"plastic\", { color: \"#e7ecee\", roughness: 0.28 })\n);"
+  },
+  {
+   "id": "grip-insert",
+   "code": "const g = kit.group();\nconst mat = kit.mat(\"rubber\", { color: \"#42656b\", roughness: 0.82 });\ng.add(kit.mesh(kit.box(10, 96, 1), mat));\ng.add(kit.linear(9, [0, 10, 0], () =>\n  kit.at(kit.mesh(kit.box(9, 1.1, 0.8), mat), [0, -40, -0.8])\n));\nreturn kit.at(g, [0, -32, -15.3]);"
+  },
+  {
+   "id": "base-cap",
+   "code": "const profile = [\n  [0, -125], [12.5, -125], [14.2, -123], [14.5, -120],\n  [14.5, -117], [12.8, -117], [12.8, -119], [0, -119], [0, -125]\n];\nreturn kit.mesh(\n  kit.lathe(profile, 72),\n  kit.mat(\"plastic\", { color: \"#dce3e5\", roughness: 0.34 })\n);"
+  },
+  {
+   "id": "base-o-ring",
+   "code": "const ring = kit.mesh(\n  new THREE.TorusGeometry(12.7, 0.75, 12, 64),\n  kit.mat(\"rubber\", { color: \"#30383b\", roughness: 0.88 })\n);\nreturn kit.at(ring, [0, -117.5, 0], [90, 0, 0]);"
+  },
+  {
+   "id": "power-button",
+   "code": "const g = kit.group();\nconst mat = kit.mat(\"plastic\", { color: \"#8ba4aa\", roughness: 0.38 });\ng.add(kit.at(kit.mesh(kit.cyl(4.3, 4.3, 1.8, 36), mat), [0, 15, 15.2], [90, 0, 0]));\ng.add(kit.at(kit.mesh(kit.cyl(1.7, 1.7, 3, 24), mat), [0, 15, 13], [90, 0, 0]));\nreturn g;"
+  },
+  {
+   "id": "light-pipe",
+   "code": "const pipe = kit.mesh(\n  kit.box(3.2, 6, 2),\n  kit.mat(\"glass\", { color: \"#d9f3f4\", roughness: 0.12, opacity: 0.68 })\n);\nreturn kit.at(pipe, [0, 28, 14.5]);"
+  },
+  {
+   "id": "button-membrane",
+   "code": "const g = kit.group();\nconst mat = kit.mat(\"rubber\", { color: \"#6f8588\", roughness: 0.82, opacity: 0.9 });\ng.add(kit.at(kit.mesh(kit.box(12, 12, 0.7), mat), [0, 15, 12.5]));\ng.add(kit.at(kit.mesh(kit.cyl(5.4, 5.4, 1.1, 36), mat), [0, 15, 13.1], [90, 0, 0]));\nreturn g;"
+  },
+  {
+   "id": "internal-chassis",
+   "code": "const g = kit.group();\nconst mat = kit.mat(\"plastic\", { color: \"#56656a\", roughness: 0.55 });\ng.add(kit.at(kit.mesh(kit.box(17, 156, 1.6), mat), [0, -32, -9.8]));\nfor (const s of [-1, 1]) {\n  g.add(kit.at(kit.mesh(kit.box(1.6, 140, 2), mat), [s * 10.2, -31, -7.5]));\n}\nconst cradles = [[-107, 9.4], [-49, 9.5], [9, 5.8], [47.5, 5.8]];\nfor (const c of cradles) {\n  g.add(kit.at(kit.mesh(kit.tube(12, c[1], 3), mat), [0, c[0], 0]));\n}\nreturn g;"
+  },
+  {
+   "id": "chassis-screws",
+   "code": "const g = kit.group();\nconst mat = kit.mat(\"steel\", { color: \"#bbc3c8\", metalness: 0.8, roughness: 0.28 });\nfor (const x of [-7, 7]) {\n  g.add(kit.at(kit.mesh(kit.cyl(1.4, 1.4, 6, 20), mat), [x, 48, -6]));\n  g.add(kit.at(kit.mesh(kit.cyl(2.5, 2.5, 1, 24), mat), [x, 51, -6]));\n}\nreturn g;"
+  },
+  {
+   "id": "seal-carrier",
+   "code": "const g = kit.group();\nconst mat = kit.mat(\"plastic\", { color: \"#c1cbcd\", roughness: 0.38 });\ng.add(kit.at(kit.mesh(kit.tube(11, 5.9, 5), mat), [0, 58.5, 0]));\ng.add(kit.at(kit.mesh(kit.tube(9, 2.2, 1), mat), [0, 61, 0]));\nreturn g;"
+  },
+  {
+   "id": "shaft-seal",
+   "code": "const g = kit.group();\nconst mat = kit.mat(\"rubber\", { color: \"#38484b\", roughness: 0.86 });\ng.add(kit.at(kit.mesh(kit.tube(5.8, 2.02, 2.4, 64), mat), [0, 62.4, 0]));\ng.add(kit.at(kit.mesh(new THREE.TorusGeometry(2.25, 0.28, 8, 40), mat), [0, 63.4, 0], [90, 0, 0]));\nreturn g;"
+  },
+  {
+   "id": "upper-bearing",
+   "code": "const g = kit.group();\ng.add(kit.mesh(kit.tube(5.4, 4.1, 4), kit.mat(\"steel\", { color: \"#a8b2b7\" })));\ng.add(kit.mesh(kit.tube(4.05, 2.05, 4.1), kit.mat(\"plastic\", { color: \"#343f43\" })));\nreturn kit.at(g, [0, 48.5, 0]);"
+  },
+  {
+   "id": "lower-bearing",
+   "code": "const g = kit.group();\ng.add(kit.mesh(kit.tube(5.4, 4.1, 4), kit.mat(\"brass\", { color: \"#a99566\" })));\ng.add(kit.mesh(kit.tube(4.05, 2.05, 4.1), kit.mat(\"plastic\", { color: \"#414b4d\" })));\nreturn kit.at(g, [0, 10.5, 0]);"
+  },
+  {
+   "id": "drive-shaft",
+   "code": "const g = kit.group();\nconst mat = kit.mat(\"steel\", { color: \"#c4cbd0\", metalness: 0.86, roughness: 0.2 });\ng.add(kit.at(kit.mesh(kit.cyl(2, 2, 75, 40), mat), [0, 47, 0]));\ng.add(kit.at(kit.mesh(kit.box(3, 10, 2.8), mat), [0, 80, 0]));\ng.add(kit.at(kit.mesh(kit.cyl(3, 3, 3, 32), mat), [0, 12, 0]));\nreturn g;"
+  },
+  {
+   "id": "actuator-stator",
+   "code": "const g = kit.group();\nconst mat = kit.mat(\"steel\", { color: \"#59646d\", metalness: 0.72, roughness: 0.42 });\ng.add(kit.at(kit.mesh(kit.box(23, 23, 2), mat), [0, 30, -6.5]));\ng.add(kit.at(kit.mesh(kit.box(23, 2.2, 6), mat), [0, 40.4, -3.5]));\ng.add(kit.at(kit.mesh(kit.box(23, 2.2, 6), mat), [0, 19.6, -3.5]));\nfor (const s of [-1, 1]) {\n  g.add(kit.at(kit.mesh(kit.box(1.6, 20, 1.4), mat), [s * 11.2, 30, -6.2]));\n  g.add(kit.at(kit.mesh(kit.box(8, 3.2, 3.2), mat), [s * 9.2, 30, 0]));\n}\nreturn g;"
+  },
+  {
+   "id": "actuator-coils",
+   "code": "const g = kit.group();\nconst mat = kit.mat(\"copper\", { color: \"#c77a3d\", metalness: 0.72, roughness: 0.32 });\nfor (const s of [-1, 1]) {\n  const coil = kit.mesh(kit.helix({ radius: 4.6, pitch: 0.65, turns: 12, wire: 0.32 }), mat);\n  g.add(kit.at(coil, [s * 9.3, 30, 0], [0, 0, 90]));\n}\nreturn g;"
+  },
+  {
+   "id": "actuator-rotor",
+   "code": "const g = kit.group();\nconst mat = kit.mat(\"plastic\", { color: \"#8b9b9e\", roughness: 0.4 });\ng.add(kit.at(kit.mesh(kit.cyl(3.4, 3.4, 16, 36), mat), [0, 30, 0]));\ng.add(kit.at(kit.mesh(kit.box(10, 4, 3), mat), [0, 30, 0]));\ng.add(kit.at(kit.mesh(kit.cyl(4.2, 4.2, 1, 36), mat), [0, 22.5, 0]));\ng.add(kit.at(kit.mesh(kit.cyl(4.2, 4.2, 1, 36), mat), [0, 37.5, 0]));\nreturn g;"
+  },
+  {
+   "id": "actuator-magnets",
+   "code": "const g = kit.group();\nconst mat = kit.mat(\"magnet\", { color: \"#38424d\", metalness: 0.72, roughness: 0.3 });\nfor (const s of [-1, 1]) {\n  g.add(kit.at(kit.mesh(kit.box(2.4, 12, 5), mat), [s * 3.8, 30, 0]));\n}\nreturn g;"
+  },
+  {
+   "id": "torsion-spring",
+   "code": "const g = kit.group();\nconst mat = kit.mat(\"steel\", { color: \"#b8c2c9\", metalness: 0.82, roughness: 0.25 });\ng.add(kit.at(kit.mesh(kit.helix({ radius: 5.5, pitch: 1, turns: 5, wire: 0.45 }), mat), [0, 15, 0]));\ng.add(kit.mesh(kit.sweep([\n  [5.5, 12.5, 0], [8, 12.5, 0], [9, 12.5, -3], [10.2, 12.5, -7.5]\n], 0.45), mat));\ng.add(kit.mesh(kit.sweep([\n  [5.5, 17.5, 0], [4.5, 19.5, 0], [2.1, 21.5, 0]\n], 0.45), mat));\nreturn g;"
+  },
+  {
+   "id": "pressure-sensor",
+   "code": "const g = kit.group();\ng.add(kit.at(kit.mesh(kit.box(3, 7, 4), \"steel\"), [6.8, 47.5, 1]));\ng.add(kit.at(kit.mesh(kit.box(1.2, 3, 2), kit.mat(\"silicon\", { color: \"#20262b\" })), [8.7, 47.5, 1]));\ng.add(kit.at(kit.mesh(kit.box(4, 0.8, 3), kit.mat(\"steel\", { color: \"#929da3\" })), [6.8, 51, 1]));\nreturn g;"
+  },
+  {
+   "id": "control-pcb",
+   "code": "const board = kit.pcb({\n  w: 18,\n  d: 80,\n  t: 1.2,\n  color: \"#17624c\",\n  chips: [\n    { x: -5, z: 29, w: 3, d: 2, h: 0.7, color: \"#b8b3a2\" },\n    { x: 4, z: 25, w: 4, d: 3, h: 1, color: \"#252a2c\" },\n    { x: -5, z: -27, w: 4, d: 3, h: 1, color: \"#252a2c\" },\n    { x: 5, z: -31, w: 3, d: 2, h: 0.7, color: \"#b8b3a2\" },\n    { x: 0, z: 34, w: 5, d: 2.5, h: 0.8, color: \"#303538\" }\n  ]\n});\nreturn kit.at(board, [0, -8, 9.5], [90, 0, 0]);"
+  },
+  {
+   "id": "microcontroller",
+   "code": "const g = kit.group();\nconst body = kit.mat(\"silicon\", { color: \"#24292c\", roughness: 0.58 });\nconst pins = kit.mat(\"steel\", { color: \"#bcc4c8\" });\ng.add(kit.at(kit.mesh(kit.box(6, 6, 1.3), body), [-3, -15, 10.85]));\nfor (const s of [-1, 1]) {\n  for (let i = 0; i < 5; i++) {\n    g.add(kit.at(kit.mesh(kit.box(0.8, 0.45, 0.35), pins), [-3 + s * 3.3, -17.4 + i * 1.2, 10.55]));\n  }\n}\nreturn g;"
+  },
+  {
+   "id": "h-bridge",
+   "code": "const g = kit.group();\nconst body = kit.mat(\"silicon\", { color: \"#303538\", roughness: 0.55 });\nconst pins = kit.mat(\"steel\", { color: \"#bcc4c8\" });\ng.add(kit.at(kit.mesh(kit.box(5, 5, 1.2), body), [4, 1, 10.8]));\nfor (const s of [-1, 1]) {\n  for (let i = 0; i < 4; i++) {\n    g.add(kit.at(kit.mesh(kit.box(0.7, 0.45, 0.35), pins), [4 + s * 2.8, -0.8 + i * 1.2, 10.5]));\n  }\n}\nreturn g;"
+  },
+  {
+   "id": "indicator-led",
+   "code": "const g = kit.group();\ng.add(kit.at(kit.mesh(kit.box(3, 2, 1), kit.mat(\"ceramic\", { color: \"#d8ddd7\" })), [0, 28, 10.8]));\nconst lens = kit.mesh(new THREE.SphereGeometry(0.9, 16, 10), kit.mat(\"glass\", { color: \"#8ed9cf\", opacity: 0.8 }));\nlens.scale.z = 0.6;\ng.add(kit.at(lens, [0, 28, 11.5]));\nreturn g;"
+  },
+  {
+   "id": "lithium-cell",
+   "code": "const g = kit.group();\nconst wrap = kit.mat(\"plastic\", { color: \"#477b91\", roughness: 0.5 });\nconst metal = kit.mat(\"steel\", { color: \"#bec6ca\", metalness: 0.78, roughness: 0.3 });\ng.add(kit.at(kit.mesh(kit.cyl(9, 9, 51, 56), wrap), [0, -77.5, 0]));\ng.add(kit.at(kit.mesh(kit.cyl(8.7, 8.7, 0.8, 48), metal), [0, -51.6, 0]));\ng.add(kit.at(kit.mesh(kit.cyl(3, 3, 0.8, 32), metal), [0, -50.8, 0]));\nreturn g;"
+  },
+  {
+   "id": "battery-contacts",
+   "code": "const g = kit.group();\nconst mat = kit.mat(\"steel\", { color: \"#c6c9b8\", metalness: 0.76, roughness: 0.3 });\ng.add(kit.at(kit.mesh(kit.box(10, 1, 6), mat), [0, -103.5, 0]));\ng.add(kit.at(kit.mesh(kit.box(8, 1.2, 5), mat), [0, -49.8, 0]));\ng.add(kit.mesh(kit.sweep([\n  [-4, -103.5, 0], [-7, -105, -4], [-8, -107, -6]\n], 0.45), mat));\ng.add(kit.mesh(kit.sweep([\n  [3, -49.8, 0], [6, -48, 3], [8, -49, 7]\n], 0.45), mat));\nreturn g;"
+  },
+  {
+   "id": "wiring-harness",
+   "code": "const g = kit.group();\nconst red = kit.mat(\"plastic\", { color: \"#a84237\", roughness: 0.65 });\nconst black = kit.mat(\"plastic\", { color: \"#2c3336\", roughness: 0.7 });\nconst gold = kit.mat(\"plastic\", { color: \"#c69b43\", roughness: 0.65 });\ng.add(kit.mesh(kit.sweep([[4, -49, 0], [7, -45, 5], [7, -44, 9]], 0.45), red));\ng.add(kit.mesh(kit.sweep([[-4, -103, 0], [-10, -100, -5], [-10, -60, -5], [-7, -50, 8]], 0.45), black));\ng.add(kit.mesh(kit.sweep([[6, 25, 9], [10, 25, 7], [12, 30, 4]], 0.45), red));\ng.add(kit.mesh(kit.sweep([[6.8, 48, 2], [11, 43, 5], [9, 34, 9]], 0.35), gold));\nreturn g;"
+  },
+  {
+   "id": "charging-coil",
+   "code": "const pts = [];\nconst segments = 224;\nfor (let i = 0; i <= segments; i++) {\n  const u = i / segments;\n  const r = 2 + 8 * u;\n  const a = u * Math.PI * 2 * 7;\n  pts.push([r * Math.cos(a), 0, r * Math.sin(a)]);\n}\nconst coil = kit.mesh(\n  kit.sweep(pts, 0.28),\n  kit.mat(\"copper\", { color: \"#c47b43\", metalness: 0.7, roughness: 0.34 })\n);\nreturn kit.at(coil, [0, -113.5, 0]);"
+  },
+  {
+   "id": "ferrite-disc",
+   "code": "const disc = kit.mesh(\n  kit.cyl(11, 11, 1.2, 64),\n  kit.mat(\"ceramic\", { color: \"#454b50\", roughness: 0.66 })\n);\nreturn kit.at(disc, [0, -111.8, 0]);"
+  }
+ ],
+ "diagrams": [
+  {
+   "kind": "callouts",
+   "title": "Exploded parts",
+   "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 960 640\" font-family=\"inherit\">\n  <text x=\"28\" y=\"32\" fill=\"currentColor\" font-size=\"16\" font-weight=\"700\">EXPLODED ASSEMBLY</text>\n  <text x=\"510\" y=\"32\" fill=\"currentColor\" font-size=\"16\" font-weight=\"700\">NUMBERED PARTS</text>\n  <line x1=\"495\" y1=\"22\" x2=\"495\" y2=\"604\" stroke=\"currentColor\" stroke-opacity=\"0.2\"/>\n  <line x1=\"240\" y1=\"42\" x2=\"240\" y2=\"610\" stroke=\"currentColor\" stroke-width=\"1\" stroke-dasharray=\"9 5 2 5\" stroke-opacity=\"0.4\"/>\n\n  <g data-part=\"brush-head-shell\" stroke=\"currentColor\" stroke-linejoin=\"round\">\n    <path d=\"M226 98 V72 Q226 58 240 58 Q254 58 254 72 V98 Q240 105 226 98 Z\" fill=\"#76a6c4\" fill-opacity=\"0.24\" stroke-width=\"1.2\"/>\n    <path d=\"M210 72 H226\" fill=\"none\"/>\n    <circle cx=\"200\" cy=\"72\" r=\"10\" fill=\"none\"/>\n    <text x=\"200\" y=\"76\" text-anchor=\"middle\" fill=\"currentColor\" stroke=\"none\" font-size=\"13\">2</text>\n  </g>\n  <g data-part=\"bristle-plate\" stroke=\"currentColor\">\n    <rect x=\"257\" y=\"63\" width=\"6\" height=\"30\" rx=\"2\" fill=\"#8fb1c5\" fill-opacity=\"0.4\"/>\n    <path d=\"M282 52 L263 63\" fill=\"none\"/>\n    <circle cx=\"290\" cy=\"48\" r=\"10\" fill=\"none\"/>\n    <text x=\"290\" y=\"52\" text-anchor=\"middle\" fill=\"currentColor\" stroke=\"none\" font-size=\"13\">3</text>\n  </g>\n  <g data-part=\"bristle-tufts\" stroke=\"currentColor\" stroke-linecap=\"round\">\n    <path d=\"M263 65 L296 61 M263 71 L300 69 M263 77 L301 77 M263 83 L300 85 M263 89 L296 94\" fill=\"none\" stroke-width=\"1.8\"/>\n    <path d=\"M325 76 L298 74\" fill=\"none\" stroke-width=\"1\"/>\n    <circle cx=\"335\" cy=\"76\" r=\"10\" fill=\"none\"/>\n    <text x=\"335\" y=\"80\" text-anchor=\"middle\" fill=\"currentColor\" stroke=\"none\" font-size=\"13\">4</text>\n  </g>\n  <g data-part=\"brush-neck\" stroke=\"currentColor\">\n    <path d=\"M229 112 H251 L249 158 H231 Z\" fill=\"#76a6c4\" fill-opacity=\"0.24\" stroke-width=\"1.2\"/>\n    <path d=\"M210 132 H229\" fill=\"none\"/>\n    <circle cx=\"200\" cy=\"132\" r=\"10\" fill=\"none\"/>\n    <text x=\"200\" y=\"136\" text-anchor=\"middle\" fill=\"currentColor\" stroke=\"none\" font-size=\"13\">1</text>\n  </g>\n  <g data-part=\"head-coupler\" stroke=\"currentColor\">\n    <path d=\"M233 169 H247 V187 H243 V181 H237 V187 H233 Z\" fill=\"#b3a275\" fill-opacity=\"0.4\"/>\n    <path d=\"M210 178 H233\" fill=\"none\"/>\n    <circle cx=\"200\" cy=\"178\" r=\"10\" fill=\"none\"/>\n    <text x=\"200\" y=\"182\" text-anchor=\"middle\" fill=\"currentColor\" stroke=\"none\" font-size=\"13\">5</text>\n  </g>\n\n  <g data-part=\"seal-carrier\" stroke=\"currentColor\">\n    <path d=\"M214 198 H266 V210 H250 L246 205 H234 L230 210 H214 Z\" fill=\"#b3a275\" fill-opacity=\"0.32\"/>\n    <path d=\"M200 202 H214\" fill=\"none\"/>\n    <circle cx=\"190\" cy=\"202\" r=\"10\" fill=\"none\"/>\n    <text x=\"190\" y=\"206\" text-anchor=\"middle\" fill=\"currentColor\" stroke=\"none\" font-size=\"13\">15</text>\n  </g>\n  <g data-part=\"shaft-seal\" stroke=\"currentColor\">\n    <path d=\"M223 216 Q240 208 257 216 L253 224 Q240 219 227 224 Z\" fill=\"#c47c83\" fill-opacity=\"0.42\"/>\n    <path d=\"M280 210 L253 218\" fill=\"none\"/>\n    <circle cx=\"290\" cy=\"208\" r=\"10\" fill=\"none\"/>\n    <text x=\"290\" y=\"212\" text-anchor=\"middle\" fill=\"currentColor\" stroke=\"none\" font-size=\"13\">16</text>\n  </g>\n  <g data-part=\"chassis-screws\" stroke=\"currentColor\" stroke-linecap=\"round\">\n    <path d=\"M217 226 V242 M213 229 H221 M263 226 V242 M259 229 H267\" fill=\"none\" stroke-width=\"1.5\"/>\n    <path d=\"M280 232 H264\" fill=\"none\" stroke-width=\"1\"/>\n    <circle cx=\"290\" cy=\"232\" r=\"10\" fill=\"none\"/>\n    <text x=\"290\" y=\"236\" text-anchor=\"middle\" fill=\"currentColor\" stroke=\"none\" font-size=\"13\">14</text>\n  </g>\n  <g data-part=\"upper-bearing\" stroke=\"currentColor\">\n    <path d=\"M218 242 H262 V253 H218 Z M235 242 H245 V253 H235 Z\" fill=\"#93a3aa\" fill-opacity=\"0.4\" fill-rule=\"evenodd\"/>\n    <path d=\"M280 254 L262 248\" fill=\"none\"/>\n    <circle cx=\"290\" cy=\"254\" r=\"10\" fill=\"none\"/>\n    <text x=\"290\" y=\"258\" text-anchor=\"middle\" fill=\"currentColor\" stroke=\"none\" font-size=\"13\">17</text>\n  </g>\n  <g data-part=\"drive-shaft\" stroke=\"currentColor\">\n    <path d=\"M236 187 H244 V323 H236 Z\" fill=\"#87939d\" fill-opacity=\"0.3\"/>\n    <path d=\"M280 290 L244 285\" fill=\"none\"/>\n    <circle cx=\"290\" cy=\"290\" r=\"10\" fill=\"none\"/>\n    <text x=\"290\" y=\"294\" text-anchor=\"middle\" fill=\"currentColor\" stroke=\"none\" font-size=\"13\">19</text>\n  </g>\n  <g data-part=\"lower-bearing\" stroke=\"currentColor\">\n    <path d=\"M218 327 H262 V338 H218 Z M235 327 H245 V338 H235 Z\" fill=\"#a8936f\" fill-opacity=\"0.42\" fill-rule=\"evenodd\"/>\n    <path d=\"M280 334 H262\" fill=\"none\"/>\n    <circle cx=\"290\" cy=\"334\" r=\"10\" fill=\"none\"/>\n    <text x=\"290\" y=\"338\" text-anchor=\"middle\" fill=\"currentColor\" stroke=\"none\" font-size=\"13\">18</text>\n  </g>\n\n  <g data-part=\"internal-chassis\" stroke=\"currentColor\" stroke-linejoin=\"round\">\n    <path d=\"M205 252 H215 V500 H205 Z M265 252 H275 V500 H265 Z M205 252 H275 V261 H205 Z M205 315 H275 V323 H205 Z M205 491 H275 V500 H205 Z\" fill=\"#788b91\" fill-opacity=\"0.22\"/>\n    <path d=\"M195 510 L210 495\" fill=\"none\"/>\n    <circle cx=\"185\" cy=\"510\" r=\"10\" fill=\"none\"/>\n    <text x=\"185\" y=\"514\" text-anchor=\"middle\" fill=\"currentColor\" stroke=\"none\" font-size=\"13\">13</text>\n  </g>\n\n  <g data-part=\"actuator-stator\" stroke=\"currentColor\">\n    <path d=\"M160 265 H190 V275 H171 V300 H190 V310 H160 Z\" fill=\"#87939d\" fill-opacity=\"0.3\"/>\n    <path d=\"M175 260 V265\" fill=\"none\"/>\n    <circle cx=\"175\" cy=\"250\" r=\"10\" fill=\"none\"/>\n    <text x=\"175\" y=\"254\" text-anchor=\"middle\" fill=\"currentColor\" stroke=\"none\" font-size=\"13\">20</text>\n  </g>\n  <g data-part=\"actuator-coils\" stroke=\"currentColor\" stroke-linejoin=\"round\">\n    <path d=\"M116 269 H141 Q147 269 147 275 Q147 281 141 281 H116 Q110 281 110 287 Q110 293 116 293 H141 Q147 293 147 299 Q147 305 141 305 H116\" fill=\"none\" stroke=\"#b67936\" stroke-width=\"2.5\"/>\n    <path d=\"M125 260 V267\" fill=\"none\" stroke=\"currentColor\"/>\n    <circle cx=\"125\" cy=\"250\" r=\"10\" fill=\"none\" stroke=\"currentColor\"/>\n    <text x=\"125\" y=\"254\" text-anchor=\"middle\" fill=\"currentColor\" stroke=\"none\" font-size=\"13\">21</text>\n  </g>\n  <g data-part=\"actuator-rotor\" stroke=\"currentColor\">\n    <rect x=\"290\" y=\"272\" width=\"30\" height=\"30\" rx=\"4\" fill=\"#a69a70\" fill-opacity=\"0.34\"/>\n    <path d=\"M335 262 L317 274\" fill=\"none\"/>\n    <circle cx=\"340\" cy=\"258\" r=\"10\" fill=\"none\"/>\n    <text x=\"340\" y=\"262\" text-anchor=\"middle\" fill=\"currentColor\" stroke=\"none\" font-size=\"13\">22</text>\n  </g>\n  <g data-part=\"actuator-magnets\" stroke=\"currentColor\">\n    <rect x=\"340\" y=\"275\" width=\"8\" height=\"25\" rx=\"1\" fill=\"#a56d9d\" fill-opacity=\"0.48\"/>\n    <rect x=\"352\" y=\"275\" width=\"8\" height=\"25\" rx=\"1\" fill=\"#a56d9d\" fill-opacity=\"0.48\"/>\n    <path d=\"M390 282 H360\" fill=\"none\"/>\n    <circle cx=\"400\" cy=\"282\" r=\"10\" fill=\"none\"/>\n    <text x=\"400\" y=\"286\" text-anchor=\"middle\" fill=\"currentColor\" stroke=\"none\" font-size=\"13\">23</text>\n  </g>\n  <g data-part=\"torsion-spring\" stroke=\"currentColor\" stroke-linecap=\"round\">\n    <path d=\"M150 344 C150 336 190 336 190 344 C190 352 150 352 150 360 C150 368 190 368 190 360\" fill=\"none\" stroke-width=\"1.5\"/>\n    <path d=\"M140 338 L151 345\" fill=\"none\"/>\n    <circle cx=\"130\" cy=\"338\" r=\"10\" fill=\"none\"/>\n    <text x=\"130\" y=\"342\" text-anchor=\"middle\" fill=\"currentColor\" stroke=\"none\" font-size=\"13\">24</text>\n  </g>\n  <g data-part=\"pressure-sensor\" stroke=\"currentColor\">\n    <path d=\"M320 321 H340 V335 H320 Z M324 318 V321 M330 318 V321 M336 318 V321\" fill=\"#8f9da8\" fill-opacity=\"0.36\"/>\n    <path d=\"M355 325 H340\" fill=\"none\"/>\n    <circle cx=\"365\" cy=\"325\" r=\"10\" fill=\"none\"/>\n    <text x=\"365\" y=\"329\" text-anchor=\"middle\" fill=\"currentColor\" stroke=\"none\" font-size=\"13\">25</text>\n  </g>\n\n  <g data-part=\"outer-housing\" stroke=\"currentColor\">\n    <path d=\"M56 260 H94 L100 280 V485 Q100 505 82 505 H68 Q50 505 50 485 V280 Z M61 278 H89 V481 Q89 491 79 491 H71 Q61 491 61 481 Z\" fill=\"#7893a6\" fill-opacity=\"0.18\" fill-rule=\"evenodd\" stroke-width=\"1.3\"/>\n    <path d=\"M38 278 H50\" fill=\"none\"/>\n    <circle cx=\"28\" cy=\"278\" r=\"10\" fill=\"none\"/>\n    <text x=\"28\" y=\"282\" text-anchor=\"middle\" fill=\"currentColor\" stroke=\"none\" font-size=\"13\">6</text>\n  </g>\n  <g data-part=\"grip-insert\" stroke=\"currentColor\">\n    <path d=\"M42 330 Q48 324 50 336 V432 Q48 445 42 440 Z\" fill=\"#ba7d7d\" fill-opacity=\"0.36\"/>\n    <path d=\"M35 451 L44 438\" fill=\"none\"/>\n    <circle cx=\"28\" cy=\"458\" r=\"10\" fill=\"none\"/>\n    <text x=\"28\" y=\"462\" text-anchor=\"middle\" fill=\"currentColor\" stroke=\"none\" font-size=\"13\">7</text>\n  </g>\n\n  <g data-part=\"lithium-cell\" stroke=\"currentColor\">\n    <rect x=\"120\" y=\"365\" width=\"40\" height=\"95\" rx=\"18\" fill=\"#71a178\" fill-opacity=\"0.3\" stroke-width=\"1.2\"/>\n    <path d=\"M170 410 H160\" fill=\"none\"/>\n    <circle cx=\"180\" cy=\"410\" r=\"10\" fill=\"none\"/>\n    <text x=\"180\" y=\"414\" text-anchor=\"middle\" fill=\"currentColor\" stroke=\"none\" font-size=\"13\">30</text>\n  </g>\n  <g data-part=\"battery-contacts\" stroke=\"currentColor\" stroke-linejoin=\"round\">\n    <path d=\"M124 357 L130 351 L136 357 L142 351 L148 357 L154 351 M124 469 L130 475 L136 469 L142 475 L148 469 L154 475\" fill=\"none\" stroke-width=\"1.4\"/>\n    <path d=\"M140 480 V475\" fill=\"none\"/>\n    <circle cx=\"140\" cy=\"490\" r=\"10\" fill=\"none\"/>\n    <text x=\"140\" y=\"494\" text-anchor=\"middle\" fill=\"currentColor\" stroke=\"none\" font-size=\"13\">31</text>\n  </g>\n\n  <g data-part=\"control-pcb\" stroke=\"currentColor\">\n    <rect x=\"315\" y=\"360\" width=\"18\" height=\"120\" rx=\"2\" fill=\"#4e956d\" fill-opacity=\"0.3\"/>\n    <path d=\"M319 374 H329 M319 397 H329 M319 427 H329 M319 458 H329\" stroke-width=\"1.5\"/>\n    <path d=\"M305 486 L315 476\" fill=\"none\"/>\n    <circle cx=\"295\" cy=\"490\" r=\"10\" fill=\"none\"/>\n    <text x=\"295\" y=\"494\" text-anchor=\"middle\" fill=\"currentColor\" stroke=\"none\" font-size=\"13\">26</text>\n  </g>\n  <g data-part=\"microcontroller\" stroke=\"currentColor\">\n    <path d=\"M343 372 H363 V388 H343 Z M339 376 H343 M339 382 H343 M363 376 H367 M363 382 H367\" fill=\"#7487a0\" fill-opacity=\"0.4\"/>\n    <path d=\"M375 374 H363\" fill=\"none\"/>\n    <circle cx=\"385\" cy=\"374\" r=\"10\" fill=\"none\"/>\n    <text x=\"385\" y=\"378\" text-anchor=\"middle\" fill=\"currentColor\" stroke=\"none\" font-size=\"13\">27</text>\n  </g>\n  <g data-part=\"h-bridge\" stroke=\"currentColor\">\n    <path d=\"M343 405 H363 V421 H343 Z M339 409 H343 M339 415 H343 M363 409 H367 M363 415 H367\" fill=\"#7487a0\" fill-opacity=\"0.4\"/>\n    <path d=\"M375 418 L363 414\" fill=\"none\"/>\n    <circle cx=\"385\" cy=\"418\" r=\"10\" fill=\"none\"/>\n    <text x=\"385\" y=\"422\" text-anchor=\"middle\" fill=\"currentColor\" stroke=\"none\" font-size=\"13\">28</text>\n  </g>\n  <g data-part=\"indicator-led\" stroke=\"currentColor\">\n    <path d=\"M345 439 H357 V451 H345 Z M348 451 V457 M354 451 V457\" fill=\"#d6b55c\" fill-opacity=\"0.5\"/>\n    <path d=\"M375 452 H357\" fill=\"none\"/>\n    <circle cx=\"385\" cy=\"452\" r=\"10\" fill=\"none\"/>\n    <text x=\"385\" y=\"456\" text-anchor=\"middle\" fill=\"currentColor\" stroke=\"none\" font-size=\"13\">29</text>\n  </g>\n\n  <g data-part=\"button-membrane\" stroke=\"currentColor\">\n    <path d=\"M375 354 Q384 346 393 354 V366 Q384 374 375 366 Z\" fill=\"#c47c83\" fill-opacity=\"0.4\"/>\n    <path d=\"M395 337 L384 350\" fill=\"none\"/>\n    <circle cx=\"405\" cy=\"335\" r=\"10\" fill=\"none\"/>\n    <text x=\"405\" y=\"339\" text-anchor=\"middle\" fill=\"currentColor\" stroke=\"none\" font-size=\"13\">12</text>\n  </g>\n  <g data-part=\"power-button\" stroke=\"currentColor\">\n    <rect x=\"410\" y=\"356\" width=\"22\" height=\"12\" rx=\"5\" fill=\"#7d93a4\" fill-opacity=\"0.38\"/>\n    <path d=\"M445 351 L432 358\" fill=\"none\"/>\n    <circle cx=\"455\" cy=\"348\" r=\"10\" fill=\"none\"/>\n    <text x=\"455\" y=\"352\" text-anchor=\"middle\" fill=\"currentColor\" stroke=\"none\" font-size=\"13\">10</text>\n  </g>\n  <g data-part=\"light-pipe\" stroke=\"currentColor\">\n    <rect x=\"410\" y=\"390\" width=\"28\" height=\"8\" rx=\"3\" fill=\"#8dc6d8\" fill-opacity=\"0.35\"/>\n    <path d=\"M448 404 L438 396\" fill=\"none\"/>\n    <circle cx=\"455\" cy=\"408\" r=\"10\" fill=\"none\"/>\n    <text x=\"455\" y=\"412\" text-anchor=\"middle\" fill=\"currentColor\" stroke=\"none\" font-size=\"13\">11</text>\n  </g>\n  <g data-part=\"wiring-harness\" stroke=\"currentColor\" stroke-linecap=\"round\">\n    <path d=\"M350 470 C372 466 374 493 396 486 C407 482 413 477 425 483 M352 476 C370 475 378 498 398 491\" fill=\"none\" stroke-width=\"1.4\"/>\n    <path d=\"M435 485 H425\" fill=\"none\"/>\n    <circle cx=\"445\" cy=\"485\" r=\"10\" fill=\"none\"/>\n    <text x=\"445\" y=\"489\" text-anchor=\"middle\" fill=\"currentColor\" stroke=\"none\" font-size=\"13\">32</text>\n  </g>\n\n  <g data-part=\"charging-coil\" stroke=\"currentColor\">\n    <ellipse cx=\"240\" cy=\"540\" rx=\"45\" ry=\"9\" fill=\"none\" stroke=\"#b67936\" stroke-width=\"1.8\"/>\n    <ellipse cx=\"240\" cy=\"540\" rx=\"33\" ry=\"6\" fill=\"none\" stroke=\"#b67936\" stroke-width=\"1.8\"/>\n    <ellipse cx=\"240\" cy=\"540\" rx=\"21\" ry=\"3\" fill=\"none\" stroke=\"#b67936\" stroke-width=\"1.8\"/>\n    <path d=\"M185 537 L197 540\" fill=\"none\" stroke=\"currentColor\"/>\n    <circle cx=\"175\" cy=\"535\" r=\"10\" fill=\"none\" stroke=\"currentColor\"/>\n    <text x=\"175\" y=\"539\" text-anchor=\"middle\" fill=\"currentColor\" stroke=\"none\" font-size=\"13\">33</text>\n  </g>\n  <g data-part=\"ferrite-disc\" stroke=\"currentColor\">\n    <rect x=\"205\" y=\"557\" width=\"70\" height=\"6\" rx=\"3\" fill=\"#777f89\" fill-opacity=\"0.42\"/>\n    <path d=\"M185 563 H205\" fill=\"none\"/>\n    <circle cx=\"175\" cy=\"565\" r=\"10\" fill=\"none\"/>\n    <text x=\"175\" y=\"569\" text-anchor=\"middle\" fill=\"currentColor\" stroke=\"none\" font-size=\"13\">34</text>\n  </g>\n  <g data-part=\"base-o-ring\" stroke=\"currentColor\">\n    <rect x=\"207\" y=\"572\" width=\"66\" height=\"6\" rx=\"3\" fill=\"#c47c83\" fill-opacity=\"0.42\"/>\n    <path d=\"M290 575 H273\" fill=\"none\"/>\n    <circle cx=\"300\" cy=\"575\" r=\"10\" fill=\"none\"/>\n    <text x=\"300\" y=\"579\" text-anchor=\"middle\" fill=\"currentColor\" stroke=\"none\" font-size=\"13\">9</text>\n  </g>\n  <g data-part=\"base-cap\" stroke=\"currentColor\">\n    <path d=\"M205 586 H275 L269 600 Q240 607 211 600 Z\" fill=\"#7893a6\" fill-opacity=\"0.22\"/>\n    <path d=\"M290 598 H275\" fill=\"none\"/>\n    <circle cx=\"300\" cy=\"598\" r=\"10\" fill=\"none\"/>\n    <text x=\"300\" y=\"602\" text-anchor=\"middle\" fill=\"currentColor\" stroke=\"none\" font-size=\"13\">8</text>\n  </g>\n\n  <g data-part=\"brush-neck\"><text x=\"532\" y=\"64\" text-anchor=\"end\" fill=\"currentColor\" font-size=\"13\">1</text><text x=\"544\" y=\"64\" fill=\"currentColor\" font-size=\"13\">Detachable brush neck</text></g>\n  <g data-part=\"brush-head-shell\"><text x=\"532\" y=\"79.5\" text-anchor=\"end\" fill=\"currentColor\" font-size=\"13\">2</text><text x=\"544\" y=\"79.5\" fill=\"currentColor\" font-size=\"13\">Brush head body</text></g>\n  <g data-part=\"bristle-plate\"><text x=\"532\" y=\"95\" text-anchor=\"end\" fill=\"currentColor\" font-size=\"13\">3</text><text x=\"544\" y=\"95\" fill=\"currentColor\" font-size=\"13\">Bristle carrier plate</text></g>\n  <g data-part=\"bristle-tufts\"><text x=\"532\" y=\"110.5\" text-anchor=\"end\" fill=\"currentColor\" font-size=\"13\">4</text><text x=\"544\" y=\"110.5\" fill=\"currentColor\" font-size=\"13\">Bristle tuft array</text></g>\n  <g data-part=\"head-coupler\"><text x=\"532\" y=\"126\" text-anchor=\"end\" fill=\"currentColor\" font-size=\"13\">5</text><text x=\"544\" y=\"126\" fill=\"currentColor\" font-size=\"13\">Brush head drive coupling</text></g>\n  <g data-part=\"outer-housing\"><text x=\"532\" y=\"141.5\" text-anchor=\"end\" fill=\"currentColor\" font-size=\"13\">6</text><text x=\"544\" y=\"141.5\" fill=\"currentColor\" font-size=\"13\">Sealed handle housing</text></g>\n  <g data-part=\"grip-insert\"><text x=\"532\" y=\"157\" text-anchor=\"end\" fill=\"currentColor\" font-size=\"13\">7</text><text x=\"544\" y=\"157\" fill=\"currentColor\" font-size=\"13\">Elastomer grip insert</text></g>\n  <g data-part=\"base-cap\"><text x=\"532\" y=\"172.5\" text-anchor=\"end\" fill=\"currentColor\" font-size=\"13\">8</text><text x=\"544\" y=\"172.5\" fill=\"currentColor\" font-size=\"13\">Induction charging base cap</text></g>\n  <g data-part=\"base-o-ring\"><text x=\"532\" y=\"188\" text-anchor=\"end\" fill=\"currentColor\" font-size=\"13\">9</text><text x=\"544\" y=\"188\" fill=\"currentColor\" font-size=\"13\">Base sealing ring</text></g>\n  <g data-part=\"power-button\"><text x=\"532\" y=\"203.5\" text-anchor=\"end\" fill=\"currentColor\" font-size=\"13\">10</text><text x=\"544\" y=\"203.5\" fill=\"currentColor\" font-size=\"13\">Power and mode button</text></g>\n  <g data-part=\"light-pipe\"><text x=\"532\" y=\"219\" text-anchor=\"end\" fill=\"currentColor\" font-size=\"13\">11</text><text x=\"544\" y=\"219\" fill=\"currentColor\" font-size=\"13\">Indicator light pipe</text></g>\n  <g data-part=\"button-membrane\"><text x=\"532\" y=\"234.5\" text-anchor=\"end\" fill=\"currentColor\" font-size=\"13\">12</text><text x=\"544\" y=\"234.5\" fill=\"currentColor\" font-size=\"13\">Waterproof button membrane</text></g>\n  <g data-part=\"internal-chassis\"><text x=\"532\" y=\"250\" text-anchor=\"end\" fill=\"currentColor\" font-size=\"13\">13</text><text x=\"544\" y=\"250\" fill=\"currentColor\" font-size=\"13\">Internal structural chassis</text></g>\n  <g data-part=\"chassis-screws\"><text x=\"532\" y=\"265.5\" text-anchor=\"end\" fill=\"currentColor\" font-size=\"13\">14</text><text x=\"544\" y=\"265.5\" fill=\"currentColor\" font-size=\"13\">Chassis retaining screws</text></g>\n  <g data-part=\"seal-carrier\"><text x=\"532\" y=\"281\" text-anchor=\"end\" fill=\"currentColor\" font-size=\"13\">15</text><text x=\"544\" y=\"281\" fill=\"currentColor\" font-size=\"13\">Nose and seal carrier</text></g>\n  <g data-part=\"shaft-seal\"><text x=\"532\" y=\"296.5\" text-anchor=\"end\" fill=\"currentColor\" font-size=\"13\">16</text><text x=\"544\" y=\"296.5\" fill=\"currentColor\" font-size=\"13\">Dynamic shaft seal</text></g>\n  <g data-part=\"upper-bearing\"><text x=\"532\" y=\"312\" text-anchor=\"end\" fill=\"currentColor\" font-size=\"13\">17</text><text x=\"544\" y=\"312\" fill=\"currentColor\" font-size=\"13\">Upper shaft bushing</text></g>\n  <g data-part=\"lower-bearing\"><text x=\"532\" y=\"327.5\" text-anchor=\"end\" fill=\"currentColor\" font-size=\"13\">18</text><text x=\"544\" y=\"327.5\" fill=\"currentColor\" font-size=\"13\">Lower shaft bushing</text></g>\n  <g data-part=\"drive-shaft\"><text x=\"532\" y=\"343\" text-anchor=\"end\" fill=\"currentColor\" font-size=\"13\">19</text><text x=\"544\" y=\"343\" fill=\"currentColor\" font-size=\"13\">Oscillating drive shaft</text></g>\n  <g data-part=\"actuator-stator\"><text x=\"532\" y=\"358.5\" text-anchor=\"end\" fill=\"currentColor\" font-size=\"13\">20</text><text x=\"544\" y=\"358.5\" fill=\"currentColor\" font-size=\"13\">Laminated actuator stator</text></g>\n  <g data-part=\"actuator-coils\"><text x=\"532\" y=\"374\" text-anchor=\"end\" fill=\"currentColor\" font-size=\"13\">21</text><text x=\"544\" y=\"374\" fill=\"currentColor\" font-size=\"13\">Actuator field coils</text></g>\n  <g data-part=\"actuator-rotor\"><text x=\"532\" y=\"389.5\" text-anchor=\"end\" fill=\"currentColor\" font-size=\"13\">22</text><text x=\"544\" y=\"389.5\" fill=\"currentColor\" font-size=\"13\">Magnet carrier rotor</text></g>\n  <g data-part=\"actuator-magnets\"><text x=\"532\" y=\"405\" text-anchor=\"end\" fill=\"currentColor\" font-size=\"13\">23</text><text x=\"544\" y=\"405\" fill=\"currentColor\" font-size=\"13\">Actuator permanent magnets</text></g>\n  <g data-part=\"torsion-spring\"><text x=\"532\" y=\"420.5\" text-anchor=\"end\" fill=\"currentColor\" font-size=\"13\">24</text><text x=\"544\" y=\"420.5\" fill=\"currentColor\" font-size=\"13\">Resonant torsion spring</text></g>\n  <g data-part=\"pressure-sensor\"><text x=\"532\" y=\"436\" text-anchor=\"end\" fill=\"currentColor\" font-size=\"13\">25</text><text x=\"544\" y=\"436\" fill=\"currentColor\" font-size=\"13\">Brushing pressure sensor</text></g>\n  <g data-part=\"control-pcb\"><text x=\"532\" y=\"451.5\" text-anchor=\"end\" fill=\"currentColor\" font-size=\"13\">26</text><text x=\"544\" y=\"451.5\" fill=\"currentColor\" font-size=\"13\">Main control and charging board</text></g>\n  <g data-part=\"microcontroller\"><text x=\"532\" y=\"467\" text-anchor=\"end\" fill=\"currentColor\" font-size=\"13\">27</text><text x=\"544\" y=\"467\" fill=\"currentColor\" font-size=\"13\">Controller integrated circuit</text></g>\n  <g data-part=\"h-bridge\"><text x=\"532\" y=\"482.5\" text-anchor=\"end\" fill=\"currentColor\" font-size=\"13\">28</text><text x=\"544\" y=\"482.5\" fill=\"currentColor\" font-size=\"13\">Actuator power driver</text></g>\n  <g data-part=\"indicator-led\"><text x=\"532\" y=\"498\" text-anchor=\"end\" fill=\"currentColor\" font-size=\"13\">29</text><text x=\"544\" y=\"498\" fill=\"currentColor\" font-size=\"13\">Status indicator LED</text></g>\n  <g data-part=\"lithium-cell\"><text x=\"532\" y=\"513.5\" text-anchor=\"end\" fill=\"currentColor\" font-size=\"13\">30</text><text x=\"544\" y=\"513.5\" fill=\"currentColor\" font-size=\"13\">Rechargeable lithium-ion cell</text></g>\n  <g data-part=\"battery-contacts\"><text x=\"532\" y=\"529\" text-anchor=\"end\" fill=\"currentColor\" font-size=\"13\">31</text><text x=\"544\" y=\"529\" fill=\"currentColor\" font-size=\"13\">Cell contact springs</text></g>\n  <g data-part=\"wiring-harness\"><text x=\"532\" y=\"544.5\" text-anchor=\"end\" fill=\"currentColor\" font-size=\"13\">32</text><text x=\"544\" y=\"544.5\" fill=\"currentColor\" font-size=\"13\">Internal flexible wiring</text></g>\n  <g data-part=\"charging-coil\"><text x=\"532\" y=\"560\" text-anchor=\"end\" fill=\"currentColor\" font-size=\"13\">33</text><text x=\"544\" y=\"560\" fill=\"currentColor\" font-size=\"13\">Induction receiving coil</text></g>\n  <g data-part=\"ferrite-disc\"><text x=\"532\" y=\"575.5\" text-anchor=\"end\" fill=\"currentColor\" font-size=\"13\">34</text><text x=\"544\" y=\"575.5\" fill=\"currentColor\" font-size=\"13\">Receiver ferrite backing</text></g>\n\n  <text x=\"510\" y=\"611\" fill=\"currentColor\" font-size=\"13\">Exploded offsets are schematic; representative architecture, not to scale.</text>\n</svg>"
+  },
+  {
+   "kind": "flow",
+   "title": "Systems and flows",
+   "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 960 640\" font-family=\"inherit\">\n  <defs>\n    <marker id=\"f-arrow\" viewBox=\"0 0 10 10\" refX=\"8\" refY=\"5\" markerWidth=\"7\" markerHeight=\"7\" orient=\"auto\">\n      <path d=\"M0 0 L10 5 L0 10 Z\" fill=\"currentColor\"/>\n    </marker>\n  </defs>\n\n  <text x=\"30\" y=\"32\" fill=\"currentColor\" font-size=\"16\" font-weight=\"700\">FUNCTIONAL SYSTEMS</text>\n  <text x=\"930\" y=\"32\" text-anchor=\"end\" fill=\"currentColor\" font-size=\"13\">Repeated boxes keep every path left-to-right</text>\n\n  <g data-system=\"charging-current\">\n    <text x=\"30\" y=\"62\" fill=\"currentColor\" font-size=\"13\" font-weight=\"700\">WIRELESS CHARGING PATH · CURRENT</text>\n    <path d=\"M240 97 H390 M570 97 H720\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" marker-end=\"url(#f-arrow)\"/>\n  </g>\n  <g data-part=\"charging-coil\">\n    <rect x=\"60\" y=\"74\" width=\"180\" height=\"46\" rx=\"8\" fill=\"#c48742\" fill-opacity=\"0.24\" stroke=\"currentColor\" stroke-width=\"1.3\"/>\n    <text x=\"150\" y=\"101\" text-anchor=\"middle\" fill=\"currentColor\" font-size=\"14\">Receiving coil</text>\n  </g>\n  <g data-part=\"control-pcb\">\n    <rect x=\"390\" y=\"74\" width=\"180\" height=\"46\" rx=\"8\" fill=\"#4e956d\" fill-opacity=\"0.24\" stroke=\"currentColor\" stroke-width=\"1.3\"/>\n    <text x=\"480\" y=\"94\" text-anchor=\"middle\" fill=\"currentColor\" font-size=\"14\">Main control /</text>\n    <text x=\"480\" y=\"111\" text-anchor=\"middle\" fill=\"currentColor\" font-size=\"14\">charging PCB</text>\n  </g>\n  <g data-part=\"lithium-cell\">\n    <rect x=\"720\" y=\"74\" width=\"180\" height=\"46\" rx=\"8\" fill=\"#71a178\" fill-opacity=\"0.27\" stroke=\"currentColor\" stroke-width=\"1.3\"/>\n    <text x=\"810\" y=\"94\" text-anchor=\"middle\" fill=\"currentColor\" font-size=\"14\">Rechargeable</text>\n    <text x=\"810\" y=\"111\" text-anchor=\"middle\" fill=\"currentColor\" font-size=\"14\">lithium-ion cell</text>\n  </g>\n\n  <line x1=\"30\" y1=\"139\" x2=\"930\" y2=\"139\" stroke=\"currentColor\" stroke-opacity=\"0.16\"/>\n  <g data-system=\"drive-current\">\n    <text x=\"30\" y=\"160\" fill=\"currentColor\" font-size=\"13\" font-weight=\"700\">ACTUATOR POWER PATH · CURRENT</text>\n    <path d=\"M210 195 H270 M450 195 H510 M690 195 H750\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" marker-end=\"url(#f-arrow)\"/>\n  </g>\n  <g data-part=\"lithium-cell\">\n    <rect x=\"30\" y=\"172\" width=\"180\" height=\"46\" rx=\"8\" fill=\"#71a178\" fill-opacity=\"0.27\" stroke=\"currentColor\" stroke-width=\"1.3\"/>\n    <text x=\"120\" y=\"200\" text-anchor=\"middle\" fill=\"currentColor\" font-size=\"14\">Lithium-ion cell</text>\n  </g>\n  <g data-part=\"control-pcb\">\n    <rect x=\"270\" y=\"172\" width=\"180\" height=\"46\" rx=\"8\" fill=\"#4e956d\" fill-opacity=\"0.24\" stroke=\"currentColor\" stroke-width=\"1.3\"/>\n    <text x=\"360\" y=\"200\" text-anchor=\"middle\" fill=\"currentColor\" font-size=\"14\">Main control PCB</text>\n  </g>\n  <g data-part=\"h-bridge\">\n    <rect x=\"510\" y=\"172\" width=\"180\" height=\"46\" rx=\"8\" fill=\"#7487a0\" fill-opacity=\"0.27\" stroke=\"currentColor\" stroke-width=\"1.3\"/>\n    <text x=\"600\" y=\"191\" text-anchor=\"middle\" fill=\"currentColor\" font-size=\"14\">Actuator power</text>\n    <text x=\"600\" y=\"208\" text-anchor=\"middle\" fill=\"currentColor\" font-size=\"14\">driver (H-bridge)</text>\n  </g>\n  <g data-part=\"actuator-coils\">\n    <rect x=\"750\" y=\"172\" width=\"180\" height=\"46\" rx=\"8\" fill=\"#c48742\" fill-opacity=\"0.24\" stroke=\"currentColor\" stroke-width=\"1.3\"/>\n    <text x=\"840\" y=\"200\" text-anchor=\"middle\" fill=\"currentColor\" font-size=\"14\">Actuator field coils</text>\n  </g>\n\n  <line x1=\"30\" y1=\"237\" x2=\"930\" y2=\"237\" stroke=\"currentColor\" stroke-opacity=\"0.16\"/>\n  <g data-system=\"control-signal\">\n    <text x=\"30\" y=\"258\" fill=\"currentColor\" font-size=\"13\" font-weight=\"700\">USER COMMAND AND DRIVE CONTROL · SIGNAL</text>\n    <path d=\"M210 293 H270 M450 293 H510 M690 293 H750\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-dasharray=\"7 5\" marker-end=\"url(#f-arrow)\"/>\n  </g>\n  <g data-part=\"power-button\">\n    <rect x=\"30\" y=\"270\" width=\"180\" height=\"46\" rx=\"8\" fill=\"#7d93a4\" fill-opacity=\"0.26\" stroke=\"currentColor\" stroke-width=\"1.3\"/>\n    <text x=\"120\" y=\"298\" text-anchor=\"middle\" fill=\"currentColor\" font-size=\"14\">Power / mode button</text>\n  </g>\n  <g data-part=\"microcontroller\">\n    <rect x=\"270\" y=\"270\" width=\"180\" height=\"46\" rx=\"8\" fill=\"#7487a0\" fill-opacity=\"0.27\" stroke=\"currentColor\" stroke-width=\"1.3\"/>\n    <text x=\"360\" y=\"298\" text-anchor=\"middle\" fill=\"currentColor\" font-size=\"14\">Controller IC</text>\n  </g>\n  <g data-part=\"h-bridge\">\n    <rect x=\"510\" y=\"270\" width=\"180\" height=\"46\" rx=\"8\" fill=\"#7487a0\" fill-opacity=\"0.27\" stroke=\"currentColor\" stroke-width=\"1.3\"/>\n    <text x=\"600\" y=\"289\" text-anchor=\"middle\" fill=\"currentColor\" font-size=\"14\">Actuator power</text>\n    <text x=\"600\" y=\"306\" text-anchor=\"middle\" fill=\"currentColor\" font-size=\"14\">driver</text>\n  </g>\n  <g data-part=\"actuator-coils\">\n    <rect x=\"750\" y=\"270\" width=\"180\" height=\"46\" rx=\"8\" fill=\"#c48742\" fill-opacity=\"0.24\" stroke=\"currentColor\" stroke-width=\"1.3\"/>\n    <text x=\"840\" y=\"298\" text-anchor=\"middle\" fill=\"currentColor\" font-size=\"14\">Actuator field coils</text>\n  </g>\n\n  <line x1=\"30\" y1=\"335\" x2=\"930\" y2=\"335\" stroke=\"currentColor\" stroke-opacity=\"0.16\"/>\n  <g data-system=\"mechanical-force\">\n    <text x=\"30\" y=\"356\" fill=\"currentColor\" font-size=\"13\" font-weight=\"700\">MAGNETIC TORQUE TO BRISTLE MOTION · FORCE</text>\n    <path d=\"M150 394 H178 M308 394 H336 M466 394 H494 M624 394 H652 M782 394 H810\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"3\" marker-end=\"url(#f-arrow)\"/>\n  </g>\n  <g data-part=\"actuator-coils\">\n    <rect x=\"20\" y=\"368\" width=\"130\" height=\"52\" rx=\"7\" fill=\"#c48742\" fill-opacity=\"0.24\" stroke=\"currentColor\" stroke-width=\"1.3\"/>\n    <text x=\"85\" y=\"390\" text-anchor=\"middle\" fill=\"currentColor\" font-size=\"13\">Actuator</text>\n    <text x=\"85\" y=\"407\" text-anchor=\"middle\" fill=\"currentColor\" font-size=\"13\">field coils</text>\n  </g>\n  <g data-part=\"actuator-magnets\">\n    <rect x=\"178\" y=\"368\" width=\"130\" height=\"52\" rx=\"7\" fill=\"#a56d9d\" fill-opacity=\"0.28\" stroke=\"currentColor\" stroke-width=\"1.3\"/>\n    <text x=\"243\" y=\"390\" text-anchor=\"middle\" fill=\"currentColor\" font-size=\"13\">Permanent</text>\n    <text x=\"243\" y=\"407\" text-anchor=\"middle\" fill=\"currentColor\" font-size=\"13\">magnets</text>\n  </g>\n  <g data-part=\"actuator-rotor\">\n    <rect x=\"336\" y=\"368\" width=\"130\" height=\"52\" rx=\"7\" fill=\"#a69a70\" fill-opacity=\"0.28\" stroke=\"currentColor\" stroke-width=\"1.3\"/>\n    <text x=\"401\" y=\"390\" text-anchor=\"middle\" fill=\"currentColor\" font-size=\"13\">Magnet carrier</text>\n    <text x=\"401\" y=\"407\" text-anchor=\"middle\" fill=\"currentColor\" font-size=\"13\">rotor</text>\n  </g>\n  <g data-part=\"drive-shaft\">\n    <rect x=\"494\" y=\"368\" width=\"130\" height=\"52\" rx=\"7\" fill=\"#87939d\" fill-opacity=\"0.28\" stroke=\"currentColor\" stroke-width=\"1.3\"/>\n    <text x=\"559\" y=\"390\" text-anchor=\"middle\" fill=\"currentColor\" font-size=\"13\">Oscillating</text>\n    <text x=\"559\" y=\"407\" text-anchor=\"middle\" fill=\"currentColor\" font-size=\"13\">drive shaft</text>\n  </g>\n  <g data-part=\"head-coupler\">\n    <rect x=\"652\" y=\"368\" width=\"130\" height=\"52\" rx=\"7\" fill=\"#b3a275\" fill-opacity=\"0.3\" stroke=\"currentColor\" stroke-width=\"1.3\"/>\n    <text x=\"717\" y=\"390\" text-anchor=\"middle\" fill=\"currentColor\" font-size=\"13\">Head drive</text>\n    <text x=\"717\" y=\"407\" text-anchor=\"middle\" fill=\"currentColor\" font-size=\"13\">coupling</text>\n  </g>\n  <g data-part=\"bristle-tufts\">\n    <rect x=\"810\" y=\"368\" width=\"130\" height=\"52\" rx=\"7\" fill=\"#76a6c4\" fill-opacity=\"0.26\" stroke=\"currentColor\" stroke-width=\"1.3\"/>\n    <text x=\"875\" y=\"390\" text-anchor=\"middle\" fill=\"currentColor\" font-size=\"13\">Bristle</text>\n    <text x=\"875\" y=\"407\" text-anchor=\"middle\" fill=\"currentColor\" font-size=\"13\">tuft array</text>\n  </g>\n\n  <line x1=\"30\" y1=\"443\" x2=\"930\" y2=\"443\" stroke=\"currentColor\" stroke-opacity=\"0.16\"/>\n  <g data-system=\"heat-rejection\">\n    <text x=\"30\" y=\"464\" fill=\"currentColor\" font-size=\"13\" font-weight=\"700\">ACTUATOR HEAT PATH · HEAT</text>\n    <path d=\"M210 499 H270 M450 499 H510 M690 499 H750\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-dasharray=\"2 6\" stroke-linecap=\"round\" marker-end=\"url(#f-arrow)\"/>\n  </g>\n  <g data-part=\"actuator-coils\">\n    <rect x=\"30\" y=\"476\" width=\"180\" height=\"46\" rx=\"8\" fill=\"#c48742\" fill-opacity=\"0.24\" stroke=\"currentColor\" stroke-width=\"1.3\"/>\n    <text x=\"120\" y=\"504\" text-anchor=\"middle\" fill=\"currentColor\" font-size=\"14\">Actuator field coils</text>\n  </g>\n  <g data-part=\"actuator-stator\">\n    <rect x=\"270\" y=\"476\" width=\"180\" height=\"46\" rx=\"8\" fill=\"#87939d\" fill-opacity=\"0.28\" stroke=\"currentColor\" stroke-width=\"1.3\"/>\n    <text x=\"360\" y=\"504\" text-anchor=\"middle\" fill=\"currentColor\" font-size=\"14\">Laminated stator</text>\n  </g>\n  <g data-part=\"internal-chassis\">\n    <rect x=\"510\" y=\"476\" width=\"180\" height=\"46\" rx=\"8\" fill=\"#788b91\" fill-opacity=\"0.28\" stroke=\"currentColor\" stroke-width=\"1.3\"/>\n    <text x=\"600\" y=\"504\" text-anchor=\"middle\" fill=\"currentColor\" font-size=\"14\">Internal chassis</text>\n  </g>\n  <g data-part=\"outer-housing\">\n    <rect x=\"750\" y=\"476\" width=\"180\" height=\"46\" rx=\"8\" fill=\"#7893a6\" fill-opacity=\"0.25\" stroke=\"currentColor\" stroke-width=\"1.3\"/>\n    <text x=\"840\" y=\"504\" text-anchor=\"middle\" fill=\"currentColor\" font-size=\"14\">Sealed outer housing</text>\n  </g>\n\n  <text x=\"30\" y=\"557\" fill=\"currentColor\" font-size=\"13\" font-weight=\"700\">LEGEND</text>\n  <path d=\"M40 585 H90\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" marker-end=\"url(#f-arrow)\"/>\n  <text x=\"103\" y=\"590\" fill=\"currentColor\" font-size=\"13\">Electrical current</text>\n  <path d=\"M260 585 H310\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-dasharray=\"7 5\" marker-end=\"url(#f-arrow)\"/>\n  <text x=\"323\" y=\"590\" fill=\"currentColor\" font-size=\"13\">Control signal</text>\n  <path d=\"M465 585 H515\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"3\" marker-end=\"url(#f-arrow)\"/>\n  <text x=\"528\" y=\"590\" fill=\"currentColor\" font-size=\"13\">Mechanical force</text>\n  <path d=\"M690 585 H740\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-dasharray=\"2 6\" stroke-linecap=\"round\" marker-end=\"url(#f-arrow)\"/>\n  <text x=\"753\" y=\"590\" fill=\"currentColor\" font-size=\"13\">Heat flow</text>\n  <text x=\"30\" y=\"621\" fill=\"currentColor\" font-size=\"13\">Arrows indicate the direction of energy, signal, force or heat transfer.</text>\n</svg>"
+  },
+  {
+   "kind": "section",
+   "title": "Axial cross-section",
+   "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 960 640\" font-family=\"inherit\">\n  <defs>\n    <pattern id=\"s-hatch\" width=\"8\" height=\"8\" patternUnits=\"userSpaceOnUse\" patternTransform=\"rotate(45)\">\n      <rect width=\"8\" height=\"8\" fill=\"#7893a6\" fill-opacity=\"0.16\"/>\n      <line x1=\"0\" y1=\"0\" x2=\"0\" y2=\"8\" stroke=\"currentColor\" stroke-width=\"0.8\" stroke-opacity=\"0.35\"/>\n    </pattern>\n    <pattern id=\"s-metal\" width=\"6\" height=\"6\" patternUnits=\"userSpaceOnUse\" patternTransform=\"rotate(-45)\">\n      <rect width=\"6\" height=\"6\" fill=\"#87939d\" fill-opacity=\"0.22\"/>\n      <line x1=\"0\" y1=\"0\" x2=\"0\" y2=\"6\" stroke=\"currentColor\" stroke-width=\"0.7\" stroke-opacity=\"0.3\"/>\n    </pattern>\n  </defs>\n\n  <text x=\"30\" y=\"31\" fill=\"currentColor\" font-size=\"16\" font-weight=\"700\">SECTION A–A</text>\n  <text x=\"30\" y=\"51\" fill=\"currentColor\" font-size=\"13\">Cut solids hatched · schematic, not to scale</text>\n  <line x1=\"480\" y1=\"42\" x2=\"480\" y2=\"602\" stroke=\"currentColor\" stroke-width=\"1\" stroke-dasharray=\"10 5 2 5\" stroke-opacity=\"0.45\"/>\n\n  <g data-part=\"outer-housing\" stroke=\"currentColor\" stroke-linejoin=\"round\">\n    <path fill=\"url(#s-hatch)\" fill-rule=\"evenodd\" stroke-width=\"1.5\" d=\"M430 190 Q417 192 414 212 L410 535 Q410 557 432 565 L528 565 Q550 557 550 535 L546 212 Q543 192 530 190 Z M442 208 L438 532 Q438 545 450 550 L510 550 Q522 545 522 532 L518 208 Z\"/>\n    <path d=\"M670 180 H600 L550 220\" fill=\"none\" stroke-width=\"1\"/>\n    <text x=\"675\" y=\"184\" fill=\"currentColor\" stroke=\"none\" font-size=\"13\">Sealed handle housing</text>\n  </g>\n\n  <g data-part=\"internal-chassis\" stroke=\"currentColor\" stroke-linejoin=\"round\">\n    <path d=\"M432 213 H444 V522 H432 Z M516 213 H528 V522 H516 Z M432 318 H528 V328 H432 Z M432 500 H528 V510 H432 Z\" fill=\"#788b91\" fill-opacity=\"0.28\" stroke-width=\"1.2\"/>\n    <path d=\"M220 482 H370 L432 460\" fill=\"none\" stroke-width=\"1\"/>\n    <text x=\"30\" y=\"486\" fill=\"currentColor\" stroke=\"none\" font-size=\"13\">Internal structural chassis</text>\n  </g>\n\n  <g data-part=\"brush-neck\" stroke=\"currentColor\" stroke-linejoin=\"round\">\n    <path fill=\"#76a6c4\" fill-opacity=\"0.25\" fill-rule=\"evenodd\" stroke-width=\"1.3\" d=\"M462 108 H498 L496 190 H464 Z M470 118 H490 L489 180 H471 Z\"/>\n    <path d=\"M220 104 H380 L463 135\" fill=\"none\" stroke-width=\"1\"/>\n    <text x=\"30\" y=\"108\" fill=\"currentColor\" stroke=\"none\" font-size=\"13\">Detachable brush neck</text>\n  </g>\n\n  <g data-part=\"brush-head-shell\" stroke=\"currentColor\" stroke-linejoin=\"round\">\n    <path d=\"M460 108 V65 Q460 48 477 48 H483 Q500 48 500 65 V108 Q487 116 460 108 Z\" fill=\"#76a6c4\" fill-opacity=\"0.28\" stroke-width=\"1.3\"/>\n    <path d=\"M220 74 H350 L460 74\" fill=\"none\" stroke-width=\"1\"/>\n    <text x=\"30\" y=\"78\" fill=\"currentColor\" stroke=\"none\" font-size=\"13\">Brush head body</text>\n  </g>\n\n  <g data-part=\"bristle-plate\" stroke=\"currentColor\">\n    <rect x=\"498\" y=\"57\" width=\"6\" height=\"43\" rx=\"2\" fill=\"#8fb1c5\" fill-opacity=\"0.45\" stroke-width=\"1\"/>\n    <path d=\"M670 68 H580 L504 72\" fill=\"none\" stroke-width=\"1\"/>\n    <text x=\"675\" y=\"72\" fill=\"currentColor\" stroke=\"none\" font-size=\"13\">Bristle carrier plate</text>\n  </g>\n\n  <g data-part=\"bristle-tufts\" stroke=\"currentColor\" stroke-linecap=\"round\">\n    <path d=\"M504 60 L534 57 M504 67 L537 65 M504 74 L538 73 M504 81 L538 81 M504 88 L537 89 M504 95 L534 98\" fill=\"none\" stroke-width=\"2\"/>\n    <path d=\"M670 96 H580 L534 86\" fill=\"none\" stroke-width=\"1\"/>\n    <text x=\"675\" y=\"100\" fill=\"currentColor\" stroke=\"none\" font-size=\"13\">Bristle tuft array</text>\n  </g>\n\n  <g data-part=\"head-coupler\" stroke=\"currentColor\">\n    <path d=\"M470 145 H490 V172 H484 V164 H476 V172 H470 Z\" fill=\"#b3a275\" fill-opacity=\"0.42\" stroke-width=\"1.2\"/>\n    <path d=\"M220 134 H400 L470 157\" fill=\"none\" stroke-width=\"1\"/>\n    <text x=\"30\" y=\"138\" fill=\"currentColor\" stroke=\"none\" font-size=\"13\">Brush head drive coupling</text>\n  </g>\n\n  <g data-part=\"seal-carrier\" stroke=\"currentColor\">\n    <path d=\"M438 190 H522 V208 H494 L490 201 H470 L466 208 H438 Z\" fill=\"#b3a275\" fill-opacity=\"0.32\" stroke-width=\"1.2\"/>\n    <path d=\"M220 186 H380 L438 199\" fill=\"none\" stroke-width=\"1\"/>\n    <text x=\"30\" y=\"190\" fill=\"currentColor\" stroke=\"none\" font-size=\"13\">Nose and seal carrier</text>\n  </g>\n\n  <g data-part=\"shaft-seal\" stroke=\"currentColor\">\n    <path d=\"M463 200 Q480 192 497 200 L493 211 Q480 205 467 211 Z\" fill=\"#c47c83\" fill-opacity=\"0.45\" stroke-width=\"1.1\"/>\n    <path d=\"M220 214 H390 L467 205\" fill=\"none\" stroke-width=\"1\"/>\n    <text x=\"30\" y=\"218\" fill=\"currentColor\" stroke=\"none\" font-size=\"13\">Dynamic shaft seal</text>\n  </g>\n\n  <g data-part=\"actuator-stator\" stroke=\"currentColor\" stroke-linejoin=\"round\">\n    <path d=\"M442 252 H466 V314 H442 Z M494 252 H518 V314 H494 Z\" fill=\"url(#s-metal)\" stroke-width=\"1.2\"/>\n    <path d=\"M447 260 H461 M447 269 H461 M447 278 H461 M447 287 H461 M447 296 H461 M499 260 H513 M499 269 H513 M499 278 H513 M499 287 H513 M499 296 H513\" fill=\"none\" stroke-width=\"0.7\" stroke-opacity=\"0.55\"/>\n    <path d=\"M220 276 H390 L442 274\" fill=\"none\" stroke-width=\"1\"/>\n    <text x=\"30\" y=\"280\" fill=\"currentColor\" stroke=\"none\" font-size=\"13\">Laminated actuator stator</text>\n  </g>\n\n  <g data-part=\"actuator-coils\" stroke=\"currentColor\" stroke-linejoin=\"round\">\n    <path d=\"M438 258 H452 Q458 258 458 264 Q458 270 452 270 H438 Q432 270 432 276 Q432 282 438 282 H452 Q458 282 458 288 Q458 294 452 294 H438 Q432 294 432 300 Q432 306 438 306 H452 M508 258 H522 Q528 258 528 264 Q528 270 522 270 H508 Q502 270 502 276 Q502 282 508 282 H522 Q528 282 528 288 Q528 294 522 294 H508 Q502 294 502 300 Q502 306 508 306 H522\" fill=\"none\" stroke=\"#b67936\" stroke-width=\"3\" stroke-opacity=\"0.75\"/>\n    <path d=\"M670 362 H600 L528 287\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1\"/>\n    <text x=\"675\" y=\"366\" fill=\"currentColor\" stroke=\"none\" font-size=\"13\">Actuator field coils</text>\n  </g>\n\n  <g data-part=\"actuator-rotor\" stroke=\"currentColor\">\n    <path d=\"M460 266 H500 V298 H460 Z\" fill=\"#a69a70\" fill-opacity=\"0.35\" stroke-width=\"1.2\"/>\n    <path d=\"M670 418 H590 L500 288\" fill=\"none\" stroke-width=\"1\"/>\n    <text x=\"675\" y=\"422\" fill=\"currentColor\" stroke=\"none\" font-size=\"13\">Magnet carrier rotor</text>\n  </g>\n\n  <g data-part=\"actuator-magnets\" stroke=\"currentColor\">\n    <rect x=\"463\" y=\"270\" width=\"12\" height=\"24\" rx=\"2\" fill=\"#a56d9d\" fill-opacity=\"0.5\" stroke-width=\"1\"/>\n    <rect x=\"485\" y=\"270\" width=\"12\" height=\"24\" rx=\"2\" fill=\"#a56d9d\" fill-opacity=\"0.5\" stroke-width=\"1\"/>\n    <path d=\"M670 390 H590 L497 282\" fill=\"none\" stroke-width=\"1\"/>\n    <text x=\"675\" y=\"394\" fill=\"currentColor\" stroke=\"none\" font-size=\"13\">Actuator permanent magnets</text>\n  </g>\n\n  <g data-part=\"lithium-cell\" stroke=\"currentColor\">\n    <rect x=\"450\" y=\"355\" width=\"40\" height=\"130\" rx=\"18\" fill=\"#71a178\" fill-opacity=\"0.32\" stroke-width=\"1.3\"/>\n    <path d=\"M460 355 V348 H480 V355 M460 485 V492 H480 V485\" fill=\"#87939d\" fill-opacity=\"0.4\" stroke-width=\"1\"/>\n    <line x1=\"456\" y1=\"374\" x2=\"484\" y2=\"374\" stroke-width=\"0.8\" stroke-opacity=\"0.55\"/>\n    <path d=\"M220 398 H390 L450 400\" fill=\"none\" stroke-width=\"1\"/>\n    <text x=\"30\" y=\"402\" fill=\"currentColor\" stroke=\"none\" font-size=\"13\">Rechargeable lithium-ion cell</text>\n  </g>\n\n  <g data-part=\"control-pcb\" stroke=\"currentColor\">\n    <rect x=\"500\" y=\"335\" width=\"14\" height=\"165\" rx=\"2\" fill=\"#4e956d\" fill-opacity=\"0.38\" stroke-width=\"1.2\"/>\n    <path d=\"M504 349 H510 M504 365 H510 M504 388 H510 M504 431 H510 M504 466 H510\" stroke-width=\"2\"/>\n    <path d=\"M670 494 H590 L514 420\" fill=\"none\" stroke-width=\"1\"/>\n    <text x=\"675\" y=\"498\" fill=\"currentColor\" stroke=\"none\" font-size=\"13\">Main control and charging PCB</text>\n  </g>\n\n  <g data-part=\"drive-shaft\" stroke=\"currentColor\">\n    <path d=\"M475 165 H485 V320 H475 Z\" fill=\"url(#s-metal)\" stroke-width=\"1.1\"/>\n    <path d=\"M670 446 H580 L485 314\" fill=\"none\" stroke-width=\"1\"/>\n    <text x=\"675\" y=\"450\" fill=\"currentColor\" stroke=\"none\" font-size=\"13\">Oscillating drive shaft</text>\n  </g>\n\n  <g data-part=\"upper-bearing\" stroke=\"currentColor\">\n    <path d=\"M449 220 H511 V234 H449 Z M475 220 H485 V234 H475 Z\" fill=\"#93a3aa\" fill-opacity=\"0.4\" fill-rule=\"evenodd\" stroke-width=\"1.1\"/>\n    <path d=\"M220 242 H400 L449 226\" fill=\"none\" stroke-width=\"1\"/>\n    <text x=\"30\" y=\"246\" fill=\"currentColor\" stroke=\"none\" font-size=\"13\">Upper shaft bushing</text>\n  </g>\n\n  <g data-part=\"lower-bearing\" stroke=\"currentColor\">\n    <path d=\"M449 307 H511 V321 H449 Z M475 307 H485 V321 H475 Z\" fill=\"#a8936f\" fill-opacity=\"0.42\" fill-rule=\"evenodd\" stroke-width=\"1.1\"/>\n  </g>\n\n  <g data-part=\"torsion-spring\" stroke=\"currentColor\" stroke-linecap=\"round\">\n    <path d=\"M462 332 C462 322 498 322 498 332 C498 342 462 342 462 352 C462 362 498 362 498 352 M480 322 V314 M480 362 V370\" fill=\"none\" stroke-width=\"1.6\"/>\n    <path d=\"M220 340 H390 L462 340\" fill=\"none\" stroke-width=\"1\"/>\n    <text x=\"30\" y=\"344\" fill=\"currentColor\" stroke=\"none\" font-size=\"13\">Resonant torsion spring</text>\n  </g>\n\n  <g data-part=\"battery-contacts\" stroke=\"currentColor\" stroke-linejoin=\"round\">\n    <path d=\"M450 348 L456 342 L462 348 L468 342 L474 348 M450 492 L456 498 L462 492 L468 498 L474 492\" fill=\"none\" stroke-width=\"1.5\"/>\n    <path d=\"M220 428 H390 L450 492\" fill=\"none\" stroke-width=\"1\"/>\n    <text x=\"30\" y=\"432\" fill=\"currentColor\" stroke=\"none\" font-size=\"13\">Cell contact springs</text>\n  </g>\n\n  <g data-part=\"grip-insert\" stroke=\"currentColor\">\n    <path d=\"M402 300 Q410 294 410 310 V438 Q410 452 402 446 Z M550 310 Q550 294 558 300 V446 Q550 452 550 438 Z\" fill=\"#ba7d7d\" fill-opacity=\"0.38\" stroke-width=\"1.1\"/>\n    <path d=\"M670 210 H610 L558 330\" fill=\"none\" stroke-width=\"1\"/>\n    <text x=\"675\" y=\"214\" fill=\"currentColor\" stroke=\"none\" font-size=\"13\">Elastomer grip insert</text>\n  </g>\n\n  <g data-part=\"button-membrane\" stroke=\"currentColor\">\n    <path d=\"M532 250 Q540 242 548 250 V266 Q540 274 532 266 Z\" fill=\"#c47c83\" fill-opacity=\"0.42\" stroke-width=\"1.1\"/>\n    <path d=\"M670 274 H600 L540 258\" fill=\"none\" stroke-width=\"1\"/>\n    <text x=\"675\" y=\"278\" fill=\"currentColor\" stroke=\"none\" font-size=\"13\">Waterproof button membrane</text>\n  </g>\n\n  <g data-part=\"power-button\" stroke=\"currentColor\">\n    <path d=\"M548 246 H558 Q564 246 564 252 V260 Q564 266 558 266 H548 Z\" fill=\"#7d93a4\" fill-opacity=\"0.4\" stroke-width=\"1.2\"/>\n    <path d=\"M670 244 H600 L564 254\" fill=\"none\" stroke-width=\"1\"/>\n    <text x=\"675\" y=\"248\" fill=\"currentColor\" stroke=\"none\" font-size=\"13\">Power and mode button</text>\n  </g>\n\n  <g data-part=\"light-pipe\" stroke=\"currentColor\">\n    <path d=\"M514 282 H550 V292 H514 Z\" fill=\"#8dc6d8\" fill-opacity=\"0.35\" stroke-width=\"1.1\"/>\n    <path d=\"M670 304 H600 L550 287\" fill=\"none\" stroke-width=\"1\"/>\n    <text x=\"675\" y=\"308\" fill=\"currentColor\" stroke=\"none\" font-size=\"13\">Indicator light pipe</text>\n  </g>\n\n  <g data-part=\"indicator-led\" stroke=\"currentColor\">\n    <path d=\"M502 280 H514 V294 H502 Z\" fill=\"#d6b55c\" fill-opacity=\"0.55\" stroke-width=\"1\"/>\n    <path d=\"M670 330 H600 L514 287\" fill=\"none\" stroke-width=\"1\"/>\n    <text x=\"675\" y=\"334\" fill=\"currentColor\" stroke=\"none\" font-size=\"13\">Status indicator LED</text>\n  </g>\n\n  <g data-part=\"charging-coil\" stroke=\"currentColor\">\n    <ellipse cx=\"480\" cy=\"528\" rx=\"46\" ry=\"10\" fill=\"none\" stroke=\"#b67936\" stroke-width=\"2\"/>\n    <ellipse cx=\"480\" cy=\"528\" rx=\"35\" ry=\"7\" fill=\"none\" stroke=\"#b67936\" stroke-width=\"2\"/>\n    <ellipse cx=\"480\" cy=\"528\" rx=\"24\" ry=\"4\" fill=\"none\" stroke=\"#b67936\" stroke-width=\"2\"/>\n    <path d=\"M670 542 H600 L526 528\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1\"/>\n    <text x=\"675\" y=\"546\" fill=\"currentColor\" stroke=\"none\" font-size=\"13\">Induction receiving coil</text>\n  </g>\n\n  <g data-part=\"ferrite-disc\" stroke=\"currentColor\">\n    <rect x=\"438\" y=\"541\" width=\"84\" height=\"8\" rx=\"3\" fill=\"#777f89\" fill-opacity=\"0.45\" stroke-width=\"1.1\"/>\n    <path d=\"M220 522 H380 L438 545\" fill=\"none\" stroke-width=\"1\"/>\n    <text x=\"30\" y=\"526\" fill=\"currentColor\" stroke=\"none\" font-size=\"13\">Receiver ferrite backing</text>\n  </g>\n\n  <g data-part=\"base-o-ring\" stroke=\"currentColor\">\n    <rect x=\"424\" y=\"554\" width=\"112\" height=\"8\" rx=\"4\" fill=\"#c47c83\" fill-opacity=\"0.45\" stroke-width=\"1.1\"/>\n    <path d=\"M220 550 H380 L424 558\" fill=\"none\" stroke-width=\"1\"/>\n    <text x=\"30\" y=\"554\" fill=\"currentColor\" stroke=\"none\" font-size=\"13\">Base sealing ring</text>\n  </g>\n\n  <g data-part=\"base-cap\" stroke=\"currentColor\">\n    <path d=\"M416 565 H544 L538 582 Q480 594 422 582 Z\" fill=\"url(#s-hatch)\" stroke-width=\"1.3\"/>\n    <path d=\"M220 580 H380 L422 575\" fill=\"none\" stroke-width=\"1\"/>\n    <text x=\"30\" y=\"584\" fill=\"currentColor\" stroke=\"none\" font-size=\"13\">Induction charging base cap</text>\n  </g>\n</svg>"
+  }
+ ],
+ "thumbnailBase64": "/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAUDBAQEAwUEBAQFBQUGBwwIBwcHBw8LCwkMEQ8SEhEPERETFhwXExQaFRERGCEYGh0dHx8fExciJCIeJBweHx4BBQUFBwYHDggIDh4UERQeHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHv/AABEIAtADwAMBEQACEQEDEQH/xAGiAAABBQEBAQEBAQAAAAAAAAAAAQIDBAUGBwgJCgsQAAIBAwMCBAMFBQQEAAABfQECAwAEEQUSITFBBhNRYQcicRQygZGhCCNCscEVUtHwJDNicoIJChYXGBkaJSYnKCkqNDU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6g4SFhoeIiYqSk5SVlpeYmZqio6Slpqeoqaqys7S1tre4ubrCw8TFxsfIycrS09TV1tfY2drh4uPk5ebn6Onq8fLz9PX29/j5+gEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoLEQACAQIEBAMEBwUEBAABAncAAQIDEQQFITEGEkFRB2FxEyIygQgUQpGhscEJIzNS8BVictEKFiQ04SXxFxgZGiYnKCkqNTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqCg4SFhoeIiYqSk5SVlpeYmZqio6Slpqeoqaqys7S1tre4ubrCw8TFxsfIycrS09TV1tfY2dri4+Tl5ufo6ery8/T19vf4+fr/2gAMAwEAAhEDEQA/APqavVOIKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKAIb66is7Zp5TwOgHVj2AqZSUVdjSu7DNNk+2Nulcqp6Khxj8etcUq8nsbqmka1xpzLD5tsxfA5jbqeex9fr+lVDESXxCdJPYoqwZdw6V2Jpq6MWrC0xBQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAJI6xozuQqqCST2FAHNzeJS82LaNRGDwX6muaVZ30L5StrdxNqkVrLGF22zM8seevAww+g3fn9ayq1HNFwsmX9HuyEByeg96wNTr9LvQyhSRjntQMo3+yLV3jjC7Jk80Y9RgH+Y/WuvDS3iY1V1G11GIUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFAASFGSQPrSbS3AQnjOCB6ngfrWUq8F1LUGyNZgx+U7/aNS369KxeKfRFKn3MvxfcxxaDcrJdQWrsowJZVUkZGR9SOPxq3W9p7sUyJJQV5Ox5/YanaXEvlRT7nxnGCM/TPWpnQqQXNJaGdPFUqkuWMrs2rG4McqsCMg5rI3L0REN2wjACEqVwegPb8KzaszWLuje065cbfmbqe9IY66naXW7LLvwrDGeDlWP8ASt8P8ZFT4TRruOcKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgDM1e01GSZbjTZ4Y5lTaPNJwOeTx14/kK56tFzd0aQmooz/sWv2iiZrhNVuOSMqI1HQY5J475rGWGkti1UT3OA8Za98QY9bk0wWN64wpSPToWcMDj5twHQE4J4ANdlGhSjG81dnlYmtiJVHCnojmr7w348kgW/vbCDT0lcDfd3AeRsjOcLuIPXgkdOcVtLEKnH3Uc8cvnUd5su+G/C9zY6jFqN9q8l1LGDtjSPYgJGOeSWxk+nb0rjq4mVRWO+hgoUpc3U7GA8iuc7DVh+/EfVF/maiW5pDY2bDt9TUlD3/wCQ5Z/Q/wDoL1vh/jIqfCbFdxzhQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAYfjHxPYeF7CO6vkmkMz7I0jXJJxnkngD/ODVRjzMxrVo0ldnK2/i7xV4iyPDejpHEODKxDY5x95sLwc9jTm6VL45HLGvia/8KFl3Y+Pwt4g1CZZde8TsrA7lhtWaQg9eMYVTn2P8qwljoL4I/eaRwFaetWf3HXatYR3+m/ZbjzAAMpLO4UhgMbsDr3rilWlLc9NQSRyuqWelWMQii1RZ7zdjywAMjvx1/wD1VKldg42RVg6irJNWH70X+4v/AKEaiW5pDY2bDt9TUlDZWI8T6euflMbkj6A/41vh/jIqfCbtdxzhQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAUNd0fTdcsDY6rarc2+4OFLFSGHQgggg8noe5pptbETpxqK0kZz+F7WK2jtNNupdMtUwoS3xkL/dBOcc4rmnQUpczZtGfKrJDRo+o2sYj0jUSinAae4JdgM5J7Bj17iuecIJ6PQ1Um1qjC8TadZw6fOLzxNNeXxKgW/2hIw3zAH5F56Z71s8OlDmRl7dc3LdXMOytLaA7ooUVsY3Yy2PqeawsW22aUHUUxGrD96L/AHF/9CNRLc0hsbNh2+pqShk3/I1ad/1yk/lW+H+Mip8JvV3HOFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQBV1SS5itw9qhd94yAMnFZVXJR90uCTep5/41+IOoaH9n2aM1rHMjOst2p3YGOducjr3x1qKOHdXWozmxeKdCygrtlWzsfFfia2W81DX4rO0ZQ+GkO4L1B2LgdD3P8uLdXD0naMbswWHxddXnOy8iSHSvAuiSBru/n1SdeQithQQf7qfyNZVMbVmrLQ6KWW0abu9WWrvXor+IWlnogtbYYPmuoVgR7da5op3O12sMh6irINK2z5i5YkYXA9OtRLc0hsblh2+pqShk3/I1af/ANcpP5Vvh/jIqfCb1dxzhQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUABIHUgfWk2luMguYradFNxbxSIpBUzKMA+vzVjLEQWxXs29zJutE0nUJ1lntpbrGSIkZhHkjnJ4B/GuOU03dI2SdtyDxKmkWPhy4tA+n6YrgOiLtXcykNjC9zjH410Ko5rlhExm40/enKxwVjqdpcXAgjkJcj5crjd34zTnh6kI80kc9PGUqk+SL1NiHqKxOo0rb/WL9F/maiW5pDY3LDt9TUlDJv+Rq0/8A65SfyrfD/GRU+E3q7jnCgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAz9Xsrm5KS2dwsM6AhWYZAJ71jVpc9tS4T5TN/szWLQG4+2/2ncZJw6iNfYYyePfJrCWGa2NFUXU89+IniDxxp+qfYLmOQQOg8v8As8NtfJxneQMYzg/dxx7V10MPTiryV2eVjK9bn5YOy/rqY7+C/Ht1ZT6heW9ppkUaF3+0T+bMVwTkBMjj3YVvKvyx91GEcvlN3mx3hrwwthqCajc6pcXk6A7RgRxjIxnaMknHqa4amIlUVmd9HBwpPmW52EJ5FYHWXI7hUuFUn+Fe3uaiW5pHY3LC6jCjLL3/AIsVJQ+0uILjxTEgKM8dpIww2SDuUfyNdGG+Izq7G/XaYBQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAYvjTxDD4Z0NtTmtpLj5xGkacZY56nsOOtOMeZ2Mq1VUo81jh7HxP4w8XlhoSQWtsGw0qsFAx1BZsk8/wB0VU50aXxO7OKMsXiPgVkWrPwCs9wJ9c1ye9uCBuS2BdvxkbJI59q5p5g9oKxtDK03erJtnbrFFaWC2rBILeOIR/v5i7bQuOmfTvXG6027tnpxpxiuVI4bVD4YsbcWthqMlxeA8bmDBh36D/OKSbbG42RVhnGQM8kgADqT6VZBl+I7vU9E1phqlrJbwybfIm/gcY6bh/F1yOv4YqakJReppBprQfD4qhVVWKQySOwRFX5izHgADHWoKPQPAem3sFtLqWqRmO7u8bYmA3RRjoD6E9SPpnpXdQp8quzCpK70OlrczCgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAivLW2vLZ7a8t4biB8bo5UDq2DkZB4PIBo2E4qSszLn8N6a1uttaK+nQKMCOzCxKBnOAAOM98VjOjGbuzSMuVWRE/h9rdRHo12bBT95iDK2CcnljyT79KiWGTehSqaajYfCenMyyajLdalKDnNxKdgOOcIuFx7EGrjQgiXUbNZdN09bQ2i2FqtsTnyRCuzPrtxiteVWtYm7IbHRNKspRLa2MUbgYDYyR+dJQitkF2XbiGG4haG4ijlicYZHUMp+oNO1xFSx0XR7CbzrHSbC1lxjfDbojfmBSUYrZDbbL1UIKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgCO5mjt4WmlbCL1/kKmUlFXY0ruxgr4rtZZZEiQIsTlGeVtoyOCOfeud4jsjT2fdk1zr/2aATvCksZXIMbdR6ij6w+w/ZIvaPqlrqlss1sThlDAMMHHrW1Oop7GcouJerQkKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKAOc+Isjp4c2KARJcRK3qAGDcfiorGv8BdP4inbeH9I1m0QapYQ3TAcM4+Yfj1riub2uas+kWNrYx28MOIokCRqTkKoGABQBheEZNvjS6gbcSbMlT2AV1yP/Hh+tb4d+8yKux29dhgFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFAHJfExka10uA53m9Eg+iowP8A6EK58R8KNaW5qeH1xAp9q5DUv6l/qTQBxuhmSPx9EVIxJbyI+R24P81FbUPjJqfCd5Xac4UAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAcZ8Ri51XRIQRsJmYj3GwD+ZrmxL2NqXU3tDGIAK5TUuX/+qNAjhUZIfHulSuxVTK6d+S0bgDj3IrSj8aFP4T0Ou85goAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoA4Pxewn8b28K7D5NouSDkgszcH04AP41x4h+8kb09jrNHiIiAyOlYFlq+jPlHkUAef65i28Qabc7lUR3kW4noFLgMfyzVQdpIJbM9Gr0TlCgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgDz29cXPjzUXG1ljKRqVHoi5z75JFcFZ3mzoh8J3OljES/Ssyyxe/wCqNAjznx8si2zyREB0+ZDjOCOhoGeiwyJNCk0Z3JIoZTjGQRkV6ZyDqACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKAPNdCk+1a5qF3uLCS7lZSRj5d5x+mK86bvJnStEj0TThiMVJRNdj92aBHB+NIw1tJxng0DOn8ITfaPC2lyFizfZY1YnqWCgH9Qa9CDvFHNLdmrVkhQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFAHmPw/Iks4pPMMhYAlickn3968s6z0mwGEFMCa6/1ZoEcZ4sUG3kJIAA60DL/wANW3+C7Ih943zAHOeBM4A/DpXdR+BHPP4jo61ICgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKAPH/BcNxYgWs25JoWMb9RypwevPavMatozrPRrC6uBGMSH8RmgGS3V3ceWf3n6CgRxXi2Z3t5N7seM8mkM6j4bWsln4J06GTduIeT5l2kB5GccfRvxr0KStBHPP4joq0ICgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKAKd3pdjdS+dNbr5v/AD0XhvzHWolTjLdFKTWxjeKJxoVraS26eb590ISHPQFWbPH+7XPUpKKujSM2ytpWpPqPiM6TJEqR/ZXn3qechkXH/j36VFOmpOzHKVkbq6Jpu8PLbiZh/wA9PmH5dK6Y0YIzc2zRrUgKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgDlPib/yDtM/7CKf+i5Kxr/CXDczfCn/ACP5/wCwbJ/6MirOj8RU9jva6jIKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgCnq2q6ZpFq91qmoWtlAgy0k8qoAPxNJtLcDy/XPiV4R8XX9nonh6/lvbiC5Fw7iB0j2hWU4LAZOWHauerNSVkaQ3FvvF+h+DPFkGpa/PJBaT2zWwkSIvtZnRskDnGFPQGopSUZajlseh+GfFHh7xNZJd6FrFpfxN2jf519mQ4ZT7EA11KSexmbFUIKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoA5Hx5r9zp8gsrZ/I/d+ZJMeMDngE9OnX/AOvXPWqOOiLirnhPx6i1G68GLNbLLP5V4kt1gkny9rgk+oBKn8M9q5r6ltaHkHhLXdQ8PasmqaaITMq7Ssq7lZSQSD0PYdDVEJ2NPx3411zxcYjqiWkUcR3LHbxlRnGM8kn1796AcrnTfs+R3Z1PVZzBItqYUUSEHaz7jxnoSBmpZUT6H8IeJLuLUIrC4nM8EkqxfOcsjHAGD6cjitqVRp2YpRPQ66zMKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgDyD4t3k9t8QLdEIMb6ZHuQ9D+8lrkr/Eaw2KNkAyDywVXsucgfSsBlK58F+HbyXzZ9CtS/cpAoz9cEZpishieBfDETiRdBtmI6B4Aw/IkigLI05IFtogiIIo14CoAMf4UhmPFeyDxVoFnD+6h/tS1yoP3v3y9T9aqHxIHsfQVegYhQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAeQ+JYY/FWq3WoQDbcwOYrc5+WSFeg9sncw/3sfTgqS5pNm6joYtrqlhZ3hsb24WzuQdvl3IMRbt8u7AYZ6EZB7VNhM6m2ZWXKsCPUGgQ6XhSTTA53VdU04XIsxeQyXTNhYI23yE8n7oye3pSsNDbfSJbJ/wC3LlCtxB89pEez44ZvTHBA65oTs7lJHtWnXcV9p9vewn93PGsi/QjNegndXMGrE9MQUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQBk+ML59O8M313G4SRY9qMTjDMQq/jkioqO0Wyoq7OJ8I2gigQAYwK4DoO3i0uwvYQl3aQzLkHDrnmgkr2nw48Gw6zLrMGjQwX0o2vNGSCRxx+goAfr3w78I6yYm1XSkvDC26PzWJ2n1oAlOhaTYbns9Pt4XIwWVOTQBzHia3DxuMUFF74V3DPoE9k7gm0uWVV7hGww/Ut+VdlB3jYxqLU66tjMKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoA5D4uz+X4R8ncB9ouoo8HqcHfx/wB8Z/Csa79wunuY/hW5ZYkWRd3bI61xm53umXEDKuHA9jxQSbMLoV4dT+NADpXTH31/OgDK1CaFVOZF/DmgDivEd2uxhEhJ9TQUVPhBM39o65bu65zDIo7n74Y/Thfzrpw73Mqh6JXSZBQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFAHAfGWbNvpFnuH7y5aXb3OxcZ/wDH/wBa58Q9EjSnuVPD64RfwrlNjr7AfKKBGpF0oEOk6UAZt9900DOV1xflb8aBmb8MJfJ8cXUBKqs1kxGepZXXAH4Fj+FbYd+8Z1Nj1OuwxCgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKAPNPi2zyeItJiP+rjgkYcd2YA/wDoIrlxG6NqZPoa4RRiucs6uyHyigDSi6UCHSdKAM696GgaOZ1pQVNAHO+DnMXxG08AA+asqH2Hls3/ALLWlF++TP4T16u4wCgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKAPKfilcyr4+tICcwpp6OFx0JkkBP/AI6K48R8RtT2NXQWVkXac8ViaHU2Y+UUCNGPpQIdJ0oAoXfQ0DRzWs4CMSQOKARzHhaQN8StJVRgBpsn1/cyVpR+NCn8J7BXcc4UAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQB5J8VefiHbf9g2P/wBGy1x4j4jensXdE+6v+e9YlnVWMsgUYc9O9ITNKO4kHofwpgOkuZCP4R+FAGdeTSEfex9KAOa1gkhyST/kUDMDwh/yUvSv96b/ANEyVpR+NEz+E9lruOcKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoA8k+Kn/ACUO2/7Bsf8A6NlrjxHxI3p7F3RPur/nvWJZ09l90UmJmglNAhX6UAULvpQwZzurfdf/AD6UDMHwh/yUvSv96b/0TJWlH40TP4T2Wu45woAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgDyb4pDd8RLRfXTox/5FkrjxHxI2p/CaFqkNoYk80szEKAV6nNZ2JjVu7WOisvuioZqzQSmgQr9KAKF30oYM53Vvuv/n0oGYPhD/kpelf703/omStKPxomfwnstdxzhQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFAHlHxPx/wsWz9fsEX/AKNkrjxHxo2h8LLM/wDx92v/AF0H8xUM54fEjp7HoKzZ1s0EpoEK/SgChd9KGDOd1b7r/wCfSgZgeEP+SmaV/vTf+iZK0o/GiZ/CezV3HOFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAeSfFb/koVr/ANg6P/0bLXHiPiNqexc0Y8ISM4HHtWKZdludPYkYFJgzRjIpggcjFAFG7IxQBzmrtw3vSGc/4OOfiZpOe7Tf+iZK0o/GiJ/Ce0V3mAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQB4t8b5ZIfGsDRuVJ02MZHUfvJa5qsbyK52lZHOeG9cu7K6VXuJZV4G2SQsD7c9PrWfKmQqklqeu6NPHdWsVxCco6gis2rHSndXRrRUmMH6UAyjd9DSA5vWPuH/PagEc/4P8A+SnaN/vTf+iJK0o/GiZ/Ce113mAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQB4r8c0dvGcBCkqNNjOcf9NJc/0rmqv3xuN43PPywQFycBec+lSZnr3wrNy/hG1muUZDKzPGrAghC3HB9eo9iKyk7s6YK0Ts4ulSygfpQNlC76GkBzmsfcP0/pQCMLwVE8vxL0p0wVi85357eU6/zYVrR+NEz+E9oruMAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgDy/4uc+KdMB/59m/9CrkxG6NqexnaPomlPKJ3sYXf/aGV6/3Tx+lY8zK5I3vY7ex6CkNmjH0oYgfpQNlC76GkBzmsfcP0/pQCMn4eH/i4sH/XCX+VbUPjJnsew12mAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQB5b8X/wDkaNL/AOvZv/Qq5MRujansLov3F/z3rnRodPY9BTEzRj6UMQP0pDZQu+hoA5vWPut9KARk/Dz/AJKND/1xl/lW1D4yZ7HsVdpgFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAeWfGA48T6X/17N/6FXJiN0bU9h2i/cX/PeudGh09j0FMTNGPpQxA/SkNlC670Ac3rH3W+n9KARjfDw/8AFyLb/rhL/wCg1tQ+Mmex7LXaYBQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFAHlnxh/5GjSx/07H/ANCrkxG6Nqew7RfuL/nvXOjQ6ex6CmJmjH0oYgfpSGyhdd6AOZ1n7poBGZ8NoHl+IqSKVAhtJXbPcZVePxYVtQXvk1Nj2Gu0wCgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKAPK/jD/yNWmD/AKdj/wCh1yYjdG1PYfov3VrnRodPY9BTEzRj6UMQP92kNmfe9DTA5rWfumkCKfwpP/FfXP8A2DpP/Rsdb4f4iKmx61XYYhQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFAHlXxh/5G3Sx/06t/6HXJiN0bU9iTRfuJXOjQ6ex6CmJmjH0oYgf7tIbM+96GmBzWs/dNIEUvhR/yUC6H/UOk/wDRkVb4f4iKmx63XYYhQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFAHlXxiVx4r0pyjBDauA2OCQ4yP1H5iuTEbo2p7D9E/1cdc6NDqLHoKYmaMfShiB/u0hsz73oaYHM6yflakCKPwoP/FxLof9Q2T/ANGxVvh/iIqbHrtdhiFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAebfGf8A5COg/S4/nFXLiehrT6lbRP8AVx1zI1OosegpiZox9KGIH+7SGzPvOhpgcxrf3W+lIEVvhNA7eO725BXYlgyEd8tIhH/oJ/St8OveZFTY9ZrsMQoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgDzb40f8AIS0D6XH/ALSrlxPQ1p9SroX3V/CuZGp1Nj0FMTNGPpQxA/3aQ2Z150NMDmNc+630pAJ8ITnxVqn/AF7L/wChV0YfdkVNj1KusxCgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKAPNfjTxqOgH2uf8A2lXLiehrT6lbQvur+FcyNTqbHoKYmaMfShiB+lIbM686GmBy+t/db/PekMb8HT/xVGqf9ey/+hV0YfdmdTY9UrrMQoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgDzP42HGo6B9Ln/wBpVy4noa0+pBoX3V/CuZGp1Nj0FMTNGPpQxA/SkNmdedGoA5fW/ut/nvQMj+Dp/wCKs1Qf9Oq/+h10YfdmdTY9WrrMQoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgDzL42/wDIS8P/AEuf/aVcuJ6GtPqQaJ9wfQVzI1OqsegpiZox9KGIH6Uhszb3oaAOY1w/I/tQMPg1AzeItZudw2xwRRkdyWZjn/x0/nXThlqzKoepV1GQUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQB5j8bj/wATTw6Pa5/9pVy4noa0+pDon3B9BXMjU6qx6CmJmjH0oYgfpSGzNvehoA5bXT8j/jQMtfBb/kJa/wDS2/8AatdOG6mVToelV1GQUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQB5n8bYpDf+H5gv7tDcKxz0J8sgf+On8q5sT0NafUr6J9wfQVyo1OqsegpiZox9KGIH6Uhszb3oaAOV17o340DLPwTOdR8QfS2/9q104bqZVOh6ZXUZBQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFAHnvxo/wBRo/8A18P/AOg1zYjZGtMzdD+4PwrlRqdVY9BTEzRj6UMQknSkNmde9DQByuu/db8aBk/wQP8AxM/EI9Bbf+1a6cN1MqnQ9OrqMgoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgDz340f6jR/8Ar4f/ANBrmxGyNaZmaF/qxXKjU6ux6CmJmjH0oYhJOlIbM696GgDldc+430NAy58E4Ntxrt1vz5jwx7cdNoc5z77v0rqwy0ZlU6HpNdJkFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAeefGr/UaP/wBfD/8AoIrmxGyNaZm6F/qxXKjU6qx+6KYmaUfShiEk6Uhszr0/KaAOU177hoGafwV5g1j/AK+E/wDQTXVh9mZVD0OukyCgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKAPPPjUf3GjD/AKeH/kK5sRsjWmZuh/6ta5UanVWP3KYmaUfShiEk6Uhszb0/KRTA5TXjhGpDNP4JnMGs/wDXwn/oJrqw+zMqh6JXSZBQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFAHnXxs4g0c/9N3/kK5sRsjWmZugf6pfw/lXKjU6yx+5TEzSj6UMQknSkNmZe9DTA5PxB9x/89qQzS+CBzBrI9LiP/wBBNdWH2ZlUPR66TIKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoA85+N5xDo3vcP/6CK5sRsjWn1M3QPuJXKjU62x+5TEzSj6UMQknSkNmZe9DTA5PxB9x/89qQzY+CNvt0zVrrfnzL0R7cdNsanOffd+ldeHXusxqbnoNdBmFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAee/G2B20/SLkFdkd2UI75ZCR/6Cf0rnxC91GlPcydA+4lciNjrbH7tMTNKPpQxCSdKQ2Zl70NMDkvEB/dsaQzf+Cn/Iu6j/ANhJ/wD0VFXZh/hMam53dbmYUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQBwvxp/5F3T/wDsIp/6KlrDEfCaU9zB0D7iVxo2OsselMTNOPpQxCSdKQ2Zl70NMDkfEH+qb8KQzf8Agkf+Kd1H/sJP/wCioq7MP8JjU3O8rczCgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKAOF+NRA8Pad76kn/oqWsMR8JpT3MHQPuJXGjY6yx6UxM04+lDEJJ0pDZmXvQ0wOQ8Qn9y/0pDOj+CkTR+F7uRipE2oSOuOwCIvP4qa7MOvdMam53NbmYUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQByHxfjkbwVLMjKBBcQu2T1BcLx+LCsa69wunucl4blV407H0riNzsLHpTEzTj6UMQknSkNmZfdDQBxfiWVUjfnJxQM7X4RwiPwJZOY2R5pJpH3Z5PmMAef9kCu6ivcRhP4jrK1ICgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKAMPx7psmreEdQsYULytGHRAcFmRg4A9yVqKkeaLRUXZnmPhtiYk+leedB2lhIygYamgNWKZ8DgUCElmfHQUAZOoyOVOTSA4jxKx8tgASegA70xnrXg+wl0zwvptjPnzordRID2YjJH4EkV3wVopHNJ3Zq1YgoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgCtqlwbTT5rhcblX5c+p4H6mpnLli2NK7PIt9zFc3Wo/Z2ktTcMm2NSZF2nazY7gsGPHPfkHjzzoR0mh39nfRB7S5imGP4W5H1HUUkM3I+gpiCXpQCOf1/ULKwiL3dzFCAM4ZuT9B1P4UugIwLOW6bU7TUWtDFbeeBGZAfMVuSr7ew3AAZ55zgU07Az1+xn+02cM+AN6BiB2PevQi7q5ztWZNVCCgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKAMD4hSPB4QvbiMgGExSkeoWVGI/EAj8azq/AyobnKW0sU0CTQkGNxuBHvXCbFS80fT7mUzNAI5jz5sZ2tn146n60DGRaddwkeTrWoqq/dUykgf0/SgLiy6ddTlvtGtai6sOVWXaPy6UBcWy0bTrWUTJbh5gc+bIdzZ9eeh+lAFq+mgt7V57jHlxjccjuORj3z0oEdp4KeaXwpptxOVLzwCb5SSAH+YDn0BA/Cu+n8KMZbmxVkhQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFAFTWbFNT0i806RiiXUDxFgMldwIyPcZzSkrqw07M8j0RLvS7mXTL1fKuIW2yIehPYj6jn6Yrz2mnZm97nSRxO4yoBpAKYJv+eTn6DNAALeY/wDLJx9RigBsqNGuWGPagDmNZivNavItKsgXmnYKoH3U9WP0GTTS5nZBex7LYW0VlYwWcAxFBEsSDA4VRgdOOgr0ErKxgTUxBQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQAUAFABQBla/oVnq6BpFEVwv3JlXkex9RWc6amUpNHJzWmp6Pxd20zRDnzoEaVMe+BlffIA68muWVKUTRSTFt9e093MQv7MyAZZDKAw+ozkVmUJca/pyuYv7QsvMI4jEoLn6DOTQAW9hqesSKIrW4igbOZp0MSjn+62GPsQCPetY0pSJckjrfD+hWWjQnyF8ydxiSdh8ze3sPb+fWuqFNQ2M3Js1KskKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKAGTwQ3EflzwxypnO11DD8jStcAgght4/LghjiTOdqKFH5Ci1gH0wCgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKACgAoAKAP//Z"
+}
