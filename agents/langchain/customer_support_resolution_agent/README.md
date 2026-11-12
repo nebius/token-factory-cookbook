@@ -151,4 +151,4 @@ ticket ID to the customer and the ticket is appended to
 
 ## 📄 License
 
-MIT — see the repo root [LICENSE](../../LICENSE).
+MIT — see the repo root [LICENSE](../../../LICENSE).

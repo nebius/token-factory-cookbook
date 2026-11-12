@@ -17,7 +17,7 @@ base-URL wiring required.
 
 ## Prerequisites
 
-- A Nebius Token Factory API key — see [Getting Started](../../getting-started.md).
+- A Nebius Token Factory API key — see [Getting Started](../../start-here/setup.md).
 - Python 3.10+ (local, Colab, etc.).
 
 This recipe was contract-checked with Pixeltable 0.7.1 on 2026-08-13. It uses
@@ -122,4 +122,4 @@ emb_t.select(emb_t.input, sim=sim).order_by(sim, asc=False).collect()
 - [Pixeltable Nebius provider guide](https://docs.pixeltable.com/howto/providers/working-with-nebius)
 - [Pixeltable Nebius SDK reference](https://docs.pixeltable.com/sdk/latest/nebius)
 - [Token Factory docs](https://docs.tokenfactory.nebius.com/)
-- [Cookbook: Getting Started](../../getting-started.md)
+- [Cookbook: Getting Started](../../start-here/setup.md)

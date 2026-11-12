@@ -1,0 +1,22 @@
+name: Internal links
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check tracked Markdown links
+        run: python3 .github/scripts/check_internal_links.py
+      - name: Check notebook and secret hygiene
+        run: |
+          python3 -m unittest test_recipe_secret_hygiene test_batch_notebook
+          python3 -m unittest discover -s api -p 'test_*.py'

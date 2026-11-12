@@ -1,0 +1,25 @@
+{
+  "providers": {
+    "nebius-token-factory": {
+      "name": "Nebius Token Factory",
+      "baseUrl": "https://api.tokenfactory.nebius.com/v1",
+      "apiKey": "$NEBIUS_API_KEY",
+      "api": "openai-completions",
+      "compat": {
+        "supportsDeveloperRole": false,
+        "supportsReasoningEffort": false,
+        "maxTokensField": "max_tokens",
+        "supportsLongCacheRetention": false
+      },
+      "models": [
+        {
+          "id": "zai-org/GLM-5.1",
+          "name": "GLM-5.1 (Nebius Token Factory)",
+          "reasoning": false,
+          "input": ["text"],
+          "contextWindow": 200000
+        }
+      ]
+    }
+  }
+}

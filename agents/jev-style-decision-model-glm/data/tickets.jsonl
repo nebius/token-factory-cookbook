@@ -1,0 +1,100 @@
+{"text": "I was charged twice for my subscription this month.", "team": "billing"}
+{"text": "Can you send me an invoice with our VAT number on it?", "team": "billing"}
+{"text": "My card was declined but the money still left my account.", "team": "billing"}
+{"text": "Why did my bill go up from $49 to $79 without notice?", "team": "billing"}
+{"text": "Please refund the annual plan, I cancelled within 14 days.", "team": "billing"}
+{"text": "How do I switch from monthly to yearly billing?", "team": "billing"}
+{"text": "The invoice PDF shows the wrong company address.", "team": "billing"}
+{"text": "I need a receipt for the March payment for my expense report.", "team": "billing"}
+{"text": "You charged my old credit card instead of the new one I added.", "team": "billing"}
+{"text": "Is there a discount for nonprofits? We'd like it applied to our next invoice.", "team": "billing"}
+{"text": "Our finance team needs invoices sent to accounts@ instead of me.", "team": "billing"}
+{"text": "I see a pending charge of $1 I don't recognize.", "team": "billing"}
+{"text": "Can I pay by bank transfer instead of card?", "team": "billing"}
+{"text": "The coupon code SPRING20 wasn't applied to my payment.", "team": "billing"}
+{"text": "We were billed for 12 seats but only have 9 users.", "team": "billing"}
+{"text": "Please cancel auto-renewal before next week's charge.", "team": "billing"}
+{"text": "Your pricing page says $29 but I was charged $35 including something called a platform fee.", "team": "billing"}
+{"text": "I got a dunning email saying my payment failed, but my bank says it went through.", "team": "billing"}
+{"text": "How do I download all invoices for last year at once?", "team": "billing"}
+{"text": "Can the renewal be split across two purchase orders?", "team": "billing"}
+{"text": "We overpaid by mistake; can the extra be credited to next month?", "team": "billing"}
+{"text": "Tax was added to my invoice even though we are tax-exempt.", "team": "billing"}
+{"text": "The trial ended and I was charged immediately, I thought I'd get a reminder first.", "team": "billing"}
+{"text": "Our procurement team needs a W-9 before we can pay the invoice.", "team": "billing"}
+{"text": "Currency is showing in USD, can we be billed in EUR?", "team": "billing"}
+{"text": "The API returns 500 errors whenever I send a request larger than 1MB.", "team": "technical"}
+{"text": "Webhooks stopped firing after yesterday's update.", "team": "technical"}
+{"text": "The dashboard is stuck on a loading spinner in Safari.", "team": "technical"}
+{"text": "Our SDK calls time out after exactly 30 seconds.", "team": "technical"}
+{"text": "Export to CSV produces a file with garbled characters.", "team": "technical"}
+{"text": "The mobile app crashes as soon as I open the settings page.", "team": "technical"}
+{"text": "Rate limit headers are missing from API responses.", "team": "technical"}
+{"text": "Search results don't include documents uploaded in the last hour.", "team": "technical"}
+{"text": "SSO login redirects in an infinite loop.", "team": "technical"}
+{"text": "The Python client throws a TypeError on version 3.2.0.", "team": "technical"}
+{"text": "Charts render blank when the date range is longer than 90 days.", "team": "technical"}
+{"text": "We get CORS errors calling your API from our frontend.", "team": "technical"}
+{"text": "Latency on the EU endpoint jumped from 200ms to 3 seconds today.", "team": "technical"}
+{"text": "The CLI can't find my config file on Windows.", "team": "technical"}
+{"text": "Uploading images over 10MB fails silently.", "team": "technical"}
+{"text": "Notifications arrive twice for every event.", "team": "technical"}
+{"text": "The Terraform provider fails to plan with a schema error.", "team": "technical"}
+{"text": "Our integration returns 401 even with a freshly generated token.", "team": "technical"}
+{"text": "Dark mode makes table text unreadable.", "team": "technical"}
+{"text": "Scheduled jobs are running an hour late since the clock change.", "team": "technical"}
+{"text": "The Zapier trigger isn't picking up new records.", "team": "technical"}
+{"text": "Pagination skips every 100th record in the list endpoint.", "team": "technical"}
+{"text": "The desktop app uses 100% CPU when idle.", "team": "technical"}
+{"text": "Two-factor codes from the authenticator app are always rejected.", "team": "technical"}
+{"text": "Data sync between workspaces has been stuck for six hours.", "team": "technical"}
+{"text": "How do I change the email address on my account?", "team": "account"}
+{"text": "Please delete my account and all associated data.", "team": "account"}
+{"text": "I'm locked out after too many password attempts.", "team": "account"}
+{"text": "How can I transfer ownership of the workspace to a colleague?", "team": "account"}
+{"text": "I need to add three new admins to our organization.", "team": "account"}
+{"text": "Can I merge my two accounts into one?", "team": "account"}
+{"text": "A former employee still has access; please remove them.", "team": "account"}
+{"text": "How do I rename our workspace?", "team": "account"}
+{"text": "I want to export all my personal data under GDPR.", "team": "account"}
+{"text": "My account was deactivated and I don't know why.", "team": "account"}
+{"text": "How do I set up a team with separate permissions for contractors?", "team": "account"}
+{"text": "I never received the email verification link.", "team": "account"}
+{"text": "Can I change my username?", "team": "account"}
+{"text": "Please enable SSO enforcement for all members of our org.", "team": "account"}
+{"text": "How do I leave a workspace I was invited to by mistake?", "team": "account"}
+{"text": "The owner of our account left the company, how do we regain control?", "team": "account"}
+{"text": "Can I have two-factor authentication turned off? I lost my phone.", "team": "account"}
+{"text": "How do I update the time zone on my profile?", "team": "account"}
+{"text": "Someone else signed up with my work email, can you help?", "team": "account"}
+{"text": "I'd like to downgrade my role from admin to member.", "team": "account"}
+{"text": "We're evaluating your product for 500 users, can we talk to someone?", "team": "sales"}
+{"text": "Do you offer an enterprise plan with a custom SLA?", "team": "sales"}
+{"text": "Can we get a demo of the analytics add-on next week?", "team": "sales"}
+{"text": "What's the price for 50 seats on the Business plan?", "team": "sales"}
+{"text": "Do you have a reseller or partner program?", "team": "sales"}
+{"text": "We need a security questionnaire filled out before we can buy.", "team": "sales"}
+{"text": "Is there on-premise deployment available for regulated industries?", "team": "sales"}
+{"text": "Can we extend our trial by two weeks to finish evaluation?", "team": "sales"}
+{"text": "Do you offer volume discounts for education institutions?", "team": "sales"}
+{"text": "I'd like a quote for adding the compliance module.", "team": "sales"}
+{"text": "We're comparing you with a competitor, what makes you different?", "team": "sales"}
+{"text": "Can your team present to our CTO on Thursday?", "team": "sales"}
+{"text": "Do you sign BAAs for HIPAA customers?", "team": "sales"}
+{"text": "What would it cost to move our whole company of 2,000 over?", "team": "sales"}
+{"text": "Are there startup credits available?", "team": "sales"}
+{"text": "I want to upgrade to the Enterprise plan, who do I pay?", "team": "sales", "ambiguous": true}
+{"text": "My payment failed so my account got locked, how do I get back in?", "team": "billing", "ambiguous": true}
+{"text": "After I upgraded, the API still enforces the free-tier rate limit.", "team": "technical", "ambiguous": true}
+{"text": "I cancelled but I can still log in and I'm worried I'll be charged again.", "team": "billing", "ambiguous": true}
+{"text": "We added 20 users and now the admin page throws an error.", "team": "technical", "ambiguous": true}
+{"text": "Can we get a discount if we sign a three-year contract?", "team": "sales", "ambiguous": true}
+{"text": "How do I give our accountant access to invoices only?", "team": "account", "ambiguous": true}
+{"text": "The invoice download button returns a 404.", "team": "technical", "ambiguous": true}
+{"text": "Our trial expired and all our data seems gone.", "team": "account", "ambiguous": true}
+{"text": "I'm being asked for a card to add a new team member.", "team": "billing", "ambiguous": true}
+{"text": "Does the Pro plan include SSO, or do we need to talk to someone?", "team": "sales", "ambiguous": true}
+{"text": "The checkout page crashes when I enter a promo code.", "team": "technical", "ambiguous": true}
+{"text": "Who can approve increasing our API quota? We'll pay for it.", "team": "sales", "ambiguous": true}
+{"text": "I changed my email and now I don't get invoices anymore.", "team": "billing", "ambiguous": true}
+{"text": "We lost access after our admin's card expired.", "team": "billing", "ambiguous": true}

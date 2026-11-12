@@ -1,0 +1,15 @@
+Licensing notice for the original Explode Anything source
+
+Original project: https://github.com/shivaylamba/explode-anything
+Original builder: Shivay Lamba
+Upstream revision: 8ba1dbe4ded1e413760839cfdf204c945a973eb9
+
+The upstream repository does not publish a general open-source licence.
+This Nebius adaptation is included with permission to adapt and publish,
+confirmed directly by Dylan Bristot on 5 November 2026.
+
+The original source in this directory is excluded from the cookbook's
+repository-wide MIT licence. This notice does not grant additional rights
+to the original work. Retain the original builder's attribution.
+
+Nebius logos and brand assets also retain their separate brand status.
