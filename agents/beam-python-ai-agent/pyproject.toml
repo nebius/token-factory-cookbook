@@ -1,0 +1,15 @@
+[project]
+name = "beam-python-ai-agent"
+version = "0.1.0"
+description = "A Python data analyst agent: Reflection AI's Beam writes and runs pandas code through tool calls on Nebius Token Factory"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "openai>=1.99",
+    "pandas>=2.2",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8",
+]

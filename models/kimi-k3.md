@@ -1,5 +1,7 @@
 # Kimi K3
 
+Looking for **Kimi K3.1 Pro**? Use the [K3.1 Pro quickstart](kimi-k3.1-pro.md). This guide and `kimi-k3-1.ipynb` cover the earlier K3 model; the notebook's `-1` suffix is an example number.
+
 ---
 
 ## Table of Contents
@@ -46,7 +48,7 @@ Run it locally as follows
 
 ```bash
 # prepare .env file
-cp  .env.example  .env
+cp  env.example  .env
 # Add your NEBIUS_API_KEY to .env
 
 # run the notebook

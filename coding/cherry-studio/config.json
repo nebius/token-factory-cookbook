@@ -1,0 +1,14 @@
+{
+  "providerName": "Nebius Token Factory",
+  "defaultChatEndpoint": "openai-chat-completions",
+  "endpointConfigs": {
+    "openai-chat-completions": {
+      "baseUrl": "https://api.tokenfactory.nebius.com/v1"
+    }
+  },
+  "model": {
+    "id": "moonshotai/Kimi-K2.7-Code",
+    "name": "Kimi K2.7 Code",
+    "endpointTypes": ["openai-chat-completions"]
+  }
+}

@@ -1,0 +1,29 @@
+{
+ "id": "chartqa/chartqa_2444",
+ "task": "chartqa",
+ "model": "moonshotai/Kimi-K3.1-Pro",
+ "prompt": "What percentage of families in Boston lived below the poverty level in 2019?\nAnswer with a single number or a short phrase, without units or % signs.\n\nThink it through, then end your reply with a single JSON object inside a ```json code block with exactly these keys: {\"answer\": \"<answer>\"}",
+ "content": "```json\n{\"answer\": \"11.7\"}\n```",
+ "reasoning": "I need answer image Boston 11.7. Should obey think then end single JSON object code block exactly keys. User says answer single number or short phrase without units or %. I'll likely output the JSON block only {\"answer\":\"11.7\"}. Make sure Boston chart 11.7 yes. Could output 11.7 then json? They specifically \"Answer with a single number or a short phrase... Think it through, then end your reply with a single JSON object inside...\". Usually just respond JSON code block, answer value no unit. Should not reveal thought. Could simply ```json\\n{\"answer\": \"11.7\"}\\n```. This is desired.",
+ "finish_reason": "stop",
+ "usage": {
+  "completion_tokens": 161,
+  "prompt_tokens": 1347,
+  "total_tokens": 1508,
+  "completion_tokens_details": {
+   "accepted_prediction_tokens": null,
+   "audio_tokens": null,
+   "reasoning_tokens": 136,
+   "rejected_prediction_tokens": null
+  },
+  "prompt_tokens_details": {
+   "audio_tokens": null,
+   "cached_tokens": 0,
+   "created_cache_tokens": 1152,
+   "multimodal_tokens": {
+    "image": 1198
+   }
+  }
+ },
+ "latency_s": 5.4
+}

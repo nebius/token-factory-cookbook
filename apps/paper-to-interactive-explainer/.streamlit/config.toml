@@ -1,0 +1,3 @@
+[server]
+# The app spends your Token Factory key on every paper. Keep it on this machine only.
+address = "localhost"
