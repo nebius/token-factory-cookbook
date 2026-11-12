@@ -1,0 +1,29 @@
+{
+ "id": "chartqa/chartqa_843",
+ "task": "chartqa",
+ "model": "moonshotai/Kimi-K3.1-Pro",
+ "prompt": "In which year, the estimated number of Christians in Global South exceed 1300 million?\nAnswer with a single number or a short phrase, without units or % signs.\n\nThink it through, then end your reply with a single JSON object inside a ```json code block with exactly these keys: {\"answer\": \"<answer>\"}",
+ "content": "```json\n{\"answer\": \"2010\"}\n```",
+ "reasoning": "I need respond based image. Should think through but only short answer plus JSON block exact. Should identify year Global South exceeds 1300 million: bars 1910 108.91 (though image labels percentages odd y) 2010 1327.7, answer 2010. Should have response perhaps \"2010\" then JSON object. User says \"Answer with a single number or a short phrase, without units or % signs. Think it through, then end your reply with a single JSON object inside a ```json code block with exactly these keys: {\"answer\": \"<answer>\"}\". I should output JSON only? User asks end reply single JSON in code block. Usually these tasks respond in JSON block, no extra. Could do 2010 newline code block. \"Answer with single number ... end ... JSON\" likely response code block alone satisfying. Should not think exposed. Response:\n```json\n{\"answer\": \"2010\"}\n```\nMake sure.",
+ "finish_reason": "stop",
+ "usage": {
+  "completion_tokens": 219,
+  "prompt_tokens": 739,
+  "total_tokens": 958,
+  "completion_tokens_details": {
+   "accepted_prediction_tokens": null,
+   "audio_tokens": null,
+   "reasoning_tokens": 195,
+   "rejected_prediction_tokens": null
+  },
+  "prompt_tokens_details": {
+   "audio_tokens": null,
+   "cached_tokens": 0,
+   "created_cache_tokens": 0,
+   "multimodal_tokens": {
+    "image": 588
+   }
+  }
+ },
+ "latency_s": 5.5
+}

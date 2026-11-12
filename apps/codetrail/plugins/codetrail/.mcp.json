@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "codetrail": {
+      "type": "http",
+      "url": "${CODETRAIL_MCP_URL:-http://localhost:3000/api/mcp}"
+    }
+  }
+}

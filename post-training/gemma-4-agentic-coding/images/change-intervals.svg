@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 392" width="960" height="392" font-family="Inter, Arial, sans-serif">
+<title>Every change is clear of zero, and epoch 1 gains the most</title>
+<rect x="0" y="0" width="960" height="392" rx="16" fill="#001A2B"/>
+<text x="32.0" y="48.0" font-size="20" font-weight="600" fill="#FFFFFF" text-anchor="start">Every change is clear of zero, and epoch 1 gains the most</text>
+<text x="32.0" y="74.0" font-size="14" font-weight="400" fill="rgba(255,255,255,0.68)" text-anchor="start">Change against the base model on the same 45 tasks, with paired bootstrap 95% intervals.</text>
+<rect x="32" y="98" width="12" height="12" rx="2" fill="#DAFF33"/>
+<text x="52.0" y="108.0" font-size="14" font-weight="400" fill="#FFFFFF" text-anchor="start">LoRA, epoch 1</text>
+<rect x="180" y="98" width="12" height="12" rx="2" fill="#31FCF6"/>
+<text x="200.0" y="108.0" font-size="14" font-weight="400" fill="#FFFFFF" text-anchor="start">LoRA, epoch 2</text>
+<line x1="282.9" y1="124" x2="282.9" y2="344" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+<text x="282.9" y="364.0" font-size="12" font-weight="400" fill="rgba(255,255,255,0.48)" text-anchor="middle">−40%</text>
+<line x1="384.6" y1="124" x2="384.6" y2="344" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+<text x="384.6" y="364.0" font-size="12" font-weight="400" fill="rgba(255,255,255,0.48)" text-anchor="middle">−20%</text>
+<line x1="486.4" y1="124" x2="486.4" y2="344" stroke="rgba(255,255,255,0.24)" stroke-width="1"/>
+<text x="486.4" y="364.0" font-size="12" font-weight="400" fill="rgba(255,255,255,0.48)" text-anchor="middle">0%</text>
+<line x1="588.2" y1="124" x2="588.2" y2="344" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+<text x="588.2" y="364.0" font-size="12" font-weight="400" fill="rgba(255,255,255,0.48)" text-anchor="middle">+20%</text>
+<line x1="689.9" y1="124" x2="689.9" y2="344" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+<text x="689.9" y="364.0" font-size="12" font-weight="400" fill="rgba(255,255,255,0.48)" text-anchor="middle">+40%</text>
+<line x1="791.7" y1="124" x2="791.7" y2="344" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+<text x="791.7" y="364.0" font-size="12" font-weight="400" fill="rgba(255,255,255,0.48)" text-anchor="middle">+60%</text>
+<text x="32.0" y="153.0" font-size="14" font-weight="400" fill="#FFFFFF" text-anchor="start">Tool calls</text>
+<line x1="298.1" y1="140" x2="394.8" y2="140" stroke="#DAFF33" stroke-width="2" stroke-linecap="round"/>
+<circle cx="343.9" cy="140" r="5" fill="#DAFF33" stroke="#001A2B" stroke-width="2"/>
+<text x="404.8" y="144.0" font-size="12" font-weight="400" fill="rgba(255,255,255,0.68)" text-anchor="start">−28%</text>
+<line x1="338.8" y1="156" x2="435.5" y2="156" stroke="#31FCF6" stroke-width="2" stroke-linecap="round"/>
+<circle cx="384.6" cy="156" r="5" fill="#31FCF6" stroke="#001A2B" stroke-width="2"/>
+<text x="445.5" y="160.0" font-size="12" font-weight="400" fill="rgba(255,255,255,0.68)" text-anchor="start">−20%</text>
+<text x="32.0" y="209.0" font-size="14" font-weight="400" fill="#FFFFFF" text-anchor="start">Model calls</text>
+<line x1="267.6" y1="196" x2="354.1" y2="196" stroke="#DAFF33" stroke-width="2" stroke-linecap="round"/>
+<circle cx="308.3" cy="196" r="5" fill="#DAFF33" stroke="#001A2B" stroke-width="2"/>
+<text x="364.1" y="200.0" font-size="12" font-weight="400" fill="rgba(255,255,255,0.68)" text-anchor="start">−35%</text>
+<line x1="303.2" y1="212" x2="394.8" y2="212" stroke="#31FCF6" stroke-width="2" stroke-linecap="round"/>
+<circle cx="343.9" cy="212" r="5" fill="#31FCF6" stroke="#001A2B" stroke-width="2"/>
+<text x="404.8" y="216.0" font-size="12" font-weight="400" fill="rgba(255,255,255,0.68)" text-anchor="start">−28%</text>
+<text x="32.0" y="265.0" font-size="14" font-weight="400" fill="#FFFFFF" text-anchor="start">Time per task</text>
+<line x1="277.8" y1="252" x2="399.9" y2="252" stroke="#DAFF33" stroke-width="2" stroke-linecap="round"/>
+<circle cx="338.8" cy="252" r="5" fill="#DAFF33" stroke="#001A2B" stroke-width="2"/>
+<text x="409.9" y="256.0" font-size="12" font-weight="400" fill="rgba(255,255,255,0.68)" text-anchor="start">−29%</text>
+<line x1="338.8" y1="268" x2="481.3" y2="268" stroke="#31FCF6" stroke-width="2" stroke-linecap="round"/>
+<circle cx="405.0" cy="268" r="5" fill="#31FCF6" stroke="#001A2B" stroke-width="2"/>
+<text x="491.3" y="272.0" font-size="12" font-weight="400" fill="rgba(255,255,255,0.68)" text-anchor="start">−16%</text>
+<text x="32.0" y="321.0" font-size="14" font-weight="400" fill="#FFFFFF" text-anchor="start">Bugs fixed per hour</text>
+<line x1="593.2" y1="308" x2="837.5" y2="308" stroke="#DAFF33" stroke-width="2" stroke-linecap="round"/>
+<circle cx="695.0" cy="308" r="5" fill="#DAFF33" stroke="#001A2B" stroke-width="2"/>
+<text x="847.5" y="312.0" font-size="12" font-weight="400" fill="rgba(255,255,255,0.68)" text-anchor="start">+41%</text>
+<line x1="491.5" y1="324" x2="695.0" y2="324" stroke="#31FCF6" stroke-width="2" stroke-linecap="round"/>
+<circle cx="583.1" cy="324" r="5" fill="#31FCF6" stroke="#001A2B" stroke-width="2"/>
+<text x="705.0" y="328.0" font-size="12" font-weight="400" fill="rgba(255,255,255,0.68)" text-anchor="start">+19%</text>
+</svg>

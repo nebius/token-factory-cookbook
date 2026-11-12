@@ -1,0 +1,13 @@
+node_modules
+.next
+.env
+.env.local
+*.tsbuildinfo
+next-env.d.ts
+.DS_Store
+codetrail.db*
+.next-check
+docs/demo-work
+
+showcase-dist/
+qa/

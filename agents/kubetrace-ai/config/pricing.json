@@ -1,0 +1,19 @@
+{
+  "note": "Only rates read from the provider's own catalog. Cost in reports is an estimate from provider-reported tokens.",
+  "models": [
+    {
+      "model": "meta-models/muse-spark-open",
+      "input_per_m": 1.25,
+      "output_per_m": 4.25,
+      "source": "Nebius Token Factory GET /v1/models?verbose=true (pricing.prompt / pricing.completion)",
+      "date": "2026-10-16"
+    },
+    {
+      "model": "reflection/beam",
+      "input_per_m": 0.25,
+      "output_per_m": 1.0,
+      "source": "Nebius Token Factory GET /v1/models?verbose=true (pricing.prompt / pricing.completion)",
+      "date": "2026-10-16"
+    }
+  ]
+}

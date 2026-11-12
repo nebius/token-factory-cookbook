@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 268" width="960" height="268" font-family="Inter, Arial, sans-serif">
+<title>Same bugs fixed, with fewer calls and less time</title>
+<rect x="0" y="0" width="960" height="268" rx="16" fill="#001A2B"/>
+<text x="32.0" y="48.0" font-size="20" font-weight="600" fill="#FFFFFF" text-anchor="start">Same bugs fixed, with fewer calls and less time</text>
+<text x="32.0" y="74.0" font-size="14" font-weight="400" fill="rgba(255,255,255,0.68)" text-anchor="start">Gemma 4 31B on 45 bugs from 17 repositories it never saw in training. Means per task, one run each, 4× L4.</text>
+<rect x="32" y="141.0" width="12" height="12" rx="2" fill="#C1C1FF"/>
+<text x="52.0" y="151.0" font-size="14" font-weight="400" fill="#FFFFFF" text-anchor="start">Base model</text>
+<rect x="32" y="177.0" width="12" height="12" rx="2" fill="#DAFF33"/>
+<text x="52.0" y="187.0" font-size="14" font-weight="400" fill="#FFFFFF" text-anchor="start">LoRA, epoch 1</text>
+<rect x="32" y="213.0" width="12" height="12" rx="2" fill="#31FCF6"/>
+<text x="52.0" y="223.0" font-size="14" font-weight="400" fill="#FFFFFF" text-anchor="start">LoRA, epoch 2</text>
+<text x="168.0" y="112.0" font-size="14" font-weight="600" fill="#FFFFFF" text-anchor="start">Bugs solved (of 45)</text>
+<line x1="168.0" y1="128" x2="168.0" y2="236" stroke="rgba(255,255,255,0.24)" stroke-width="1"/>
+<path d="M 168.0 136.0 H 267.2 Q 271.2 136.0 271.2 140.0 V 152.0 Q 271.2 156.0 267.2 156.0 H 168.0 Z" fill="#C1C1FF"/>
+<text x="279.2" y="151.0" font-size="14" font-weight="400" fill="#FFFFFF" text-anchor="start">36</text>
+<path d="M 168.0 172.0 H 267.2 Q 271.2 172.0 271.2 176.0 V 188.0 Q 271.2 192.0 267.2 192.0 H 168.0 Z" fill="#DAFF33"/>
+<text x="279.2" y="187.0" font-size="14" font-weight="400" fill="#FFFFFF" text-anchor="start">36</text>
+<path d="M 168.0 208.0 H 267.2 Q 271.2 208.0 271.2 212.0 V 224.0 Q 271.2 228.0 267.2 228.0 H 168.0 Z" fill="#31FCF6"/>
+<text x="279.2" y="223.0" font-size="14" font-weight="400" fill="#FFFFFF" text-anchor="start">36</text>
+<text x="365.0" y="112.0" font-size="14" font-weight="600" fill="#FFFFFF" text-anchor="start">Tool calls per task</text>
+<line x1="365.0" y1="128" x2="365.0" y2="236" stroke="rgba(255,255,255,0.24)" stroke-width="1"/>
+<path d="M 365.0 136.0 H 459.5 Q 463.5 136.0 463.5 140.0 V 152.0 Q 463.5 156.0 459.5 156.0 H 365.0 Z" fill="#C1C1FF"/>
+<text x="471.5" y="151.0" font-size="14" font-weight="400" fill="#FFFFFF" text-anchor="start">22.9</text>
+<path d="M 365.0 172.0 H 431.9 Q 435.9 172.0 435.9 176.0 V 188.0 Q 435.9 192.0 431.9 192.0 H 365.0 Z" fill="#DAFF33"/>
+<text x="443.9" y="187.0" font-size="14" font-weight="400" fill="#FFFFFF" text-anchor="start">16.5</text>
+<path d="M 365.0 208.0 H 440.1 Q 444.1 208.0 444.1 212.0 V 224.0 Q 444.1 228.0 440.1 228.0 H 365.0 Z" fill="#31FCF6"/>
+<text x="452.1" y="223.0" font-size="14" font-weight="400" fill="#FFFFFF" text-anchor="start">18.4</text>
+<text x="562.0" y="112.0" font-size="14" font-weight="600" fill="#FFFFFF" text-anchor="start">Model calls per task</text>
+<line x1="562.0" y1="128" x2="562.0" y2="236" stroke="rgba(255,255,255,0.24)" stroke-width="1"/>
+<path d="M 562.0 136.0 H 671.5 Q 675.5 136.0 675.5 140.0 V 152.0 Q 675.5 156.0 671.5 156.0 H 562.0 Z" fill="#C1C1FF"/>
+<text x="683.5" y="151.0" font-size="14" font-weight="400" fill="#FFFFFF" text-anchor="start">26.4</text>
+<path d="M 562.0 172.0 H 632.4 Q 636.4 172.0 636.4 176.0 V 188.0 Q 636.4 192.0 632.4 192.0 H 562.0 Z" fill="#DAFF33"/>
+<text x="644.4" y="187.0" font-size="14" font-weight="400" fill="#FFFFFF" text-anchor="start">17.3</text>
+<path d="M 562.0 208.0 H 639.7 Q 643.7 208.0 643.7 212.0 V 224.0 Q 643.7 228.0 639.7 228.0 H 562.0 Z" fill="#31FCF6"/>
+<text x="651.7" y="223.0" font-size="14" font-weight="400" fill="#FFFFFF" text-anchor="start">19.0</text>
+<text x="759.0" y="112.0" font-size="14" font-weight="600" fill="#FFFFFF" text-anchor="start">Seconds per task</text>
+<line x1="759.0" y1="128" x2="759.0" y2="236" stroke="rgba(255,255,255,0.24)" stroke-width="1"/>
+<path d="M 759.0 136.0 H 864.6 Q 868.6 136.0 868.6 140.0 V 152.0 Q 868.6 156.0 864.6 156.0 H 759.0 Z" fill="#C1C1FF"/>
+<text x="876.6" y="151.0" font-size="14" font-weight="400" fill="#FFFFFF" text-anchor="start">255</text>
+<path d="M 759.0 172.0 H 832.4 Q 836.4 172.0 836.4 176.0 V 188.0 Q 836.4 192.0 832.4 192.0 H 759.0 Z" fill="#DAFF33"/>
+<text x="844.4" y="187.0" font-size="14" font-weight="400" fill="#FFFFFF" text-anchor="start">180</text>
+<path d="M 759.0 208.0 H 847.0 Q 851.0 208.0 851.0 212.0 V 224.0 Q 851.0 228.0 847.0 228.0 H 759.0 Z" fill="#31FCF6"/>
+<text x="859.0" y="223.0" font-size="14" font-weight="400" fill="#FFFFFF" text-anchor="start">214</text>
+</svg>

@@ -1,0 +1,29 @@
+{
+ "id": "chartqa/chartqa_1352",
+ "task": "chartqa",
+ "model": "moonshotai/Kimi-K3.1-Pro",
+ "prompt": "How many students were enrolled in Kenyan universities in 2018/19?\nAnswer with a single number or a short phrase, without units or % signs.\n\nThink it through, then end your reply with a single JSON object inside a ```json code block with exactly these keys: {\"answer\": \"<answer>\"}",
+ "content": "```json\n{\"answer\": \"519462\"}\n```",
+ "reasoning": "Kimi needs to answer chart 2018/19 519462. Should think through internally then respond with single JSON object in json block exact keys. User asks answer single number or short phrase no units %. Should output likely ```json {\"answer\":\"519462\"} ```. Make sure formatting value space? Chart label 519 462. Answer numeric 519462. Only JSON code block. I can respond concise.",
+ "finish_reason": "stop",
+ "usage": {
+  "completion_tokens": 108,
+  "prompt_tokens": 736,
+  "total_tokens": 844,
+  "completion_tokens_details": {
+   "accepted_prediction_tokens": null,
+   "audio_tokens": null,
+   "reasoning_tokens": 84,
+   "rejected_prediction_tokens": null
+  },
+  "prompt_tokens_details": {
+   "audio_tokens": null,
+   "cached_tokens": 0,
+   "created_cache_tokens": 0,
+   "multimodal_tokens": {
+    "image": 588
+   }
+  }
+ },
+ "latency_s": 3.6
+}

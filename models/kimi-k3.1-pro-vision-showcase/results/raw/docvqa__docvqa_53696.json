@@ -1,0 +1,29 @@
+{
+ "id": "docvqa/docvqa_53696",
+ "task": "docvqa",
+ "model": "moonshotai/Kimi-K3.1-Pro",
+ "prompt": "What is written below RJReynolds logo?\nAnswer concisely, copying the exact text from the document where possible. Also give the bounding box of the document region containing the answer. The image is 1692x2245 pixels; give all coordinates as integer pixel coordinates in that frame.\n\nThink it through, then end your reply with a single JSON object inside a ```json code block with exactly these keys: {\"answer\": \"<short answer>\", \"evidence_bbox\": [x1, y1, x2, y2] or null}",
+ "content": "```json\n{\"answer\": \"Tobacco Company\", \"evidence_bbox\": [546, 293, 739, 324]}\n```",
+ "reasoning": "I need respond question image. Should identify below RJ Reynolds logo text \"Tobacco Company\". Should have exact text bounding box containing answer. Should think coordinates. Image 1692x2245. Logo around x276-742 y190-323. Text Tobacco Company at x547? y294-323. I'll output single JSON in code block exactly keys. Should have concise no extra. Should estimate bbox accurately region containing answer. Text \"Tobacco Company\" located roughly x548 y294 to x735 y322. Should analyze image dimensions visually. Logo RJReynolds from x272 y190 to739 y327; under logo horizontal line y292. Tobacco Company at x547 y297. Should give [546, 294, 739, 324] perhaps. Should be accurate. I'll deeply inspect mental pixel coords using shown image. Header logo at top left. \"Tobacco Company\" baseline around 320? At image display original 1692x2245. Logo top y197? Box. Text: \"Tobacco Company\" starts x549 ends x735. bbox [547, 295, 737, 321]. Could include as [544, 291, 741, 325]. Respond exact \"Tobacco Company\". I'll respond with only JSON code block.",
+ "finish_reason": "stop",
+ "usage": {
+  "completion_tokens": 309,
+  "prompt_tokens": 5148,
+  "total_tokens": 5457,
+  "completion_tokens_details": {
+   "accepted_prediction_tokens": null,
+   "audio_tokens": null,
+   "reasoning_tokens": 266,
+   "rejected_prediction_tokens": null
+  },
+  "prompt_tokens_details": {
+   "audio_tokens": null,
+   "cached_tokens": 0,
+   "created_cache_tokens": 4608,
+   "multimodal_tokens": {
+    "image": 4951
+   }
+  }
+ },
+ "latency_s": 10.9
+}

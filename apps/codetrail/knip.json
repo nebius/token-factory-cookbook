@@ -1,0 +1,17 @@
+{
+  "$schema": "https://unpkg.com/knip@5/schema.json",
+  "entry": [
+    "mcp/server.mts",
+    "scripts/inspect.mts",
+    "scripts/check-gating.mts",
+    "scripts/eval.mts",
+    "scripts/nebius-smoke.mts",
+    "scripts/record-demo.mts",
+    "scripts/a11y.mts",
+    "scripts/screenshots.mts",
+    "showcase/main.js"
+  ],
+  "ignore": [
+    "showcase/style.css"
+  ]
+}
