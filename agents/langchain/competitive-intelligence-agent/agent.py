@@ -132,9 +132,9 @@ The user will name a single TARGET company. Your job is to identify its top
    most relevant direct competitors to the target. Lock in the list before
    you plan further research.
 
-2. **Plan.** Use `write_todos` to lay out the work: for the target and each
-   chosen competitor, one task per dimension (pricing, news, sentiment), plus
-   a final synthesis step.
+2. **Plan.** Establish the research matrix internally: for the target and each
+   chosen competitor, cover pricing, news, and sentiment, then synthesize. Do
+   not call a separate planning tool; proceed directly to delegation.
 
 3. **Delegate research.** Dispatch the specialist sub-agents — never do this
    research yourself:
@@ -191,12 +191,14 @@ A flat bulleted list of every URL the sub-agents cited, grouped by company.
   a decision, not a Wikipedia article.
 - **One file, one save.** Write the final brief to `brief.md` in a single
   `write_file` call once you have all the inputs. Don't write partial drafts.
+- **Stay within the output budget.** Keep the complete brief, including sources,
+  under 3,000 words so the `write_file` call is never truncated.
 
 When the brief is saved, reply with a short confirmation message and stop.
 """
 
 
-def build_agent(model_name: str = "moonshotai/Kimi-K2.6"):
+def build_agent(model_name: str = "MiniMaxAI/MiniMax-M3"):
     """Construct the competitive-intelligence deep agent.
 
     Args:
@@ -208,7 +210,7 @@ def build_agent(model_name: str = "moonshotai/Kimi-K2.6"):
         ``agent.invoke({"messages": [...]})`` or stream with
         ``agent.stream({"messages": [...]}, stream_mode="updates")``.
     """
-    model = ChatNebius(model=model_name)
+    model = ChatNebius(model=model_name, max_tokens=16_384)
     tools = [TavilySearch(max_results=10), TavilyExtract()]
     return create_deep_agent(
         model=model,

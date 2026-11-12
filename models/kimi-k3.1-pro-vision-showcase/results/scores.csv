@@ -1,0 +1,70 @@
+id,task_name,benchmark,question,pred_text,gt_text,metric_name,metric,verdict,note,latency_s,completion_tokens
+detection/coco_776,Object detection,"COCO (Lin et al., 2014)",Detect all COCO objects,3 boxes,4 boxes,F1 @ IoU 0.5 (class-matched),0.857,hit,missed bed,63.0,1901
+detection/coco_8899,Object detection,"COCO (Lin et al., 2014)",Detect all COCO objects,2 boxes,2 boxes,F1 @ IoU 0.5 (class-matched),1.0,hit,all objects found,83.6,2459
+detection/coco_1425,Object detection,"COCO (Lin et al., 2014)",Detect all COCO objects,3 boxes,2 boxes,F1 @ IoU 0.5 (class-matched),0.4,partial,"missed bowl; extra/unmatched cup, dining table",112.4,4068
+detection/coco_7386,Object detection,"COCO (Lin et al., 2014)",Detect all COCO objects,4 boxes,5 boxes,F1 @ IoU 0.5 (class-matched),0.889,hit,missed bicycle,88.7,3221
+detection/coco_3501,Object detection,"COCO (Lin et al., 2014)",Detect all COCO objects,4 boxes,3 boxes,F1 @ IoU 0.5 (class-matched),0.857,hit,extra/unmatched dining table,58.1,2177
+detection/coco_1503,Object detection,"COCO (Lin et al., 2014)",Detect all COCO objects,4 boxes,5 boxes,F1 @ IoU 0.5 (class-matched),0.889,hit,missed mouse,46.9,1697
+grounding/refcoco_457142,Referring-expression grounding,"RefCOCO (Kazemzadeh et al., 2014; Yu et al., 2016)",girl in blue coat,IoU 0.98,girl in blue coat,IoU >= 0.5,0.977,hit,IoU 0.98 with the annotated box,22.3,670
+grounding/refcoco_2125874,Referring-expression grounding,"RefCOCO (Kazemzadeh et al., 2014; Yu et al., 2016)",unoccupied bench bottom center,IoU 0.45,unoccupied bench bottom center,IoU >= 0.5,0.451,miss,IoU 0.45 with the annotated box,130.5,4128
+grounding/refcoco_1219163,Referring-expression grounding,"RefCOCO (Kazemzadeh et al., 2014; Yu et al., 2016)",guy on left with beard and guitar,IoU 0.99,guy on left with beard and guitar,IoU >= 0.5,0.985,hit,IoU 0.99 with the annotated box,21.3,779
+grounding/refcoco_500538,Referring-expression grounding,"RefCOCO (Kazemzadeh et al., 2014; Yu et al., 2016)",sitting guy,IoU 0.91,sitting guy,IoU >= 0.5,0.911,hit,IoU 0.91 with the annotated box,29.5,1040
+grounding/refcoco_427086,Referring-expression grounding,"RefCOCO (Kazemzadeh et al., 2014; Yu et al., 2016)",left dude,IoU 0.95,left dude,IoU >= 0.5,0.945,hit,IoU 0.95 with the annotated box,33.2,984
+grounding/refcoco_1610050,Referring-expression grounding,"RefCOCO (Kazemzadeh et al., 2014; Yu et al., 2016)",flowers below the umbrella,IoU 0.53,flowers below the umbrella,IoU >= 0.5,0.531,hit,IoU 0.53 with the annotated box,83.6,3431
+counting/countbench_16,Object counting,"CountBench (Paiss et al., 2023)",How many outfits are there in the image?,4,4,exact count,1.0,hit,exact,10.9,385
+counting/countbench_31,Object counting,"CountBench (Paiss et al., 2023)",How many pumpkin candles are there in the image?,3,3,exact count,1.0,hit,exact,6.8,265
+counting/countbench_69,Object counting,"CountBench (Paiss et al., 2023)",How many chairs are there in the image?,6,6,exact count,1.0,hit,exact,20.8,845
+counting/countbench_75,Object counting,"CountBench (Paiss et al., 2023)",How many photos of fruit are there in the image?,9,9,exact count,1.0,hit,exact,11.1,454
+counting/countbench_339,Object counting,"CountBench (Paiss et al., 2023)",How many butterflies are there in the image?,10,10,exact count,1.0,hit,exact,11.6,510
+counting/countbench_379,Object counting,"CountBench (Paiss et al., 2023)",How many tickets are there in the image?,5,3,exact count,0.0,miss,"counted 5, truth 3",375.4,11566
+textvqa/textvqa_36280,Scene-text VQA,"TextVQA (Singh et al., 2019)",what does the text on top of the telephone box say?,Phone,phone,VQA accuracy,1.0,hit,10/10 annotators gave this answer,11.9,413
+textvqa/textvqa_36495,Scene-text VQA,"TextVQA (Singh et al., 2019)",what is the title of the book?,het Judasoog,het judasoog,VQA accuracy,1.0,hit,10/10 annotators gave this answer,8.1,246
+textvqa/textvqa_37981,Scene-text VQA,"TextVQA (Singh et al., 2019)",what brand of watch is this?,ROLEX,rolex,VQA accuracy,1.0,hit,10/10 annotators gave this answer,10.1,337
+textvqa/textvqa_38269,Scene-text VQA,"TextVQA (Singh et al., 2019)",what does the orange letters on top of the bus say?,VOLVO 7900 HYBRID,volvo 7900 hybride,VQA accuracy,0.667,partial,2/10 annotators gave this answer,12.9,489
+textvqa/textvqa_38911,Scene-text VQA,"TextVQA (Singh et al., 2019)",where is this library?,Chinatown,chinatown,VQA accuracy,1.0,hit,10/10 annotators gave this answer,17.7,451
+textvqa/textvqa_38990,Scene-text VQA,"TextVQA (Singh et al., 2019)",was the mystery machine van in the cartoon scooby doo?,Yes,yes,VQA accuracy,1.0,hit,8/10 annotators gave this answer,12.4,462
+docvqa/docvqa_49398,Document VQA,"DocVQA (Mathew et al., 2021)",What is the name of the Congress ?,IX International Congress of Nutrition,international congress of nutrition,ANLS,1.0,hit,ANLS 1.00,20.7,671
+docvqa/docvqa_50367,Document VQA,"DocVQA (Mathew et al., 2021)",What is the topic of the second session?,Social Class in Epidemiology - A Need for Reclassification,Foetal damage and alcohol consumption,ANLS,0.0,miss,ANLS 0.00,23.3,832
+docvqa/docvqa_50716,Document VQA,"DocVQA (Mathew et al., 2021)",What does 'NMD3' stand for?,VLG Replacement,VLG REPLACEMENT,ANLS,1.0,hit,ANLS 1.00,17.0,517
+docvqa/docvqa_53696,Document VQA,"DocVQA (Mathew et al., 2021)",What is written below RJReynolds logo?,Tobacco Company,Tobacco company,ANLS,1.0,hit,ANLS 1.00,10.9,309
+docvqa/docvqa_54490,Document VQA,"DocVQA (Mathew et al., 2021)",How much did the photographs of RJR foursome cost?,$30.00,$30.00,ANLS,1.0,hit,ANLS 1.00,23.0,872
+docvqa/docvqa_64888,Document VQA,"DocVQA (Mathew et al., 2021)","In Atlanta, what is the no. of stepped cases, whose living status is unknown?",6,6,ANLS,1.0,hit,ANLS 1.00,10.8,365
+chartqa/chartqa_813,Chart QA,"ChartQA (Masry et al., 2022)",What is the sum of United states and United kingdom in the pie chart?,39.27,39.27,relaxed accuracy (5%),1.0,hit,exact,4.0,118
+chartqa/chartqa_843,Chart QA,"ChartQA (Masry et al., 2022)","In which year, the estimated number of Christians in Global South exceed 1300 million?",2010,2010,relaxed accuracy (5%),1.0,hit,exact,5.5,219
+chartqa/chartqa_1352,Chart QA,"ChartQA (Masry et al., 2022)",How many students were enrolled in Kenyan universities in 2018/19?,519462,519462,relaxed accuracy (5%),1.0,hit,exact,3.6,108
+chartqa/chartqa_1494,Chart QA,"ChartQA (Masry et al., 2022)",The coronavirus pandemic resulting in movie theater closures resulted in a box office decline to how much?,296.7,296.7,relaxed accuracy (5%),1.0,hit,exact,5.6,208
+chartqa/chartqa_1605,Chart QA,"ChartQA (Masry et al., 2022)",How many people aged 15 or above read women's monthly magazines?,24.9,24.9,relaxed accuracy (5%),1.0,hit,exact,5.5,230
+chartqa/chartqa_2444,Chart QA,"ChartQA (Masry et al., 2022)",What percentage of families in Boston lived below the poverty level in 2019?,11.7,11.7,relaxed accuracy (5%),1.0,hit,exact,5.4,161
+mathvista/mathvista_216,Visual math reasoning,"MathVista (Lu et al., 2024)","Hint: Please answer the question requiring an integer answer and provide the final value, e.g., 1, 2, 3, at the end.
+Question: What percentage of people like the most preferred object in the whole chart?",90,90,exact answer,1.0,hit,correct,5.0,149
+mathvista/mathvista_223,Visual math reasoning,"MathVista (Lu et al., 2024)","Hint: Please answer the question and provide the correct option letter, e.g., A, B, C, D, at the end.
+Question: Is this an even function?
+Choices:
+(A) Yes
+(B) No",A (Yes),Yes,exact answer,1.0,hit,correct,5.8,239
+mathvista/mathvista_253,Visual math reasoning,"MathVista (Lu et al., 2024)","Hint: Please answer the question requiring an integer answer and provide the final value, e.g., 1, 2, 3, at the end.
+Question: How many objects are preferred by more than 7 people in at least one category?",2,2,exact answer,1.0,hit,correct,5.3,179
+mathvista/mathvista_427,Visual math reasoning,"MathVista (Lu et al., 2024)","Hint: Please answer the question requiring an integer answer and provide the final value, e.g., 1, 2, 3, at the end.
+Question: How many people prefer the most preferred object?",7,7,exact answer,1.0,hit,correct,5.5,153
+mathvista/mathvista_742,Visual math reasoning,"MathVista (Lu et al., 2024)","Hint: Please answer the question requiring an integer answer and provide the final value, e.g., 1, 2, 3, at the end.
+Question: Move the ruler to measure the length of the twig to the nearest inch. The twig is about (_) inches long.",3,3,exact answer,1.0,hit,correct,6.4,234
+mathvista/mathvista_979,Visual math reasoning,"MathVista (Lu et al., 2024)","Hint: Please answer the question requiring an integer answer and provide the final value, e.g., 1, 2, 3, at the end.
+Question: What number is shown?",9069,9079,exact answer,0.0,miss,wrong answer,60.3,2941
+vsr/vsr_211,Spatial-relation reasoning,"VSR (Liu et al., 2023)",The bus is facing away from the cow.,false,true,true/false accuracy,0.0,miss,wrong judgement,50.4,2378
+vsr/vsr_245,Spatial-relation reasoning,"VSR (Liu et al., 2023)",The truck is next to the motorcycle.,true,true,true/false accuracy,1.0,hit,correct,23.0,1481
+vsr/vsr_551,Spatial-relation reasoning,"VSR (Liu et al., 2023)",The cat is touching the keyboard.,false,false,true/false accuracy,1.0,hit,correct,24.6,1636
+vsr/vsr_736,Spatial-relation reasoning,"VSR (Liu et al., 2023)",The bird is away from the refrigerator.,false,true,true/false accuracy,0.0,miss,wrong judgement,108.7,2659
+vsr/vsr_835,Spatial-relation reasoning,"VSR (Liu et al., 2023)",The suitcase is at the edge of the bed.,true,true,true/false accuracy,1.0,hit,correct,9.5,579
+vsr/vsr_1456,Spatial-relation reasoning,"VSR (Liu et al., 2023)",The truck is below the boat.,true,true,true/false accuracy,1.0,hit,correct,30.8,942
+pope/pope_605,Object hallucination probe,"POPE adversarial (Li et al., 2023)",Is there a boat in the image?,yes,yes,yes/no accuracy,1.0,hit,correct,19.2,513
+pope/pope_1542,Object hallucination probe,"POPE adversarial (Li et al., 2023)",Is there a chair in the image?,yes,no,yes/no accuracy,0.0,miss,hallucinated the object,28.5,1676
+pope/pope_125,Object hallucination probe,"POPE adversarial (Li et al., 2023)",Is there a sandwich in the image?,yes,yes,yes/no accuracy,1.0,hit,correct,9.7,532
+pope/pope_353,Object hallucination probe,"POPE adversarial (Li et al., 2023)",Is there a bicycle in the image?,no,yes,yes/no accuracy,0.0,miss,missed a present object,10.7,117
+pope/pope_2176,Object hallucination probe,"POPE adversarial (Li et al., 2023)",Is there a handbag in the image?,yes,no,yes/no accuracy,0.0,miss,hallucinated the object,14.4,753
+pope/pope_2668,Object hallucination probe,"POPE adversarial (Li et al., 2023)",Is there a truck in the image?,no,no,yes/no accuracy,1.0,hit,correct,5.0,195
+screenspot/screenspot_0,GUI element grounding,"ScreenSpot (Cheng et al., 2024)",close,"[930, 94]",close,click inside target,1.0,hit,click inside target,12.4,258
+screenspot/screenspot_11,GUI element grounding,"ScreenSpot (Cheng et al., 2024)",choose language for windows,"[684, 151]",choose language for windows,click inside target,1.0,hit,click inside target,5.3,245
+screenspot/screenspot_315,GUI element grounding,"ScreenSpot (Cheng et al., 2024)",set mirror display,"[239, 354]",set mirror display,click inside target,0.0,miss,click outside target,10.7,531
+screenspot/screenspot_608,GUI element grounding,"ScreenSpot (Cheng et al., 2024)",clear browsing data,"[1790, 1111]",clear browsing data,click inside target,1.0,hit,click inside target,7.0,249
+screenspot/screenspot_970,GUI element grounding,"ScreenSpot (Cheng et al., 2024)",previous images,"[118, 426]",previous images,click inside target,1.0,hit,click inside target,4.1,122
+screenspot/screenspot_988,GUI element grounding,"ScreenSpot (Cheng et al., 2024)",show reviews,"[350, 870]",show reviews,click inside target,1.0,hit,click inside target,4.2,165

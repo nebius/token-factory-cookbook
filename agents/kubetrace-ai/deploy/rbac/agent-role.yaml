@@ -1,0 +1,60 @@
+# Namespace-scoped access for the KubeTrace agent. Applied by the privileged setup step only.
+# The agent can read workloads, logs and events in the demo namespace, reach the in-cluster
+# probe, and patch three named demo resources. It cannot read Secrets, create or delete
+# anything, touch RBAC, or act outside this namespace. The backend policy layer adds
+# field-level checks on top of this.
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: kubetrace-agent
+  namespace: ${DEMO_NAMESPACE}
+automountServiceAccountToken: false
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: kubetrace-agent
+  namespace: ${DEMO_NAMESPACE}
+rules:
+  - apiGroups: [""]
+    resources: [pods, pods/log, services, endpoints, configmaps, events]
+    verbs: [get, list, watch]
+  - apiGroups: [apps]
+    resources: [deployments, replicasets]
+    verbs: [get, list, watch]
+  - apiGroups: [discovery.k8s.io]
+    resources: [endpointslices]
+    verbs: [get, list, watch]
+  - apiGroups: [events.k8s.io]
+    resources: [events]
+    verbs: [get, list, watch]
+  - apiGroups: [""]
+    resources: [services/proxy]
+    resourceNames: [probe, "probe:80", "probe:http", "http:probe:80", "http:probe:http"]
+    verbs: [get]
+  - apiGroups: [apps]
+    resources: [deployments]
+    resourceNames: [storefront]
+    verbs: [patch, update]
+  - apiGroups: [""]
+    resources: [services]
+    resourceNames: [storefront]
+    verbs: [patch, update]
+  - apiGroups: [""]
+    resources: [configmaps]
+    resourceNames: [storefront-config]
+    verbs: [patch, update]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: kubetrace-agent
+  namespace: ${DEMO_NAMESPACE}
+subjects:
+  - kind: ServiceAccount
+    name: kubetrace-agent
+    namespace: ${DEMO_NAMESPACE}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: kubetrace-agent

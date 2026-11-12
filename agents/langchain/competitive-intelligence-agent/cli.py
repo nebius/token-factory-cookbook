@@ -26,6 +26,15 @@ from rich.rule import Rule
 from rich.text import Text
 
 from agent import build_agent
+from utils import (
+    extract_brief as _extract_brief,
+    format_args as _format_args,
+    namespace_label as _namespace_label,
+    normalize_todos as _normalize_todos,
+    normalize_tool_args as _normalize_tool_args,
+    recover_inline_write_file as _recover_inline_write_file,
+    short_text as _short,
+)
 
 # ---------------------------------------------------------------------------
 # Live stream rendering
@@ -44,49 +53,33 @@ _STATUS_ICON = {"pending": "○", "in_progress": "◐", "completed": "●"}
 _STATUS_STYLE = {"pending": "dim", "in_progress": "yellow", "completed": "green"}
 
 
-def _short(text: str, limit: int = 240) -> str:
-    text = text.strip().replace("\n", " ")
-    return text if len(text) <= limit else text[: limit - 1] + "…"
-
-
-def _format_args(args: dict[str, Any]) -> str:
-    if not args:
-        return ""
-    parts = []
-    for key, value in args.items():
-        if isinstance(value, str):
-            parts.append(f"{key}={json.dumps(_short(value, 80))}")
-        elif isinstance(value, (list, dict)):
-            parts.append(f"{key}={_short(json.dumps(value, default=str), 80)}")
-        else:
-            parts.append(f"{key}={value!r}")
-    return ", ".join(parts)
-
-
 def _namespace_prefix(ns: tuple[str, ...]) -> Text:
     """Render the subgraph path as a tag (e.g. ``pricing-researcher``)."""
-    if not ns:
-        return Text("lead", style="bold cyan")
-    parts = []
-    for entry in ns:
-        # Entries look like 'task:pricing-researcher:abc123'.
-        head = entry.split(":")
-        parts.append(head[1] if len(head) >= 2 else entry)
-    return Text(" → ".join(parts), style="bold magenta")
+    return Text(_namespace_label(ns), style="bold magenta" if ns else "bold cyan")
 
 
-def _render_todos(console: Console, todos: list[dict[str, Any]]) -> None:
+def _render_todos(console: Console, todos: Any) -> None:
+    """Render todo arguments without assuming the model emitted valid schema data.
+
+    Tool calls are streamed before Deep Agents validates them. Some providers can
+    therefore briefly emit a JSON string, a single object, or a list of strings
+    instead of the declared ``list[Todo]`` shape. The tool layer can ask the model
+    to correct invalid input; the progress renderer should never terminate the run.
+    """
     lines = []
-    for item in todos:
-        status = item.get("status", "pending")
+    for item in _normalize_todos(todos):
+        status = item["status"]
+        content = item["content"]
         icon = _STATUS_ICON.get(status, "?")
         style = _STATUS_STYLE.get(status, "white")
-        lines.append(Text(f"  {icon} {item.get('content', '')}", style=style))
+        lines.append(Text(f"  {icon} {content}", style=style))
     body = Text("\n").join(lines) if lines else Text("(empty)", style="dim")
     console.print(Panel(body, title="📋 plan", border_style="blue", expand=False))
 
 
-def _render_tool_call(console: Console, prefix: Text, name: str, args: dict[str, Any]) -> None:
+def _render_tool_call(console: Console, prefix: Text, name: str, args: Any) -> None:
+    args = _normalize_tool_args(args)
+
     if name == _TODO_TOOL:
         console.print(prefix, Text("📝 plan updated", style="blue"))
         _render_todos(console, args.get("todos", []))
@@ -107,7 +100,7 @@ def _render_tool_call(console: Console, prefix: Text, name: str, args: dict[str,
             prefix,
             Text("💾 write_file ", style="green"),
             Text(path, style="bold green"),
-            Text(f"  ({len(args.get('content', ''))} chars)", style="dim"),
+            Text(f"  ({len(str(args.get('content', '')))} chars)", style="dim"),
         )
         return
 
@@ -144,6 +137,8 @@ def render_stream(console: Console, events: Iterable[Any]) -> dict[str, Any]:
             namespace, update = event
         else:
             namespace, update = ((), event)
+        if not isinstance(update, dict):
+            continue
         prefix = _namespace_prefix(namespace)
 
         for _node_name, partial in update.items():
@@ -152,8 +147,8 @@ def render_stream(console: Console, events: Iterable[Any]) -> dict[str, Any]:
 
             if isinstance(partial.get("files"), dict):
                 files.update(partial["files"])
-            if isinstance(partial.get("todos"), list):
-                todos_snapshot = partial["todos"]
+            if "todos" in partial:
+                todos_snapshot = _normalize_todos(partial["todos"])
 
             for msg in partial.get("messages", []) or []:
                 if isinstance(msg, AIMessage):
@@ -163,7 +158,18 @@ def render_stream(console: Console, events: Iterable[Any]) -> dict[str, Any]:
                         )
                     text = msg.content if isinstance(msg.content, str) else ""
                     if text.strip():
-                        _render_ai_text(console, prefix, text)
+                        recovered_file = _recover_inline_write_file(text)
+                        if recovered_file is None:
+                            _render_ai_text(console, prefix, text)
+                        else:
+                            path, content = recovered_file
+                            files[path] = {"content": content, "encoding": "utf-8"}
+                            console.print(
+                                prefix,
+                                Text("💾 recovered write_file ", style="green"),
+                                Text(path, style="bold green"),
+                                Text(f"  ({len(content)} chars)", style="dim"),
+                            )
                 elif isinstance(msg, ToolMessage):
                     _render_tool_result(console, prefix, msg)
 
@@ -195,35 +201,6 @@ def _check_env(console: Console) -> None:
         raise typer.Exit(code=1)
 
 
-def _file_content(entry: object) -> str | None:
-    """Unwrap a deep-agent virtual-FS entry into its text content.
-
-    The Deep Agents backend stores files as
-    ``{"content": str, "encoding": "utf-8", ...}`` dicts. We accept either
-    that shape or a plain string.
-    """
-    if isinstance(entry, str):
-        return entry
-    if isinstance(entry, dict):
-        content = entry.get("content")
-        if isinstance(content, str):
-            return content
-        if isinstance(content, list):  # legacy line-split format
-            return "\n".join(content)
-    return None
-
-
-def _extract_brief(files: dict[str, object]) -> str | None:
-    """Pull the generated brief out of the agent's virtual FS, however it's keyed."""
-    for key in ("brief.md", "/brief.md"):
-        if key in files:
-            return _file_content(files[key])
-    for key, value in files.items():
-        if key.endswith("brief.md"):
-            return _file_content(value)
-    return None
-
-
 @app.command()
 def main(
     company: Annotated[
@@ -237,7 +214,7 @@ def main(
             "-m",
             help="Any tool-calling capable model served by Nebius Token Factory.",
         ),
-    ] = "moonshotai/Kimi-K2.6",
+    ] = "MiniMaxAI/MiniMax-M3",
     output: Annotated[
         Path,
         typer.Option(

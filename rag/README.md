@@ -1,11 +1,15 @@
-# RAG Example Applications
+[Cookbook](../README.md) / Retrieval and RAG
 
+# Retrieval and RAG
 
+Build applications that retrieve documents and use open models on Nebius Token Factory to answer grounded questions.
 
-| Example                             | Description                                         | Tech Stack                         |
-|-------------------------------------|-----------------------------------------------------|------------------------------------|
-| [PDF RAG](rag-pdf-llama-index/) | Simple PDF RAG application                          | LLamaindex + Nebius AI    |
-| [Chat with Documents](chat-with-pdf)  | UI Web app to chat interactively with PDF documents | LLamaindex + Nebius AI + Streamlit |
-| [Internal Content Generation Platform](content-gen-pipeline-qdrant)  | A platform for creating social posts, articles, and demo apps with a RAG pipeline. | Qdrant + Nebius AI + Qwen3-Embedding |
-| [End-to-end RAG pipeline for PDF documents](rag-milvus-1/)  | Process and query PDF documents using vector database and open source embeddings + models | Llama-index + Milvus db + Nebius AI + Qwen3-Embedding + Qwen3-LLM |
-| [Internal Support Agent](support-agent-weaviate/) | Multi-agent internal support agent with web search, document RAG, Notion/Calendly tools, and Slack bot | Nebius AI + LangGraph + Weaviate |
+| Recipe | What it demonstrates | Stack |
+| --- | --- | --- |
+| [PDF RAG](rag-pdf-llama-index/) | A document retrieval and question-answering workflow | LlamaIndex · Token Factory |
+| [Chat with documents](chat-with-pdf/) | An interactive application for querying PDF content | LlamaIndex · Streamlit |
+| [Content generation pipeline](content-gen-pipeline-qdrant/) | Generate social posts, articles, and demo content from a retrieval pipeline | Qdrant · Token Factory |
+| [PDF retrieval pipeline](rag-milvus-1/) | Process, embed, and query PDF documents | LlamaIndex · Milvus |
+| [Internal support agent](support-agent-weaviate/) | Combine retrieval, web search, and external tools | LangGraph · Weaviate |
+
+Follow each recipe's README for setup, model selection, and required services. New to the platform? Start with [environment setup](../start-here/setup.md) and the [API examples](../api/README.md).

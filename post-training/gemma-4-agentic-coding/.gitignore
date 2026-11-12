@@ -1,0 +1,13 @@
+.venv/
+__pycache__/
+.pytest_cache/
+.env
+*.jsonl
+trajectories/
+selected.txt
+tokens.json
+all.txt
+heldout_repos.txt
+base_bf16/
+gemma-4-31B-it-qat-w4a16-ct/
+runs/
