@@ -1,0 +1,340 @@
+.wrap {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 320px;
+  overflow: hidden;
+  /* Light sky paper with a soft dot grid: every part, dark or light, stays easy to see. */
+  background-color: var(--bg);
+  background-image: radial-gradient(var(--bg-grid) 1.5px, transparent 1.5px);
+  background-size: 22px 22px;
+}
+.host {
+  position: absolute;
+  inset: 0;
+}
+.wrap[data-move="true"] .host {
+  cursor: grab;
+}
+.wrap[data-move="true"] .host:active {
+  cursor: grabbing;
+}
+.lines,
+.labels {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  width: 100%;
+  height: 100%;
+}
+.lines line {
+  stroke: var(--ink-2);
+  stroke-width: 1.5;
+}
+.lines circle {
+  fill: var(--ink);
+}
+.lines [data-state="sel"],
+.lines [data-state="hov"] {
+  stroke: var(--ink);
+  fill: var(--ink);
+}
+.lines [data-state="err"] {
+  stroke: var(--err);
+  fill: var(--err);
+}
+.label {
+  position: absolute;
+  left: 0;
+  top: 0;
+  pointer-events: auto;
+  display: inline-flex;
+  align-items: stretch;
+  height: 28px;
+  padding: 0;
+  overflow: hidden;
+  border-radius: 999px;
+  border: 2px solid var(--rule);
+  background: var(--panel);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 700;
+  white-space: nowrap;
+  cursor: pointer;
+  box-shadow: 2px 2px 0 var(--rule);
+  will-change: transform;
+}
+.label > span:last-child {
+  display: flex;
+  align-items: center;
+  padding: 0 9px;
+}
+.labelNo {
+  display: flex;
+  align-items: center;
+  padding: 0 8px;
+  background: var(--sky);
+  color: #16121f;
+  font: 800 12px var(--font-sans);
+}
+.label:hover,
+.label[data-state="hov"] {
+  background: var(--panel-3);
+}
+.label:hover .labelNo,
+.label[data-state="hov"] .labelNo {
+  background: var(--pick);
+  color: #16121f;
+}
+.label[data-state="sel"] {
+  background: var(--pick);
+  color: #16121f;
+  font-weight: 800;
+}
+.label[data-state="sel"] .labelNo {
+  background: var(--ink);
+  color: var(--pick);
+}
+.label[data-state="err"] {
+  border-color: var(--err);
+  color: var(--err);
+  border-style: dashed;
+}
+.label[data-state="err"] .labelNo {
+  background: var(--err);
+}
+
+.cursorTip {
+  position: absolute;
+  left: 0;
+  top: 0;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  padding: 8px 12px;
+  border-radius: 12px;
+  background: var(--panel);
+  color: var(--ink);
+  border: 2px solid var(--rule);
+  box-shadow: 3px 3px 0 var(--rule);
+  z-index: 6;
+  max-width: 240px;
+}
+.cursorTip b {
+  font-size: 14px;
+  font-weight: 500;
+}
+.cursorTip span {
+  font-size: 12px;
+  opacity: 0.75;
+  font-weight: 500;
+}
+
+.hint {
+  position: absolute;
+  left: 50%;
+  top: 46%;
+  translate: -50% -50%;
+  width: max-content;
+  max-width: calc(100% - 32px);
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 20px;
+  border-radius: 18px;
+  background: var(--pick);
+  color: #16121f;
+  border: 2.5px solid var(--rule);
+  box-shadow: 5px 5px 0 var(--rule);
+  pointer-events: none;
+  z-index: 5;
+}
+.hint b {
+  display: block;
+  font-size: 17px;
+  font-weight: 500;
+}
+.hint span {
+  font-size: 13.5px;
+  opacity: 0.8;
+  font-weight: 500;
+}
+
+.glError {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 40px;
+  text-align: center;
+  font-weight: 500;
+  color: var(--ink-2);
+}
+
+.building {
+  position: absolute;
+  top: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 8px 16px;
+  border-radius: 999px;
+  background: var(--panel);
+  border: 2px solid var(--rule);
+  font: 800 13px var(--font-sans);
+  color: var(--ink);
+  overflow: hidden;
+  z-index: 4;
+}
+.buildBar {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 3px;
+  background: var(--hi);
+  transition: width 0.2s;
+}
+
+/* ---------- control dock ---------- */
+.dock {
+  position: absolute;
+  left: 50%;
+  bottom: 16px;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px;
+  border-radius: 20px;
+  background: var(--panel);
+  border: 2.5px solid var(--rule);
+  box-shadow: 4px 4px 0 var(--rule);
+  max-width: calc(100% - 24px);
+  z-index: 5;
+}
+.apart {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 16px;
+  width: 320px;
+}
+.apartEnd {
+  font: 800 12.5px var(--font-sans);
+  color: var(--ink);
+  flex: none;
+}
+.sep {
+  width: 2px;
+  height: 40px;
+  background: var(--line);
+  flex: none;
+}
+.tool {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  min-width: 74px;
+  height: 58px;
+  padding: 0 8px;
+  border-radius: 14px;
+  border: 2px solid transparent;
+  background: transparent;
+  color: var(--ink);
+  font: 800 12px var(--font-sans);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.12s, color 0.12s;
+}
+.tool:hover {
+  background: var(--panel-3);
+}
+.tool[data-on="true"] {
+  background: var(--pick);
+  border-color: var(--rule);
+  color: #16121f;
+}
+
+.sliceBar {
+  position: absolute;
+  left: 50%;
+  bottom: 100px;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 14px;
+  border-radius: 16px;
+  background: var(--panel);
+  border: 2.5px solid var(--rule);
+  box-shadow: 3px 3px 0 var(--rule);
+  font: 800 12.5px var(--font-sans);
+  color: var(--ink);
+  z-index: 5;
+  white-space: nowrap;
+}
+.axis {
+  display: inline-flex;
+  padding: 3px;
+  gap: 3px;
+  border-radius: var(--radius-sm);
+  background: var(--panel-3);
+}
+.axis button {
+  height: 28px;
+  padding: 0 12px;
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--ink-2);
+  font-size: 12.5px;
+  font-weight: 500;
+  cursor: pointer;
+}
+.axis button[data-on="true"] {
+  background: var(--pick);
+  color: #16121f;
+}
+
+@media (max-width: 760px) {
+  /* Phones: the take-apart slider gets its own row above the tools. */
+  .dock {
+    flex-wrap: wrap;
+    justify-content: space-between;
+    width: calc(100% - 24px);
+  }
+  .dock > .apart {
+    flex: 1 1 100%;
+    width: auto;
+    padding: 4px 8px 6px;
+  }
+  .dock > .sep {
+    display: none;
+  }
+  .dock .tool {
+    flex: 1;
+    min-width: 0;
+  }
+  .apart {
+    width: 170px;
+    padding: 0 6px;
+  }
+  .apartEnd {
+    display: none;
+  }
+  .tool {
+    min-width: 52px;
+  }
+  .tool span {
+    display: none;
+  }
+  .sliceBar {
+    bottom: 84px;
+    gap: 8px;
+  }
+  .sliceBar > span {
+    display: none;
+  }
+}

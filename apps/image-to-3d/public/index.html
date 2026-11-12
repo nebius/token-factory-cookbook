@@ -1,0 +1,233 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Image → 3D · Kimi on Token Factory</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/styles.css" />
+  <script type="importmap">
+    { "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+    } }
+  </script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true">
+        <rect width="32" height="32" rx="8" fill="var(--lime)" />
+        <path d="M16 6.5 24.5 11v10L16 25.5 7.5 21V11Z" fill="none" stroke="var(--lime-ink)" stroke-width="2" stroke-linejoin="round" />
+        <path d="M7.5 11 16 15.5 24.5 11M16 15.5v10" fill="none" stroke="var(--lime-ink)" stroke-width="2" stroke-linejoin="round" />
+      </svg>
+      <div class="brand-text">
+        <span class="brand-title">Image <span class="arrow">→</span> 3D</span>
+        <span class="brand-sub">Nebius Token Factory</span>
+      </div>
+    </div>
+    <div class="topbar-right">
+      <span class="chip model-chip" id="modelChip" title="Model used for generation">
+        <span class="dot"></span><span id="modelName">moonshotai/Kimi-K3.1-Pro</span>
+      </span>
+      <button class="key-btn" id="keyBtn" type="button">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="8" cy="15" r="4" /><path d="M10.8 12.2 20 3m-3 3 2.5 2.5M14.5 8.5 17 11" /></svg>
+        <span id="keyLabel">Bring your own key</span>
+      </button>
+    </div>
+  </header>
+
+  <main class="layout">
+    <!-- ───────────── Left: input ───────────── -->
+    <aside class="panel side">
+      <section class="block">
+        <div class="block-head">
+          <span class="step">01</span><h2>Reference image</h2>
+        </div>
+        <label class="drop" id="drop" tabindex="0">
+          <input type="file" id="fileInput" accept="image/*" hidden />
+          <div class="drop-empty" id="dropEmpty">
+            <div class="drop-icon">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 16V4m0 0-4.5 4.5M12 4l4.5 4.5" /><path d="M4 15v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3" /></svg>
+            </div>
+            <p class="drop-title">Drop an image, or <u>browse</u></p>
+            <p class="drop-hint">PNG · JPG · WEBP — you can also paste with ⌘V</p>
+          </div>
+          <img id="preview" class="drop-preview" alt="" hidden />
+          <button class="drop-clear" id="clearImg" type="button" hidden aria-label="Remove image">✕</button>
+        </label>
+        <div class="palette" id="palette" hidden></div>
+      </section>
+
+      <section class="block">
+        <div class="block-head">
+          <span class="step">02</span><h2>Style</h2>
+        </div>
+        <div class="styles" id="styles" role="radiogroup">
+          <button type="button" class="style on" data-style="faithful" role="radio" aria-checked="true"><b>Faithful</b><small>Match the photo</small></button>
+          <button type="button" class="style" data-style="diorama" role="radio" aria-checked="false"><b>Diorama</b><small>Miniature on a base</small></button>
+          <button type="button" class="style" data-style="lowpoly" role="radio" aria-checked="false"><b>Low-poly</b><small>Faceted, flat-shaded</small></button>
+          <button type="button" class="style" data-style="voxel" role="radio" aria-checked="false"><b>Voxel</b><small>Built from cubes</small></button>
+          <button type="button" class="style" data-style="toon" role="radio" aria-checked="false"><b>Toy</b><small>Soft, rounded, cute</small></button>
+          <button type="button" class="style" data-style="neon" role="radio" aria-checked="false"><b>Neon</b><small>Glowing, after dark</small></button>
+        </div>
+      </section>
+
+      <section class="block">
+        <div class="block-head">
+          <span class="step">03</span><h2>Direction <em>optional</em></h2>
+        </div>
+        <textarea id="notes" rows="3" placeholder="e.g. make the windows glow, add falling snow, focus on the character…"></textarea>
+      </section>
+
+      <div class="cta">
+        <button class="btn-primary" id="generateBtn" type="button" disabled>
+          <span class="btn-label">Generate 3D scene</span>
+          <kbd>⌘ ↵</kbd>
+        </button>
+        <p class="cta-note" id="ctaNote">Add an image to start.</p>
+      </div>
+
+      <section class="block history-block">
+        <div class="block-head">
+          <span class="step">↺</span><h2>Recent scenes</h2>
+          <button class="link" id="clearHistory" type="button" hidden>Clear</button>
+        </div>
+        <div class="history" id="history"><p class="muted small">Your generated scenes will appear here.</p></div>
+      </section>
+    </aside>
+
+    <!-- ───────────── Right: stage ───────────── -->
+    <section class="panel stage-panel">
+      <div class="stage-bar">
+        <div class="tabs" role="tablist">
+          <button class="tab on" data-tab="scene" role="tab">Scene</button>
+          <button class="tab" data-tab="code" role="tab">Code <span class="count" id="codeCount"></span></button>
+          <button class="tab" data-tab="thinking" role="tab">Reasoning</button>
+        </div>
+        <div class="stage-actions">
+          <button class="icon-btn" id="reloadBtn" title="Replay scene" disabled>
+            <svg viewBox="0 0 24 24"><path d="M20 11a8 8 0 1 0-2.3 5.7M20 4v7h-7" /></svg>
+          </button>
+          <button class="icon-btn" id="openBtn" title="Open in new tab" disabled>
+            <svg viewBox="0 0 24 24"><path d="M14 4h6v6M20 4l-9 9M18 14v4a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4" /></svg>
+          </button>
+          <button class="icon-btn" id="downloadBtn" title="Download .html" disabled>
+            <svg viewBox="0 0 24 24"><path d="M12 4v11m0 0-4.5-4.5M12 15l4.5-4.5M4 19h16" /></svg>
+          </button>
+          <button class="icon-btn" id="fullBtn" title="Fullscreen">
+            <svg viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" /></svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="stage" id="stage">
+        <canvas id="previewCanvas" class="layer"></canvas>
+        <iframe id="sceneFrame" class="layer" title="Generated 3D scene" sandbox="allow-scripts" hidden></iframe>
+
+        <div class="stage-empty layer-ui" id="emptyState">
+          <h1>Turn any image into a <span class="hl">living 3D scene</span></h1>
+          <p>Kimi K3.1 Pro looks at your picture, reasons about shape, light and depth, then writes a real-time Three.js world you can orbit, download and share.</p>
+          <ol class="how">
+            <li><span>1</span>Drop an image</li>
+            <li><span>2</span>Pick a style</li>
+            <li><span>3</span>Orbit your scene</li>
+          </ol>
+        </div>
+
+        <div class="progress layer-ui" id="progress" hidden>
+          <div class="phases">
+            <div class="phase" data-phase="read"><i></i>Reading image</div>
+            <div class="phase" data-phase="think"><i></i>Reasoning</div>
+            <div class="phase" data-phase="build"><i></i>Sculpting scene</div>
+            <div class="phase" data-phase="render"><i></i>Rendering</div>
+          </div>
+          <div class="tail" id="codeTail"></div>
+          <div class="metrics">
+            <span id="mElapsed">0.0s</span><span class="sep">·</span><span id="mTokens">0 tokens</span><span class="sep">·</span><span id="mRate">– tok/s</span>
+            <button class="btn-ghost sm" id="stopBtn" type="button">Stop</button>
+          </div>
+        </div>
+
+        <div class="error-card layer-ui" id="errorCard" hidden>
+          <div class="error-title" id="errorTitle">Something went wrong</div>
+          <pre class="error-msg" id="errorMsg"></pre>
+          <div class="error-actions">
+            <button class="btn-primary sm" id="fixBtn" type="button" hidden>Ask Kimi to fix it</button>
+            <button class="btn-ghost sm" id="dismissErr" type="button">Dismiss</button>
+          </div>
+        </div>
+
+        <div class="hint-pill layer-ui" id="orbitHint" hidden>Drag to orbit · scroll to zoom · right-drag to pan</div>
+
+        <pre class="code-view" id="codeView" hidden></pre>
+        <pre class="code-view thinking" id="thinkView" hidden></pre>
+      </div>
+
+      <form class="refine" id="refineForm" autocomplete="off">
+        <div class="refine-inner">
+          <span class="refine-icon">✦</span>
+          <input id="refineInput" placeholder="Refine the scene — “make it night time”, “add more trees”, “closer camera”…" disabled />
+          <button class="btn-primary sm" id="refineBtn" type="submit" disabled>Refine</button>
+        </div>
+      </form>
+    </section>
+  </main>
+
+  <!-- ───────────── BYOK dialog ───────────── -->
+  <dialog class="modal" id="keyModal">
+    <form method="dialog" class="modal-card" id="keyForm">
+      <div class="modal-head">
+        <div>
+          <h3>Bring your own key</h3>
+          <p class="muted">Use your own Nebius Token Factory API key. Requests are billed to your account.</p>
+        </div>
+        <button class="icon-btn" value="cancel" aria-label="Close">✕</button>
+      </div>
+
+      <label class="field">
+        <span>API key</span>
+        <div class="input-wrap">
+          <input id="keyInput" type="password" placeholder="Paste your Token Factory key" spellcheck="false" autocomplete="off" />
+          <button class="link" type="button" id="toggleKey">Show</button>
+        </div>
+      </label>
+
+      <details class="advanced">
+        <summary>Advanced</summary>
+        <label class="field">
+          <span>Model</span>
+          <input id="modelInput" placeholder="moonshotai/Kimi-K3.1-Pro" spellcheck="false" />
+        </label>
+        <label class="field">
+          <span>Base URL</span>
+          <input id="baseInput" placeholder="https://api.tokenfactory.nebius.com/v1" spellcheck="false" />
+        </label>
+      </details>
+
+      <label class="check">
+        <input type="checkbox" id="rememberKey" checked />
+        <span>Remember on this device</span>
+      </label>
+
+      <div class="verify-row" id="verifyRow" hidden></div>
+
+      <p class="fine">Your key stays in this browser. It is sent only with your own generation requests, which this app forwards to Token Factory; it is never stored on the server. <a href="https://tokenfactory.nebius.com" target="_blank" rel="noopener">Get a key ↗</a></p>
+
+      <div class="modal-actions">
+        <button class="btn-ghost" type="button" id="removeKey">Remove key</button>
+        <span class="grow"></span>
+        <button class="btn-ghost" type="button" id="verifyKey">Test key</button>
+        <button class="btn-primary" type="button" id="saveKey">Save</button>
+      </div>
+    </form>
+  </dialog>
+
+  <div class="toast" id="toast" role="status" hidden></div>
+
+  <script type="module" src="/app.js"></script>
+</body>
+</html>

@@ -20,6 +20,16 @@ from dotenv import load_dotenv
 from langchain_core.messages import AIMessage, ToolMessage
 
 from agent import build_agent
+from utils import (
+    extract_brief as _extract_brief,
+    format_args as _format_args,
+    namespace_label as _namespace_label,
+    normalize_todos as _normalize_todos,
+    normalize_tool_args as _normalize_tool_args,
+    recover_inline_write_file as _recover_inline_write_file,
+    short_text as _short,
+    try_parse_json as _try_parse_json,
+)
 
 # ---------------------------------------------------------------------------
 # Brand CSS — mirrors the voice-agent vars / look
@@ -451,40 +461,6 @@ _TASK_TOOL = "task"
 _WRITE_FILE_TOOL = "write_file"
 _TAVILY_LOGO_URL = "https://www.tavily.com/logos/tavily-full.svg"
 
-_STATUS_ICON = {"pending": "○", "in_progress": "◐", "completed": "●"}
-
-
-def _short(text: str, limit: int = 240) -> str:
-    text = text.strip().replace("\n", " ")
-    return text if len(text) <= limit else text[: limit - 1] + "…"
-
-
-def _format_args(args: dict[str, Any]) -> str:
-    if not args:
-        return ""
-    parts = []
-    for key, value in args.items():
-        if isinstance(value, str):
-            parts.append(f"{key}={json.dumps(_short(value, 80))}")
-        elif isinstance(value, (list, dict)):
-            parts.append(f"{key}={_short(json.dumps(value, default=str), 80)}")
-        else:
-            parts.append(f"{key}={value!r}")
-    return ", ".join(parts)
-
-
-def _try_parse_json(value: Any) -> Any:
-    if not isinstance(value, str):
-        return value
-    s = value.strip()
-    if not s or s[0] not in "{[":
-        return value
-    try:
-        return json.loads(s)
-    except Exception:
-        return value
-
-
 def _json_viewer_html(
     title: str, payload: Any, open_by_default: bool = False, max_chars: int = 7000
 ) -> str:
@@ -504,36 +480,14 @@ def _json_viewer_html(
     )
 
 
-def _file_content(entry: object) -> str | None:
-    if isinstance(entry, str):
-        return entry
-    if isinstance(entry, dict):
-        content = entry.get("content")
-        if isinstance(content, str):
-            return content
-        if isinstance(content, list):
-            return "\n".join(content)
-    return None
-
-
-def _extract_brief(files: dict[str, object]) -> str | None:
-    for key in ("brief.md", "/brief.md"):
-        if key in files:
-            return _file_content(files[key])
-    for key, value in files.items():
-        if key.endswith("brief.md"):
-            return _file_content(value)
-    return None
-
-
 # ---------------------------------------------------------------------------
 # HTML helpers for Streamlit
 # ---------------------------------------------------------------------------
 
 
-def _html_plan_rows(todos: list[dict[str, Any]]) -> str:
+def _html_plan_rows(todos: Any) -> str:
     rows = []
-    for item in todos:
+    for item in _normalize_todos(todos):
         status = escape(str(item.get("status", "pending")))
         content = escape(str(item.get("content", "")))
         rows.append(
@@ -549,7 +503,7 @@ def _html_plan_rows(todos: list[dict[str, Any]]) -> str:
     )
 
 
-def _html_plan(todos: list[dict[str, Any]]) -> str:
+def _html_plan(todos: Any) -> str:
     return (
         f'<div class="ci-event">'
         f'<span class="tag plan">plan</span> 📋 plan updated'
@@ -558,7 +512,7 @@ def _html_plan(todos: list[dict[str, Any]]) -> str:
     )
 
 
-def _html_plan_panel(todos: list[dict[str, Any]]) -> str:
+def _html_plan_panel(todos: Any) -> str:
     return (
         '<div class="ci-side-card">'
         '<div class="ci-side-title">Plan</div>'
@@ -581,6 +535,7 @@ def _html_metric_grid(stats: dict[str, int]) -> str:
 def _infer_stage(
     todos: list[dict[str, Any]], delegations: list[dict[str, Any]]
 ) -> tuple[str, str]:
+    todos = _normalize_todos(todos)
     if not todos and not delegations:
         return ("Initializing run", "Setting up lead agent and first tools.")
     if any(item.get("status") == "in_progress" for item in todos):
@@ -676,7 +631,8 @@ def _html_mission_panel(
     )
 
 
-def _html_tool_call(namespace: str, name: str, args: dict[str, Any]) -> str:
+def _html_tool_call(namespace: str, name: str, args: Any) -> str:
+    args = _normalize_tool_args(args)
     if name == _TODO_TOOL:
         return _html_plan(args.get("todos", []))
 
@@ -692,7 +648,7 @@ def _html_tool_call(namespace: str, name: str, args: dict[str, Any]) -> str:
 
     if name == _WRITE_FILE_TOOL:
         path = escape(str(args.get("file_path") or args.get("path") or "?"))
-        size = len(args.get("content", ""))
+        size = len(str(args.get("content", "")))
         return (
             f'<div class="ci-event">'
             f'<span class="tag tool">{escape(namespace)}</span> 💾 write_file '
@@ -722,16 +678,6 @@ def _html_ai_text(namespace: str, text: str) -> str:
         f'<span class="tag text">{escape(namespace)}</span> 💬 {escape(_short(text, 400))}'
         f"</div>"
     )
-
-
-def _namespace_label(ns: tuple[str, ...]) -> str:
-    if not ns:
-        return "lead"
-    parts = []
-    for entry in ns:
-        head = entry.split(":")
-        parts.append(head[1] if len(head) >= 2 else entry)
-    return " → ".join(parts)
 
 
 @dataclass
@@ -814,14 +760,15 @@ class TimelineState:
                 group.status = "completed"
 
 
-def _plan_progress(todos: list[dict[str, Any]]) -> tuple[int, int, int]:
+def _plan_progress(todos: Any) -> tuple[int, int, int]:
+    todos = _normalize_todos(todos)
     total = len(todos)
     completed = sum(1 for item in todos if item.get("status") == "completed")
     percent = int((completed / total) * 100) if total else 0
     return completed, total, percent
 
 
-def _html_sidebar_plan(todos: list[dict[str, Any]]) -> str:
+def _html_sidebar_plan(todos: Any) -> str:
     completed, total, percent = _plan_progress(todos)
     return (
         '<div class="ci-side-card">'
@@ -917,6 +864,8 @@ def consume_stream(events: Iterable[Any]):
         else:
             namespace, update = ((), event)
 
+        if not isinstance(update, dict):
+            continue
         ns_label = _namespace_label(namespace)
 
         for _node_name, partial in update.items():
@@ -925,14 +874,14 @@ def consume_stream(events: Iterable[Any]):
 
             if isinstance(partial.get("files"), dict):
                 files.update(partial["files"])
-            if isinstance(partial.get("todos"), list):
-                todos_snapshot = partial["todos"]
+            if "todos" in partial:
+                todos_snapshot = _normalize_todos(partial["todos"])
 
             for msg in partial.get("messages", []) or []:
                 if isinstance(msg, AIMessage):
                     for call in getattr(msg, "tool_calls", []) or []:
                         tool_name = call.get("name", "?")
-                        tool_args = call.get("args", {}) or {}
+                        tool_args = _normalize_tool_args(call.get("args", {}) or {})
                         yield (
                             {
                                 "kind": "delegation"
@@ -948,16 +897,32 @@ def consume_stream(events: Iterable[Any]):
                         )
                     text = msg.content if isinstance(msg.content, str) else ""
                     if text.strip():
-                        yield (
-                            {
-                                "kind": "text",
-                                "namespace": ns_label,
-                                "namespace_tuple": namespace,
-                                "text": text,
-                                "title": _short(text, 80),
-                            },
-                            {"files": dict(files), "todos": list(todos_snapshot)},
-                        )
+                        recovered_file = _recover_inline_write_file(text)
+                        if recovered_file is None:
+                            yield (
+                                {
+                                    "kind": "text",
+                                    "namespace": ns_label,
+                                    "namespace_tuple": namespace,
+                                    "text": text,
+                                    "title": _short(text, 80),
+                                },
+                                {"files": dict(files), "todos": list(todos_snapshot)},
+                            )
+                        else:
+                            path, file_content = recovered_file
+                            files[path] = {"content": file_content, "encoding": "utf-8"}
+                            yield (
+                                {
+                                    "kind": "tool",
+                                    "namespace": ns_label,
+                                    "namespace_tuple": namespace,
+                                    "tool": _WRITE_FILE_TOOL,
+                                    "args": {"file_path": path, "content": file_content},
+                                    "title": "recovered write_file",
+                                },
+                                {"files": dict(files), "todos": list(todos_snapshot)},
+                            )
                 elif isinstance(msg, ToolMessage):
                     name = getattr(msg, "name", "tool")
                     content = (
@@ -1009,7 +974,7 @@ with st.sidebar:
 
     model = st.text_input(
         "Model",
-        value="moonshotai/Kimi-K2.6",
+        value="MiniMaxAI/MiniMax-M3",
         help="Any tool-calling capable model served by Nebius Token Factory.",
     )
 
@@ -1159,7 +1124,7 @@ if trigger:
 
                 if event_info.get("kind") == "tool":
                     tool_name = str(event_info.get("tool", "tool"))
-                    tool_args = event_info.get("args", {}) or {}
+                    tool_args = _normalize_tool_args(event_info.get("args", {}) or {})
                     if tool_name == _TODO_TOOL:
                         timeline_state.add_event(
                             namespace_tuple,
@@ -1198,7 +1163,7 @@ if trigger:
                             ),
                         )
                 elif event_info.get("kind") == "delegation":
-                    args = event_info.get("args", {})
+                    args = _normalize_tool_args(event_info.get("args", {}))
                     subagent = str(args.get("subagent_type", "subagent"))
                     desc = str(args.get("description", ""))
                     timeline_state.register_dispatch(namespace_tuple, subagent, desc)

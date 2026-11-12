@@ -1,0 +1,12 @@
+node_modules/
+dist/
+.env
+.gstack/
+# QA and model-run captures are generated; keep only the README images.
+screenshots/*
+!screenshots/02-dollhouse.png
+!screenshots/03-plan.png
+!screenshots/courtyard-plan.png
+.DS_Store
+*.tsbuildinfo
+.vite/

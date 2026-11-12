@@ -1,0 +1,29 @@
+{
+ "id": "chartqa/chartqa_1494",
+ "task": "chartqa",
+ "model": "moonshotai/Kimi-K3.1-Pro",
+ "prompt": "The coronavirus pandemic resulting in movie theater closures resulted in a box office decline to how much?\nAnswer with a single number or a short phrase, without units or % signs.\n\nThink it through, then end your reply with a single JSON object inside a ```json code block with exactly these keys: {\"answer\": \"<answer>\"}",
+ "content": "```json\n{\"answer\": \"296.7\"}\n```",
+ "reasoning": "I need respond to question chart. Should think through. Should answer single number/short phrase no units/% and end reply JSON exactly. Should reconcile instruction likely output just json with answer. Chart 2010-2020 revenue million GBP, pandemic 2020 box office decline 296.7. I'll answer 296.7. I need possibly identify units? User explicitly no units. Respond JSON answer. Could be \"296.7 million GBP\" but no units so 296.7. Make sure chart bar 2020 296.7. Yes.\n\nUser \"Think it through, then end your reply with a single JSON object inside a ```json code block with exactly these keys...\" Could output reasoning? No need, concise. Just json code block. Must single number short phrase without units. I can deliver:\n```json\n{\"answer\": \"296.7\"}\n```\nNo other.",
+ "finish_reason": "stop",
+ "usage": {
+  "completion_tokens": 208,
+  "prompt_tokens": 743,
+  "total_tokens": 951,
+  "completion_tokens_details": {
+   "accepted_prediction_tokens": null,
+   "audio_tokens": null,
+   "reasoning_tokens": 183,
+   "rejected_prediction_tokens": null
+  },
+  "prompt_tokens_details": {
+   "audio_tokens": null,
+   "cached_tokens": 0,
+   "created_cache_tokens": 0,
+   "multimodal_tokens": {
+    "image": 588
+   }
+  }
+ },
+ "latency_s": 5.6
+}

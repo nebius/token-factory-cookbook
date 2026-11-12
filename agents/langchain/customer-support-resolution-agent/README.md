@@ -10,7 +10,7 @@ This project uses **Nebius through LangChain** with tools for KB search, order l
 python -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
-cp .env.example .env
+cp env.example .env
 # add NEBIUS_API_KEY
 python main.py
 ```

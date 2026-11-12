@@ -1,0 +1,6 @@
+results/*.log
+results/notebook_run/
+.venv/
+__pycache__/
+.pytest_cache/
+.ipynb_checkpoints/

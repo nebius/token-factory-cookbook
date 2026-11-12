@@ -45,10 +45,11 @@ pip install -r requirements.txt
 
 **3. Set up your environment variables:**
    
-Create a `.env` file in the project root and add your Nebius API key:
+Copy the environment template and add your Nebius API key to the local `.env`
+file. Never commit `.env`:
 
-```text
-NEBIUS_API_KEY=your_api_key_here
+```bash
+cp env.example .env
 ```
 
 ## Running

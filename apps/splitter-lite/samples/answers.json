@@ -1,0 +1,198 @@
+[
+  {
+    "id": "groceries-21",
+    "file": "groceries-21.png",
+    "people": [
+      "Lukas",
+      "Sophie"
+    ],
+    "note": "Sophie had the Coffee beans 500g, everyone shared the Paper towels x6, Lukas had the Dish soap, everyone shared the Whole milk 1L, everyone shared the Bananas 1kg, everyone shared the Greek yoghurt.",
+    "merchant": "GreenLeaf Supermarket",
+    "currency": "EUR",
+    "items": [
+      {
+        "name": "Coffee beans 500g",
+        "quantity": 2,
+        "totalPrice": 13.7
+      },
+      {
+        "name": "Paper towels x6",
+        "quantity": 1,
+        "totalPrice": 5.32
+      },
+      {
+        "name": "Dish soap",
+        "quantity": 3,
+        "totalPrice": 5.97
+      },
+      {
+        "name": "Whole milk 1L",
+        "quantity": 3,
+        "totalPrice": 3.57
+      },
+      {
+        "name": "Bananas 1kg",
+        "quantity": 2,
+        "totalPrice": 3.26
+      },
+      {
+        "name": "Greek yoghurt",
+        "quantity": 1,
+        "totalPrice": 2.83
+      }
+    ],
+    "tax": 3.47,
+    "tip": null,
+    "serviceCharge": null,
+    "discount": null,
+    "total": 38.12,
+    "assignment": [
+      [
+        "Sophie"
+      ],
+      [
+        "Lukas",
+        "Sophie"
+      ],
+      [
+        "Lukas"
+      ],
+      [
+        "Lukas",
+        "Sophie"
+      ],
+      [
+        "Lukas",
+        "Sophie"
+      ],
+      [
+        "Lukas",
+        "Sophie"
+      ]
+    ]
+  },
+  {
+    "id": "dinner-01",
+    "file": "dinner-01.png",
+    "people": [
+      "Lukas",
+      "Sophie",
+      "Marco"
+    ],
+    "note": "Marco had the Grilled sea bass, Lukas and Sophie shared the House red 0.5L, everyone shared everything else.",
+    "merchant": "Trattoria da Luca",
+    "currency": "EUR",
+    "items": [
+      {
+        "name": "Margherita pizza",
+        "quantity": 2,
+        "totalPrice": 23.8
+      },
+      {
+        "name": "Spaghetti carbonara",
+        "quantity": 1,
+        "totalPrice": 14.5
+      },
+      {
+        "name": "Grilled sea bass",
+        "quantity": 1,
+        "totalPrice": 22
+      },
+      {
+        "name": "Tiramisu",
+        "quantity": 1,
+        "totalPrice": 7.5
+      },
+      {
+        "name": "House red 0.5L",
+        "quantity": 1,
+        "totalPrice": 16
+      }
+    ],
+    "tax": 8.38,
+    "tip": null,
+    "serviceCharge": 8.38,
+    "discount": null,
+    "total": 100.56,
+    "assignment": [
+      [
+        "Lukas",
+        "Sophie",
+        "Marco"
+      ],
+      [
+        "Lukas",
+        "Sophie",
+        "Marco"
+      ],
+      [
+        "Marco"
+      ],
+      [
+        "Lukas",
+        "Sophie",
+        "Marco"
+      ],
+      [
+        "Lukas",
+        "Sophie"
+      ]
+    ]
+  },
+  {
+    "id": "taxi-01",
+    "file": "taxi-01.png",
+    "people": [
+      "Lukas",
+      "Sophie"
+    ],
+    "note": "Lukas and Sophie shared the whole taxi.",
+    "merchant": "Taxi Lisboa",
+    "currency": "EUR",
+    "items": [
+      {
+        "name": "Base fare",
+        "quantity": 1,
+        "totalPrice": 3.9
+      },
+      {
+        "name": "Distance 14 km",
+        "quantity": 1,
+        "totalPrice": 12.6
+      },
+      {
+        "name": "Night surcharge",
+        "quantity": 1,
+        "totalPrice": 3
+      },
+      {
+        "name": "Luggage",
+        "quantity": 2,
+        "totalPrice": 3.2
+      }
+    ],
+    "tax": 1.36,
+    "tip": null,
+    "serviceCharge": null,
+    "discount": null,
+    "total": 24.06,
+    "assignment": [
+      [
+        "Lukas",
+        "Sophie"
+      ],
+      [
+        "Lukas",
+        "Sophie"
+      ],
+      [
+        "Lukas",
+        "Sophie"
+      ],
+      [
+        "Lukas",
+        "Sophie"
+      ]
+    ]
+  }
+]

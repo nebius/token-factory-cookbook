@@ -1,0 +1,29 @@
+{
+ "id": "grounding/refcoco_427086",
+ "task": "grounding",
+ "model": "moonshotai/Kimi-K3.1-Pro",
+ "prompt": "Find the single object referred to by this expression: \"left dude\".\nReturn its tight bounding box [x1, y1, x2, y2]. The image is 500x375 pixels; give all coordinates as integer pixel coordinates in that frame.\n\nThink it through, then end your reply with a single JSON object inside a ```json code block with exactly these keys: {\"bbox\": [x1, y1, x2, y2]}",
+ "content": "```json\n{\"bbox\": [0, 79, 145, 309]}\n```",
+ "reasoning": "I need analyze image and identify left dude bounding box tight. I'll output a single JSON object with the bbox. Should reason internally. Image 500x375. Four men around table. Left dude is man left foreground seated, gray hair glasses light shirt. Should box x1 y1 x2 y2. Should have precise extent visible. I'll inspect mentally image. Left dude from x0 to perhaps 150, y78 to 307? His head top at x30? Should tight bounding visible person including hands etc. Left man sitting left of table, light pale shirt, glasses. His silhouette: top head around (55,79), extends to x91 y84? Face at x92-102 y111 etc. Shoulder left x17 y136, x4 y156, x0 y180? body left. Arms extend right to x143 y212? Hands device around 131,180. Legs lower perhaps x5 y305 to 54? Should map.\n\nI'll describe pixels approximate:\nImage left man:\nHair begins top around (58,79), left top skull (39,83), leftmost head perhaps (27,98), neck/back etc. Rightmost facial glasses at x102 y115. Chin near (85,143). Right shoulder? shirt from neck to arm at (92,161), arm down toward (119,189) holding phone. Right hand and phone near x140 y192/203. Other hand at (125,210). Rightmost body perhaps x132 y221? Elbow? Shirt hem at (79,262), leg etc.\nPerson visible seated on chair. Bounding object should include whole body (visible). x0 y78 x145 y310 perhaps. Should determine bottom. At bottom left table covers? Man's trousers? Left edge below shirt from (0,254) to (6,298), seat? There's beige pants thigh at x0-42 y300? Could be chair. I'll scrutinize visual from input conceptual. Left person sits on chair, body pale gray T shirt. Head gray. Arm in front. Shirt's left contour at image x0 around y166 down to 252. At y267 a tan/dark belt? There's chair back? His lower body at x0-29 y306. Chair legs dark at x22 etc extend to bottom. Should not include chair. Bounding box likely standard referring expression datasets expect bbox around man. I need infer annotation. Could be [0, 78, 147, 309]. I'll examine image dimensions and objects. Left dude is obviously man at left. Return tight.\n\nCould be left dude means bald man center back? No left dude relative? There are two on left? Usually expression from RefCOCO: \"left dude\" disambiguates people. Leftmost person. Good.\n\nShould have accurate bbox. I'll estimate visible rightmost hand x147? Look at phone in left man's hand: pale blue phone around (128,183), right edge at 139? His right hand extends to x143 at y204. Left guy's arm along table left edge. The laptop on table starts x126? There's black wallet? At (125,225) mouse? Actually left guy uses cellphone.\n\nMan's top at y80. Rightmost eyeglasses x101 y116. Left boundary x0 at y173 and x0 y256. Bottom person at y308? I'll enlarge mentally based original: At left lower side, light shirt goes down to (37,288), pants visible in tan at (7,307). Chair back/seat dark at (0,286)? His left leg maybe underneath table not visible. Bounds x0 y79 x144 y309. Perhaps x1=0, y1=80, x2=148, y2=307.\n\nShould use integer. Should no explanation, respond with JSON only. But think tight bounding box maybe [0,77,145,307]. I'll revisit geometric image: table left front corner at (18,314). Left man sits behind that. His shirt tail visible from (0,256) to (31,290). Pants/seat from (0,294) to (19,308). A wooden chair leg at (29,346). Person perhaps only to 303. Chair not included. At x65 y274 light shirt? sleeve etc. So bottom y306.\n\nCould include foot? Under table at bottom left there is a dark shape near x80? Not identifiable. Standard bbox from human segmentation includes occluded? Visible estimated.\n\nPotential box [0,80,143,309]. I'll settle [0, 79, 145, 309]. Should have no extra.",
+ "finish_reason": "stop",
+ "usage": {
+  "completion_tokens": 984,
+  "prompt_tokens": 438,
+  "total_tokens": 1422,
+  "completion_tokens_details": {
+   "accepted_prediction_tokens": null,
+   "audio_tokens": null,
+   "reasoning_tokens": 952,
+   "rejected_prediction_tokens": null
+  },
+  "prompt_tokens_details": {
+   "audio_tokens": null,
+   "cached_tokens": 0,
+   "created_cache_tokens": 0,
+   "multimodal_tokens": {
+    "image": 260
+   }
+  }
+ },
+ "latency_s": 33.2
+}

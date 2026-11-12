@@ -1,6 +1,0 @@
-output*.md
-!output-example.md
-.env
-.venv/
-__pycache__/
-env copy.example

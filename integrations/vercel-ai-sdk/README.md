@@ -19,10 +19,10 @@ Set both values in `.env`:
 
 ```dotenv
 NEBIUS_API_KEY=your_token_factory_api_key
-NEBIUS_MODEL=moonshotai/Kimi-K2.7-Code
+NEBIUS_MODEL=openai/gpt-oss-120b
 ```
 
-`NEBIUS_MODEL` is required rather than silently defaulted, so a copied example does not keep using a model after it leaves the public catalog. The value above is a current tool-capable model as of August 13, 2026; check the catalog before running the example later.
+`NEBIUS_MODEL` is required rather than silently defaulted, so a copied example does not keep using a model after it leaves the public catalog. The value above is a current tool-capable model verified in the public catalog on November 12, 2026; check the catalog before running the example later.
 
 ## Run
 
