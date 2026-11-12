@@ -58,7 +58,7 @@ def build_agent(
     """Create the LangChain agent backed by Nebius ChatNebius."""
     resolved_api_key = api_key or os.getenv("NEBIUS_API_KEY")
     if not resolved_api_key:
-        raise RuntimeError("Set NEBIUS_API_KEY in .env, Streamlit secrets, or the sidebar.")
+        raise RuntimeError("Set NEBIUS_API_KEY in .env or Streamlit secrets.")
 
     llm = ChatNebius(
         model=model_name or DEFAULT_MODEL,

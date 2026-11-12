@@ -39,11 +39,11 @@ source .venv/bin/activate
 uv sync
 ```
 
-3. Create a `.env` file and add your `OPENAI_API_KEY` and `NEBIUS_API_KEY`.
+3. Copy the environment template, then add your `OPENAI_API_KEY` and
+   `NEBIUS_API_KEY` to the local `.env` file. Never commit `.env`.
 
 ```bash
-OPENAI_API_KEY="your-openai-api-key"
-NEBIUS_API_KEY="your-nebius-api-key"
+cp env.example .env
 ```
 
 ## Usage

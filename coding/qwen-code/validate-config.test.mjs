@@ -12,7 +12,7 @@ test("recipe uses Qwen Code custom OpenAI routing", () => {
   assert.deepEqual(validateConfig(config), []);
 
   const [model] = config.modelProviders.openai;
-  assert.equal(model.id, "moonshotai/Kimi-K2.7-Code");
+  assert.equal(model.id, "openai/gpt-oss-120b");
   assert.equal(model.baseUrl, "https://api.tokenfactory.nebius.com/v1");
   assert.equal(model.envKey, "NEBIUS_API_KEY");
   assert.equal(config.security.auth.selectedType, "openai");
@@ -25,7 +25,7 @@ test("validator rejects common routing and secret mistakes", () => {
   badConfig.modelProviders.openai[0].baseUrl =
     "https://api.tokenfactory.nebius.com";
   badConfig.modelProviders.openai[0].envKey = "OPENAI_API_KEY";
-  badConfig.modelProviders.openai[0].id = "openai/moonshotai/Kimi-K2.7-Code";
+  badConfig.modelProviders.openai[0].id = "openai/openai/gpt-oss-120b";
   badConfig.security.auth.selectedType = "responses";
   badConfig.model.name = "another-model";
   badConfig.env = { NEBIUS_API_KEY: "secret" };

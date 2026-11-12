@@ -1,0 +1,30 @@
+[build-system]
+requires = ["setuptools>=45", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "openenv-access_request_env"
+version = "0.1.0"
+description = "IT access-request service desk environment for OpenEnv (Nebius Token Factory cookbook)"
+requires-python = ">=3.10"
+dependencies = [
+    "openenv==0.4.1",
+    "fastapi>=0.115.0",
+    "uvicorn>=0.24.0",
+    "fastmcp>=2.0.0",
+    "openai>=1.0.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0.0",
+]
+
+[project.scripts]
+# Run the server without Docker: uv run --project . server
+server = "access_request_env.server.app:main"
+
+[tool.setuptools]
+include-package-data = true
+packages = ["access_request_env", "access_request_env.server"]
+package-dir = { "access_request_env" = ".", "access_request_env.server" = "server" }

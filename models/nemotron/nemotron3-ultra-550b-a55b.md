@@ -45,7 +45,7 @@ Nemotron-3-Ultra-550B-A55B is NVIDIA's flagship 550B hybrid MoE model on Nebius 
 - **Flavor:** Base
 - **Region:** `us-central1`
 - **Architecture:** Hybrid Mixture-of-Experts (MoE) — 550B total / 55B active parameters
-- **Context window:** 256K tokens
+- **Context window:** 1M tokens
 - **Modality:** Text-to-text
 - **Quantization:** FP4
 - **Pricing:** \$1.00 / 1M input tokens, \$3.00 / 1M output tokens

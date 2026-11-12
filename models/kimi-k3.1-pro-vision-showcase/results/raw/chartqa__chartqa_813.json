@@ -1,0 +1,29 @@
+{
+ "id": "chartqa/chartqa_813",
+ "task": "chartqa",
+ "model": "moonshotai/Kimi-K3.1-Pro",
+ "prompt": "What is the sum of United states and United kingdom in the pie chart?\nAnswer with a single number or a short phrase, without units or % signs.\n\nThink it through, then end your reply with a single JSON object inside a ```json code block with exactly these keys: {\"answer\": \"<answer>\"}",
+ "content": "```json\n{\"answer\": \"39.27\"}\n```",
+ "reasoning": "I need respond sum US 23.7 UK 15.57 =39.27. I'll comply user response with single number or short phrase without units or %. Think then end single JSON code block exactly keys answer. I should just code block {\"answer\":\"39.27\"}. No reasoning in response. Should parse question: sum United states and United kingdom 23.7 +15.57=39.27. Yes. Respond exactly json code block.",
+ "finish_reason": "stop",
+ "usage": {
+  "completion_tokens": 118,
+  "prompt_tokens": 736,
+  "total_tokens": 854,
+  "completion_tokens_details": {
+   "accepted_prediction_tokens": null,
+   "audio_tokens": null,
+   "reasoning_tokens": 93,
+   "rejected_prediction_tokens": null
+  },
+  "prompt_tokens_details": {
+   "audio_tokens": null,
+   "cached_tokens": 0,
+   "created_cache_tokens": 0,
+   "multimodal_tokens": {
+    "image": 588
+   }
+  }
+ },
+ "latency_s": 4.0
+}

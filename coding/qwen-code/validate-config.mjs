@@ -20,7 +20,7 @@ export function validateConfig(config) {
   if (model.envKey !== EXPECTED_ENV_KEY) {
     errors.push(`envKey must be ${EXPECTED_ENV_KEY}`);
   }
-  if (!model.id || model.id.startsWith("openai/")) {
+  if (typeof model.id !== "string" || !model.id.trim() || model.id.startsWith("openai/openai/")) {
     errors.push("id must be the raw Token Factory model ID");
   }
   if (config.security?.auth?.selectedType !== "openai") {

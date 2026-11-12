@@ -8,7 +8,7 @@ You give it a single company name. It picks the top competitors itself, research
 
 A regular tool-calling agent gets shallow on a task like this — it does one search, hallucinates the rest. Deep Agents add three primitives that make multi-step research actually work:
 
-- **Planning** — a `write_todos` tool the agent uses to lay out work before it starts, and tick off as it goes.
+- **Planning** — the lead agent establishes a complete company-by-dimension research matrix before delegating work.
 - **A virtual filesystem** — `write_file` / `read_file` so the agent can accumulate findings and produce a single clean final artifact.
 - **Sub-agents** — bounded specialist agents the lead can delegate to. We ship three:
   - `pricing-researcher` — finds and extracts the official pricing page.
@@ -69,13 +69,13 @@ You'll see every step rendered live in the terminal: plan updates, tool calls, s
 
 ```bash
 uv run cli.py "Linear" \
-  --model "moonshotai/Kimi-K2.6" \
+  --model "MiniMaxAI/MiniMax-M3" \
   --output ./linear-brief.md
 ```
 
 | Flag                 | Default                  | Notes                                         |
 | -------------------- | ------------------------ | --------------------------------------------- |
-| `--model`, `-m`      | `moonshotai/Kimi-K2.6`   | Any tool-calling capable Nebius TF model.     |
+| `--model`, `-m`      | `MiniMaxAI/MiniMax-M3`   | Any tool-calling capable Nebius TF model.     |
 | `--output`, `-o`     | `./brief-<company>.md`   | Where to save the final markdown brief.       |
 | `--recursion-limit`  | `150`                    | Bump if the agent runs out of LangGraph steps.|
 
