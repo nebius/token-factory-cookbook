@@ -1,0 +1,255 @@
+{
+ "report_version": 1,
+ "generated_at": "2026-10-16T13:25:05Z",
+ "run_id": "20261016-184728-27677b",
+ "scenario_id": "broken-readiness",
+ "provenance": "civo-live",
+ "provenance_label": "Live run on a Civo cluster",
+ "replay_of": null,
+ "provider": "nebius-token-factory",
+ "model": "meta-models/muse-spark-open",
+ "is_fixture": false,
+ "repo_commit": "6f8bbd81cc2d",
+ "cluster": {
+  "kind": "civo",
+  "context": "[hidden]",
+  "server": "[hidden]",
+  "kubernetes_version": "v1.35.0+k3s1",
+  "civo_cluster": {
+   "id": "[id]",
+   "name": "kubetrace-demo",
+   "status": "ACTIVE",
+   "kubernetes_version": "1.35.0-k3s1",
+   "nodes": 2,
+   "size": "g4s.kube.medium",
+   "region": "LON1"
+  },
+  "capacity": {
+   "nodes": 2,
+   "kubelet_version": "v1.35.0+k3s1",
+   "allocatable": [
+    {
+     "name": "k3s-kubetrace-demo-cc91-52bf34-node-pool-b14e-2zv2y",
+     "cpu": "1880m",
+     "memory": "2364008Ki"
+    },
+    {
+     "name": "k3s-kubetrace-demo-cc91-52bf34-node-pool-b14e-ve391",
+     "cpu": "1880m",
+     "memory": "2364020Ki"
+    }
+   ]
+  },
+  "namespace": "kubetrace-demo"
+ },
+ "settings": {
+  "prompt_version": "2026-10-16.1",
+  "tool_schema_version": "2026-10-16.1",
+  "generation_settings": {
+   "max_tokens": 2048,
+   "temperature": 0.2
+  },
+  "limits": {
+   "max_steps": 30,
+   "max_seconds": 600,
+   "max_tokens": 600000,
+   "max_output_chars": 4000,
+   "verification_retries": 1
+  },
+  "policy_mode": "auto",
+  "test_runner": "docker",
+  "fixture_label": null
+ },
+ "policy_mode": "auto",
+ "timing": {
+  "created_at": 1792156648.253254,
+  "started_at": 1792156758.6513479,
+  "ended_at": 1792156862.372184,
+  "agent_elapsed_s": 103.47
+ },
+ "final_state": "resolved",
+ "reason": "independent verification passed (reconstructed from recorded events)",
+ "first_attempt_success": true,
+ "eventual_success": true,
+ "baseline": [
+  {
+   "name": "storefront and probe rolled out",
+   "ok": true,
+   "detail": "Deployments available"
+  },
+  {
+   "name": "checkout [{\"sku\": \"MUG-01\", \"qty\": 2}]",
+   "ok": true,
+   "detail": "HTTP 200, total 31.92, expected 31.92"
+  },
+  {
+   "name": "checkout [{\"sku\": \"CAP-03\", \"qty\": 12}]",
+   "ok": true,
+   "detail": "HTTP 200, total 227.77, expected 227.77"
+  },
+  {
+   "name": "checkout [{\"sku\": \"TEE-02\", \"qty\": 1}, {\"sku\": \"STK-04\", \"qty\": 3}] SAVE10",
+   "ok": true,
+   "detail": "HTTP 200, total 41.72, expected 41.72"
+  }
+ ],
+ "issue": {
+  "incident": "Storefront Pods never become ready",
+  "symptom": "The rollout is stuck: new Pods run with zero restarts but never become Ready; the release never goes live.",
+  "fault_proof": [
+   {
+    "name": "new Pods run but are not Ready",
+    "ok": true,
+    "detail": "Pods with the /ready probe are Running, not Ready"
+   },
+   {
+    "name": "rollout is not completing",
+    "ok": true,
+    "detail": "updated 1, ready 2, unavailable 1"
+   }
+  ]
+ },
+ "observations": [
+  {
+   "text": "New Pod storefront-74c8c967c8-xpdkt fails readiness probe with 404 on /ready, while old Pods serve /readyz successfully. Manifest k8s/deployment.yaml has readinessProbe path /ready which does not exist in app (server.py implements /readyz and /healthz per docs/operations.md).",
+   "evidence": [
+    "get_events Warning Unhealthy Readiness probe failed: HTTP probe failed with statuscode: 404 for Pod/storefront-74c8c967c8-xpdkt",
+    "get_logs storefront-74c8c967c8-xpdkt GET /ready 404 vs GET /healthz 200",
+    "get_logs storefront-7c5f6ddb74-2rkzs GET /readyz 200",
+    "read_file k8s/deployment.yaml readinessProbe path /ready",
+    "read_file storefront/server.py Handler.do_GET handles /healthz and /readyz only",
+    "read_file docs/operations.md endpoint table"
+   ]
+  }
+ ],
+ "hypotheses": [],
+ "agent_conclusion": null,
+ "attempted_changes": [
+  {
+   "id": "684aca93c9",
+   "kind": "Deployment",
+   "name": "storefront",
+   "source": "apply_manifest",
+   "reason": "Fix readiness probe path to /readyz so new Pods become ready",
+   "diff": "",
+   "decision": {
+    "allowed": false,
+    "reasons": [
+     "server-side dry run rejected it: Deployment in version \"v1\" cannot be handled as a Deployment: json: cannot unmarshal array into Go struct field PodSpec.spec.template.spec.automountServiceAccountToken of type bool"
+    ]
+   },
+   "status": "denied",
+   "error": "Deployment in version \"v1\" cannot be handled as a Deployment: json: cannot unmarshal array into Go struct field PodSpec.spec.template.spec.automountServiceAccountToken of type bool",
+   "duration_s": 0.2
+  },
+  {
+   "id": "66cdb569a0",
+   "kind": "Deployment",
+   "name": "storefront",
+   "source": "apply_manifest",
+   "reason": "Fix readiness probe path to /readyz so new Pods become ready",
+   "diff": "--- live/deployment/storefront\n+++ proposed/deployment/storefront\n@@ -51,7 +51,7 @@\n         readinessProbe:\n           failureThreshold: 2\n           httpGet:\n-            path: /ready\n+            path: /readyz\n             port: http\n             scheme: HTTP\n           periodSeconds: 3\n",
+   "decision": {
+    "allowed": true,
+    "reasons": [],
+    "changed_paths": [
+     "spec.template.spec.containers[name=storefront].readinessProbe.httpGet.path"
+    ]
+   },
+   "status": "applied",
+   "error": "",
+   "duration_s": 0.488
+  }
+ ],
+ "source_diff": "",
+ "tests": [],
+ "builds": [],
+ "rollouts": [
+  {
+   "deployment": "storefront",
+   "complete": true,
+   "waited_s": 1.1,
+   "ready": 2,
+   "replicas": 2
+  }
+ ],
+ "verifications": [
+  {
+   "attempt": 1,
+   "ok": true,
+   "checks": [
+    {
+     "name": "readiness probe checks /readyz over HTTP",
+     "ok": true,
+     "detail": "readinessProbe {\"failureThreshold\": 2, \"httpGet\": {\"path\": \"/readyz\", \"port\": \"http\", \"scheme\": \"HTTP\"}, \"periodSeconds\": 3, \"successThreshold\": 1, \"timeoutSeconds\": 1}"
+    },
+    {
+     "name": "rollout complete",
+     "ok": true,
+     "detail": "all replicas updated and ready"
+    },
+    {
+     "name": "pods ready and stable",
+     "ok": true,
+     "detail": "2/2 Ready; restarts 0\u21920 over 5 s"
+    },
+    {
+     "name": "service endpoints",
+     "ok": true,
+     "detail": "2 ready endpoints"
+    },
+    {
+     "name": "checkout [{\"sku\": \"MUG-01\", \"qty\": 2}]",
+     "ok": true,
+     "detail": "HTTP 200, total 31.92, expected 31.92"
+    },
+    {
+     "name": "checkout [{\"sku\": \"CAP-03\", \"qty\": 12}]",
+     "ok": true,
+     "detail": "HTTP 200, total 227.77, expected 227.77"
+    },
+    {
+     "name": "checkout [{\"sku\": \"TEE-02\", \"qty\": 1}, {\"sku\": \"STK-04\", \"qty\": 3}] SAVE10",
+     "ok": true,
+     "detail": "HTTP 200, total 41.72, expected 41.72"
+    },
+    {
+     "name": "source manifest matches",
+     "ok": true,
+     "detail": "manifest readinessProbe {\"httpGet\": {\"path\": \"/readyz\", \"port\": \"http\"}, \"periodSeconds\": 3, \"failureThreshold\": 2}"
+    }
+   ],
+   "agent_outcome": "resolved"
+  }
+ ],
+ "drift": [],
+ "metrics": {
+  "model_calls": 24,
+  "model_latency_s": 82.32,
+  "prompt_tokens": 324653,
+  "completion_tokens": 7680,
+  "total_tokens": 332333,
+  "usage_reported_calls": 24,
+  "tool_calls": 46,
+  "tool_time_s": 12.48,
+  "tool_errors": 2,
+  "rejected_actions": 1,
+  "verification_attempts": 1,
+  "token_usage": "reported by provider",
+  "reconstructed_from_events": true
+ },
+ "cost": {
+  "usd": 0.4385,
+  "label": "estimate",
+  "rate_source": "Nebius Token Factory GET /v1/models?verbose=true (pricing.prompt / pricing.completion)",
+  "rate_date": "2026-10-16",
+  "input_per_m": 1.25,
+  "output_per_m": 4.25,
+  "note": "Cached-token discounts, if any, are not applied."
+ },
+ "errors": [],
+ "limitations": [
+  "1 proposed change(s) were denied, rejected, stale or failed; see attempted changes.",
+  "Metrics and outcome were reconstructed from the recorded events: the headless runner exited before saving them (fixed 2026-10-16). Verification results are the recorded ones."
+ ]
+}

@@ -1,0 +1,10 @@
+node_modules
+.next
+.next-check
+.env
+.env.*
+.npmrc
+codetrail.db*
+*.tsbuildinfo
+.DS_Store
+.git

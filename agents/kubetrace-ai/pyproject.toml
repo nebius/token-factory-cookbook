@@ -1,0 +1,51 @@
+[project]
+name = "kubetrace-ai"
+version = "0.1.0"
+description = "Kubernetes incident investigation and remediation with a bounded tool-calling agent on Nebius Token Factory"
+license = "Apache-2.0"
+requires-python = ">=3.11"
+dependencies = [
+  "fastapi==0.162.0",
+  "starlette==1.10.0",
+  "uvicorn[standard]==0.37.0",
+  "pydantic==2.11.9",
+  "pydantic-settings==2.11.0",
+  "kubernetes==33.1.0",
+  "openai==1.109.1",
+  "httpx==0.28.1",
+  "pyyaml==6.0.3",
+  "certifi==2026.10.19",
+]
+
+[dependency-groups]
+dev = [
+  "pytest==9.0.3",
+  "pytest-asyncio==1.4.1",
+  "ruff==0.13.3",
+]
+
+[build-system]
+requires = ["hatchling==1.27.0"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = [
+  "services/api/kubetrace_api",
+  "services/agent/kubetrace_agent",
+  "experiments/kubetrace_experiments",
+]
+
+[project.scripts]
+kubetrace = "kubetrace_api.cli:main"
+
+[tool.pytest.ini_options]
+testpaths = ["tests/unit", "tests/integration"]
+asyncio_mode = "auto"
+markers = [
+  "kind: needs a kind cluster (KUBETRACE_KIND=1)",
+  "live_model: calls the real model endpoint (KUBETRACE_LIVE_MODEL=1)",
+]
+
+[tool.ruff]
+line-length = 120
+target-version = "py311"

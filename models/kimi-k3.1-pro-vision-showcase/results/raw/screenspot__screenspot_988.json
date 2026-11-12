@@ -1,0 +1,29 @@
+{
+ "id": "screenspot/screenspot_988",
+ "task": "screenspot",
+ "model": "moonshotai/Kimi-K3.1-Pro",
+ "prompt": "This is a screenshot of a user interface. Instruction: \"show reviews\".\nWhere exactly should you click to carry out this instruction? The image is 2560x1440 pixels; give all coordinates as integer pixel coordinates in that frame.\n\nThink it through, then end your reply with a single JSON object inside a ```json code block with exactly these keys: {\"point\": [x, y]}",
+ "content": "```json\n{\"point\": [350, 870]}\n```",
+ "reasoning": "I need analyze screenshot click reviews. Should coordinate exact integer. I'll end JSON only perhaps explanation? User says think through then end reply single JSON object code block exactly keys. Should locate Reviews (12) tab. Screenshot 2560x1440. Tab starts x225? to474 y838-901. Label Reviews (12) centered x350 y869. Click ~349,870. Make sure coordinates. I'll examine visual: Details tab x38 to214, Reviews x225 to474. Text Reviews (12) centered x350. y870. Should output point [350, 870]. Perhaps click center of tab [349,869]. Should respond concise JSON code block.",
+ "finish_reason": "stop",
+ "usage": {
+  "completion_tokens": 165,
+  "prompt_tokens": 4960,
+  "total_tokens": 5125,
+  "completion_tokens_details": {
+   "accepted_prediction_tokens": null,
+   "audio_tokens": null,
+   "reasoning_tokens": 139,
+   "rejected_prediction_tokens": null
+  },
+  "prompt_tokens_details": {
+   "audio_tokens": null,
+   "cached_tokens": 0,
+   "created_cache_tokens": 4608,
+   "multimodal_tokens": {
+    "image": 4794
+   }
+  }
+ },
+ "latency_s": 4.2
+}

@@ -35,12 +35,12 @@ pass the provider/model pair explicitly:
 
 ```bash
 opencode run \
-  --model nebius/moonshotai/Kimi-K2.7-Code \
+  --model nebius/openai/gpt-oss-120b \
   "Run the smallest relevant test and summarize the result."
 ```
 
 The first slash separates the Models.dev provider ID (`nebius`) from the full
-Token Factory model ID (`moonshotai/Kimi-K2.7-Code`). Re-run `/models` if that
+Token Factory model ID (`openai/gpt-oss-120b`). Re-run `/models` if that
 example ID is no longer listed.
 
 ## Verify the catalog contract
@@ -51,7 +51,7 @@ OpenAI-compatible client, active status, text I/O, and tool support:
 
 ```bash
 python integrations/opencode/validate_provider.py \
-  --model moonshotai/Kimi-K2.7-Code
+  --model openai/gpt-oss-120b
 ```
 
 Use `--catalog path/to/api.json` to validate a saved Models.dev snapshot. The

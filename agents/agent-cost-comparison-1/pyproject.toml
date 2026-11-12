@@ -1,0 +1,13 @@
+[project]
+name = "agent-cost-comparison-2"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "deepagents>=0.7.23",
+    "langchain-nebius>=0.1.3",
+    "langchain-openai>=1.6.0",
+    "langgraph>=1.2.11",
+    "python-dotenv>=1.2.3",
+]

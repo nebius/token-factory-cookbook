@@ -1,0 +1,15 @@
+{
+ "_about": "Manual review of every sample that was not a clean hit. 'real' = the model got it wrong; 'ambiguous' = the question or relation is vague, benchmark verdict kept; 'disputed' = the benchmark label looks wrong on inspection. Official scores never change; disputed items are reported separately.",
+ "detection/coco_1425": {"kind": "real", "note": "Boxes were well placed, but it called the small ramekin a 'cup' (COCO says 'bowl') and added a 'dining table' box over the plate."},
+ "grounding/refcoco_2125874": {"kind": "real", "note": "Boxed the whole bench, including the half the woman sits on; the expression asks for the empty part only (IoU 0.45, just under the 0.5 bar)."},
+ "counting/countbench_379": {"kind": "disputed", "note": "Kimi pointed at 5 separate slips. CountBench's label comes from the image caption ('three tickets'); at least 4-5 distinct slips are visible."},
+ "textvqa/textvqa_38269": {"kind": "real", "note": "Read the LED sign as 'VOLVO 7900 HYBRID'; it says 'HYBRIDE'. Dropped the final letter (2 of 10 annotators wrote the same)."},
+ "docvqa/docvqa_50367": {"kind": "real", "note": "Returned the second talk title instead of the second session heading ('Foetal damage and alcohol consumption'): it misread the programme's structure."},
+ "mathvista/mathvista_979": {"kind": "real", "note": "Base-ten blocks: counted 6 ten-rods instead of 7, answering 9069 instead of 9079."},
+ "vsr/vsr_211": {"kind": "ambiguous", "note": "Judged the motion-blurred bus as facing toward the cow; annotators said 'facing away'. The bus's front is hard to read."},
+ "vsr/vsr_736": {"kind": "ambiguous", "note": "Judged the crow as close to the background refrigerator; annotators said it is 'away from' it. 'Away from' is vague here."},
+ "pope/pope_1542": {"kind": "ambiguous", "note": "Answered yes and boxed a chair-like seat at the top of the frame; COCO has no chair annotation for this image."},
+ "pope/pope_353": {"kind": "disputed", "note": "COCO's 'bicycle' here is the motorcycle. Kimi answered 'no bicycle', which is correct by eye."},
+ "pope/pope_2176": {"kind": "real", "note": "Hallucination: said there is a handbag and boxed the child's pink plush toy."},
+ "screenspot/screenspot_315": {"kind": "disputed", "note": "The menu has two identical 'Mirror Display' rows. Kimi clicked the first (Color LCD display); ScreenSpot expects the second (DELL display)."}
+}

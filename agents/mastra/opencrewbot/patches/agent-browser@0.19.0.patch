@@ -1,0 +1,80 @@
+diff --git a/dist/index.d.ts b/dist/index.d.ts
+index 1a2b45cafedc8544466c0ff452eed3c26cb39747..fd5abc3e2f92df45fc10ce7574a00c4c650cc551 100644
+--- a/dist/index.d.ts
++++ b/dist/index.d.ts
+@@ -1,7 +1,4 @@
+ export { BrowserManager, getDefaultTimeout } from './browser.js';
+ export type { BrowserLaunchOptions, NavigateOptions, ScreencastFrame, ScreencastOptions, } from './browser.js';
+-export { IOSManager } from './ios-manager.js';
+-export { executeCommand } from './actions.js';
+ export type { Command, LaunchCommand, NavigateCommand, Response } from './types.js';
+-export { cleanupSocket, getAppDir, getConnectionInfo, getPidFile, getPortFile, getPortForSession, getSession, getSocketDir, getSocketPath, getStreamPortFile, isDaemonRunning, safeWrite, setSession, startDaemon, } from './daemon.js';
+ //# sourceMappingURL=index.d.ts.map
+diff --git a/dist/index.js b/dist/index.js
+index 8b3f465e6600235c20fb0f686a0a81f1d94a9b60..39d4e181d39cbfdf2a6ad208140750d8346dddf0 100644
+--- a/dist/index.js
++++ b/dist/index.js
+@@ -1,5 +1,2 @@
+ export { BrowserManager, getDefaultTimeout } from './browser.js';
+-export { IOSManager } from './ios-manager.js';
+-export { executeCommand } from './actions.js';
+-export { cleanupSocket, getAppDir, getConnectionInfo, getPidFile, getPortFile, getPortForSession, getSession, getSocketDir, getSocketPath, getStreamPortFile, isDaemonRunning, safeWrite, setSession, startDaemon, } from './daemon.js';
+ //# sourceMappingURL=index.js.map
+diff --git a/dist/protocol.js b/dist/protocol.js
+index 06587884366bde58d2454415b0e9d8c268634e8a..4b1c593d6ef0f248fc40810406fd01b415d355ee 100644
+--- a/dist/protocol.js
++++ b/dist/protocol.js
+@@ -28,7 +28,7 @@ const launchSchema = baseCommandSchema.extend({
+     autoConnect: z.boolean().optional(),
+     executablePath: z.string().optional(),
+     extensions: z.array(z.string()).optional(),
+-    headers: z.record(z.string()).optional(),
++    headers: z.record(z.string(), z.string()).optional(),
+     proxy: z
+         .object({
+         server: z.string().min(1),
+@@ -55,7 +55,7 @@ const navigateSchema = baseCommandSchema.extend({
+     action: z.literal('navigate'),
+     url: z.string().min(1),
+     waitUntil: z.enum(['load', 'domcontentloaded', 'networkidle']).optional(),
+-    headers: z.record(z.string()).optional(),
++    headers: z.record(z.string(), z.string()).optional(),
+ });
+ const clickSchema = baseCommandSchema.extend({
+     action: z.literal('click'),
+@@ -196,7 +196,7 @@ const routeSchema = baseCommandSchema.extend({
+         status: z.number().optional(),
+         body: z.string().optional(),
+         contentType: z.string().optional(),
+-        headers: z.record(z.string()).optional(),
++        headers: z.record(z.string(), z.string()).optional(),
+     })
+         .optional(),
+     abort: z.boolean().optional(),
+@@ -425,7 +425,7 @@ const dispatchSchema = baseCommandSchema.extend({
+     action: z.literal('dispatch'),
+     selector: z.string().min(1),
+     event: z.string().min(1),
+-    eventInit: z.record(z.unknown()).optional(),
++    eventInit: z.record(z.string(), z.unknown()).optional(),
+ });
+ const evalHandleSchema = baseCommandSchema.extend({
+     action: z.literal('evalhandle'),
+@@ -458,7 +458,7 @@ const offlineSchema = baseCommandSchema.extend({
+ });
+ const headersSchema = baseCommandSchema.extend({
+     action: z.literal('headers'),
+-    headers: z.record(z.string()),
++    headers: z.record(z.string(), z.string()),
+ });
+ const pauseSchema = baseCommandSchema.extend({
+     action: z.literal('pause'),
+@@ -937,7 +937,7 @@ export function parseCommand(input) {
+     // Validate against schema
+     const result = commandSchema.safeParse(json);
+     if (!result.success) {
+-        const errors = result.error.errors.map((e) => `${e.path.join('.')}: ${e.message}`).join(', ');
++        const errors = result.error.issues.map((e) => `${e.path.join('.')}: ${e.message}`).join(', ');
+         return { success: false, error: `Validation error: ${errors}`, id };
+     }
+     const command = result.data;
