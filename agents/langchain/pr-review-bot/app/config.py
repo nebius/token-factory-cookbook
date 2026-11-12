@@ -1,6 +1,7 @@
 from functools import lru_cache
+from typing import Annotated
 
-from pydantic import Field, SecretStr, model_validator
+from pydantic import Field, SecretStr, StringConstraints, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -11,7 +12,7 @@ class Settings(BaseSettings):
     github_app_id: str | None = None
     github_app_private_key: SecretStr | None = None
     github_token: SecretStr | None = None
-    nebius_model: str = Field(min_length=1)
+    nebius_model: Annotated[str, StringConstraints(strip_whitespace=True, min_length=1)]
     nebius_base_url: str = "https://api.tokenfactory.nebius.com/v1/"
     review_drafts: bool = False
     max_files: int = Field(default=40, ge=1, le=100)
