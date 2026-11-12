@@ -170,6 +170,10 @@ proxy's allowlisted `/api/models` and `/api/chat/completions` routes; it cannot
 choose an arbitrary upstream URL. The server binds to `127.0.0.1` and does not
 enable CORS.
 
+Upstream redirects are rejected with HTTP 502 so credentials cannot be forwarded
+to a different destination or a route outside the allowlist. Configure the final
+API base URL directly if your provider uses a redirect.
+
 Models are filtered by **output modality**: any model that produces text output
 is included (so vision-capable text LLMs like `moonshotai/Kimi-K2.6` are
 selectable), while pure image/audio generation models are excluded.

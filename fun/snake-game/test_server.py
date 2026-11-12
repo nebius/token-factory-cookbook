@@ -33,6 +33,12 @@ class RecordingUpstreamHandler(BaseHTTPRequestHandler):
                 "payload": payload,
             }
         )
+        redirect_status = getattr(self.server, "redirect_status", None)
+        if redirect_status is not None:
+            self.send_response(redirect_status)
+            self.send_header("Location", self.server.redirect_location)
+            self.end_headers()
+            return
         body = json.dumps(response).encode()
         self.send_response(200)
         self.send_header("Content-Type", "application/json")
@@ -49,6 +55,9 @@ class SnakeGameProxyTest(unittest.TestCase):
     def setUpClass(cls) -> None:
         RecordingUpstreamHandler.requests.clear()
         cls.upstream = ThreadingHTTPServer(("127.0.0.1", 0), RecordingUpstreamHandler)
+        cls.destination = ThreadingHTTPServer(
+            ("127.0.0.1", 0), RecordingUpstreamHandler
+        )
         upstream_port = cls.upstream.server_address[1]
         cls.proxy = SnakeGameServer(
             ("127.0.0.1", 0),
@@ -59,16 +68,60 @@ class SnakeGameProxyTest(unittest.TestCase):
             target=cls.upstream.serve_forever, daemon=True
         )
         cls.proxy_thread = threading.Thread(target=cls.proxy.serve_forever, daemon=True)
+        cls.destination_thread = threading.Thread(
+            target=cls.destination.serve_forever, daemon=True
+        )
         cls.upstream_thread.start()
         cls.proxy_thread.start()
+        cls.destination_thread.start()
         cls.proxy_url = f"http://127.0.0.1:{cls.proxy.server_address[1]}"
 
     @classmethod
     def tearDownClass(cls) -> None:
         cls.proxy.shutdown()
         cls.upstream.shutdown()
+        cls.destination.shutdown()
         cls.proxy.server_close()
         cls.upstream.server_close()
+        cls.destination.server_close()
+
+    def setUp(self) -> None:
+        self.upstream.redirect_status = None
+
+    def _assert_redirect_rejected(self, destination: str) -> None:
+        self.upstream.redirect_location = destination
+        for status in (301, 302, 303, 307, 308):
+            self.upstream.redirect_status = status
+            for route, data in (("models", None), ("chat/completions", b"{}")):
+                with self.subTest(status=status, route=route):
+                    RecordingUpstreamHandler.requests.clear()
+                    request = Request(
+                        self.proxy_url + "/api/" + route,
+                        data=data,
+                        headers={"Content-Type": "application/json"},
+                    )
+                    with self.assertRaises(HTTPError) as raised:
+                        with urlopen(request, timeout=5) as response:
+                            response.read()
+                    with raised.exception as response:
+                        self.assertEqual(response.code, 502)
+                        self.assertNotIn("Location", response.headers)
+                        self.assertIn("redirect", json.load(response)["error"]["message"])
+                    # Only the configured upstream receives a request; no hop is
+                    # followed, even if it would retain the same origin.
+                    self.assertEqual(len(RecordingUpstreamHandler.requests), 1)
+                    self.assertEqual(
+                        RecordingUpstreamHandler.requests[0]["authorization"],
+                        "Bearer server-only-secret",
+                    )
+
+    def test_redirects_do_not_forward_credentials_to_another_origin(self) -> None:
+        port = self.destination.server_address[1]
+        self._assert_redirect_rejected(f"http://127.0.0.1:{port}/redirect-target")
+
+    def test_redirects_do_not_bypass_the_route_allowlist(self) -> None:
+        port = self.upstream.server_address[1]
+        self._assert_redirect_rejected(f"http://127.0.0.1:{port}/redirect-target")
 
     def test_models_route_uses_server_side_authorization(self) -> None:
         request = Request(

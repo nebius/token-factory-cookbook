@@ -17,7 +17,7 @@ from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from urllib.error import HTTPError, URLError
 from urllib.parse import urlsplit, urlunsplit
-from urllib.request import Request, urlopen
+from urllib.request import HTTPRedirectHandler, Request, build_opener
 
 DEFAULT_BASE_URL = "https://api.tokenfactory.nebius.com/v1/"
 MAX_REQUEST_BYTES = 2 * 1024 * 1024
@@ -65,12 +65,20 @@ def resolve_config(environ: Mapping[str, str]) -> tuple[str, str]:
     return api_key, DEFAULT_BASE_URL
 
 
+class NoRedirectHandler(HTTPRedirectHandler):
+    """Keep provider credentials on the configured, allowlisted API route."""
+
+    def redirect_request(self, req, fp, code, msg, headers, newurl):
+        return None
+
+
 class SnakeGameServer(ThreadingHTTPServer):
     daemon_threads = True
 
     def __init__(self, address: tuple[str, int], api_key: str, base_url: str):
         self.api_key = api_key
         self.base_url = normalize_base_url(base_url)
+        self.upstream_opener = build_opener(NoRedirectHandler())
         super().__init__(address, SnakeGameHandler)
 
 
@@ -191,11 +199,17 @@ class SnakeGameHandler(SimpleHTTPRequestHandler):
 
         request = Request(upstream_url, data=body, headers=headers, method=method)
         try:
-            with urlopen(request, timeout=45) as response:
+            with self.server.upstream_opener.open(request, timeout=45) as response:
                 self._relay_response(response.status, response.headers, response)
         except HTTPError as error:
             with error:
-                self._relay_response(error.code, error.headers, error)
+                if 300 <= error.code < 400:
+                    self._send_json_error(
+                        HTTPStatus.BAD_GATEWAY,
+                        "Upstream redirects are not allowed. Configure the final API base URL.",
+                    )
+                else:
+                    self._relay_response(error.code, error.headers, error)
         except (URLError, TimeoutError) as error:
             reason = error.reason if isinstance(error, URLError) else "timeout"
             self._send_json_error(
