@@ -1,0 +1,7 @@
+region,product,revenue
+west,widget-a,200000
+west,widget-b,90000
+east,widget-a,125000
+east,widget-b,105000
+south,widget-a,82000
+south,widget-b,62000

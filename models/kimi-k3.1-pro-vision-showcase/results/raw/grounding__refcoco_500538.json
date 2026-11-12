@@ -1,0 +1,29 @@
+{
+ "id": "grounding/refcoco_500538",
+ "task": "grounding",
+ "model": "moonshotai/Kimi-K3.1-Pro",
+ "prompt": "Find the single object referred to by this expression: \"sitting guy\".\nReturn its tight bounding box [x1, y1, x2, y2]. The image is 500x333 pixels; give all coordinates as integer pixel coordinates in that frame.\n\nThink it through, then end your reply with a single JSON object inside a ```json code block with exactly these keys: {\"bbox\": [x1, y1, x2, y2]}",
+ "content": "```json\n{\"bbox\": [343, 123, 461, 278]}\n```",
+ "reasoning": "I need analyze image dimensions 500x333 and sitting guy. I'll output tight bbox. Should identify man on right in white t-shirt sitting chair. Should have bounding box accurate including visible body, head arms perhaps laptop obscures lower. Should think pixel coords. Image: standing guy left. Sitting guy right x342? to464? y123? to294? Should tight object bounding box person. I'll inspect mentally visual.\n\nImage 500x333. Sitting guy head around x392-445 y124-186. Torso white from ~363 y175 to457 y257. Left arm (image left) extends x345 y199 to367 y243? Perhaps sitting guy entire visible: head x395 y123 to445 y190; right arm on image right x429 y224 to460 y273? Chair behind. Laptop foreground starts around x352 y242 and extends 465 y330. Person's right forearm? I'll parse.\n\nShould have precise bbox likely [342, 123, 461, 283] or [343,123,459,275]. Should derive. Right seated guy wears glasses smiling. Top hair at (419,123) perhaps hair leftmost x404 y126, rightmost x445 y137. Face x396 y140 to435 y185. Neck to418 y192. White t shirt left shoulder x374 y181 and left sleeve x359 y206, right shoulder x439 y185, sleeve to457 y224. Left arm? At x348 y217, y239; hand near laptop? Body x373-452 y257. Right arm dark from x433 y231 to453 y263, then perhaps forearm to430 y275 behind laptop. Chair back dark x444 y160 to477 y248. Should not include chair. There is white/gray arm at right of laptop? I'll think actual view: The right guy is at desk behind Apple laptop. He is sitting on chair with right arm (image right) resting on chair/desk. The seated man leftmost body may be x344 y227 hand.\n\nPerhaps use bounding box annotation standard: sitting guy [341, 124, 462, 278]. Make sure. User requests single object referred. Usually visual grounding tasks expect bbox approximate. I should just respond JSON no explanation. But need optimize.\n\nI'll inspect given image in detail by conceptual coordinate grid. Top door vertical x280-351. Guy's head at right of door. At y125 hair begins x417, extends x433? There's dark vertical object behind at x418 y122 perhaps hair? The seated head top around x417 y124, left edge x405 y129, right edge x442 y130. Hair shape x445 y141. Glasses at x393? Nose perhaps x400. His face turned left. Leftmost face at393 y151. Ear right at438 y157. Chin at420 y181. Shoulder right at444 y187. White t-shirt bottom visible x400 y256. Left upper arm x358 y192? Person's left hand on desk x345 y235.\n\nPotential bbox including arm resting far right x464 y280? There is dark chair arm diagonal from 454,254 to477,269 perhaps not person. Seated guy arm visible medium gray (image grayscale) from x431 y237 to452 y251, then x449 y262 and x428 y270. Rightmost t-shirt x457 y214. Leftmost is left hand x342 y238. So bbox x342 y123 x459 y275.\n\nQuestion likely generated from RefCOCO or similar. Image is \"two guys in room with computers\" and sitting guy target bounding box. Annotations usually bbox whole visible person. I'll output one. I'll determine bottom. White shirt at y253 meets dark pants? Laptop left top at350,241 and screen diagonal to367,331. At x355 y244 man's left forearm/hand visible behind. Torso bottom edge at444 y255. Arm bottom near x434 y273. If laptop occludes rest, bbox bottom y280. There is a light area at x456 y273 behind laptop, likely arm? Should map visible shapes:\nLaptop on right: Apple logo around406,298. Screen back polygon corners maybe356,237; 440,257; 467,331; 376,331. The guy behind at x350-458 y124-275. His right arm seems dark diagonal from453,230 down to454,249 and then to427,268; visible until screen edge maybe437,262. So bottom y268. Left hand visible x343 y230-246. Chair at x455-480. So [342,123,460,275] fine.\n\nPerhaps sitting guy bbox x344 y124 x459 y280. Should have exact integer. I can settle [343, 123, 461, 278].\n\nI'll not overthink. Output code block exactly JSON.",
+ "finish_reason": "stop",
+ "usage": {
+  "completion_tokens": 1040,
+  "prompt_tokens": 403,
+  "total_tokens": 1443,
+  "completion_tokens_details": {
+   "accepted_prediction_tokens": null,
+   "audio_tokens": null,
+   "reasoning_tokens": 1008,
+   "rejected_prediction_tokens": null
+  },
+  "prompt_tokens_details": {
+   "audio_tokens": null,
+   "cached_tokens": 0,
+   "created_cache_tokens": 0,
+   "multimodal_tokens": {
+    "image": 224
+   }
+  }
+ },
+ "latency_s": 29.5
+}

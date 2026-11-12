@@ -1,0 +1,295 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (@media (prefers-color-scheme: dark));
+
+/* Design tokens from the design system: white editorial canvas, near-black pill CTAs,
+   deep-green feature bands, soft-stone cards, coral reserved for category chips. Flat, no shadows. */
+:root {
+  --background: #ffffff;
+  --foreground: #212121;
+  --card: #ffffff;
+  --card-foreground: #212121;
+  --stone: #eeece7;
+  --muted: #f5f4f1;
+  --muted-foreground: #616161;
+  --subtle: #93939f;
+  --border: #e5e7eb;
+  --hairline: #d9d9dd;
+  --input: #d9d9dd;
+  --ring: #4c6ee6;
+  --primary: #17171c;
+  --primary-foreground: #ffffff;
+  --band: #003c33;
+  --band-foreground: #ffffff;
+  --navy: #071829;
+  --accent: #ff7759; /* coral: fills, borders, markers */
+  --accent-ink: #b8401f; /* coral text that passes contrast on white */
+  --accent-soft: #fff1ec;
+  --link: #1863dc;
+  --positive: #0f6b57;
+  --positive-soft: #edfce9;
+  --negative: #b30000;
+  --negative-soft: #fdeeee;
+  --warning: #8a5a00;
+  --warning-soft: #fdf4dc;
+  --paper: #faf9f6;
+  /* Frosted white glass (dialogs), and the fill for controls sitting on it. */
+  --glass: rgb(255 255 255 / 0.72);
+  --glass-border: rgb(255 255 255 / 0.95);
+  --glass-edge: rgb(23 23 28 / 0.1);
+  --glass-shine: rgb(255 255 255 / 1);
+  --glass-fill: rgb(255 255 255 / 0.6);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #17171c;
+    --foreground: #ffffff;
+    --card: #1f1f25;
+    --card-foreground: #ffffff;
+    --stone: #26262c;
+    --muted: #24242a;
+    --muted-foreground: #b6b6bf;
+    --subtle: #91919c;
+    --border: #2e2e36;
+    --hairline: #3a3a43;
+    --input: #3a3a43;
+    --ring: #7d95f0;
+    --primary: #ffffff;
+    --primary-foreground: #17171c;
+    --band: #003c33;
+    --band-foreground: #ffffff;
+    --navy: #071829;
+    --accent: #ff8a70;
+    --accent-ink: #ff9d86;
+    --accent-soft: #3a2420;
+    --link: #7aa6f5;
+    --positive: #5fd3a8;
+    --positive-soft: #10302a;
+    --negative: #ff7a7a;
+    --negative-soft: #3a1c1c;
+    --warning: #f2c46d;
+    --warning-soft: #33290f;
+    --paper: #1f1f25;
+    --glass: rgb(255 255 255 / 0.1);
+    --glass-border: rgb(255 255 255 / 0.26);
+    --glass-edge: rgb(0 0 0 / 0.45);
+    --glass-shine: rgb(255 255 255 / 0.4);
+    --glass-fill: rgb(255 255 255 / 0.07);
+  }
+}
+
+/* Always-dark scope for the landing page: pure black canvas in both themes. */
+.theme-ink {
+  color-scheme: dark;
+  --background: #000000;
+  --foreground: #f5f5f4;
+  --card: #131316;
+  --card-foreground: #f5f5f4;
+  --stone: #1a1a1e;
+  --muted: #1f1f24;
+  --muted-foreground: #a1a1aa;
+  --subtle: #8a8a96;
+  --border: #26262c;
+  --hairline: #2e2e35;
+  --input: #3a3a43;
+  --ring: #7d95f0;
+  --primary: #ffffff;
+  --primary-foreground: #17171c;
+  --accent: #ff8a70;
+  --accent-ink: #ff9d86;
+  --accent-soft: #3a2420;
+  --link: #7aa6f5;
+  --positive: #5fd3a8;
+  --positive-soft: #10302a;
+  --negative: #ff7a7a;
+  --negative-soft: #3a1c1c;
+  --warning: #f2c46d;
+  --warning-soft: #33290f;
+  --paper: #1f1f25;
+  --glass: rgb(255 255 255 / 0.08);
+  --glass-border: rgb(255 255 255 / 0.18);
+  --glass-edge: rgb(0 0 0 / 0.45);
+  --glass-shine: rgb(255 255 255 / 0.3);
+  --glass-fill: rgb(255 255 255 / 0.07);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-stone: var(--stone);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-subtle: var(--subtle);
+  --color-border: var(--border);
+  --color-hairline: var(--hairline);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-band: var(--band);
+  --color-band-foreground: var(--band-foreground);
+  --color-navy: var(--navy);
+  --color-accent: var(--accent);
+  --color-accent-ink: var(--accent-ink);
+  --color-accent-soft: var(--accent-soft);
+  --color-link: var(--link);
+  --color-positive: var(--positive);
+  --color-positive-soft: var(--positive-soft);
+  --color-negative: var(--negative);
+  --color-negative-soft: var(--negative-soft);
+  --color-warning: var(--warning);
+  --color-warning-soft: var(--warning-soft);
+  --color-paper: var(--paper);
+  --color-glass-border: var(--glass-border);
+  --color-glass-fill: var(--glass-fill);
+  --font-sans: var(--font-geist);
+  --font-display: var(--font-geist);
+  --font-mono: var(--font-mono);
+  --radius-xs: 4px;
+  --radius-sm: 8px;
+  --radius-md: 16px;
+  --radius-lg: 22px;
+  --radius-xl: 30px;
+  --radius-pill: 32px;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  html {
+    -webkit-tap-highlight-color: transparent;
+  }
+  /* Dark mode: stone surfaces read as raised panels on black (hairline edge, faint top light). */
+  @media (prefers-color-scheme: dark) {
+    .bg-stone {
+      box-shadow:
+        inset 0 0 0 1px rgb(255 255 255 / 0.07),
+        inset 0 1px 0 rgb(255 255 255 / 0.06);
+    }
+  }
+  /* Native controls and scrollbars follow the theme (no white bars on dark pages). */
+  :root {
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      color-scheme: dark;
+    }
+  }
+  /* Thin, quiet scrollbars everywhere: the standard properties, plus the WebKit fallback. */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: color-mix(in srgb, var(--foreground) 22%, transparent) transparent;
+  }
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    border: 2px solid transparent;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--foreground) 22%, transparent) padding-box;
+  }
+  ::-webkit-scrollbar-button {
+    display: none;
+  }
+  body {
+    @apply bg-background text-foreground antialiased;
+  }
+  /* Display type, same as the landing page: semibold, tight leading, strong negative tracking. */
+  h1,
+  h2,
+  h3 {
+    @apply font-display font-semibold;
+    letter-spacing: -0.045em;
+  }
+  /* Big numbers and titles that aren't headings get the same weight and tracking. */
+  .font-display {
+    font-weight: 600;
+    letter-spacing: -0.04em;
+  }
+  input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+  }
+}
+
+@utility tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Uppercase mono system label ("mono-label" in the design system). */
+@utility eyebrow {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 1.4;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* Frosted glass panel: translucent fill, heavy blur, a light top edge and a soft drop.
+   The one place the flat system allows depth, so the panel lifts off whatever is behind it. */
+@utility glass {
+  background-color: var(--glass);
+  -webkit-backdrop-filter: blur(28px) saturate(170%);
+  backdrop-filter: blur(28px) saturate(170%);
+  border: 1px solid var(--glass-border);
+  box-shadow:
+    inset 0 1px 0 var(--glass-shine),
+    inset 0 0 0 1px rgb(255 255 255 / 0.06),
+    0 0 0 1px var(--glass-edge),
+    0 24px 60px -12px rgb(0 0 0 / 0.28);
+}
+
+/* Raised glass card for dark pages: faint white fill, hairline border, top highlight, deep soft shadow. */
+@utility glass-card {
+  background: linear-gradient(180deg, rgb(255 255 255 / 0.075), rgb(255 255 255 / 0.025));
+  -webkit-backdrop-filter: blur(24px) saturate(150%);
+  backdrop-filter: blur(24px) saturate(150%);
+  border: 1px solid rgb(255 255 255 / 0.1);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.1),
+    0 1px 2px rgb(0 0 0 / 0.4),
+    0 24px 60px -24px rgb(0 0 0 / 0.7);
+}
+
+/* Scrolls without showing a scrollbar (dialogs, where the bar fights the rounded panel). */
+@utility no-scrollbar {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* Space for the mobile tab bar plus the iPhone home indicator. */
+@utility pb-tabbar {
+  padding-bottom: calc(5.5rem + env(safe-area-inset-bottom));
+}
+@utility bottom-tabbar {
+  bottom: calc(4.75rem + env(safe-area-inset-bottom));
+}
+
+/* Zig-zag bottom edge for receipt cards. */
+@utility receipt-edge {
+  mask: conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) 50% / 16px 100%;
+}
+
+@keyframes scan {
+  0%,
+  100% {
+    top: 0%;
+  }
+  50% {
+    top: calc(100% - 3px);
+  }
+}
+.animate-scan-line {
+  animation: scan 2.2s ease-in-out infinite;
+}

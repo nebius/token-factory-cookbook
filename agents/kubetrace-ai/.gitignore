@@ -1,0 +1,19 @@
+.env
+!.env.example
+.secrets/
+artifacts/*
+!artifacts/examples/
+__pycache__/
+*.pyc
+.venv/
+.pytest_cache/
+.ruff_cache/
+node_modules/
+apps/web/dist/
+apps/web/test-results/
+apps/web/playwright-report/
+apps/web/demo-output/
+demo/*.mp4
+
+# Generated TypeScript build cache.
+*.tsbuildinfo

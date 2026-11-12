@@ -1,0 +1,12 @@
+{
+  "name": "nebius-realtime-webcam",
+  "version": "1.0.0",
+  "description": "Real-time webcam understanding with Nebius Token Factory vision models.",
+  "type": "module",
+  "engines": { "node": ">=22.9" },
+  "scripts": {
+    "start": "node --env-file-if-exists=.env server.js",
+    "models": "node --env-file-if-exists=.env scripts/list-vision-models.js"
+  },
+  "license": "MIT"
+}

@@ -1,0 +1,4 @@
+aisuite==0.1.14
+docstring-parser==0.15
+openai>=2.20,<3
+python-dotenv>=1,<2

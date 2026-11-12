@@ -1,0 +1,237 @@
+{
+ "report_version": 1,
+ "generated_at": "2026-10-16T13:24:55Z",
+ "run_id": "20261016-153032-873662",
+ "scenario_id": "selector-mismatch",
+ "provenance": "local-live",
+ "provenance_label": "Live run on a local kind cluster",
+ "replay_of": null,
+ "provider": "nebius-token-factory",
+ "model": "meta-models/muse-spark-open",
+ "is_fixture": false,
+ "repo_commit": "uncommitted-dirty",
+ "cluster": {
+  "kind": "kind",
+  "context": "[hidden]",
+  "server": "[hidden]",
+  "kubernetes_version": "v1.27.3",
+  "civo_cluster": null,
+  "capacity": {
+   "nodes": 1,
+   "kubelet_version": "v1.27.3",
+   "allocatable": [
+    {
+     "name": "kubetrace-control-plane",
+     "cpu": "4",
+     "memory": "16356580Ki"
+    }
+   ]
+  },
+  "namespace": "kubetrace-demo"
+ },
+ "settings": {
+  "prompt_version": "2026-10-16.1",
+  "tool_schema_version": "2026-10-16.1",
+  "generation_settings": {
+   "max_tokens": 2048,
+   "temperature": 0.2
+  },
+  "limits": {
+   "max_steps": 30,
+   "max_seconds": 600,
+   "max_tokens": 400000,
+   "max_output_chars": 6000,
+   "verification_retries": 1
+  },
+  "policy_mode": "auto",
+  "test_runner": "docker",
+  "fixture_label": null
+ },
+ "policy_mode": "auto",
+ "timing": {
+  "created_at": 1792144832.703181,
+  "started_at": 1792144885.016337,
+  "ended_at": 1792144992.824648,
+  "agent_elapsed_s": 107.67
+ },
+ "final_state": "resolved",
+ "reason": "independent verification passed",
+ "first_attempt_success": true,
+ "eventual_success": true,
+ "baseline": [
+  {
+   "name": "storefront and probe rolled out",
+   "ok": true,
+   "detail": "Deployments available"
+  },
+  {
+   "name": "checkout [{\"sku\": \"MUG-01\", \"qty\": 2}]",
+   "ok": true,
+   "detail": "HTTP 200, total 31.92, expected 31.92"
+  },
+  {
+   "name": "checkout [{\"sku\": \"CAP-03\", \"qty\": 12}]",
+   "ok": true,
+   "detail": "HTTP 200, total 227.77, expected 227.77"
+  },
+  {
+   "name": "checkout [{\"sku\": \"TEE-02\", \"qty\": 1}, {\"sku\": \"STK-04\", \"qty\": 3}] SAVE10",
+   "ok": true,
+   "detail": "HTTP 200, total 41.72, expected 41.72"
+  }
+ ],
+ "issue": {
+  "incident": "Storefront checkout is down",
+  "symptom": "Checkout requests through the Service fail; the Service has no endpoints while Pods are healthy.",
+  "fault_proof": [
+   {
+    "name": "no ready endpoints",
+    "ok": true,
+    "detail": "0 endpoints"
+   },
+   {
+    "name": "request through the Service fails",
+    "ok": true,
+    "detail": "{\"ok\": false, \"error\": \"URLError: [Errno 111] Connection refused\", \"latency_ms\": 0}"
+   }
+  ]
+ },
+ "observations": [
+  {
+   "text": "Service selector mismatch causes all requests to fail: Service selects storefront-api but Pods are labeled storefront, so endpoints empty and http_check gets connection refused. Pods themselves handle checkout correctly per logs.",
+   "evidence": [
+    "service_endpoints pods_matching_selector=[] endpoints=[]",
+    "get_resource Service selector storefront-api",
+    "get_resource Deployment template labels storefront",
+    "http_check Connection refused",
+    "get_logs checkout ok total=31.92"
+   ]
+  }
+ ],
+ "hypotheses": [],
+ "agent_conclusion": {
+  "outcome": "resolved",
+  "root_cause": "Service selector mismatch: Service selected app.kubernetes.io/name=storefront-api but Pods are labeled storefront, so EndpointSlices were empty and every request failed with connection refused.",
+  "summary": "Fixed k8s/service.yaml selector from storefront-api to storefront and applied it. Verified endpoints now contain both Pods ([ip], [ip]) and http_check through Service succeeds for /api/catalog, /healthz, and POST /api/checkout (total 31.92).",
+  "evidence": [
+   "service_endpoints before: pods_matching_selector=[] endpoints=[]",
+   "get_resource Service selector storefront-api vs Deployment labels storefront",
+   "http_check before Connection refused",
+   "apply_manifest change_id 1ae4acd200 allowed",
+   "service_endpoints after 2 ready endpoints",
+   "http_check /api/checkout 200 total 31.92"
+  ]
+ },
+ "attempted_changes": [
+  {
+   "id": "1ae4acd200",
+   "kind": "Service",
+   "name": "storefront",
+   "source": "apply_manifest",
+   "reason": "Apply corrected Service selector so endpoints populate and checkout recovers",
+   "diff": "--- live/service/storefront\n+++ proposed/service/storefront\n@@ -20,6 +20,6 @@\n     protocol: TCP\n     targetPort: http\n   selector:\n-    app.kubernetes.io/name: storefront-api\n+    app.kubernetes.io/name: storefront\n   sessionAffinity: None\n   type: ClusterIP\n",
+   "decision": {
+    "allowed": true,
+    "reasons": [],
+    "changed_paths": [
+     "spec.selector.app.kubernetes.io/name"
+    ]
+   },
+   "status": "applied",
+   "error": "",
+   "duration_s": 0.02
+  }
+ ],
+ "source_diff": "diff --git a/k8s/service.yaml b/k8s/service.yaml\nindex 8f280b5..ea35d4b 100644\n--- a/k8s/service.yaml\n+++ b/k8s/service.yaml\n@@ -7,7 +7,7 @@ metadata:\n     kubetrace.ai/experiment: \"true\"\n spec:\n   selector:\n-    app.kubernetes.io/name: storefront-api\n+    app.kubernetes.io/name: storefront\n   ports:\n     - name: http\n       port: 80\n",
+ "tests": [
+  {
+   "suite": "unit",
+   "command": "python -m pytest -q -p no:cacheprovider tests",
+   "exit_code": 0,
+   "passed": true,
+   "duration_s": 0.46,
+   "isolation": "docker: --network none, read-only source, no credentials, no Docker socket",
+   "output": ".............                                                            [100%]\n13 passed in 0.02s\n",
+   "commit_of_tested_tree": "0d920f4f25086d41639b628ee8a6e9aaa8183367"
+  }
+ ],
+ "builds": [],
+ "rollouts": [],
+ "verifications": [
+  {
+   "attempt": 1,
+   "ok": true,
+   "checks": [
+    {
+     "name": "selector matches the storefront Pods",
+     "ok": true,
+     "detail": "selector {'app.kubernetes.io/name': 'storefront'}, pod labels {'app.kubernetes.io/name': 'storefront', 'kubetrace.ai/experiment': 'true'}"
+    },
+    {
+     "name": "rollout complete",
+     "ok": true,
+     "detail": "all replicas updated and ready"
+    },
+    {
+     "name": "pods ready and stable",
+     "ok": true,
+     "detail": "2/2 Ready; restarts 0\u21920 over 3 s"
+    },
+    {
+     "name": "service endpoints",
+     "ok": true,
+     "detail": "2 ready endpoints"
+    },
+    {
+     "name": "checkout [{\"sku\": \"MUG-01\", \"qty\": 2}]",
+     "ok": true,
+     "detail": "HTTP 200, total 31.92, expected 31.92"
+    },
+    {
+     "name": "checkout [{\"sku\": \"CAP-03\", \"qty\": 12}]",
+     "ok": true,
+     "detail": "HTTP 200, total 227.77, expected 227.77"
+    },
+    {
+     "name": "checkout [{\"sku\": \"TEE-02\", \"qty\": 1}, {\"sku\": \"STK-04\", \"qty\": 3}] SAVE10",
+     "ok": true,
+     "detail": "HTTP 200, total 41.72, expected 41.72"
+    },
+    {
+     "name": "source manifest matches the live selector",
+     "ok": true,
+     "detail": "manifest {'app.kubernetes.io/name': 'storefront'}"
+    }
+   ],
+   "agent_outcome": "resolved"
+  }
+ ],
+ "drift": [],
+ "metrics": {
+  "model_calls": 14,
+  "model_latency_s": 103.15,
+  "prompt_tokens": 243279,
+  "completion_tokens": 6065,
+  "total_tokens": 249344,
+  "usage_reported_calls": 14,
+  "tool_calls": 38,
+  "tool_time_s": 1.2,
+  "tool_errors": 0,
+  "rejected_actions": 0,
+  "model_retries": 0,
+  "verification_attempts": 1,
+  "nudges": 0,
+  "token_usage": "reported by provider"
+ },
+ "cost": {
+  "usd": 0.3299,
+  "label": "estimate",
+  "rate_source": "Nebius Token Factory GET /v1/models?verbose=true (pricing.prompt / pricing.completion)",
+  "rate_date": "2026-10-16",
+  "input_per_m": 1.25,
+  "output_per_m": 4.25,
+  "note": "Cached-token discounts, if any, are not applied."
+ },
+ "errors": [],
+ "limitations": []
+}

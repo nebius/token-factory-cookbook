@@ -20,7 +20,7 @@ Set both required values in `.env`:
 
 ```dotenv
 NEBIUS_API_KEY=your_nebius_api_key_here
-NEBIUS_MODEL=moonshotai/Kimi-K2.7-Code
+NEBIUS_MODEL=openai/gpt-oss-120b
 ```
 
 The suggested model was current and advertised function calling when this example was updated on August 13, 2026. `NEBIUS_MODEL` is required so the example does not silently keep using that ID after the public catalog changes.

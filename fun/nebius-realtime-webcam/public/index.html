@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Realtime Webcam · Nebius Token Factory</title>
+  <meta name="description" content="Frames from your camera, described by a vision model on Nebius Token Factory, streaming token by token.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%23fafaf5'/><rect x='2' y='2' width='28' height='28' fill='none' stroke='%233553ff' stroke-width='1.2'/><circle cx='16' cy='16' r='6' fill='none' stroke='%233553ff' stroke-width='2'/></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=VT323&family=Source+Serif+4:ital,opsz,wght@0,8..60,400..700;1,8..60,400..600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="logo" href="/">
+        <span class="logo-icon" aria-hidden="true"></span> Nebius / Realtime Vision
+      </a>
+      <div class="header-tools">
+        <span class="header-status" id="headerStatus">idle</span>
+        <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle theme">N</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="app">
+
+    <section class="masthead">
+      <h1 class="masthead-title">Realtime Webcam</h1>
+      <p class="masthead-tagline">Your camera, described live by <b>DeepSeek V4.1 Flash</b>.</p>
+      <span class="masthead-meta">thinking off &middot; connection warm</span>
+    </section>
+
+    <section class="stage">
+
+      <figure class="figure-card">
+        <div class="figure-head">
+          <span class="left">FIG_001 &middot; live capture</span>
+          <span class="right" id="captureSpec">512 px &middot; q 0.7</span>
+        </div>
+
+        <div class="figure-body">
+          <div class="plate">
+            <video id="video" autoplay playsinline muted></video>
+            <canvas id="canvas" hidden></canvas>
+            <span class="tick tl" aria-hidden="true"></span>
+            <span class="tick tr" aria-hidden="true"></span>
+            <span class="tick bl" aria-hidden="true"></span>
+            <span class="tick br" aria-hidden="true"></span>
+            <div id="badge" class="badge idle">idle</div>
+          </div>
+        </div>
+
+        <figcaption class="figure-foot">
+          <div class="figure-foot-head">
+            <span>Response</span>
+            <span class="right stats" id="stats">awaiting first frame</span>
+          </div>
+          <div id="response" class="response">Grant camera access to begin.</div>
+          <p id="thinking" class="thinking" hidden></p>
+
+          <div class="meters">
+            <div class="meter">
+              <span>First token</span>
+              <span class="meter-bar" id="ttftBar" style="--bar-scale: 0;" aria-hidden="true"></span>
+              <span class="meter-value" id="ttftValue">&ndash;</span>
+            </div>
+            <div class="meter">
+              <span>Total</span>
+              <span class="meter-bar" id="totalBar" style="--bar-scale: 0;" aria-hidden="true"></span>
+              <span class="meter-value" id="totalValue">&ndash;</span>
+            </div>
+          </div>
+        </figcaption>
+      </figure>
+
+      <aside class="panel">
+        <div class="panel-head">Controls</div>
+
+        <div class="panel-body">
+          <label class="field field--grow">
+            <span>Prompt</span>
+            <textarea id="prompt">What do you see? Answer in one short sentence.</textarea>
+          </label>
+
+          <div class="presets">
+            <button type="button" data-prompt="What do you see? Answer in one short sentence.">Describe</button>
+            <button type="button" data-prompt="List every distinct object you can see as a JSON array of strings. Output only JSON.">Objects</button>
+            <button type="button" data-prompt="Read all visible text verbatim. If there is none, reply exactly: (no text)">Read text</button>
+            <button type="button" data-prompt="How many people are in frame, and what is each one doing? Be brief.">People</button>
+          </div>
+
+          <div class="row">
+            <label class="field">
+              <span>Interval</span>
+              <select id="interval">
+                <option value="0">Max rate</option>
+                <option value="500">500 ms</option>
+                <option value="1000" selected>1 s</option>
+                <option value="2000">2 s</option>
+                <option value="5000">5 s</option>
+              </select>
+            </label>
+            <label class="field">
+              <span>Max tokens</span>
+              <input id="maxTokens" type="number" min="16" max="1024" step="16" value="128">
+            </label>
+          </div>
+
+          <div class="row">
+            <label class="field">
+              <span>Frame width</span>
+              <select id="frameWidth">
+                <option value="384">384 px</option>
+                <option value="512" selected>512 px</option>
+                <option value="768">768 px</option>
+                <option value="1024">1024 px</option>
+              </select>
+            </label>
+            <label class="field">
+              <span>JPEG quality</span>
+              <select id="quality">
+                <option value="0.5">0.5</option>
+                <option value="0.7" selected>0.7</option>
+                <option value="0.9">0.9</option>
+              </select>
+            </label>
+          </div>
+
+          <button id="toggle" class="btn" type="button" disabled>Start</button>
+          <p id="modelNote" class="note" hidden></p>
+        </div>
+
+        <div class="panel-model">
+          <span class="panel-model-label">Model</span>
+          <code id="modelName">loading&hellip;</code>
+          <span class="panel-model-note">Powered by Nebius Token Factory</span>
+        </div>
+
+        <div class="session">
+          <div class="session-cell"><span>Frames</span><b id="frameCount">0</b></div>
+          <div class="session-cell"><span>Tokens</span><b id="tokenCount">0</b></div>
+          <div class="session-cell"><span>Errors</span><b id="errorCount">0</b></div>
+          <div class="session-cell"><span>Median TTFT</span><b id="medianTtft">&ndash;</b></div>
+        </div>
+      </aside>
+
+    </section>
+
+    <section class="log-wrap">
+      <div class="log-head">
+        <h2 class="eyebrow">FIG_002 &middot; history</h2>
+        <span class="log-sub">newest first &middot; repeats collapsed</span>
+      </div>
+      <div class="log-empty" id="logEmpty">No frames yet. Press start.</div>
+      <ol id="log" class="log"></ol>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>&copy; 2026 &middot; MIT &middot; no build step</span>
+      <span>After <a href="https://github.com/ngxson/smolvlm-realtime-webcam" target="_blank" rel="noopener">ngxson/smolvlm-realtime-webcam</a></span>
+    </div>
+  </footer>
+
+  <script src="/app.js" type="module"></script>
+</body>
+</html>
