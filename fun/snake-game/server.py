@@ -71,9 +71,19 @@ class NoRedirectHandler(HTTPRedirectHandler):
     def redirect_request(self, req, fp, code, msg, headers, newurl):
         return None
 
+    def http_error_302(self, req, fp, code, msg, headers):
+        # Reject before urllib parses Location/URI: even malformed redirect
+        # targets must produce a controlled error and close the response.
+        raise HTTPError(req.full_url, code, "Upstream redirect blocked", headers, fp)
+
+    http_error_301 = http_error_303 = http_error_307 = http_error_308 = http_error_302
+
 
 class SnakeGameServer(ThreadingHTTPServer):
     daemon_threads = True
+    # Older Python versions default to only five pending connections; benchmark
+    # bursts can exceed that before their handler threads are started.
+    request_queue_size = 128
 
     def __init__(self, address: tuple[str, int], api_key: str, base_url: str):
         self.api_key = api_key

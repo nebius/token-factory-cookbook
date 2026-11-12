@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 import threading
 import unittest
+from concurrent.futures import ThreadPoolExecutor
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from typing import ClassVar
@@ -36,8 +37,16 @@ class RecordingUpstreamHandler(BaseHTTPRequestHandler):
         redirect_status = getattr(self.server, "redirect_status", None)
         if redirect_status is not None:
             self.send_response(redirect_status)
-            self.send_header("Location", self.server.redirect_location)
+            headers = getattr(self.server, "redirect_headers", None)
+            if headers is None:
+                headers = [("Location", self.server.redirect_location)]
+            for name, value in headers:
+                self.send_header(name, value)
+            self.send_header("Content-Type", "text/html")
+            self.send_header("Set-Cookie", "provider-session=private")
+            self.send_header("Refresh", "0;url=/redirect-target")
             self.end_headers()
+            self.wfile.write(b"private-redirect-body")
             return
         body = json.dumps(response).encode()
         self.send_response(200)
@@ -50,12 +59,17 @@ class RecordingUpstreamHandler(BaseHTTPRequestHandler):
         pass
 
 
+class RecordingHTTPServer(ThreadingHTTPServer):
+    # Keep the fake upstream's accept queue out of the proxy concurrency test.
+    request_queue_size = 128
+
+
 class SnakeGameProxyTest(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
         RecordingUpstreamHandler.requests.clear()
-        cls.upstream = ThreadingHTTPServer(("127.0.0.1", 0), RecordingUpstreamHandler)
-        cls.destination = ThreadingHTTPServer(
+        cls.upstream = RecordingHTTPServer(("127.0.0.1", 0), RecordingUpstreamHandler)
+        cls.destination = RecordingHTTPServer(
             ("127.0.0.1", 0), RecordingUpstreamHandler
         )
         upstream_port = cls.upstream.server_address[1]
@@ -87,10 +101,18 @@ class SnakeGameProxyTest(unittest.TestCase):
 
     def setUp(self) -> None:
         self.upstream.redirect_status = None
+        self.upstream.redirect_headers = None
 
-    def _assert_redirect_rejected(self, destination: str) -> None:
+    def _assert_redirect_rejected(
+        self,
+        destination: str = "/redirect-target",
+        *,
+        headers: list[tuple[str, str]] | None = None,
+        statuses: tuple[int, ...] = (301, 302, 303, 307, 308),
+    ) -> None:
         self.upstream.redirect_location = destination
-        for status in (301, 302, 303, 307, 308):
+        self.upstream.redirect_headers = headers
+        for status in statuses:
             self.upstream.redirect_status = status
             for route, data in (("models", None), ("chat/completions", b"{}")):
                 with self.subTest(status=status, route=route):
@@ -105,8 +127,11 @@ class SnakeGameProxyTest(unittest.TestCase):
                             response.read()
                     with raised.exception as response:
                         self.assertEqual(response.code, 502)
-                        self.assertNotIn("Location", response.headers)
-                        self.assertIn("redirect", json.load(response)["error"]["message"])
+                        for header in ("Location", "URI", "Refresh", "Set-Cookie"):
+                            self.assertNotIn(header, response.headers)
+                        body = response.read()
+                        self.assertNotIn(b"private-redirect-body", body)
+                        self.assertIn("redirect", json.loads(body)["error"]["message"])
                     # Only the configured upstream receives a request; no hop is
                     # followed, even if it would retain the same origin.
                     self.assertEqual(len(RecordingUpstreamHandler.requests), 1)
@@ -122,6 +147,44 @@ class SnakeGameProxyTest(unittest.TestCase):
     def test_redirects_do_not_bypass_the_route_allowlist(self) -> None:
         port = self.upstream.server_address[1]
         self._assert_redirect_rejected(f"http://127.0.0.1:{port}/redirect-target")
+
+    def test_redirect_headers_are_rejected_without_parsing(self) -> None:
+        cases = (
+            [],
+            [("Location", "")],
+            [("Location", "http://[")],
+            [("Location", "http://[not-an-ip]/")],
+            [("URI", "http://[")],
+            [("URI", "/redirect-target")],
+            [("Location", "http://["), ("Location", "/redirect-target")],
+            [("Location", "/redirect-target"), ("Location", "http://[")],
+            [("Location", "../redirect-target")],
+            [("Location", "file:///not-an-api")],
+            [("Location", "data:text/plain,not-an-api")],
+            [("Location", "http://127.0.0.1:invalid-port/")],
+        )
+        for headers in cases:
+            with self.subTest(headers=headers):
+                self._assert_redirect_rejected(headers=headers)
+
+    def test_other_3xx_statuses_are_rejected(self) -> None:
+        self._assert_redirect_rejected(statuses=(300, 304, 305, 306, 309, 399))
+
+    def test_concurrent_model_requests_preserve_authorization(self) -> None:
+        RecordingUpstreamHandler.requests.clear()
+
+        def fetch_model(_index):
+            with urlopen(self.proxy_url + "/api/models", timeout=5) as response:
+                return json.load(response)["data"][0]["id"]
+
+        with ThreadPoolExecutor(max_workers=16) as executor:
+            results = list(executor.map(fetch_model, range(32)))
+        self.assertEqual(results, ["test/model"] * 32)
+        self.assertEqual(len(RecordingUpstreamHandler.requests), 32)
+        self.assertTrue(all(
+            request["authorization"] == "Bearer server-only-secret"
+            for request in RecordingUpstreamHandler.requests
+        ))
 
     def test_models_route_uses_server_side_authorization(self) -> None:
         request = Request(
