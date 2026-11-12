@@ -36,3 +36,7 @@ Use the corresponding requirements file for the other notebooks. Keep your API k
 - [Agent examples](../agents/README.md)
 - [Official documentation](https://docs.tokenfactory.nebius.com/)
 - [Official integrations catalog](https://docs.tokenfactory.nebius.com/integrations/overview)
+
+## Stateless Responses example
+
+Use the [stateless Responses recipe](responses/) for independent requests and streamed text with application-owned conversation history.

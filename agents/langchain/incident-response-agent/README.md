@@ -23,3 +23,5 @@ python main.py
 - Typed JSON output for incident systems
 - Audit trail of tools used
 
+
+Set `NEBIUS_MODEL` in `.env` to a current tool-capable model from the [Token Factory catalog](https://tokenfactory.nebius.com/models) before running.

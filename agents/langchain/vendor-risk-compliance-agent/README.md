@@ -23,3 +23,5 @@ python main.py
 - Contract redline suggestions
 - Conditional go-live decision
 
+
+Set `NEBIUS_MODEL` in `.env` to a current tool-capable model from the [Token Factory catalog](https://tokenfactory.nebius.com/models) before running.
