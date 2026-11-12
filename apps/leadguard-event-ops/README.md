@@ -70,11 +70,14 @@ Credential-free checks, with no network and no Token Factory calls:
 uv run python -m unittest discover -s tests -v
 ```
 
-The 19 tests cover:
+The 28 tests cover:
 - every scenario raises its anomaly, and a late sync is not treated as one;
 - the clock tolerance;
 - the tools never return a name or email;
-- bad tool arguments come back as errors rather than exceptions;
+- bad tool arguments come back as errors rather than exceptions, including non-object JSON, malformed JSON, excessive nesting and numeric overflow;
+- the agent can correct a failed tool call and retry, while repeated errors still stop at the round limit;
+- replayed tool arguments remain valid JSON objects, and mixed successful/failed calls keep their matching result IDs;
+- error steps render safely in the UI, including malformed entries already saved in a session;
 - drafts stay drafts;
 - the agent loop, using a fake client: it feeds tool results back by `tool_call_id` and stops at the step limit;
 - Streamlit secrets supply the key and model even when the environment has different values, plus model defaults, fallback selection and invalid configuration.
@@ -85,6 +88,13 @@ A fresh Streamlit launch on November 12, 2026 also verified the native TOML setu
 with no key or model exported in the environment, a temporary `secrets.toml`
 selected `moonshotai/Kimi-K3` and the browser completed the Radar question using
 the configured key. The temporary secrets file was removed after the check.
+
+Authenticated recovery checks on the same date deliberately replaced one tool
+call's arguments with `[]` (Kimi K3 and K3.1 Pro), or an unknown tool's arguments
+with `null` (Kimi K3). Each model received the error, retried a valid check-in
+query and correctly answered 100 checked-in attendees within three model calls.
+Invalid input stays visible in the audit trail; conversation replay uses a valid
+argument object so the API can accept the retry.
 
 ## Limitations and cleanup
 

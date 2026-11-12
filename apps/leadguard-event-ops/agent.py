@@ -50,15 +50,24 @@ def ask(client, model: str, ev: Event, question: str, history: list[dict] | None
         calls = getattr(msg, "tool_calls", None) or []
         if not calls:
             return Answer(text=msg.content or "", model=model, steps=steps)
-        messages.append({"role": "assistant", "content": msg.content or "",
-                         "tool_calls": [{"id": c.id, "type": "function", "function": {"name": c.function.name, "arguments": c.function.arguments or "{}"}} for c in calls]})
+        assistant_calls = []
+        tool_results = []
         for c in calls:
-            out = tools.call(ev, c.function.name, c.function.arguments)
             try:
-                args = json.loads(c.function.arguments or "{}")
-            except json.JSONDecodeError:
+                args = tools.parse_arguments(c.function.arguments)
+                replay_arguments = json.dumps(args, allow_nan=False)
+            except (ValueError, TypeError):
                 args = {"raw": c.function.arguments}
+                # Token Factory requires JSON objects even in assistant history.
+                # Repair only the replay; the tool still receives the bad input.
+                replay_arguments = "{}"
+            assistant_calls.append({"id": c.id, "type": "function", "function": {
+                "name": c.function.name, "arguments": replay_arguments,
+            }})
+            out = tools.call(ev, c.function.name, c.function.arguments)
             steps.append(Step(c.function.name, args, json.loads(out)))
-            messages.append({"role": "tool", "tool_call_id": c.id, "content": out})
+            tool_results.append({"role": "tool", "tool_call_id": c.id, "content": out})
+        messages.append({"role": "assistant", "content": msg.content or "", "tool_calls": assistant_calls})
+        messages.extend(tool_results)
     return Answer(text="I stopped after the maximum number of tool calls. Here is what I gathered so far: see the steps below.",
                   model=model, steps=steps, stopped_early=True)

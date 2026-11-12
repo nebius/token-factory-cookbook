@@ -103,14 +103,28 @@ FUNCS = {"get_checkin_stats": get_checkin_stats, "get_booth_health": get_booth_h
          "list_anomalies": list_anomalies, "draft_sponsor_message": draft_sponsor_message}
 
 
-def call(ev: Event, name: str, arguments: str | dict) -> str:
+def parse_arguments(arguments: str | dict | None) -> dict:
+    """Decode an argument object; missing arguments mean an empty object."""
+    if arguments is None or arguments == "":
+        return {}
+    try:
+        args = json.loads(arguments) if isinstance(arguments, str) else arguments
+        if not isinstance(args, dict):
+            raise TypeError("Tool arguments must be a JSON object.")
+        json.dumps(args, allow_nan=False)
+    except RecursionError as err:
+        raise ValueError("Tool arguments exceed the JSON nesting limit.") from err
+    return args
+
+
+def call(ev: Event, name: str, arguments: str | dict | None) -> str:
     """Run one tool call from the model. Errors go back to the model as data, not exceptions."""
     if name not in FUNCS:
         return json.dumps({"error": f"no tool named {name!r}"})
     try:
-        args = json.loads(arguments or "{}") if isinstance(arguments, str) else dict(arguments or {})
+        args = parse_arguments(arguments)
         allowed = SCHEMAS[[s["function"]["name"] for s in SCHEMAS].index(name)]["function"]["parameters"].get("properties", {})
         args = {k: v for k, v in args.items() if k in allowed}
         return json.dumps(FUNCS[name](ev, **args))
-    except (ValueError, TypeError, json.JSONDecodeError) as err:
+    except (ValueError, TypeError, OverflowError) as err:
         return json.dumps({"error": str(err)})

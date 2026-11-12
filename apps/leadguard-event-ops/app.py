@@ -73,7 +73,8 @@ with left:
         with st.chat_message(turn["role"]):
             st.markdown(turn["content"])
             for step in turn.get("steps", []):
-                with st.expander(f"Tool: {step.tool}({', '.join(f'{k}={v}' for k, v in step.arguments.items())})"):
+                arguments = step.arguments if isinstance(step.arguments, dict) else {"raw": step.arguments}
+                with st.expander(f"Tool: {step.tool}({', '.join(f'{k}={v}' for k, v in arguments.items())})"):
                     st.json(step.result)
     cols = st.columns(len(QUESTIONS))
     preset = next((q for col, q in zip(cols, QUESTIONS) if col.button(q, use_container_width=True)), None)
