@@ -44,7 +44,7 @@ For **Kimi K3.1 Pro**, start with the [Python quickstart](../models/kimi-k3.1-pr
 | --- | --- | --- | --- | --- |
 | Cursor | - | ✅ | ✅ | [instructions](#cursor) |
 | Cline | ✅ | ✅ | ✅ | [instructions](#cline) |
-| Claude Code | - | - | ✅ | [instructions](#claude-code) |
+| Claude Code | - | - | ✅ | [instructions](claude-code/README.md) |
 | Codex | - | - | ✅ | [instructions](#codex) |
 | OpenCode | ✅ | ✅ | ✅ | [instructions](opencode.md) |
 
@@ -67,7 +67,9 @@ Native integration.
 
 ## Claude Code
 
-Integrates using the following proxies:
+See the [Claude Code recipe](claude-code/README.md) for a tested setup through a local LiteLLM proxy: model selection from the live catalog, a launcher script, and a [per-model record](claude-code/RESULTS.md) of what works and what does not.
+
+Other proxies:
 
 - [Claude Codex proxy server](https://github.com/KiranChilledOut/claude-codex-nebius-proxy)
 - [Nebius TF Relay](https://nebius-tf-relay.vercel.app/) — [how to video](https://www.youtube.com/watch?v=u8c_exTe2To)
@@ -90,6 +92,7 @@ These proxies support connecting coding agents to Token Factory.
 
 | Proxy | Supports | Link |
 | --- | --- | --- |
+| LiteLLM (run locally) | Claude Code | [recipe](claude-code/README.md) |
 | Claude Codex proxy server | Claude Code, Codex | [GitHub](https://github.com/KiranChilledOut/claude-codex-nebius-proxy) |
 | Nebius TF Relay | Claude Code, Codex, OpenCode | [Nebius TF Relay](https://nebius-tf-relay.vercel.app/) · [how to video](https://www.youtube.com/watch?v=u8c_exTe2To) |
 

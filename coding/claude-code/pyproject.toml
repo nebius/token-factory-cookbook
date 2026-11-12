@@ -1,0 +1,11 @@
+[project]
+name = "claude-code-token-factory"
+version = "0.1.0"
+description = "Run Claude Code on Nebius Token Factory models through a local LiteLLM proxy"
+requires-python = ">=3.12,<3.14"
+dependencies = [
+    "litellm[proxy]>=1.109.1",
+]
+
+[tool.uv]
+package = false

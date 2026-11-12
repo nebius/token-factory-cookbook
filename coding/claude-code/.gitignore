@@ -1,0 +1,10 @@
+# Secrets
+.env
+
+# Generated from the live catalog by scripts/make_config.py
+litellm_config.yaml
+claude_code.env
+
+# Python
+.venv/
+__pycache__/
