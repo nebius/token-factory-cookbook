@@ -7,14 +7,12 @@ from __future__ import annotations
 
 import pandas as pd
 import streamlit as st
-from dotenv import load_dotenv
 
 import agent
 import event
 import kimi
 import tools
 
-load_dotenv()
 st.set_page_config(page_title="LeadGuard event ops", page_icon="🛡️", layout="wide")
 
 SCENARIOS = {
@@ -83,12 +81,14 @@ with left:
     if question:
         st.session_state.chat.append({"role": "user", "content": question})
         try:
-            client = kimi.get_client()
-            model = st.session_state.get("model") or kimi.pick_model(client)
-            st.session_state.model = model
-            history = [{"role": t["role"], "content": t["content"]} for t in st.session_state.chat[:-1]][-6:]
-            with st.spinner(f"{kimi.label(model)} is investigating…"):
-                ans = agent.ask(client, model, ev, question, history)
+            with kimi.get_client(st.secrets.get("NEBIUS_API_KEY", "")) as client:
+                model = st.session_state.get("model") or kimi.pick_model(
+                    client, st.secrets.get("KIMI_MODEL", kimi.PREFERRED_MODEL)
+                )
+                st.session_state.model = model
+                history = [{"role": t["role"], "content": t["content"]} for t in st.session_state.chat[:-1]][-6:]
+                with st.spinner(f"{kimi.label(model)} is investigating…"):
+                    ans = agent.ask(client, model, ev, question, history)
             st.session_state.chat.append({"role": "assistant", "content": ans.text, "steps": ans.steps})
         except Exception as err:  # show configuration and API problems in the page
             st.session_state.chat.append({"role": "assistant", "content": f"The assistant is unavailable: {err}"})

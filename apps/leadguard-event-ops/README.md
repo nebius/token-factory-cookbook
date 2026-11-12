@@ -38,8 +38,17 @@ flowchart LR
 ```bash
 cd apps/leadguard-event-ops
 uv sync --frozen
-cp env.example .env   # then set NEBIUS_API_KEY in .env
+cp .streamlit/secrets.toml.example .streamlit/secrets.toml
 ```
+
+Set `NEBIUS_API_KEY` in `.streamlit/secrets.toml`. To override the preferred model,
+uncomment and set `KIMI_MODEL` in the same file. Keep both settings at the top level
+(outside any TOML section). The app reads them through `st.secrets` when you ask a
+question; the real secrets file is ignored by Git. Restart the app after changing
+the configuration.
+
+For Streamlit Community Cloud, paste the same TOML into the app's **Secrets**
+settings. See [Streamlit's secrets documentation](https://docs.streamlit.io/develop/concepts/connections/secrets-management).
 
 ## Run
 
@@ -61,22 +70,28 @@ Credential-free checks, with no network and no Token Factory calls:
 uv run python -m unittest discover -s tests -v
 ```
 
-The 12 tests cover:
+The 19 tests cover:
 - every scenario raises its anomaly, and a late sync is not treated as one;
 - the clock tolerance;
 - the tools never return a name or email;
 - bad tool arguments come back as errors rather than exceptions;
 - drafts stay drafts;
-- the agent loop, using a fake client: it feeds tool results back by `tool_call_id` and stops at the step limit.
+- the agent loop, using a fake client: it feeds tool results back by `tool_call_id` and stops at the step limit;
+- Streamlit secrets supply the key and model even when the environment has different values, plus model defaults, fallback selection and invalid configuration.
 
 A live run on Nebius Token Factory with `moonshotai/Kimi-K3.1-Pro` produced the answers quoted above: 13 s and 15 s for the two questions, with 3 and 5 tool calls.
+
+A fresh Streamlit launch on November 12, 2026 also verified the native TOML setup:
+with no key or model exported in the environment, a temporary `secrets.toml`
+selected `moonshotai/Kimi-K3` and the browser completed the Radar question using
+the configured key. The temporary secrets file was removed after the check.
 
 ## Limitations and cleanup
 
 - The event is synthetic and lives in memory. The full LeadGuard keeps the same records in Elasticsearch, serves these tools over MCP, and runs on Kubernetes; see its [repository](https://github.com/shivaylamba/leadguard).
 - Approving a draft only marks it approved. Connect your own email provider before using this with real sponsors.
 - The Streamlit server binds to `localhost` (`.streamlit/config.toml`).
-- To clean up, stop the app with `Ctrl+C`. It creates no cloud resources. Delete `.env` when you're done.
+- To clean up, stop the app with `Ctrl+C`. It creates no cloud resources. Delete `.streamlit/secrets.toml` when you're done.
 
 ## Source and license
 
