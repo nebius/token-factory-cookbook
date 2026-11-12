@@ -1,65 +1,42 @@
-# Run models on Nebius Token Factory using APIs
+[Cookbook](../README.md) / APIs
 
-This guide shows how to run models using various python APIs.
+# API and SDK examples
 
-## References and Acknowledgements
+Call open models on Nebius Token Factory through its OpenAI-compatible API, or connect a framework you already use.
 
-- [API documentation](https://docs.tokenfactory.nebius.com/api-reference/introduction)
-- [Quickstart](https://docs.tokenfactory.nebius.com/quickstart)
+Start with [environment setup](../start-here/setup.md). Each notebook lists its dependencies and model configuration.
 
-## Prerequisites
+| Example | Purpose | Dependencies |
+| --- | --- | --- |
+| [Native API](api_native.ipynb) | Make a direct request with the OpenAI SDK | [requirements.txt](requirements.txt) |
+| [Comparing models](comparing-models/README.md) | Run the same text prompt across models and save answers, time, and token usage | [requirements.txt](comparing-models/requirements.txt) |
+| [LiteLLM](api_litellm.ipynb) | Use Token Factory through LiteLLM | [requirements-litellm.txt](requirements-litellm.txt) |
+| [aisuite](api_aisuite.ipynb) | Call Token Factory through a provider interface | [requirements-aisuite.txt](requirements-aisuite.txt) |
+| [LlamaIndex](api_llamaindex.ipynb) | Use chat and embeddings in a LlamaIndex workflow | [requirements-llamaindex.txt](requirements-llamaindex.txt) |
 
-- NEBIUS_API_KEY
+Also see [batch inference](../batch.ipynb) and [guided JSON output](../guided_json.ipynb).
 
-## Setup Python Env
+## Run a notebook
 
-- Be sure to finish [the setup](../getting-started.md)
-- And install the requirements
+From this directory, create a Python environment and install the requirements for the notebook you chose:
 
 ```bash
-# follow the seutp-dev-env.md guide above to set up your python env.
-
-# activate the python env
-source  .venv/bin/activate
-pip install -r  requirements.txt
+uv venv --python 3.12
+source .venv/bin/activate
+uv pip install -r requirements.txt
+uv pip install jupyterlab
+python -m jupyter lab
 ```
 
-## OpenAI-compatible API
+Use the corresponding requirements file for the other notebooks. Keep your API key in the environment or in the recipe's local `.env` file.
 
-Token Factory provides OpenAI-compatible Chat Completions and Responses APIs.
+## Continue building
 
-Example code: [api_native.ipynb](api_native.ipynb)
+- [Tool calling](../tool-calling/README.md)
+- [Agent examples](../agents/README.md)
+- [Official documentation](https://docs.tokenfactory.nebius.com/)
+- [Official integrations catalog](https://docs.tokenfactory.nebius.com/integrations/overview)
 
-Stateless Responses API example: [responses/README.md](responses/README.md)
+## Stateless Responses example
 
-[API reference](https://tokenfactory.nebius.com/api-reference)
-
-## Third-party APIs
-
-Nebius Token Factory also supports [third-party integrations](https://docs.tokenfactory.nebius.com/integrations/overview). Here are some examples.
-
-## AISuite
-
-[aisuite](https://github.com/andrewyng/aisuite) is a simple, unified interface to multiple Generative AI providers.
-
-Example code: [api_aisuite.ipynb](api_aisuite.ipynb)
-
-## LiteLLM
-
-[LiteLLM](https://docs.litellm.ai/) is a popular API that provides consistent API for calling multiple providers.
-
-Example code: [api_litellm.ipynb](api_litellm.ipynb)
-
-
-## Llama-Index
-
-[llama-index](https://docs.llamaindex.ai/en/stable/) is a library for building LLM / AI applications.
-
-Example code: [api_llamaindex.ipynb](api_llamaindex.ipynb)
-
-## More third-party APIs
-
-See the [Token Factory integrations overview](https://docs.tokenfactory.nebius.com/integrations/overview) for the complete list.
-
-
-
+Use the [stateless Responses recipe](responses/) for independent requests and streamed text with application-owned conversation history.

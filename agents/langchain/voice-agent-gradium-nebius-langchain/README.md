@@ -25,7 +25,7 @@ The use case is practical: founders, developers, and operators can rehearse spok
 │   └── settings.py                # Environment loading
 ├── requirements.txt
 ├── pyproject.toml
-└── .env.example
+└── env.example
 ```
 
 ## Setup
@@ -36,7 +36,7 @@ This project needs Python 3.10 or newer.
 python -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
-cp .env.example .env
+cp env.example .env
 ```
 
 Then fill:

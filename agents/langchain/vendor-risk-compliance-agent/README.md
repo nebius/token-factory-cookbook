@@ -10,8 +10,8 @@ This project uses **Nebius through LangChain** to inspect a vendor questionnaire
 python -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
-cp .env.example .env
-# add NEBIUS_API_KEY and a currently available NEBIUS_MODEL
+cp env.example .env
+# add NEBIUS_API_KEY
 python main.py
 ```
 
@@ -22,3 +22,6 @@ python main.py
 - Risk register as typed JSON
 - Contract redline suggestions
 - Conditional go-live decision
+
+
+Set `NEBIUS_MODEL` in `.env` to a current tool-capable model from the [Token Factory catalog](https://tokenfactory.nebius.com/models) before running.

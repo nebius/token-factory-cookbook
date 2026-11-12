@@ -1,0 +1,3249 @@
+[
+ {
+  "id": "detection/coco_776",
+  "task": "detection",
+  "task_name": "Object detection",
+  "benchmark": "COCO (Lin et al., 2014)",
+  "metric_name": "F1 @ IoU 0.5 (class-matched)",
+  "image": "data/detection/coco_776.jpg",
+  "width": 428,
+  "height": 640,
+  "question": "Detect all COCO objects",
+  "gt": [
+   {
+    "label": "teddy bear",
+    "bbox": [
+     1.44,
+     56.22,
+     345.95,
+     527.57
+    ]
+   },
+   {
+    "label": "teddy bear",
+    "bbox": [
+     2.88,
+     278.2,
+     320.0,
+     632.79
+    ]
+   },
+   {
+    "label": "teddy bear",
+    "bbox": [
+     94.92,
+     5.75,
+     427.15000000000003,
+     550.83
+    ]
+   },
+   {
+    "label": "bed",
+    "bbox": [
+     1.43,
+     0.14,
+     428.0,
+     640.0
+    ]
+   }
+  ],
+  "prediction": {
+   "objects": [
+    {
+     "label": "teddy bear",
+     "bbox": [
+      100,
+      0,
+      428,
+      412
+     ]
+    },
+    {
+     "label": "teddy bear",
+     "bbox": [
+      0,
+      54,
+      419,
+      528
+     ]
+    },
+    {
+     "label": "teddy bear",
+     "bbox": [
+      0,
+      270,
+      320,
+      640
+     ]
+    }
+   ]
+  },
+  "latency_s": 63.0,
+  "completion_tokens": 1901,
+  "reasoning_tokens": 1811,
+  "reasoning_excerpt": "I need analyze image and identify all COCO objects teddy bears likely three? Should have bounding boxes tight. Should think dimensions 428 x640. Image shows three teddy bears? Left pale beige bear top head at x0-198 y55-293, body perhaps center grayish long arm to x350 y529; top gold bear x100-427 y0-398? Bottom orange bear x0-320 y270-639. Should determine instance segmentation/boxes. Should carefully examine image visually.\n\nI must return every object COCO category. Teddy bears three. Possibly couch? Background grey fabric could be couch but no clear bounds; blue blanket lower right not COCO",
+  "verdict": "hit",
+  "metric": 0.857,
+  "pred_text": "3 boxes",
+  "gt_text": "4 boxes",
+  "note": "missed bed",
+  "precision": 1.0,
+  "recall": 0.75,
+  "tp": 3,
+  "n_pred": 3,
+  "n_gt": 4,
+  "missed": [
+   "bed"
+  ],
+  "extra": [],
+  "pred_boxes": [
+   {
+    "label": "teddy bear",
+    "bbox": [
+     100.0,
+     0.0,
+     428.0,
+     412.0
+    ]
+   },
+   {
+    "label": "teddy bear",
+    "bbox": [
+     0.0,
+     54.0,
+     419.0,
+     528.0
+    ]
+   },
+   {
+    "label": "teddy bear",
+    "bbox": [
+     0.0,
+     270.0,
+     320.0,
+     640.0
+    ]
+   }
+  ],
+  "matched_pred": [
+   0,
+   1,
+   2
+  ],
+  "matched_gt": [
+   0,
+   1,
+   2
+  ],
+  "viz": "results/viz/detection__coco_776.jpg"
+ },
+ {
+  "id": "detection/coco_8899",
+  "task": "detection",
+  "task_name": "Object detection",
+  "benchmark": "COCO (Lin et al., 2014)",
+  "metric_name": "F1 @ IoU 0.5 (class-matched)",
+  "image": "data/detection/coco_8899.jpg",
+  "width": 640,
+  "height": 539,
+  "question": "Detect all COCO objects",
+  "gt": [
+   {
+    "label": "fire hydrant",
+    "bbox": [
+     140.66,
+     398.37,
+     180.57,
+     493.85
+    ]
+   },
+   {
+    "label": "bicycle",
+    "bbox": [
+     23.63,
+     346.08,
+     73.48,
+     450.09
+    ]
+   }
+  ],
+  "prediction": {
+   "objects": [
+    {
+     "label": "bicycle",
+     "bbox": [
+      0,
+      353,
+      73,
+      455
+     ]
+    },
+    {
+     "label": "fire hydrant",
+     "bbox": [
+      139,
+      397,
+      184,
+      494
+     ]
+    }
+   ]
+  },
+  "latency_s": 83.6,
+  "completion_tokens": 2459,
+  "reasoning_tokens": 2406,
+  "reasoning_excerpt": "I need analyze image detect COCO objects. I'll produce JSON only in code block at end, perhaps no text needed. Should identify every visible object among list. Image storefront. Fire hydrant foreground ~139,397 to 185,494? Bicycles left edge, likely two? Should scrutinize mentally pixel visual. Potted plant? Tree on right growing sidewalk not potted, potted plant category usually potted tree could detect? Should decide. Air conditioner isn't COCO. Windows etc no. Should have bicycles left. I'll examine detailed. Image 640x539. At far left bottom bicycles: visible at x0-72 y350-455. There appea",
+  "verdict": "hit",
+  "metric": 1.0,
+  "pred_text": "2 boxes",
+  "gt_text": "2 boxes",
+  "note": "all objects found",
+  "precision": 1.0,
+  "recall": 1.0,
+  "tp": 2,
+  "n_pred": 2,
+  "n_gt": 2,
+  "missed": [],
+  "extra": [],
+  "pred_boxes": [
+   {
+    "label": "bicycle",
+    "bbox": [
+     0.0,
+     353.0,
+     73.0,
+     455.0
+    ]
+   },
+   {
+    "label": "fire hydrant",
+    "bbox": [
+     139.0,
+     397.0,
+     184.0,
+     494.0
+    ]
+   }
+  ],
+  "matched_pred": [
+   0,
+   1
+  ],
+  "matched_gt": [
+   0,
+   1
+  ],
+  "viz": "results/viz/detection__coco_8899.jpg"
+ },
+ {
+  "id": "detection/coco_1425",
+  "task": "detection",
+  "task_name": "Object detection",
+  "benchmark": "COCO (Lin et al., 2014)",
+  "metric_name": "F1 @ IoU 0.5 (class-matched)",
+  "image": "data/detection/coco_1425.jpg",
+  "width": 640,
+  "height": 512,
+  "question": "Detect all COCO objects",
+  "gt": [
+   {
+    "label": "sandwich",
+    "bbox": [
+     64.29,
+     184.96,
+     440.83000000000004,
+     403.08000000000004
+    ]
+   },
+   {
+    "label": "bowl",
+    "bbox": [
+     486.74,
+     182.53,
+     640.0,
+     383.43
+    ]
+   }
+  ],
+  "prediction": {
+   "objects": [
+    {
+     "label": "sandwich",
+     "bbox": [
+      37,
+      177,
+      440,
+      398
+     ]
+    },
+    {
+     "label": "cup",
+     "bbox": [
+      493,
+      190,
+      639,
+      379
+     ]
+    },
+    {
+     "label": "dining table",
+     "bbox": [
+      0,
+      387,
+      639,
+      511
+     ]
+    }
+   ]
+  },
+  "latency_s": 112.4,
+  "completion_tokens": 4068,
+  "reasoning_tokens": 3981,
+  "reasoning_excerpt": "Kimi needs to examine image carefully, identify COCO objects bounding boxes. I'll output JSON exactly. Should analyze visual image 640x512 black-white close up food on plate, sandwich central, cup right, perhaps bowl? Dining table bottom, blurred objects background. Should have every object belonging categories visible. Should have bounding boxes tight. I'll inspect mentally coordinates.\n\nImage central sandwich from x~36? to440 y178 to397. Bun top x69 y178 to403 y323, fillings x95 y286 to438 y394, lower part perhaps x42 y336. It is a sandwich likely burger but COCO sandwich. Bounding [38,177,4",
+  "verdict": "partial",
+  "metric": 0.4,
+  "pred_text": "3 boxes",
+  "gt_text": "2 boxes",
+  "note": "missed bowl; extra/unmatched cup, dining table",
+  "precision": 0.333,
+  "recall": 0.5,
+  "tp": 1,
+  "n_pred": 3,
+  "n_gt": 2,
+  "missed": [
+   "bowl"
+  ],
+  "extra": [
+   "cup",
+   "dining table"
+  ],
+  "pred_boxes": [
+   {
+    "label": "sandwich",
+    "bbox": [
+     37.0,
+     177.0,
+     440.0,
+     398.0
+    ]
+   },
+   {
+    "label": "cup",
+    "bbox": [
+     493.0,
+     190.0,
+     639.0,
+     379.0
+    ]
+   },
+   {
+    "label": "dining table",
+    "bbox": [
+     0.0,
+     387.0,
+     639.0,
+     511.0
+    ]
+   }
+  ],
+  "matched_pred": [
+   0
+  ],
+  "matched_gt": [
+   0
+  ],
+  "viz": "results/viz/detection__coco_1425.jpg"
+ },
+ {
+  "id": "detection/coco_7386",
+  "task": "detection",
+  "task_name": "Object detection",
+  "benchmark": "COCO (Lin et al., 2014)",
+  "metric_name": "F1 @ IoU 0.5 (class-matched)",
+  "image": "data/detection/coco_7386.jpg",
+  "width": 600,
+  "height": 400,
+  "question": "Detect all COCO objects",
+  "gt": [
+   {
+    "label": "dog",
+    "bbox": [
+     180.91,
+     281.14,
+     219.31,
+     326.62
+    ]
+   },
+   {
+    "label": "motorcycle",
+    "bbox": [
+     51.12,
+     12.56,
+     600.0,
+     400.0
+    ]
+   },
+   {
+    "label": "bicycle",
+    "bbox": [
+     221.85,
+     100.97,
+     289.87,
+     166.2
+    ]
+   },
+   {
+    "label": "bicycle",
+    "bbox": [
+     218.68,
+     158.78,
+     279.73,
+     214.12
+    ]
+   },
+   {
+    "label": "truck",
+    "bbox": [
+     398.63,
+     144.76,
+     519.66,
+     235.04
+    ]
+   }
+  ],
+  "prediction": {
+   "objects": [
+    {
+     "label": "motorcycle",
+     "bbox": [
+      53,
+      14,
+      599,
+      399
+     ]
+    },
+    {
+     "label": "truck",
+     "bbox": [
+      409,
+      151,
+      522,
+      237
+     ]
+    },
+    {
+     "label": "dog",
+     "bbox": [
+      188,
+      280,
+      220,
+      326
+     ]
+    },
+    {
+     "label": "bicycle",
+     "bbox": [
+      221,
+      117,
+      293,
+      166
+     ]
+    }
+   ]
+  },
+  "latency_s": 88.7,
+  "completion_tokens": 3221,
+  "reasoning_tokens": 3138,
+  "reasoning_excerpt": "I need analyze image carefully detect all instances COCO 80 categories. I'll output JSON only code block final. Should identify motorcycle trike foreground, truck background, dog small under, bicycles in garage? Should scrutinize visually. Should have accurate boxes. Image 600x400. Should have all objects belonging categories. Should think.\n\nImage: custom trike motorcycle dominating foreground from x53? Wheels etc. Should box entire motorcycle x52? front handlebars x229 etc, headlamp 369 etc, front wheel right clipped x464? Main rear wheel x53 y210 to132 y351. Trike extends from x53 y14 to599 ",
+  "verdict": "hit",
+  "metric": 0.889,
+  "pred_text": "4 boxes",
+  "gt_text": "5 boxes",
+  "note": "missed bicycle",
+  "precision": 1.0,
+  "recall": 0.8,
+  "tp": 4,
+  "n_pred": 4,
+  "n_gt": 5,
+  "missed": [
+   "bicycle"
+  ],
+  "extra": [],
+  "pred_boxes": [
+   {
+    "label": "motorcycle",
+    "bbox": [
+     53.0,
+     14.0,
+     599.0,
+     399.0
+    ]
+   },
+   {
+    "label": "truck",
+    "bbox": [
+     409.0,
+     151.0,
+     522.0,
+     237.0
+    ]
+   },
+   {
+    "label": "dog",
+    "bbox": [
+     188.0,
+     280.0,
+     220.0,
+     326.0
+    ]
+   },
+   {
+    "label": "bicycle",
+    "bbox": [
+     221.0,
+     117.0,
+     293.0,
+     166.0
+    ]
+   }
+  ],
+  "matched_pred": [
+   0,
+   1,
+   2,
+   3
+  ],
+  "matched_gt": [
+   0,
+   1,
+   2,
+   4
+  ],
+  "viz": "results/viz/detection__coco_7386.jpg"
+ },
+ {
+  "id": "detection/coco_3501",
+  "task": "detection",
+  "task_name": "Object detection",
+  "benchmark": "COCO (Lin et al., 2014)",
+  "metric_name": "F1 @ IoU 0.5 (class-matched)",
+  "image": "data/detection/coco_3501.jpg",
+  "width": 612,
+  "height": 612,
+  "question": "Detect all COCO objects",
+  "gt": [
+   {
+    "label": "broccoli",
+    "bbox": [
+     125.28,
+     67.68,
+     263.52,
+     223.20000000000002
+    ]
+   },
+   {
+    "label": "broccoli",
+    "bbox": [
+     74.88,
+     174.24,
+     257.76,
+     361.44
+    ]
+   },
+   {
+    "label": "bowl",
+    "bbox": [
+     12.38,
+     8.25,
+     603.75,
+     583.12
+    ]
+   }
+  ],
+  "prediction": {
+   "objects": [
+    {
+     "label": "dining table",
+     "bbox": [
+      0,
+      0,
+      611,
+      611
+     ]
+    },
+    {
+     "label": "bowl",
+     "bbox": [
+      15,
+      8,
+      604,
+      582
+     ]
+    },
+    {
+     "label": "broccoli",
+     "bbox": [
+      122,
+      66,
+      254,
+      218
+     ]
+    },
+    {
+     "label": "broccoli",
+     "bbox": [
+      75,
+      173,
+      254,
+      360
+     ]
+    }
+   ]
+  },
+  "latency_s": 58.1,
+  "completion_tokens": 2177,
+  "reasoning_tokens": 2067,
+  "reasoning_excerpt": "I need analyze image carefully identify every object belonging COCO, give bounding boxes tight image coords 612x612. Should respond JSON exact keys objects list. Should detect bowl, broccoli perhaps multiple instances, dining table? Should consider carrots in chili? Should identify visible objects. I'll deeply examine. Image overhead bowl of rice, broccoli, chili. White round bowl rim from x15 y8 to x604 y582. Dining table dark reddish wood around bowl. Broccoli top left: large floret at x123 y67 to253? There are stems and florets multiple. Second/lower left broccoli at x75 y172 to253 y360. Sh",
+  "verdict": "hit",
+  "metric": 0.857,
+  "pred_text": "4 boxes",
+  "gt_text": "3 boxes",
+  "note": "extra/unmatched dining table",
+  "precision": 0.75,
+  "recall": 1.0,
+  "tp": 3,
+  "n_pred": 4,
+  "n_gt": 3,
+  "missed": [],
+  "extra": [
+   "dining table"
+  ],
+  "pred_boxes": [
+   {
+    "label": "dining table",
+    "bbox": [
+     0.0,
+     0.0,
+     611.0,
+     611.0
+    ]
+   },
+   {
+    "label": "bowl",
+    "bbox": [
+     15.0,
+     8.0,
+     604.0,
+     582.0
+    ]
+   },
+   {
+    "label": "broccoli",
+    "bbox": [
+     122.0,
+     66.0,
+     254.0,
+     218.0
+    ]
+   },
+   {
+    "label": "broccoli",
+    "bbox": [
+     75.0,
+     173.0,
+     254.0,
+     360.0
+    ]
+   }
+  ],
+  "matched_pred": [
+   1,
+   2,
+   3
+  ],
+  "matched_gt": [
+   0,
+   1,
+   2
+  ],
+  "viz": "results/viz/detection__coco_3501.jpg"
+ },
+ {
+  "id": "detection/coco_1503",
+  "task": "detection",
+  "task_name": "Object detection",
+  "benchmark": "COCO (Lin et al., 2014)",
+  "metric_name": "F1 @ IoU 0.5 (class-matched)",
+  "image": "data/detection/coco_1503.jpg",
+  "width": 320,
+  "height": 240,
+  "question": "Detect all COCO objects",
+  "gt": [
+   {
+    "label": "laptop",
+    "bbox": [
+     0.54,
+     99.78,
+     126.2,
+     235.69
+    ]
+   },
+   {
+    "label": "mouse",
+    "bbox": [
+     120.96,
+     177.97,
+     158.73,
+     200.03
+    ]
+   },
+   {
+    "label": "keyboard",
+    "bbox": [
+     161.13,
+     152.44,
+     315.44,
+     197.96
+    ]
+   },
+   {
+    "label": "tv",
+    "bbox": [
+     125.66,
+     11.46,
+     237.3,
+     100.99000000000001
+    ]
+   },
+   {
+    "label": "mouse",
+    "bbox": [
+     305.55,
+     154.39,
+     319.95,
+     164.04999999999998
+    ]
+   }
+  ],
+  "prediction": {
+   "objects": [
+    {
+     "label": "tv",
+     "bbox": [
+      123,
+      8,
+      243,
+      109
+     ]
+    },
+    {
+     "label": "laptop",
+     "bbox": [
+      0,
+      99,
+      134,
+      239
+     ]
+    },
+    {
+     "label": "mouse",
+     "bbox": [
+      125,
+      182,
+      160,
+      207
+     ]
+    },
+    {
+     "label": "keyboard",
+     "bbox": [
+      158,
+      151,
+      315,
+      199
+     ]
+    }
+   ]
+  },
+  "latency_s": 46.9,
+  "completion_tokens": 1697,
+  "reasoning_tokens": 1616,
+  "reasoning_excerpt": "I need analyze image detect objects COCO categories. I'll output JSON only ending code block exact. Should inspect image dimensions 320x240. Scene desk with laptop left, iMac G4 center, external keyboard right, mouse center foreground, perhaps monitor classified tv, perhaps desk not dining table. Should detect every instance belonging categories. Should have tight bboxes. Carefully enumerate. Image shows left laptop occupying x0-136? y100-239? Laptop open. Center Apple iMac G4 with display x122-242 y8-112, base dome x135-211 y107-153, speakers. Keyboard x159-314 y151-198. Mouse x126-158? y183-",
+  "verdict": "hit",
+  "metric": 0.889,
+  "pred_text": "4 boxes",
+  "gt_text": "5 boxes",
+  "note": "missed mouse",
+  "precision": 1.0,
+  "recall": 0.8,
+  "tp": 4,
+  "n_pred": 4,
+  "n_gt": 5,
+  "missed": [
+   "mouse"
+  ],
+  "extra": [],
+  "pred_boxes": [
+   {
+    "label": "tv",
+    "bbox": [
+     123.0,
+     8.0,
+     243.0,
+     109.0
+    ]
+   },
+   {
+    "label": "laptop",
+    "bbox": [
+     0.0,
+     99.0,
+     134.0,
+     239.0
+    ]
+   },
+   {
+    "label": "mouse",
+    "bbox": [
+     125.0,
+     182.0,
+     160.0,
+     207.0
+    ]
+   },
+   {
+    "label": "keyboard",
+    "bbox": [
+     158.0,
+     151.0,
+     315.0,
+     199.0
+    ]
+   }
+  ],
+  "matched_pred": [
+   0,
+   1,
+   2,
+   3
+  ],
+  "matched_gt": [
+   0,
+   1,
+   2,
+   3
+  ],
+  "viz": "results/viz/detection__coco_1503.jpg"
+ },
+ {
+  "id": "grounding/refcoco_457142",
+  "task": "grounding",
+  "task_name": "Referring-expression grounding",
+  "benchmark": "RefCOCO (Kazemzadeh et al., 2014; Yu et al., 2016)",
+  "metric_name": "IoU >= 0.5",
+  "image": "data/grounding/refcoco_457142.jpg",
+  "width": 640,
+  "height": 423,
+  "question": "girl in blue coat",
+  "gt": [
+   124.58000183105469,
+   59.880001068115234,
+   361.19000244140625,
+   406.5800132751465
+  ],
+  "prediction": {
+   "bbox": [
+    127,
+    59,
+    362,
+    409
+   ]
+  },
+  "latency_s": 22.3,
+  "completion_tokens": 670,
+  "reasoning_tokens": 638,
+  "reasoning_excerpt": "I need analyze image identify girl blue coat bounding box tight. Should have coordinates. Should output only JSON block exact keys. Should think thoroughly.\n\nImage 640x423. Two girls left blue/turquoise coat right green. Should have bounding entirety left girl including legs, boots? She seated, head x144 to? I'll inspect visually. Left girl hair top around (207,60), extends x145 at y145. Coat x151 y108 to 306 y251. Her legs: one bent left x128 y235 to perhaps x262 y363, other leg across x253? Extend to boot x309-360 y407. Hand phone etc. Should box tight x126 perhaps to361, y59 to409. Should d",
+  "verdict": "hit",
+  "metric": 0.977,
+  "pred_text": "IoU 0.98",
+  "gt_text": "girl in blue coat",
+  "note": "IoU 0.98 with the annotated box",
+  "pred_box": [
+   127.0,
+   59.0,
+   362.0,
+   409.0
+  ],
+  "viz": "results/viz/grounding__refcoco_457142.jpg"
+ },
+ {
+  "id": "grounding/refcoco_2125874",
+  "task": "grounding",
+  "task_name": "Referring-expression grounding",
+  "benchmark": "RefCOCO (Kazemzadeh et al., 2014; Yu et al., 2016)",
+  "metric_name": "IoU >= 0.5",
+  "image": "data/grounding/refcoco_2125874.jpg",
+  "width": 640,
+  "height": 480,
+  "question": "unoccupied bench bottom center",
+  "gt": [
+   119.43000030517578,
+   324.8599853515625,
+   461.0300064086914,
+   479.99998474121094
+  ],
+  "prediction": {
+   "bbox": [
+    117,
+    249,
+    623,
+    479
+   ]
+  },
+  "latency_s": 130.5,
+  "completion_tokens": 4128,
+  "reasoning_tokens": 4096,
+  "reasoning_excerpt": "I need analyze image identify \"unoccupied bench bottom center\". Should have bounding box tight. Should interpret multiple benches? Image woman seated on bench right/bottom, foreground metal benches. Should locate unoccupied bench bottom center maybe central bench extending horizontally diagonal. Carefully inspect. Image 640x480. Should single object referred expression unoccupied bench bottom center. I must output bbox exact. I'll deeply parse visual.\n\nWoman at x~150-560 y~85-480 sitting? There are metal benches. Bench back huge slatted from lower center to upper right. Seat? Foreground empty ",
+  "verdict": "miss",
+  "metric": 0.451,
+  "pred_text": "IoU 0.45",
+  "gt_text": "unoccupied bench bottom center",
+  "note": "IoU 0.45 with the annotated box",
+  "pred_box": [
+   117.0,
+   249.0,
+   623.0,
+   479.0
+  ],
+  "viz": "results/viz/grounding__refcoco_2125874.jpg"
+ },
+ {
+  "id": "grounding/refcoco_1219163",
+  "task": "grounding",
+  "task_name": "Referring-expression grounding",
+  "benchmark": "RefCOCO (Kazemzadeh et al., 2014; Yu et al., 2016)",
+  "metric_name": "IoU >= 0.5",
+  "image": "data/grounding/refcoco_1219163.jpg",
+  "width": 640,
+  "height": 427,
+  "question": "guy on left with beard and guitar",
+  "gt": [
+   0.07999999821186066,
+   36.9900016784668,
+   392.0099926739931,
+   423.3499870300293
+  ],
+  "prediction": {
+   "bbox": [
+    0,
+    38,
+    390,
+    426
+   ]
+  },
+  "latency_s": 21.3,
+  "completion_tokens": 779,
+  "reasoning_tokens": 747,
+  "reasoning_excerpt": "I need respond bounding box for guy on left beard guitar. Should carefully inspect image coordinates. I'll output single JSON. Should derive tight bbox person, not guitar? Expression refers guy on left with beard and guitar. Should have bounding box human. Image 640x427. Left man white hair/beard tan suit. Extends left x0, top y39, right hand maybe x390? Bottom y426. Should tight box. I'll examine visually mentally. Man left: head starts x58 y38 to x184? White hair. His body tan suit from left x0 at y214 down to bottom. Arm? left guitarist holding neck: his left hand (on image right) at around",
+  "verdict": "hit",
+  "metric": 0.985,
+  "pred_text": "IoU 0.99",
+  "gt_text": "guy on left with beard and guitar",
+  "note": "IoU 0.99 with the annotated box",
+  "pred_box": [
+   0.0,
+   38.0,
+   390.0,
+   426.0
+  ],
+  "viz": "results/viz/grounding__refcoco_1219163.jpg"
+ },
+ {
+  "id": "grounding/refcoco_500538",
+  "task": "grounding",
+  "task_name": "Referring-expression grounding",
+  "benchmark": "RefCOCO (Kazemzadeh et al., 2014; Yu et al., 2016)",
+  "metric_name": "IoU >= 0.5",
+  "image": "data/grounding/refcoco_500538.jpg",
+  "width": 500,
+  "height": 333,
+  "question": "sitting guy",
+  "gt": [
+   335.989990234375,
+   121.2300033569336,
+   459.4699935913086,
+   276.12999725341797
+  ],
+  "prediction": {
+   "bbox": [
+    343,
+    123,
+    461,
+    278
+   ]
+  },
+  "latency_s": 29.5,
+  "completion_tokens": 1040,
+  "reasoning_tokens": 1008,
+  "reasoning_excerpt": "I need analyze image dimensions 500x333 and sitting guy. I'll output tight bbox. Should identify man on right in white t-shirt sitting chair. Should have bounding box accurate including visible body, head arms perhaps laptop obscures lower. Should think pixel coords. Image: standing guy left. Sitting guy right x342? to464? y123? to294? Should tight object bounding box person. I'll inspect mentally visual.\n\nImage 500x333. Sitting guy head around x392-445 y124-186. Torso white from ~363 y175 to457 y257. Left arm (image left) extends x345 y199 to367 y243? Perhaps sitting guy entire visible: head ",
+  "verdict": "hit",
+  "metric": 0.911,
+  "pred_text": "IoU 0.91",
+  "gt_text": "sitting guy",
+  "note": "IoU 0.91 with the annotated box",
+  "pred_box": [
+   343.0,
+   123.0,
+   461.0,
+   278.0
+  ],
+  "viz": "results/viz/grounding__refcoco_500538.jpg"
+ },
+ {
+  "id": "grounding/refcoco_427086",
+  "task": "grounding",
+  "task_name": "Referring-expression grounding",
+  "benchmark": "RefCOCO (Kazemzadeh et al., 2014; Yu et al., 2016)",
+  "metric_name": "IoU >= 0.5",
+  "image": "data/grounding/refcoco_427086.jpg",
+  "width": 500,
+  "height": 375,
+  "question": "left dude",
+  "gt": [
+   0.0,
+   79.0199966430664,
+   138.4199981689453,
+   311.4000015258789
+  ],
+  "prediction": {
+   "bbox": [
+    0,
+    79,
+    145,
+    309
+   ]
+  },
+  "latency_s": 33.2,
+  "completion_tokens": 984,
+  "reasoning_tokens": 952,
+  "reasoning_excerpt": "I need analyze image and identify left dude bounding box tight. I'll output a single JSON object with the bbox. Should reason internally. Image 500x375. Four men around table. Left dude is man left foreground seated, gray hair glasses light shirt. Should box x1 y1 x2 y2. Should have precise extent visible. I'll inspect mentally image. Left dude from x0 to perhaps 150, y78 to 307? His head top at x30? Should tight bounding visible person including hands etc. Left man sitting left of table, light pale shirt, glasses. His silhouette: top head around (55,79), extends to x91 y84? Face at x92-102 y1",
+  "verdict": "hit",
+  "metric": 0.945,
+  "pred_text": "IoU 0.95",
+  "gt_text": "left dude",
+  "note": "IoU 0.95 with the annotated box",
+  "pred_box": [
+   0.0,
+   79.0,
+   145.0,
+   309.0
+  ],
+  "viz": "results/viz/grounding__refcoco_427086.jpg"
+ },
+ {
+  "id": "grounding/refcoco_1610050",
+  "task": "grounding",
+  "task_name": "Referring-expression grounding",
+  "benchmark": "RefCOCO (Kazemzadeh et al., 2014; Yu et al., 2016)",
+  "metric_name": "IoU >= 0.5",
+  "image": "data/grounding/refcoco_1610050.jpg",
+  "width": 640,
+  "height": 425,
+  "question": "flowers below the umbrella",
+  "gt": [
+   214.88999938964844,
+   181.4600067138672,
+   512.8700103759766,
+   415.45001220703125
+  ],
+  "prediction": {
+   "bbox": [
+    0,
+    192,
+    506,
+    425
+   ]
+  },
+  "latency_s": 83.6,
+  "completion_tokens": 3431,
+  "reasoning_tokens": 3399,
+  "reasoning_excerpt": "I need analyze image locate \"flowers below the umbrella\". Should identify object likely cluster flowers under umbrella. I'll output tight bbox. Should think image coords. 640x425. Umbrella top red roughly x125 y0 to570 y255. Flowers below umbrella? There are various: arrangement at bottom, red bromeliads central, yellow flowers. Phrase likely referring expression grounding. Should single object flowers below umbrella, likely red/yellow flower arrangement directly below umbrella. Should infer bounding box. Should inspect visual mentally. Image: Indian themed floral display. Umbrella at top. Bel",
+  "verdict": "hit",
+  "metric": 0.531,
+  "pred_text": "IoU 0.53",
+  "gt_text": "flowers below the umbrella",
+  "note": "IoU 0.53 with the annotated box",
+  "pred_box": [
+   0.0,
+   192.0,
+   506.0,
+   425.0
+  ],
+  "viz": "results/viz/grounding__refcoco_1610050.jpg"
+ },
+ {
+  "id": "counting/countbench_16",
+  "task": "counting",
+  "task_name": "Object counting",
+  "benchmark": "CountBench (Paiss et al., 2023)",
+  "metric_name": "exact count",
+  "image": "data/counting/countbench_16.jpg",
+  "width": 465,
+  "height": 280,
+  "question": "How many outfits are there in the image?",
+  "gt": 4,
+  "prediction": {
+   "points": [
+    [
+     49,
+     182
+    ],
+    [
+     169,
+     169
+    ],
+    [
+     296,
+     170
+    ],
+    [
+     411,
+     159
+    ]
+   ],
+   "count": 4
+  },
+  "latency_s": 10.9,
+  "completion_tokens": 385,
+  "reasoning_tokens": 335,
+  "reasoning_excerpt": "I need inspect image 465x280 collage four outfits? Should count outfits likely 4 women Queen Maxima different gowns. I'll point centre each instance. Should determine coordinates. I'll think through visual. Image left panel x0-113 woman cream blouse/dress. second x115-230 blue gown. third x231-352 red gown. fourth x353-465 burgundy/pink gown with white shawl. Four outfits. Should have coordinates centers each outfit (not person face), perhaps [49,184], [167,166], [299,165], [410,151]. Should precisely visually. Should output JSON only at end single object code block. User says point centre eac",
+  "verdict": "hit",
+  "metric": 1.0,
+  "pred_text": "4",
+  "gt_text": "4",
+  "note": "exact",
+  "pred_count": 4,
+  "points": [
+   [
+    49,
+    182
+   ],
+   [
+    169,
+    169
+   ],
+   [
+    296,
+    170
+   ],
+   [
+    411,
+    159
+   ]
+  ],
+  "viz": "results/viz/counting__countbench_16.jpg"
+ },
+ {
+  "id": "counting/countbench_31",
+  "task": "counting",
+  "task_name": "Object counting",
+  "benchmark": "CountBench (Paiss et al., 2023)",
+  "metric_name": "exact count",
+  "image": "data/counting/countbench_31.jpg",
+  "width": 326,
+  "height": 326,
+  "question": "How many pumpkin candles are there in the image?",
+  "gt": 3,
+  "prediction": {
+   "points": [
+    [
+     105,
+     181
+    ],
+    [
+     218,
+     142
+    ],
+    [
+     209,
+     220
+    ]
+   ],
+   "count": 3
+  },
+  "latency_s": 6.8,
+  "completion_tokens": 265,
+  "reasoning_tokens": 221,
+  "reasoning_excerpt": "I need inspect image identify three pumpkin candles, give centers integer. Should think coords. Image 326x326. Three pumpkins: left center ~104,181; back top center ~218,141; front right center ~209,220. Should have accurate center instance. I'll output exactly JSON at end code block keys. User asks think through then end reply with single JSON object. Can simply respond JSON no extra. Should point center each count. I'll analyze pixel geometry.\n\nBack pumpkin spans x151 to283 y101 to181. Center perhaps 218,142. Left pumpkin x36 to173 y138 to222 center ~105,181. Front x137 to279 y177 to261 cent",
+  "verdict": "hit",
+  "metric": 1.0,
+  "pred_text": "3",
+  "gt_text": "3",
+  "note": "exact",
+  "pred_count": 3,
+  "points": [
+   [
+    105,
+    181
+   ],
+   [
+    218,
+    142
+   ],
+   [
+    209,
+    220
+   ]
+  ],
+  "viz": "results/viz/counting__countbench_31.jpg"
+ },
+ {
+  "id": "counting/countbench_69",
+  "task": "counting",
+  "task_name": "Object counting",
+  "benchmark": "CountBench (Paiss et al., 2023)",
+  "metric_name": "exact count",
+  "image": "data/counting/countbench_69.jpg",
+  "width": 600,
+  "height": 399,
+  "question": "How many chairs are there in the image?",
+  "gt": 6,
+  "prediction": {
+   "points": [
+    [
+     97,
+     274
+    ],
+    [
+     165,
+     244
+    ],
+    [
+     254,
+     222
+    ],
+    [
+     341,
+     222
+    ],
+    [
+     432,
+     244
+    ],
+    [
+     497,
+     278
+    ]
+   ],
+   "count": 6
+  },
+  "latency_s": 20.8,
+  "completion_tokens": 845,
+  "reasoning_tokens": 783,
+  "reasoning_excerpt": "I need inspect image count chairs point centres. Should be exact. Should analyze image. I see chairs arranged 6? I'll enumerate visually: front left chair with back around x70-145 y188-270, seat x40-149 y259-296 and legs. Back left chair x135-208 back y170 etc seat y231. Center left back chair x213-295 back y156, seat y211, legs to 289. Center right x302-380 back y155 seat y210 etc legs to291. Back right chair x385-477 back y169 seat y235 etc legs to318. Front right chair x438-557 back y189 seat y259 and legs. That's six. Make sure perhaps 6 yes. Should have centres of each instance likely obj",
+  "verdict": "hit",
+  "metric": 1.0,
+  "pred_text": "6",
+  "gt_text": "6",
+  "note": "exact",
+  "pred_count": 6,
+  "points": [
+   [
+    97,
+    274
+   ],
+   [
+    165,
+    244
+   ],
+   [
+    254,
+    222
+   ],
+   [
+    341,
+    222
+   ],
+   [
+    432,
+    244
+   ],
+   [
+    497,
+    278
+   ]
+  ],
+  "viz": "results/viz/counting__countbench_69.jpg"
+ },
+ {
+  "id": "counting/countbench_75",
+  "task": "counting",
+  "task_name": "Object counting",
+  "benchmark": "CountBench (Paiss et al., 2023)",
+  "metric_name": "exact count",
+  "image": "data/counting/countbench_75.jpg",
+  "width": 240,
+  "height": 255,
+  "question": "How many photos of fruit are there in the image?",
+  "gt": 9,
+  "prediction": {
+   "points": [
+    [
+     39,
+     40
+    ],
+    [
+     120,
+     40
+    ],
+    [
+     201,
+     40
+    ],
+    [
+     39,
+     122
+    ],
+    [
+     120,
+     122
+    ],
+    [
+     201,
+     122
+    ],
+    [
+     39,
+     204
+    ],
+    [
+     120,
+     204
+    ],
+    [
+     201,
+     204
+    ]
+   ],
+   "count": 9
+  },
+  "latency_s": 11.1,
+  "completion_tokens": 454,
+  "reasoning_tokens": 374,
+  "reasoning_excerpt": "I need analyze image grid 3x3? Should count fruit photos and point centers each. Should have coordinates in image 240x255. Image collage appears 9 fruit photos: kiwi top left, pomegranate top center, cherries top right; strawberries middle left, orange middle center, blueberries middle right; raspberries bottom left, green apples bottom center, red currants/cranberries in basket bottom right. Should point center each photo approximate. Make sure 9 yes. Image has white gaps and watermark bottom. I'll output JSON only code block at end. Should think positions exact.\n\nImage width 240 height255. G",
+  "verdict": "hit",
+  "metric": 1.0,
+  "pred_text": "9",
+  "gt_text": "9",
+  "note": "exact",
+  "pred_count": 9,
+  "points": [
+   [
+    39,
+    40
+   ],
+   [
+    120,
+    40
+   ],
+   [
+    201,
+    40
+   ],
+   [
+    39,
+    122
+   ],
+   [
+    120,
+    122
+   ],
+   [
+    201,
+    122
+   ],
+   [
+    39,
+    204
+   ],
+   [
+    120,
+    204
+   ],
+   [
+    201,
+    204
+   ]
+  ],
+  "viz": "results/viz/counting__countbench_75.jpg"
+ },
+ {
+  "id": "counting/countbench_339",
+  "task": "counting",
+  "task_name": "Object counting",
+  "benchmark": "CountBench (Paiss et al., 2023)",
+  "metric_name": "exact count",
+  "image": "data/counting/countbench_339.jpg",
+  "width": 380,
+  "height": 285,
+  "question": "How many butterflies are there in the image?",
+  "gt": 10,
+  "prediction": {
+   "points": [
+    [
+     64,
+     48
+    ],
+    [
+     191,
+     48
+    ],
+    [
+     317,
+     48
+    ],
+    [
+     63,
+     138
+    ],
+    [
+     190,
+     138
+    ],
+    [
+     318,
+     138
+    ],
+    [
+     49,
+     231
+    ],
+    [
+     144,
+     231
+    ],
+    [
+     239,
+     231
+    ],
+    [
+     332,
+     231
+    ]
+   ],
+   "count": 10
+  },
+  "latency_s": 11.6,
+  "completion_tokens": 510,
+  "reasoning_tokens": 424,
+  "reasoning_excerpt": "I need count butterflies image. Should point centers each. I'll output JSON exactly. Should analyze positions 380x285. Image shows 10? Top 3, middle 3, bottom 4? I'll inspect. Top row butterflies at roughly (66,45), (192,46), (315,45). Middle row (64,136), (190,136), (317,135). Bottom row (50,231), (145,231), (240,231), (333,231). So total 10. Carefully centres. I'll enumerate top: left butterfly silhouette spans x 5-124 y8-89; center ~64,48. Top middle x131-252 y7-90 center 192,49. Top right x257-376 y10-92 center 317,48. Middle left x5-121 y96-181 center 64,139. Middle center x132-246 y94-18",
+  "verdict": "hit",
+  "metric": 1.0,
+  "pred_text": "10",
+  "gt_text": "10",
+  "note": "exact",
+  "pred_count": 10,
+  "points": [
+   [
+    64,
+    48
+   ],
+   [
+    191,
+    48
+   ],
+   [
+    317,
+    48
+   ],
+   [
+    63,
+    138
+   ],
+   [
+    190,
+    138
+   ],
+   [
+    318,
+    138
+   ],
+   [
+    49,
+    231
+   ],
+   [
+    144,
+    231
+   ],
+   [
+    239,
+    231
+   ],
+   [
+    332,
+    231
+   ]
+  ],
+  "viz": "results/viz/counting__countbench_339.jpg"
+ },
+ {
+  "id": "counting/countbench_379",
+  "task": "counting",
+  "task_name": "Object counting",
+  "benchmark": "CountBench (Paiss et al., 2023)",
+  "metric_name": "exact count",
+  "image": "data/counting/countbench_379.jpg",
+  "width": 480,
+  "height": 360,
+  "question": "How many tickets are there in the image?",
+  "gt": 3,
+  "prediction": {
+   "points": [
+    [
+     103,
+     132
+    ],
+    [
+     254,
+     81
+    ],
+    [
+     337,
+     131
+    ],
+    [
+     239,
+     225
+    ],
+    [
+     432,
+     196
+    ]
+   ],
+   "count": 5
+  },
+  "latency_s": 375.4,
+  "completion_tokens": 11566,
+  "reasoning_tokens": 11510,
+  "reasoning_excerpt": "I need analyze image tickets count centers. Should point center each instance count. Should carefully identify overlapping tickets. Image 480x360. Should detect tickets. I'll mentally map.\n\nI see several tickets colored white/lightblue. Should count likely 5? I'll inspect detailed.\n\nAt left angled ticket white vertical stripes large from x0 y36? to x220? I'll delineate.\n\nImage shows hand holding tickets fanned.\n\nTicket 1 leftmost/top: white receipt, upper edge from x0? y44 across x59 y30 to x176? y28? Actually text \"C\ub300\uc778\uc885\uc77c\" at x29 y57. White ticket covering left top to center bottom. Has main b",
+  "verdict": "miss",
+  "metric": 0.0,
+  "pred_text": "5",
+  "gt_text": "3",
+  "note": "counted 5, truth 3",
+  "pred_count": 5,
+  "points": [
+   [
+    103,
+    132
+   ],
+   [
+    254,
+    81
+   ],
+   [
+    337,
+    131
+   ],
+   [
+    239,
+    225
+   ],
+   [
+    432,
+    196
+   ]
+  ],
+  "viz": "results/viz/counting__countbench_379.jpg"
+ },
+ {
+  "id": "textvqa/textvqa_36280",
+  "task": "textvqa",
+  "task_name": "Scene-text VQA",
+  "benchmark": "TextVQA (Singh et al., 2019)",
+  "metric_name": "VQA accuracy",
+  "image": "data/textvqa/textvqa_36280.jpg",
+  "width": 1024,
+  "height": 683,
+  "question": "what does the text on top of the telephone box say?",
+  "gt": [
+   "phone",
+   "phone",
+   "phone",
+   "phone",
+   "phone",
+   "phone",
+   "phone",
+   "phone",
+   "phone",
+   "phone"
+  ],
+  "prediction": {
+   "answer": "Phone",
+   "evidence_bbox": [
+    493,
+    146,
+    548,
+    162
+   ]
+  },
+  "latency_s": 11.9,
+  "completion_tokens": 413,
+  "reasoning_tokens": 373,
+  "reasoning_excerpt": "I need analyze image identify text top telephone box and bounding box evidence. I'll output exactly JSON code block keys answer and bbox. Should carefully coordinates. Image 1024x683. Text on top says Phone both sides? I'll provide short word phrase as written \"Phone\". Should have bounding box region used evidence perhaps front top text around x494 y146 to547 y162. Should determine bounding box. I'll inspect mentally pixels. Booth top front face from 441? roof at 379 127 to593 135. Front sign top right x450 y137 to591 y174. \"Phone\" text at x495 y148 to546 y160. Side text \"Phone\" x395 y150 to42",
+  "verdict": "hit",
+  "metric": 1.0,
+  "pred_text": "Phone",
+  "gt_text": "phone",
+  "note": "10/10 annotators gave this answer",
+  "evidence_bbox": [
+   493.0,
+   146.0,
+   548.0,
+   162.0
+  ],
+  "viz": "results/viz/textvqa__textvqa_36280.jpg"
+ },
+ {
+  "id": "textvqa/textvqa_36495",
+  "task": "textvqa",
+  "task_name": "Scene-text VQA",
+  "benchmark": "TextVQA (Singh et al., 2019)",
+  "metric_name": "VQA accuracy",
+  "image": "data/textvqa/textvqa_36495.jpg",
+  "width": 593,
+  "height": 1024,
+  "question": "what is the title of the book?",
+  "gt": [
+   "het judasoog",
+   "het judasoog",
+   "het judasoog",
+   "het judasoog",
+   "het judasoog",
+   "het judasoog",
+   "het judasoog",
+   "het judasoog",
+   "het judasoog",
+   "het judasoog"
+  ],
+  "prediction": {
+   "answer": "het Judasoog",
+   "evidence_bbox": [
+    43,
+    819,
+    571,
+    992
+   ]
+  },
+  "latency_s": 8.1,
+  "completion_tokens": 246,
+  "reasoning_tokens": 203,
+  "reasoning_excerpt": "I need analyze image title. Should output short word phrase as written. Image book Carter Dickson, bottom \"het Judasoog\" Dutch. Should bbox evidence used. Perhaps title bbox approximate x44 y816 to569 y993? Carefully identify image 593x1024. Should have exactly JSON code block. Should think title \"het Judasoog\". Bbox includes het at x126 y821 through293 y894, Judasoog x45 y901 through569 y989. Combined [43,819,571,992] perhaps. Make sure exact title visually: \"het Judasoog\" yes. Famous Carter Dickson The Judas Window = Het Judasoog? Actually The Judas Window Dutch \"Het judasvenster\" maybe \"Het",
+  "verdict": "hit",
+  "metric": 1.0,
+  "pred_text": "het Judasoog",
+  "gt_text": "het judasoog",
+  "note": "10/10 annotators gave this answer",
+  "evidence_bbox": [
+   43.0,
+   819.0,
+   571.0,
+   992.0
+  ],
+  "viz": "results/viz/textvqa__textvqa_36495.jpg"
+ },
+ {
+  "id": "textvqa/textvqa_37981",
+  "task": "textvqa",
+  "task_name": "Scene-text VQA",
+  "benchmark": "TextVQA (Singh et al., 2019)",
+  "metric_name": "VQA accuracy",
+  "image": "data/textvqa/textvqa_37981.jpg",
+  "width": 1024,
+  "height": 782,
+  "question": "what brand of watch is this?",
+  "gt": [
+   "rolex",
+   "rolex",
+   "rolex",
+   "rolex",
+   "rolex",
+   "rolex",
+   "rolex",
+   "rolex",
+   "rolex",
+   "rolex"
+  ],
+  "prediction": {
+   "answer": "ROLEX",
+   "evidence_bbox": [
+    430,
+    278,
+    575,
+    312
+   ]
+  },
+  "latency_s": 10.1,
+  "completion_tokens": 337,
+  "reasoning_tokens": 296,
+  "reasoning_excerpt": "I need analyze image identify brand Rolex text. I'll output short phrase as written image and bbox evidence. Should think carefully coordinates. Should respond JSON code block only ideally. Should brand \"ROLEX\" text near center upper dial around x431-574 y278-312. Should have bounding box image region evidence. User asks bounding box image region used as evidence. I should box text ROLEX. Should have coordinates integer pixels. Image dimensions 1024x782. Inspect image mentally. Rolex crown at ~490-576,179-246. Text ROLEX begins x433 y280 ends maybe 571 y309. Should be accurate. I could give bb",
+  "verdict": "hit",
+  "metric": 1.0,
+  "pred_text": "ROLEX",
+  "gt_text": "rolex",
+  "note": "10/10 annotators gave this answer",
+  "evidence_bbox": [
+   430.0,
+   278.0,
+   575.0,
+   312.0
+  ],
+  "viz": "results/viz/textvqa__textvqa_37981.jpg"
+ },
+ {
+  "id": "textvqa/textvqa_38269",
+  "task": "textvqa",
+  "task_name": "Scene-text VQA",
+  "benchmark": "TextVQA (Singh et al., 2019)",
+  "metric_name": "VQA accuracy",
+  "image": "data/textvqa/textvqa_38269.jpg",
+  "width": 1024,
+  "height": 564,
+  "question": "what does the orange letters on top of the bus say?",
+  "gt": [
+   "volvo 7900 hybride",
+   "volvo 7900 hybrid",
+   "volvo7900 hybride",
+   "volva 7900 hybride",
+   "volvo 7900 hybride",
+   "volvo 7900 hybride",
+   "7900",
+   "volvo 7900 hybride",
+   "volvo 7900 hybride",
+   "volvo 7900 hybrid"
+  ],
+  "prediction": {
+   "answer": "VOLVO 7900 HYBRID",
+   "evidence_bbox": [
+    108,
+    100,
+    283,
+    151
+   ]
+  },
+  "latency_s": 12.9,
+  "completion_tokens": 489,
+  "reasoning_tokens": 442,
+  "reasoning_excerpt": "I need inspect image. Orange letters destination top bus: looks \"VOLVO 7900 HYBRID\" perhaps \"VOLVO 7900 HYBRID\" or \"VOLVO 7900 HYBRIDE\" careful. I'll output short exact and bbox. Should think through image. The orange LED front display on top windshield from x107 to281 y100? It appears \"VOLVO 7900 HYBRID\" final? User asks what orange letters say. Perhaps \"VOLVO 7900 HYBRID\". Bus is Volvo 7900 Hybrid articulated. Image display can read VOLVO 7900 HYBRID. Evidence bbox [109,100,281,150] perhaps precise.\n\nI'll zoom mentally. Image dimensions 1024x564. Orange text across top left bus windshield. L",
+  "verdict": "partial",
+  "metric": 0.667,
+  "pred_text": "VOLVO 7900 HYBRID",
+  "gt_text": "volvo 7900 hybride",
+  "note": "2/10 annotators gave this answer",
+  "evidence_bbox": [
+   108.0,
+   100.0,
+   283.0,
+   151.0
+  ],
+  "viz": "results/viz/textvqa__textvqa_38269.jpg"
+ },
+ {
+  "id": "textvqa/textvqa_38911",
+  "task": "textvqa",
+  "task_name": "Scene-text VQA",
+  "benchmark": "TextVQA (Singh et al., 2019)",
+  "metric_name": "VQA accuracy",
+  "image": "data/textvqa/textvqa_38911.jpg",
+  "width": 1024,
+  "height": 768,
+  "question": "where is this library?",
+  "gt": [
+   "chinatown",
+   "chinatown",
+   "chinatown",
+   "chinatown",
+   "chinatown",
+   "chinatown",
+   "chinatown",
+   "chinatown",
+   "chinatown",
+   "chinatown"
+  ],
+  "prediction": {
+   "answer": "Chinatown",
+   "evidence_bbox": [
+    278,
+    233,
+    606,
+    310
+   ]
+  },
+  "latency_s": 17.7,
+  "completion_tokens": 451,
+  "reasoning_tokens": 409,
+  "reasoning_excerpt": "I need respond identify library where based image text library@chinatown. Should have bounding box evidence. Should think coordinates. Image 1024x768. Text visible across glass middle upper at x282 y232 to maybe 611 y310. It says library@chinatown. Should respond likely \"Chinatown\" short as written? User asks where is this library? Answer short word/phrase as written in image when answer text. Should answer \"library@chinatown\" or \"Chinatown\". Should bbox of image region used. Determine precise evidence text. Large pale lettering: library@chinatown x282 y237 to x576? I'll inspect mentally image",
+  "verdict": "hit",
+  "metric": 1.0,
+  "pred_text": "Chinatown",
+  "gt_text": "chinatown",
+  "note": "10/10 annotators gave this answer",
+  "evidence_bbox": [
+   278.0,
+   233.0,
+   606.0,
+   310.0
+  ],
+  "viz": "results/viz/textvqa__textvqa_38911.jpg"
+ },
+ {
+  "id": "textvqa/textvqa_38990",
+  "task": "textvqa",
+  "task_name": "Scene-text VQA",
+  "benchmark": "TextVQA (Singh et al., 2019)",
+  "metric_name": "VQA accuracy",
+  "image": "data/textvqa/textvqa_38990.jpg",
+  "width": 1024,
+  "height": 768,
+  "question": "was the mystery machine van in the cartoon scooby doo?",
+  "gt": [
+   "yes",
+   "yes",
+   "yes",
+   "yes",
+   "yes",
+   "yes",
+   "answering does not require reading text in the image",
+   "yes",
+   "answering does not require reading text in the image",
+   "yes"
+  ],
+  "prediction": {
+   "answer": "Yes",
+   "evidence_bbox": [
+    176,
+    121,
+    949,
+    700
+   ]
+  },
+  "latency_s": 12.4,
+  "completion_tokens": 462,
+  "reasoning_tokens": 422,
+  "reasoning_excerpt": "I need respond to user asks was the mystery machine van in cartoon scooby doo? Should have concise word/phrase as written image when answer text image. Should have bounding box evidence. Image van with Mystery Machine text and Scooby and Shaggy rear windows. Respond yes. Should have evidence bbox likely entire van or text/window? Should think. User requires exactly JSON code block keys answer evidence_bbox. Should choose bounding box of image region used as evidence. Should respond \"Yes\". Bounding box perhaps [180, 120, 948, 699] entire van. Or relevant region showing words and Scooby Doo? Sho",
+  "verdict": "hit",
+  "metric": 1.0,
+  "pred_text": "Yes",
+  "gt_text": "yes",
+  "note": "8/10 annotators gave this answer",
+  "evidence_bbox": [
+   176.0,
+   121.0,
+   949.0,
+   700.0
+  ],
+  "viz": "results/viz/textvqa__textvqa_38990.jpg"
+ },
+ {
+  "id": "docvqa/docvqa_49398",
+  "task": "docvqa",
+  "task_name": "Document VQA",
+  "benchmark": "DocVQA (Mathew et al., 2021)",
+  "metric_name": "ANLS",
+  "image": "data/docvqa/docvqa_49398.jpg",
+  "width": 800,
+  "height": 1757,
+  "question": "What is the name of the Congress ?",
+  "gt": [
+   "international congress of nutrition",
+   "International Congress of Nutrition",
+   "ix international congress of nutrition"
+  ],
+  "prediction": {
+   "answer": "IX International Congress of Nutrition",
+   "evidence_bbox": [
+    207,
+    459,
+    611,
+    634
+   ]
+  },
+  "latency_s": 20.7,
+  "completion_tokens": 671,
+  "reasoning_tokens": 627,
+  "reasoning_excerpt": "I need analyze image and request. Should respond name of Congress exact text and bbox region containing reply. Should have concise JSON only? User says think through then end single JSON code block keys. Should determine name: \"X international congress of nutrition\" (Roman numeral X = IX? Image has large X? I'll inspect). Text logo at x roughly 211 to 609, y461 to 632. It appears large \"IX\" perhaps \"X\" with I left? Should read exact: The Ninth International Congress of Nutrition, Mexico 1972. Known IX International Congress of Nutrition, held Mexico City Sept 3-9 1972. Logo shows \"IX\" (I and X",
+  "verdict": "hit",
+  "metric": 1.0,
+  "pred_text": "IX International Congress of Nutrition",
+  "gt_text": "international congress of nutrition",
+  "note": "ANLS 1.00",
+  "evidence_bbox": [
+   207.0,
+   459.0,
+   611.0,
+   634.0
+  ],
+  "viz": "results/viz/docvqa__docvqa_49398.jpg"
+ },
+ {
+  "id": "docvqa/docvqa_50367",
+  "task": "docvqa",
+  "task_name": "Document VQA",
+  "benchmark": "DocVQA (Mathew et al., 2021)",
+  "metric_name": "ANLS",
+  "image": "data/docvqa/docvqa_50367.jpg",
+  "width": 1749,
+  "height": 2251,
+  "question": "What is the topic of the second session?",
+  "gt": [
+   "\"Foetal damage and alcohol consumption\""
+  ],
+  "prediction": {
+   "answer": "Social Class in Epidemiology - A Need for Reclassification",
+   "evidence_bbox": [
+    438,
+    578,
+    1514,
+    616
+   ]
+  },
+  "latency_s": 23.3,
+  "completion_tokens": 832,
+  "reasoning_tokens": 780,
+  "reasoning_excerpt": "Kimi needs to inspect the document question second session. Should determine interpretation topic second session likely at 10.45 \"Social Class in Epidemiology \u2013 A Need for Reclassification\". Should have exact text and bbox. I'll respond concise JSON only code block. Should reason carefully image coordinates. Image 1749x2251. Sessions schedule Thursday 22 Sept. 9.00 first \"The Borderline Between Safe and Hazardous Drinking\", coffee 10.30-10.45, second 10.45 \"Social Class in Epidemiology \u2013 A Need for Reclassification\" Professor Sir Cyril Clarke. User topic second session could overall second ses",
+  "verdict": "miss",
+  "metric": 0.0,
+  "pred_text": "Social Class in Epidemiology - A Need for Reclassification",
+  "gt_text": "Foetal damage and alcohol consumption",
+  "note": "ANLS 0.00",
+  "evidence_bbox": [
+   438.0,
+   578.0,
+   1514.0,
+   616.0
+  ],
+  "viz": "results/viz/docvqa__docvqa_50367.jpg"
+ },
+ {
+  "id": "docvqa/docvqa_50716",
+  "task": "docvqa",
+  "task_name": "Document VQA",
+  "benchmark": "DocVQA (Mathew et al., 2021)",
+  "metric_name": "ANLS",
+  "image": "data/docvqa/docvqa_50716.jpg",
+  "width": 2103,
+  "height": 1603,
+  "question": "What does 'NMD3' stand for?",
+  "gt": [
+   "VLG REPLACEMENT",
+   "VLG Replacement",
+   "NMD3 = VLG Replacement"
+  ],
+  "prediction": {
+   "answer": "VLG Replacement",
+   "evidence_bbox": [
+    1044,
+    1364,
+    1354,
+    1394
+   ]
+  },
+  "latency_s": 17.0,
+  "completion_tokens": 517,
+  "reasoning_tokens": 477,
+  "reasoning_excerpt": "I need inspect image, respond NMD3 stands for VLG Replacement exact. Should have bounding box document region containing answer. Should have coordinates image 2103x1603. Footnote bottom NMD3 = VLG Replacement around x1044 y1366 to 1351 y1392 perhaps. Carefully locate. Should think exact text: footnote lines:\n* NMD1 = STH Replacement, GC-MSD at y1315\n* NMD2 = Robotics/Analytical Chemist y1344\n* NMD3 = VLG Replacement y1374.\nI need output concise copying exact. Bounding box likely [1043, 1363, 1352, 1396] perhaps. Make sure coordinates. I'll analyze image scaling visible 2103x1603. Footnotes of ",
+  "verdict": "hit",
+  "metric": 1.0,
+  "pred_text": "VLG Replacement",
+  "gt_text": "VLG REPLACEMENT",
+  "note": "ANLS 1.00",
+  "evidence_bbox": [
+   1044.0,
+   1364.0,
+   1354.0,
+   1394.0
+  ],
+  "viz": "results/viz/docvqa__docvqa_50716.jpg"
+ },
+ {
+  "id": "docvqa/docvqa_53696",
+  "task": "docvqa",
+  "task_name": "Document VQA",
+  "benchmark": "DocVQA (Mathew et al., 2021)",
+  "metric_name": "ANLS",
+  "image": "data/docvqa/docvqa_53696.jpg",
+  "width": 1692,
+  "height": 2245,
+  "question": "What is written below RJReynolds logo?",
+  "gt": [
+   "Tobacco company"
+  ],
+  "prediction": {
+   "answer": "Tobacco Company",
+   "evidence_bbox": [
+    546,
+    293,
+    739,
+    324
+   ]
+  },
+  "latency_s": 10.9,
+  "completion_tokens": 309,
+  "reasoning_tokens": 266,
+  "reasoning_excerpt": "I need respond question image. Should identify below RJ Reynolds logo text \"Tobacco Company\". Should have exact text bounding box containing answer. Should think coordinates. Image 1692x2245. Logo around x276-742 y190-323. Text Tobacco Company at x547? y294-323. I'll output single JSON in code block exactly keys. Should have concise no extra. Should estimate bbox accurately region containing answer. Text \"Tobacco Company\" located roughly x548 y294 to x735 y322. Should analyze image dimensions visually. Logo RJReynolds from x272 y190 to739 y327; under logo horizontal line y292. Tobacco Company ",
+  "verdict": "hit",
+  "metric": 1.0,
+  "pred_text": "Tobacco Company",
+  "gt_text": "Tobacco company",
+  "note": "ANLS 1.00",
+  "evidence_bbox": [
+   546.0,
+   293.0,
+   739.0,
+   324.0
+  ],
+  "viz": "results/viz/docvqa__docvqa_53696.jpg"
+ },
+ {
+  "id": "docvqa/docvqa_54490",
+  "task": "docvqa",
+  "task_name": "Document VQA",
+  "benchmark": "DocVQA (Mathew et al., 2021)",
+  "metric_name": "ANLS",
+  "image": "data/docvqa/docvqa_54490.jpg",
+  "width": 1692,
+  "height": 2245,
+  "question": "How much did the photographs of RJR foursome cost?",
+  "gt": [
+   "$30.00",
+   "30.00"
+  ],
+  "prediction": {
+   "answer": "$30.00",
+   "evidence_bbox": [
+    1268,
+    974,
+    1404,
+    1022
+   ]
+  },
+  "latency_s": 23.0,
+  "completion_tokens": 872,
+  "reasoning_tokens": 827,
+  "reasoning_excerpt": "I need analyze image question. Should answer exact photographs of RJR foursome cost. Row 08/11 Quicksilvers... Amount $30.00? Image annotation handwritten 4/ and 7.50 ea. printed appears \"30.00\" no $ before? Should identify. Asked \"How much did the photographs of RJR foursome cost?\" likely $30.00. Should bbox region containing answer. Should have exact text possible. I need output single JSON code block exactly keys. Should determine coordinates. Image 1692x2245. Printed amount row 08/11 at around x1272-1400 y974-1024. It looks \"4/ 30.00\" handwritten prefix at 1271 and printed 30.00 x1313-1396",
+  "verdict": "hit",
+  "metric": 1.0,
+  "pred_text": "$30.00",
+  "gt_text": "$30.00",
+  "note": "ANLS 1.00",
+  "evidence_bbox": [
+   1268.0,
+   974.0,
+   1404.0,
+   1022.0
+  ],
+  "viz": "results/viz/docvqa__docvqa_54490.jpg"
+ },
+ {
+  "id": "docvqa/docvqa_64888",
+  "task": "docvqa",
+  "task_name": "Document VQA",
+  "benchmark": "DocVQA (Mathew et al., 2021)",
+  "metric_name": "ANLS",
+  "image": "data/docvqa/docvqa_64888.jpg",
+  "width": 1782,
+  "height": 2283,
+  "question": "In Atlanta, what is the no. of stepped cases, whose living status is unknown?",
+  "gt": [
+   "6"
+  ],
+  "prediction": {
+   "answer": "6",
+   "evidence_bbox": [
+    1098,
+    682,
+    1130,
+    716
+   ]
+  },
+  "latency_s": 10.8,
+  "completion_tokens": 365,
+  "reasoning_tokens": 323,
+  "reasoning_excerpt": "I need inspect image and respond Atlanta living status unknown stepped N = 6. Should bbox precise region containing response, probably number 6 coordinates around 1110,686-712. Should derive image coords. I'll output single JSON block exactly keys. Should think image dimensions 1782x2283 displayed. Atlanta row y700, columns: living known stepped N 560 at 450; known referred 544 775; unknown stepped N 6 at 1114; unknown %1.1 1250; referred N22 etc. I'll give bbox document region containing response. Could box target cell or row? Usually respond concise exact and bbox number. Should estimate x10",
+  "verdict": "hit",
+  "metric": 1.0,
+  "pred_text": "6",
+  "gt_text": "6",
+  "note": "ANLS 1.00",
+  "evidence_bbox": [
+   1098.0,
+   682.0,
+   1130.0,
+   716.0
+  ],
+  "viz": "results/viz/docvqa__docvqa_64888.jpg"
+ },
+ {
+  "id": "chartqa/chartqa_813",
+  "task": "chartqa",
+  "task_name": "Chart QA",
+  "benchmark": "ChartQA (Masry et al., 2022)",
+  "metric_name": "relaxed accuracy (5%)",
+  "image": "data/chartqa/chartqa_813.jpg",
+  "width": 800,
+  "height": 557,
+  "question": "What is the sum of United states and United kingdom in the pie chart?",
+  "gt": [
+   "39.27"
+  ],
+  "prediction": {
+   "answer": "39.27"
+  },
+  "latency_s": 4.0,
+  "completion_tokens": 118,
+  "reasoning_tokens": 93,
+  "reasoning_excerpt": "I need respond sum US 23.7 UK 15.57 =39.27. I'll comply user response with single number or short phrase without units or %. Think then end single JSON code block exactly keys answer. I should just code block {\"answer\":\"39.27\"}. No reasoning in response. Should parse question: sum United states and United kingdom 23.7 +15.57=39.27. Yes. Respond exactly json code block.",
+  "verdict": "hit",
+  "metric": 1.0,
+  "pred_text": "39.27",
+  "gt_text": "39.27",
+  "note": "exact",
+  "viz": "results/viz/chartqa__chartqa_813.jpg"
+ },
+ {
+  "id": "chartqa/chartqa_843",
+  "task": "chartqa",
+  "task_name": "Chart QA",
+  "benchmark": "ChartQA (Masry et al., 2022)",
+  "metric_name": "relaxed accuracy (5%)",
+  "image": "data/chartqa/chartqa_843.jpg",
+  "width": 800,
+  "height": 557,
+  "question": "In which year, the estimated number of Christians in Global South exceed 1300 million?",
+  "gt": [
+   "2010"
+  ],
+  "prediction": {
+   "answer": "2010"
+  },
+  "latency_s": 5.5,
+  "completion_tokens": 219,
+  "reasoning_tokens": 195,
+  "reasoning_excerpt": "I need respond based image. Should think through but only short answer plus JSON block exact. Should identify year Global South exceeds 1300 million: bars 1910 108.91 (though image labels percentages odd y) 2010 1327.7, answer 2010. Should have response perhaps \"2010\" then JSON object. User says \"Answer with a single number or a short phrase, without units or % signs. Think it through, then end your reply with a single JSON object inside a ```json code block with exactly these keys: {\"answer\": \"<answer>\"}\". I should output JSON only? User asks end reply single JSON in code block. Usually these",
+  "verdict": "hit",
+  "metric": 1.0,
+  "pred_text": "2010",
+  "gt_text": "2010",
+  "note": "exact",
+  "viz": "results/viz/chartqa__chartqa_843.jpg"
+ },
+ {
+  "id": "chartqa/chartqa_1352",
+  "task": "chartqa",
+  "task_name": "Chart QA",
+  "benchmark": "ChartQA (Masry et al., 2022)",
+  "metric_name": "relaxed accuracy (5%)",
+  "image": "data/chartqa/chartqa_1352.jpg",
+  "width": 800,
+  "height": 557,
+  "question": "How many students were enrolled in Kenyan universities in 2018/19?",
+  "gt": [
+   "519462"
+  ],
+  "prediction": {
+   "answer": "519462"
+  },
+  "latency_s": 3.6,
+  "completion_tokens": 108,
+  "reasoning_tokens": 84,
+  "reasoning_excerpt": "Kimi needs to answer chart 2018/19 519462. Should think through internally then respond with single JSON object in json block exact keys. User asks answer single number or short phrase no units %. Should output likely ```json {\"answer\":\"519462\"} ```. Make sure formatting value space? Chart label 519 462. Answer numeric 519462. Only JSON code block. I can respond concise.",
+  "verdict": "hit",
+  "metric": 1.0,
+  "pred_text": "519462",
+  "gt_text": "519462",
+  "note": "exact",
+  "viz": "results/viz/chartqa__chartqa_1352.jpg"
+ },
+ {
+  "id": "chartqa/chartqa_1494",
+  "task": "chartqa",
+  "task_name": "Chart QA",
+  "benchmark": "ChartQA (Masry et al., 2022)",
+  "metric_name": "relaxed accuracy (5%)",
+  "image": "data/chartqa/chartqa_1494.jpg",
+  "width": 800,
+  "height": 557,
+  "question": "The coronavirus pandemic resulting in movie theater closures resulted in a box office decline to how much?",
+  "gt": [
+   "296.7"
+  ],
+  "prediction": {
+   "answer": "296.7"
+  },
+  "latency_s": 5.6,
+  "completion_tokens": 208,
+  "reasoning_tokens": 183,
+  "reasoning_excerpt": "I need respond to question chart. Should think through. Should answer single number/short phrase no units/% and end reply JSON exactly. Should reconcile instruction likely output just json with answer. Chart 2010-2020 revenue million GBP, pandemic 2020 box office decline 296.7. I'll answer 296.7. I need possibly identify units? User explicitly no units. Respond JSON answer. Could be \"296.7 million GBP\" but no units so 296.7. Make sure chart bar 2020 296.7. Yes.\n\nUser \"Think it through, then end your reply with a single JSON object inside a ```json code block with exactly these keys...\" Could o",
+  "verdict": "hit",
+  "metric": 1.0,
+  "pred_text": "296.7",
+  "gt_text": "296.7",
+  "note": "exact",
+  "viz": "results/viz/chartqa__chartqa_1494.jpg"
+ },
+ {
+  "id": "chartqa/chartqa_1605",
+  "task": "chartqa",
+  "task_name": "Chart QA",
+  "benchmark": "ChartQA (Masry et al., 2022)",
+  "metric_name": "relaxed accuracy (5%)",
+  "image": "data/chartqa/chartqa_1605.jpg",
+  "width": 800,
+  "height": 557,
+  "question": "How many people aged 15 or above read women's monthly magazines?",
+  "gt": [
+   "24.9"
+  ],
+  "prediction": {
+   "answer": "24.9"
+  },
+  "latency_s": 5.5,
+  "completion_tokens": 230,
+  "reasoning_tokens": 205,
+  "reasoning_excerpt": "I need respond to user image chart. Carefully parse. User asks how many people aged 15 or above read women's monthly magazines. Chart number readers in millions, women's monthlies 24.9. User wants single number short phrase without units or % signs. Must think through then end reply single JSON object in json code block exactly keys answer. Should likely output just code block {\"answer\":\"24.9\"} no extra? Should reconcile \"Answer with a single number or a short phrase, without units or % signs. Think it through, then end your reply with a single JSON object inside a ```json code block with exac",
+  "verdict": "hit",
+  "metric": 1.0,
+  "pred_text": "24.9",
+  "gt_text": "24.9",
+  "note": "exact",
+  "viz": "results/viz/chartqa__chartqa_1605.jpg"
+ },
+ {
+  "id": "chartqa/chartqa_2444",
+  "task": "chartqa",
+  "task_name": "Chart QA",
+  "benchmark": "ChartQA (Masry et al., 2022)",
+  "metric_name": "relaxed accuracy (5%)",
+  "image": "data/chartqa/chartqa_2444.jpg",
+  "width": 800,
+  "height": 1136,
+  "question": "What percentage of families in Boston lived below the poverty level in 2019?",
+  "gt": [
+   "11.7"
+  ],
+  "prediction": {
+   "answer": "11.7"
+  },
+  "latency_s": 5.4,
+  "completion_tokens": 161,
+  "reasoning_tokens": 136,
+  "reasoning_excerpt": "I need answer image Boston 11.7. Should obey think then end single JSON object code block exactly keys. User says answer single number or short phrase without units or %. I'll likely output the JSON block only {\"answer\":\"11.7\"}. Make sure Boston chart 11.7 yes. Could output 11.7 then json? They specifically \"Answer with a single number or a short phrase... Think it through, then end your reply with a single JSON object inside...\". Usually just respond JSON code block, answer value no unit. Should not reveal thought. Could simply ```json\\n{\"answer\": \"11.7\"}\\n```. This is desired.",
+  "verdict": "hit",
+  "metric": 1.0,
+  "pred_text": "11.7",
+  "gt_text": "11.7",
+  "note": "exact",
+  "viz": "results/viz/chartqa__chartqa_2444.jpg"
+ },
+ {
+  "id": "mathvista/mathvista_216",
+  "task": "mathvista",
+  "task_name": "Visual math reasoning",
+  "benchmark": "MathVista (Lu et al., 2024)",
+  "metric_name": "exact answer",
+  "image": "data/mathvista/mathvista_216.jpg",
+  "width": 448,
+  "height": 448,
+  "question": "Hint: Please answer the question requiring an integer answer and provide the final value, e.g., 1, 2, 3, at the end.\nQuestion: What percentage of people like the most preferred object in the whole chart?",
+  "gt": "90",
+  "prediction": {
+   "answer": "90"
+  },
+  "latency_s": 5.0,
+  "completion_tokens": 149,
+  "reasoning_tokens": 126,
+  "reasoning_excerpt": "I need interpret chart. I'll respond max bar 90 lake nerve. I'll think step-by-step internally, then respond single JSON object code block exactly key answer value. Make sure percentage 90. I'll inspect: blue lake 40 orange 90, split blue50 orange30, burst 10 20, pen10 30. Most preferred 90. I'll output {\"answer\":\"90\"} code block. User requests \"Think it through, then end your reply with a single JSON object inside ... exactly keys...\" Could simply respond JSON. Should value exactly as hint integer. String because key specified answer string. Use 90.",
+  "verdict": "hit",
+  "metric": 1.0,
+  "pred_text": "90",
+  "gt_text": "90",
+  "note": "correct",
+  "viz": "results/viz/mathvista__mathvista_216.jpg"
+ },
+ {
+  "id": "mathvista/mathvista_223",
+  "task": "mathvista",
+  "task_name": "Visual math reasoning",
+  "benchmark": "MathVista (Lu et al., 2024)",
+  "metric_name": "exact answer",
+  "image": "data/mathvista/mathvista_223.jpg",
+  "width": 1430,
+  "height": 776,
+  "question": "Hint: Please answer the question and provide the correct option letter, e.g., A, B, C, D, at the end.\nQuestion: Is this an even function?\nChoices:\n(A) Yes\n(B) No",
+  "gt": "Yes",
+  "prediction": {
+   "answer": "A"
+  },
+  "latency_s": 5.8,
+  "completion_tokens": 239,
+  "reasoning_tokens": 168,
+  "reasoning_excerpt": "I need answer image constant function f(x)=c horizontal line y~1.5. Even function? f(-x)=c=f(x), symmetric y-axis. Yes A. Should think through then end single JSON code block exactly keys answer. Should decide include concise reasoning. I should explain constant function satisfies f(-x)=f(x) all x so even. End JSON {\"answer\":\"A\"}. Make sure c perhaps nonzero shown 1.5; constant zero also even. Yes. Could mention graph symmetric about y-axis. Output perhaps \"The graph is a horizontal line, so \\(f(-x)=c=f(x)\\) for every \\(x\\). It is symmetric about the \\(y\\)-axis and therefore even.\\n\\n```json\\n",
+  "verdict": "hit",
+  "metric": 1.0,
+  "pred_text": "A (Yes)",
+  "gt_text": "Yes",
+  "note": "correct",
+  "viz": "results/viz/mathvista__mathvista_223.jpg"
+ },
+ {
+  "id": "mathvista/mathvista_253",
+  "task": "mathvista",
+  "task_name": "Visual math reasoning",
+  "benchmark": "MathVista (Lu et al., 2024)",
+  "metric_name": "exact answer",
+  "image": "data/mathvista/mathvista_253.jpg",
+  "width": 448,
+  "height": 448,
+  "question": "Hint: Please answer the question requiring an integer answer and provide the final value, e.g., 1, 2, 3, at the end.\nQuestion: How many objects are preferred by more than 7 people in at least one category?",
+  "gt": "2",
+  "prediction": {
+   "answer": "2"
+  },
+  "latency_s": 5.3,
+  "completion_tokens": 179,
+  "reasoning_tokens": 156,
+  "reasoning_excerpt": "I need analyze chart question. I'll output single JSON block exactly keys answer final integer. Should think through. Chart Most preferred objects of different categories. x objects tender drain wet. number people. tender nut9 quo2 bull9 recipe9, drain nut9 quo6 bull7 recipe1, wet nut7 quo2 bull7 recipe1. Ask How many objects are preferred by more than 7 people in at least one category? Objects tender and drain have nut9; tender bull recipe 9. Drain max9. Wet max7 not >7. Count2. Final JSON {\"answer\":\"2\"} within code. Could just do. Make sure no extra response? User says think it through then ",
+  "verdict": "hit",
+  "metric": 1.0,
+  "pred_text": "2",
+  "gt_text": "2",
+  "note": "correct",
+  "viz": "results/viz/mathvista__mathvista_253.jpg"
+ },
+ {
+  "id": "mathvista/mathvista_427",
+  "task": "mathvista",
+  "task_name": "Visual math reasoning",
+  "benchmark": "MathVista (Lu et al., 2024)",
+  "metric_name": "exact answer",
+  "image": "data/mathvista/mathvista_427.jpg",
+  "width": 448,
+  "height": 448,
+  "question": "Hint: Please answer the question requiring an integer answer and provide the final value, e.g., 1, 2, 3, at the end.\nQuestion: How many people prefer the most preferred object?",
+  "gt": "7",
+  "prediction": {
+   "answer": "7"
+  },
+  "latency_s": 5.5,
+  "completion_tokens": 153,
+  "reasoning_tokens": 130,
+  "reasoning_excerpt": "I need analyze chart simple. Respond with a single JSON code block, think through internally. Chart horizontal bar most preferred objects: pupil bar ~7, nurse 6. Highest pupil 7 people. Make sure exact pupil value 7 yes spans from x40 to307 where grid x39=0 x116=2 x193=4 x269=6 x346=8 x422=10. 307 => 7. JSON answer string \"7\" per exact. Could just code block. User asks think it through then end reply single JSON object. No need explanation likely output json. Should comply value at end. Answer 7.",
+  "verdict": "hit",
+  "metric": 1.0,
+  "pred_text": "7",
+  "gt_text": "7",
+  "note": "correct",
+  "viz": "results/viz/mathvista__mathvista_427.jpg"
+ },
+ {
+  "id": "mathvista/mathvista_742",
+  "task": "mathvista",
+  "task_name": "Visual math reasoning",
+  "benchmark": "MathVista (Lu et al., 2024)",
+  "metric_name": "exact answer",
+  "image": "data/mathvista/mathvista_742.jpg",
+  "width": 438,
+  "height": 159,
+  "question": "Hint: Please answer the question requiring an integer answer and provide the final value, e.g., 1, 2, 3, at the end.\nQuestion: Move the ruler to measure the length of the twig to the nearest inch. The twig is about (_) inches long.",
+  "gt": "3",
+  "prediction": {
+   "answer": "3"
+  },
+  "latency_s": 6.4,
+  "completion_tokens": 234,
+  "reasoning_tokens": 211,
+  "reasoning_excerpt": "I need respond with image measurement of twig nearest inch integer. Should carefully inspect dimensions. Should think. Image twig horizontal top from x86 to256 approx length170. Ruler tick positions x28 0, x89? 1, x151?2, x212?3, x274?4, x335?5,x396?6. Inch ~61.3. Twig length 170 /61.3 =2.77 =>3 inches. Should have response JSON exactly keys answer value. User requests think through then end reply single JSON object code block. Could just output JSON. Should verify twig likely 3 inches. I'll inspect visually. Twig starts 86, ends257, ruler 0 at28, 3 at212. length171, inch61, 2.8. about3. I nee",
+  "verdict": "hit",
+  "metric": 1.0,
+  "pred_text": "3",
+  "gt_text": "3",
+  "note": "correct",
+  "viz": "results/viz/mathvista__mathvista_742.jpg"
+ },
+ {
+  "id": "mathvista/mathvista_979",
+  "task": "mathvista",
+  "task_name": "Visual math reasoning",
+  "benchmark": "MathVista (Lu et al., 2024)",
+  "metric_name": "exact answer",
+  "image": "data/mathvista/mathvista_979.jpg",
+  "width": 634,
+  "height": 279,
+  "question": "Hint: Please answer the question requiring an integer answer and provide the final value, e.g., 1, 2, 3, at the end.\nQuestion: What number is shown?",
+  "gt": "9079",
+  "prediction": {
+   "answer": "9069"
+  },
+  "latency_s": 60.3,
+  "completion_tokens": 2941,
+  "reasoning_tokens": 2876,
+  "reasoning_excerpt": "I need analyze image base ten blocks number. Should count hundreds? Carefully count cubes top and second row, rods units. Should identify blocks: large cubes 1000 each (10x10x10). Image top row 6? I'll count visual: top at x 0-103 first, x108-208 second, x214-314 third, x320-420 fourth, x426-526 fifth, x532-632 sixth. Yes six 1000 cubes top. second row x0-102, x108-208, x214-314 =3. Total 9 thousand. Bottom rods x7,27? Should count rods 7? I'll inspect pixel mentally. Bottom left vertical ten rods: visible at x7-16, x27-36, x47-56, x67-76, x87-96, x107-116? Wait image: row vertical orange rods",
+  "verdict": "miss",
+  "metric": 0.0,
+  "pred_text": "9069",
+  "gt_text": "9079",
+  "note": "wrong answer",
+  "viz": "results/viz/mathvista__mathvista_979.jpg"
+ },
+ {
+  "id": "vsr/vsr_211",
+  "task": "vsr",
+  "task_name": "Spatial-relation reasoning",
+  "benchmark": "VSR (Liu et al., 2023)",
+  "metric_name": "true/false accuracy",
+  "image": "data/vsr/vsr_211.jpg",
+  "width": 640,
+  "height": 480,
+  "question": "The bus is facing away from the cow.",
+  "gt": true,
+  "prediction": {
+   "answer": false,
+   "objects": [
+    {
+     "label": "bus",
+     "bbox": [
+      283,
+      0,
+      639,
+      213
+     ]
+    },
+    {
+     "label": "cow",
+     "bbox": [
+      5,
+      168,
+      80,
+      212
+     ]
+    }
+   ]
+  },
+  "latency_s": 50.4,
+  "completion_tokens": 2378,
+  "reasoning_tokens": 2310,
+  "reasoning_excerpt": "I need analyze image, statement bus facing away from cow. Should true/false and boxes bus cow. Should think thoroughly visual.\n\nImage 640x480. Man bicycle foreground. Bus background right spans x282? to640, y0? top? Bus visible side/front? Should determine facing direction. Cow left at x5-80 y169-211 dark animal, perhaps boar/cow. Bus is traveling right? I'll examine. Bus left edge at x284 with rounded front? Yellow/blue bus, front is left? I see side of bus, front curved at x286 top y15, yellow front at x289? Windows: front? It seems bus side, back? Should parse.\n\nBus visible large blue/yello",
+  "verdict": "miss",
+  "metric": 0.0,
+  "pred_text": "false",
+  "gt_text": "true",
+  "note": "wrong judgement",
+  "pred_boxes": [
+   {
+    "label": "bus",
+    "bbox": [
+     283.0,
+     0.0,
+     639.0,
+     213.0
+    ]
+   },
+   {
+    "label": "cow",
+    "bbox": [
+     5.0,
+     168.0,
+     80.0,
+     212.0
+    ]
+   }
+  ],
+  "viz": "results/viz/vsr__vsr_211.jpg"
+ },
+ {
+  "id": "vsr/vsr_245",
+  "task": "vsr",
+  "task_name": "Spatial-relation reasoning",
+  "benchmark": "VSR (Liu et al., 2023)",
+  "metric_name": "true/false accuracy",
+  "image": "data/vsr/vsr_245.jpg",
+  "width": 640,
+  "height": 490,
+  "question": "The truck is next to the motorcycle.",
+  "gt": true,
+  "prediction": {
+   "answer": true,
+   "objects": [
+    {
+     "label": "truck",
+     "bbox": [
+      17,
+      20,
+      468,
+      360
+     ]
+    },
+    {
+     "label": "motorcycle",
+     "bbox": [
+      545,
+      214,
+      639,
+      351
+     ]
+    }
+   ]
+  },
+  "latency_s": 23.0,
+  "completion_tokens": 1481,
+  "reasoning_tokens": 1411,
+  "reasoning_excerpt": "I need analyze image carefully statement truck next to motorcycle. Should have bounding boxes truck and motorcycle integer coords image 640x490. I'll output end single JSON code block exactly keys response objects. Should decide boxes. Image truck dominates left center, motorcycle right behind man. Should box truck x approx 16 y 20 to 469? Should have precise identify extents. Motorcycle right edge x? I'll inspect mentally image.\n\nDimensions 640x490. Red truck: front and dump bed. At left starts x16? y? top of cab 21. Truck extends to x459? There is perhaps tire near x464 y336? Should include ",
+  "verdict": "hit",
+  "metric": 1.0,
+  "pred_text": "true",
+  "gt_text": "true",
+  "note": "correct",
+  "pred_boxes": [
+   {
+    "label": "truck",
+    "bbox": [
+     17.0,
+     20.0,
+     468.0,
+     360.0
+    ]
+   },
+   {
+    "label": "motorcycle",
+    "bbox": [
+     545.0,
+     214.0,
+     639.0,
+     351.0
+    ]
+   }
+  ],
+  "viz": "results/viz/vsr__vsr_245.jpg"
+ },
+ {
+  "id": "vsr/vsr_551",
+  "task": "vsr",
+  "task_name": "Spatial-relation reasoning",
+  "benchmark": "VSR (Liu et al., 2023)",
+  "metric_name": "true/false accuracy",
+  "image": "data/vsr/vsr_551.jpg",
+  "width": 640,
+  "height": 480,
+  "question": "The cat is touching the keyboard.",
+  "gt": false,
+  "prediction": {
+   "answer": false,
+   "objects": [
+    {
+     "label": "cat",
+     "bbox": [
+      116,
+      0,
+      640,
+      480
+     ]
+    },
+    {
+     "label": "keyboard",
+     "bbox": [
+      0,
+      184,
+      594,
+      343
+     ]
+    }
+   ]
+  },
+  "latency_s": 24.6,
+  "completion_tokens": 1636,
+  "reasoning_tokens": 1568,
+  "reasoning_excerpt": "Kimi needs to analyze the image carefully. Should determine cat touching keyboard? Image ginger cat center front, keyboard behind desk. Statement likely false; cat not touching keyboard. Should bounding boxes for cat and keyboard. Should have exact coordinates integer pixels. Should end single JSON code block exact keys. Should think through then respond perhaps just JSON. Should establish boxes. Image 640x480. Cat extends x~113 to640 y0 to479. Keyboard visible left x0 to~193? There is also keyboard behind right? Should understand one keyboard across background. I'll inspect visually mentally.",
+  "verdict": "hit",
+  "metric": 1.0,
+  "pred_text": "false",
+  "gt_text": "false",
+  "note": "correct",
+  "pred_boxes": [
+   {
+    "label": "cat",
+    "bbox": [
+     116.0,
+     0.0,
+     640.0,
+     480.0
+    ]
+   },
+   {
+    "label": "keyboard",
+    "bbox": [
+     0.0,
+     184.0,
+     594.0,
+     343.0
+    ]
+   }
+  ],
+  "viz": "results/viz/vsr__vsr_551.jpg"
+ },
+ {
+  "id": "vsr/vsr_736",
+  "task": "vsr",
+  "task_name": "Spatial-relation reasoning",
+  "benchmark": "VSR (Liu et al., 2023)",
+  "metric_name": "true/false accuracy",
+  "image": "data/vsr/vsr_736.jpg",
+  "width": 612,
+  "height": 612,
+  "question": "The bird is away from the refrigerator.",
+  "gt": true,
+  "prediction": {
+   "answer": false,
+   "objects": [
+    {
+     "label": "bird",
+     "bbox": [
+      23,
+      74,
+      420,
+      588
+     ]
+    },
+    {
+     "label": "refrigerator",
+     "bbox": [
+      23,
+      310,
+      107,
+      587
+     ]
+    }
+   ]
+  },
+  "latency_s": 108.7,
+  "completion_tokens": 2659,
+  "reasoning_tokens": 2588,
+  "reasoning_excerpt": "I need inspect image and determine truth statement \"The bird is away from the refrigerator.\" Should have bounding boxes for two objects statement mentions bird refrigerator. Should think. Should identify image: 612x612 square with black border. Large dark bird crow decoration left foreground, woman right. Background perhaps refrigerator? Should locate refrigerator possibly left behind bird at x22-97 y309-513? Should determine if bird away from refrigerator likely false if bird in front/next to fridge? Carefully analyze visual. I need output JSON exactly keys answer bool and objects label bbox.",
+  "verdict": "miss",
+  "metric": 0.0,
+  "pred_text": "false",
+  "gt_text": "true",
+  "note": "wrong judgement",
+  "pred_boxes": [
+   {
+    "label": "bird",
+    "bbox": [
+     23.0,
+     74.0,
+     420.0,
+     588.0
+    ]
+   },
+   {
+    "label": "refrigerator",
+    "bbox": [
+     23.0,
+     310.0,
+     107.0,
+     587.0
+    ]
+   }
+  ],
+  "viz": "results/viz/vsr__vsr_736.jpg"
+ },
+ {
+  "id": "vsr/vsr_835",
+  "task": "vsr",
+  "task_name": "Spatial-relation reasoning",
+  "benchmark": "VSR (Liu et al., 2023)",
+  "metric_name": "true/false accuracy",
+  "image": "data/vsr/vsr_835.jpg",
+  "width": 640,
+  "height": 480,
+  "question": "The suitcase is at the edge of the bed.",
+  "gt": true,
+  "prediction": {
+   "answer": true,
+   "objects": [
+    {
+     "label": "suitcase",
+     "bbox": [
+      138,
+      200,
+      254,
+      314
+     ]
+    },
+    {
+     "label": "bed",
+     "bbox": [
+      0,
+      138,
+      290,
+      479
+     ]
+    }
+   ]
+  },
+  "latency_s": 9.5,
+  "completion_tokens": 579,
+  "reasoning_tokens": 509,
+  "reasoning_excerpt": "I need analyze image, determine truth \"The suitcase is at the edge of the bed.\" Should have bounding boxes suitcase and bed. Should have exact JSON object at end single. Should think and coordinates. I'll inspect mentally. Image 640x480. Bedroom bed left bottom, suitcase black atop near right edge of bed. Statement true. Should bbox suitcase roughly x138 y201 x255 y313 maybe includes handle? Bed from 0 y138? Headboard? Should assign full visible bed bounding box. Usually VQA referring objects require bbox. Should provide suitcase and bed. I'll examine image detailed.\n\nBed visible from x0 y140 ",
+  "verdict": "hit",
+  "metric": 1.0,
+  "pred_text": "true",
+  "gt_text": "true",
+  "note": "correct",
+  "pred_boxes": [
+   {
+    "label": "suitcase",
+    "bbox": [
+     138.0,
+     200.0,
+     254.0,
+     314.0
+    ]
+   },
+   {
+    "label": "bed",
+    "bbox": [
+     0.0,
+     138.0,
+     290.0,
+     479.0
+    ]
+   }
+  ],
+  "viz": "results/viz/vsr__vsr_835.jpg"
+ },
+ {
+  "id": "vsr/vsr_1456",
+  "task": "vsr",
+  "task_name": "Spatial-relation reasoning",
+  "benchmark": "VSR (Liu et al., 2023)",
+  "metric_name": "true/false accuracy",
+  "image": "data/vsr/vsr_1456.jpg",
+  "width": 640,
+  "height": 429,
+  "question": "The truck is below the boat.",
+  "gt": true,
+  "prediction": {
+   "answer": true,
+   "objects": [
+    {
+     "label": "truck",
+     "bbox": [
+      68,
+      145,
+      613,
+      415
+     ]
+    },
+    {
+     "label": "boat",
+     "bbox": [
+      187,
+      25,
+      614,
+      246
+     ]
+    }
+   ]
+  },
+  "latency_s": 30.8,
+  "completion_tokens": 942,
+  "reasoning_tokens": 873,
+  "reasoning_excerpt": "I need analyze image, determine statement truck below boat true likely yes. Should have bounding boxes truck and boat integer. Should be careful to identify extents. I'll output JSON exactly. Should think coordinates 640x429. Image old blue truck, overturned? Boat white atop/behind truck angled. Should box boat approximate from x187 y24 to x615 y246? Truck from x67 y144 to x612 y414. Should examine carefully.\n\nI'll visually parse. Truck cabin blue x70-393 y146-407, bed x393-610 y246-362 etc. Boat is white large hull top from x187 y26 up? Let's detail image. White object starts at top near x262",
+  "verdict": "hit",
+  "metric": 1.0,
+  "pred_text": "true",
+  "gt_text": "true",
+  "note": "correct",
+  "pred_boxes": [
+   {
+    "label": "truck",
+    "bbox": [
+     68.0,
+     145.0,
+     613.0,
+     415.0
+    ]
+   },
+   {
+    "label": "boat",
+    "bbox": [
+     187.0,
+     25.0,
+     614.0,
+     246.0
+    ]
+   }
+  ],
+  "viz": "results/viz/vsr__vsr_1456.jpg"
+ },
+ {
+  "id": "pope/pope_605",
+  "task": "pope",
+  "task_name": "Object hallucination probe",
+  "benchmark": "POPE adversarial (Li et al., 2023)",
+  "metric_name": "yes/no accuracy",
+  "image": "data/pope/pope_605.jpg",
+  "width": 640,
+  "height": 480,
+  "question": "Is there a boat in the image?",
+  "gt": "yes",
+  "prediction": {
+   "answer": "yes",
+   "bbox": [
+    346,
+    45,
+    435,
+    134
+   ]
+  },
+  "latency_s": 19.2,
+  "completion_tokens": 513,
+  "reasoning_tokens": 475,
+  "reasoning_excerpt": "I need analyze image and output JSON exactly. Should identify boat model sailboat atop fireplace. Bounding box one instance pixel coords. Image 640x480. Should have accurate bounding coordinates. Should think through. Boat situated around x345 to434 y45 to137? Model sailboat atop mantel. Should include sails mast hull stand? User asks boat bounding box. I can identify top center. Should estimate x1 y1 x2 y2. I'll inspect mentally image. Model sailboat on wooden shelf above stone chimney. Top mast? Sailboat spans x347/348 y49 through433 y131. Sail triangular to390 y45? I'll map. Image top centr",
+  "verdict": "hit",
+  "metric": 1.0,
+  "pred_text": "yes",
+  "gt_text": "yes",
+  "note": "correct",
+  "pred_box": [
+   346.0,
+   45.0,
+   435.0,
+   134.0
+  ],
+  "viz": "results/viz/pope__pope_605.jpg"
+ },
+ {
+  "id": "pope/pope_1542",
+  "task": "pope",
+  "task_name": "Object hallucination probe",
+  "benchmark": "POPE adversarial (Li et al., 2023)",
+  "metric_name": "yes/no accuracy",
+  "image": "data/pope/pope_1542.jpg",
+  "width": 640,
+  "height": 478,
+  "question": "Is there a chair in the image?",
+  "gt": "no",
+  "prediction": {
+   "answer": "yes",
+   "bbox": [
+    287,
+    0,
+    383,
+    120
+   ]
+  },
+  "latency_s": 28.5,
+  "completion_tokens": 1676,
+  "reasoning_tokens": 1638,
+  "reasoning_excerpt": "I need analyze image chair. I'll respond yes/no and bbox integer. Should think locate chair. Image 640x478. At top background looks chair? Should inspect mentally. There is perhaps chair at top central: wooden chair with woven seat and curved back? Should identify bounding box. Should carefully parse. Background top: white table/desk left, black object? At x166 y0 white and yellow perhaps chair? Main likely chair in top center x292,0 to382,118. There is visible wooden chair with curved legs? Should reason.\n\nImage: dining plate foreground, Miller can left, red stool? Top left background gray ta",
+  "verdict": "miss",
+  "metric": 0.0,
+  "pred_text": "yes",
+  "gt_text": "no",
+  "note": "hallucinated the object",
+  "pred_box": [
+   287.0,
+   0.0,
+   383.0,
+   120.0
+  ],
+  "viz": "results/viz/pope__pope_1542.jpg"
+ },
+ {
+  "id": "pope/pope_125",
+  "task": "pope",
+  "task_name": "Object hallucination probe",
+  "benchmark": "POPE adversarial (Li et al., 2023)",
+  "metric_name": "yes/no accuracy",
+  "image": "data/pope/pope_125.jpg",
+  "width": 640,
+  "height": 480,
+  "question": "Is there a sandwich in the image?",
+  "gt": "yes",
+  "prediction": {
+   "answer": "yes",
+   "bbox": [
+    337,
+    54,
+    594,
+    438
+   ]
+  },
+  "latency_s": 9.7,
+  "completion_tokens": 532,
+  "reasoning_tokens": 494,
+  "reasoning_excerpt": "I need analyze image and produce yes bounding box one sandwich. Make sure coordinates. I'll think carefully. Image 640x480 shows plate with sandwich halves left and right. Should have bounding box one instance. Could choose left sandwich spanning x0 y149 to x397? y397? Or right x338 y54 to x590 y437. Should determine best instance separated halves. I'll output JSON exactly. Should have no extra perhaps think internally. Should identify left sandwich: top bread begins x0,y150, top contour extends to x165? y151 and x284 y185, x308 y195 then x335 y231, x355 y277, x382 y339, x382 y363? bottom sand",
+  "verdict": "hit",
+  "metric": 1.0,
+  "pred_text": "yes",
+  "gt_text": "yes",
+  "note": "correct",
+  "pred_box": [
+   337.0,
+   54.0,
+   594.0,
+   438.0
+  ],
+  "viz": "results/viz/pope__pope_125.jpg"
+ },
+ {
+  "id": "pope/pope_353",
+  "task": "pope",
+  "task_name": "Object hallucination probe",
+  "benchmark": "POPE adversarial (Li et al., 2023)",
+  "metric_name": "yes/no accuracy",
+  "image": "data/pope/pope_353.jpg",
+  "width": 640,
+  "height": 480,
+  "question": "Is there a bicycle in the image?",
+  "gt": "yes",
+  "prediction": {
+   "answer": "no",
+   "bbox": null
+  },
+  "latency_s": 10.7,
+  "completion_tokens": 117,
+  "reasoning_tokens": 91,
+  "reasoning_excerpt": "Kimi needs to answer whether bicycle image. Should inspect: image shows motorcycle and person seated. User asks bicycle strictly. I'll answer no bbox null. Should think through internally no extra. End with single JSON code block exact keys. Likely no. Make sure motorcycle perhaps considered bicycle? Clearly motorbike headlight engine, gear. So no bicycle. Response {\"answer\":\"no\",\"bbox\":null}. Could include only block. Should abide integer coords irrelevant.",
+  "verdict": "miss",
+  "metric": 0.0,
+  "pred_text": "no",
+  "gt_text": "yes",
+  "note": "missed a present object",
+  "pred_box": null,
+  "viz": "results/viz/pope__pope_353.jpg"
+ },
+ {
+  "id": "pope/pope_2176",
+  "task": "pope",
+  "task_name": "Object hallucination probe",
+  "benchmark": "POPE adversarial (Li et al., 2023)",
+  "metric_name": "yes/no accuracy",
+  "image": "data/pope/pope_2176.jpg",
+  "width": 640,
+  "height": 480,
+  "question": "Is there a handbag in the image?",
+  "gt": "no",
+  "prediction": {
+   "answer": "yes",
+   "bbox": [
+    404,
+    333,
+    539,
+    423
+   ]
+  },
+  "latency_s": 14.4,
+  "completion_tokens": 753,
+  "reasoning_tokens": 715,
+  "reasoning_excerpt": "I need inspect image handbag. Should think. Image 640x480 child in car seat holding perhaps toy/mirror. Pink object lap perhaps handbag? Should determine. User asks is handbag image. Should have yes/no bbox. Carefully identify pink bag right of child lower center, looks pink handbag perhaps bag with handle? I'll parse image.\n\nChild blue coat car seat. Holds grey/blue toy? Object like brush/mirror. On lap to right a pink item, roughly x405 y334 to 538 y423. It has rounded pink main surface, yellow/white trim and possible handle? Could be handbag, perhaps pink toy purse? Should consider expected",
+  "verdict": "miss",
+  "metric": 0.0,
+  "pred_text": "yes",
+  "gt_text": "no",
+  "note": "hallucinated the object",
+  "pred_box": [
+   404.0,
+   333.0,
+   539.0,
+   423.0
+  ],
+  "viz": "results/viz/pope__pope_2176.jpg"
+ },
+ {
+  "id": "pope/pope_2668",
+  "task": "pope",
+  "task_name": "Object hallucination probe",
+  "benchmark": "POPE adversarial (Li et al., 2023)",
+  "metric_name": "yes/no accuracy",
+  "image": "data/pope/pope_2668.jpg",
+  "width": 640,
+  "height": 425,
+  "question": "Is there a truck in the image?",
+  "gt": "no",
+  "prediction": {
+   "answer": "no",
+   "bbox": null
+  },
+  "latency_s": 5.0,
+  "completion_tokens": 195,
+  "reasoning_tokens": 167,
+  "reasoning_excerpt": "I need analyze image truck? Image night storefront umbrella person. At far right partial car perhaps sedan? Should determine truck. I'll output only JSON code. Should think. Image 640x425. On right partial vehicle from x592 to639 y244-334. Looks front? I'll inspect mentally. There is vehicle visible at right, dark. Shape likely car. Should classify truck? No obvious truck. Storefront. Respond no bbox null. Make sure not truck behind windows? Left shapes weird. Right visible vehicle perhaps SUV? Could be a truck? I'll examine detailed visual: far right a small portion gray vehicle. Hood rounded",
+  "verdict": "hit",
+  "metric": 1.0,
+  "pred_text": "no",
+  "gt_text": "no",
+  "note": "correct",
+  "pred_box": null,
+  "viz": "results/viz/pope__pope_2668.jpg"
+ },
+ {
+  "id": "screenspot/screenspot_0",
+  "task": "screenspot",
+  "task_name": "GUI element grounding",
+  "benchmark": "ScreenSpot (Cheng et al., 2024)",
+  "metric_name": "click inside target",
+  "image": "data/screenspot/screenspot_0.jpg",
+  "width": 960,
+  "height": 540,
+  "question": "close",
+  "gt": [
+   0.9479166666666666,
+   0.14444444444444443,
+   0.99375,
+   0.2074074074074074
+  ],
+  "prediction": {
+   "point": [
+    930,
+    94
+   ]
+  },
+  "latency_s": 12.4,
+  "completion_tokens": 258,
+  "reasoning_tokens": 232,
+  "reasoning_excerpt": "I need inspect screenshot UI instruction close where click. I'll output single JSON code block point integer. Should think target window close X top right at 930,93. Image 960x540. There's right-click menu open. Instruction close likely close window by top-right X. Coordinates top title bar 930,94. Make sure perhaps \"close\" in context menu unseen lower down? Screenshot context menu open with Open Edit etc lower cut. User wants close likely click app close button at (930,94). I should provide JSON exactly. Should have no extras? User says think it through then end reply single JSON object insid",
+  "verdict": "hit",
+  "metric": 1.0,
+  "pred_text": "[930, 94]",
+  "gt_text": "close",
+  "note": "click inside target",
+  "pred_point": [
+   930,
+   94
+  ],
+  "gt_box": [
+   910.0,
+   77.99999999999999,
+   954.0,
+   112.0
+  ],
+  "viz": "results/viz/screenspot__screenspot_0.jpg"
+ },
+ {
+  "id": "screenspot/screenspot_11",
+  "task": "screenspot",
+  "task_name": "GUI element grounding",
+  "benchmark": "ScreenSpot (Cheng et al., 2024)",
+  "metric_name": "click inside target",
+  "image": "data/screenspot/screenspot_11.jpg",
+  "width": 960,
+  "height": 540,
+  "question": "choose language for windows",
+  "gt": [
+   0.47708333333333336,
+   0.2462962962962963,
+   0.9479166666666666,
+   0.31296296296296294
+  ],
+  "prediction": {
+   "point": [
+    684,
+    151
+   ]
+  },
+  "latency_s": 5.3,
+  "completion_tokens": 245,
+  "reasoning_tokens": 219,
+  "reasoning_excerpt": "I need inspect image and instruction \"choose language for windows\". Should determine click Windows display language dropdown likely at x703 y151. Should have exact point integer. Should think. Screenshot Windows settings Language, Windows display language dropdown English UK at y135-166. User asks choose language for windows. Click dropdown to choose language. Could potentially click current language list? Clearly Windows display language. Should output JSON only code block point. Should decide x ~704,151. Image 960x540. Clicking center of dropdown e.g. [704,151]. Could target arrow [892,150].",
+  "verdict": "hit",
+  "metric": 1.0,
+  "pred_text": "[684, 151]",
+  "gt_text": "choose language for windows",
+  "note": "click inside target",
+  "pred_point": [
+   684,
+   151
+  ],
+  "gt_box": [
+   458.0,
+   133.0,
+   910.0,
+   169.0
+  ],
+  "viz": "results/viz/screenspot__screenspot_11.jpg"
+ },
+ {
+  "id": "screenspot/screenspot_315",
+  "task": "screenspot",
+  "task_name": "GUI element grounding",
+  "benchmark": "ScreenSpot (Cheng et al., 2024)",
+  "metric_name": "click inside target",
+  "image": "data/screenspot/screenspot_315.jpg",
+  "width": 504,
+  "height": 1250,
+  "question": "set mirror display",
+  "gt": [
+   0.003968253968253968,
+   0.6104,
+   0.9940476190476191,
+   0.6496
+  ],
+  "prediction": {
+   "point": [
+    239,
+    354
+   ]
+  },
+  "latency_s": 10.7,
+  "completion_tokens": 531,
+  "reasoning_tokens": 505,
+  "reasoning_excerpt": "I need analyze screenshot and instruction \"set mirror display\". Should click exact coordinate likely Mirror Display under Color LCD or Dell? Should infer intended UI action. Should output point. Should consider screenshot 504x1250. User asks set mirror display. There are two Mirror Display options: built in Color LCD at y354, Dell at y787. Which choose? Should determine target likely first or currently relevant. Should click \"Mirror Display\" text or chevron. I need think carefully. Usually tasks from screenshots UI point grounding with generic instruction. \"set mirror display\" likely click fir",
+  "verdict": "miss",
+  "metric": 0.0,
+  "pred_text": "[239, 354]",
+  "gt_text": "set mirror display",
+  "note": "click outside target",
+  "pred_point": [
+   239,
+   354
+  ],
+  "gt_box": [
+   2.0,
+   763.0000000000001,
+   501.0,
+   812.0
+  ],
+  "viz": "results/viz/screenspot__screenspot_315.jpg"
+ },
+ {
+  "id": "screenspot/screenspot_608",
+  "task": "screenspot",
+  "task_name": "GUI element grounding",
+  "benchmark": "ScreenSpot (Cheng et al., 2024)",
+  "metric_name": "click inside target",
+  "image": "data/screenspot/screenspot_608.jpg",
+  "width": 2360,
+  "height": 1640,
+  "question": "clear browsing data",
+  "gt": [
+   0.6792372881355933,
+   0.6463414634146342,
+   0.9694915254237289,
+   0.7067073170731707
+  ],
+  "prediction": {
+   "point": [
+    1790,
+    1111
+   ]
+  },
+  "latency_s": 7.0,
+  "completion_tokens": 249,
+  "reasoning_tokens": 221,
+  "reasoning_excerpt": "I need analyze screenshot precise target. Should give coordinate integer where click clear browsing data. Should think through but output only JSON code block exact. I should locate text and row. Image 2360x1640 given. Menu right. Clear Browsing Data row around x1636 to1942 text, icon trash x2234 y1110. Should choose point center row perhaps x1790 y1112. Make sure clicking text triggers. Instruction clear browsing data and visible item. Click text Clear Browsing Data at ~1796,1111. Should coordinate. I'll map screenshot: right menu starts x1572; item list card x1604 to2291. Clear row between y",
+  "verdict": "hit",
+  "metric": 1.0,
+  "pred_text": "[1790, 1111]",
+  "gt_text": "clear browsing data",
+  "note": "click inside target",
+  "pred_point": [
+   1790,
+   1111
+  ],
+  "gt_box": [
+   1603.0,
+   1060.0,
+   2288.0,
+   1159.0
+  ],
+  "viz": "results/viz/screenspot__screenspot_608.jpg"
+ },
+ {
+  "id": "screenspot/screenspot_970",
+  "task": "screenspot",
+  "task_name": "GUI element grounding",
+  "benchmark": "ScreenSpot (Cheng et al., 2024)",
+  "metric_name": "click inside target",
+  "image": "data/screenspot/screenspot_970.jpg",
+  "width": 2560,
+  "height": 1440,
+  "question": "previous images",
+  "gt": [
+   0.0234375,
+   0.23680555555555555,
+   0.07421875,
+   0.34791666666666665
+  ],
+  "prediction": {
+   "point": [
+    118,
+    426
+   ]
+  },
+  "latency_s": 4.1,
+  "completion_tokens": 122,
+  "reasoning_tokens": 96,
+  "reasoning_excerpt": "I need identify previous images control left arrow. Should have coordinates accurate screenshot 2560x1440. Arrow visible left near x117 y427. Should click. User explicitly \"previous images\" likely left chevron. Should point integer. Perhaps analyze center [118,426]. Should respond single JSON code block. I'll inspect mentally image: left chevron at x96-142, y381-470. Center ~118,425. Click center. Should have no extra.",
+  "verdict": "hit",
+  "metric": 1.0,
+  "pred_text": "[118, 426]",
+  "gt_text": "previous images",
+  "note": "click inside target",
+  "pred_point": [
+   118,
+   426
+  ],
+  "gt_box": [
+   60.0,
+   341.0,
+   190.0,
+   501.0
+  ],
+  "viz": "results/viz/screenspot__screenspot_970.jpg"
+ },
+ {
+  "id": "screenspot/screenspot_988",
+  "task": "screenspot",
+  "task_name": "GUI element grounding",
+  "benchmark": "ScreenSpot (Cheng et al., 2024)",
+  "metric_name": "click inside target",
+  "image": "data/screenspot/screenspot_988.jpg",
+  "width": 2560,
+  "height": 1440,
+  "question": "show reviews",
+  "gt": [
+   0.0875,
+   0.58125,
+   0.18515625,
+   0.6256944444444444
+  ],
+  "prediction": {
+   "point": [
+    350,
+    870
+   ]
+  },
+  "latency_s": 4.2,
+  "completion_tokens": 165,
+  "reasoning_tokens": 139,
+  "reasoning_excerpt": "I need analyze screenshot click reviews. Should coordinate exact integer. I'll end JSON only perhaps explanation? User says think through then end reply single JSON object code block exactly keys. Should locate Reviews (12) tab. Screenshot 2560x1440. Tab starts x225? to474 y838-901. Label Reviews (12) centered x350 y869. Click ~349,870. Make sure coordinates. I'll examine visual: Details tab x38 to214, Reviews x225 to474. Text Reviews (12) centered x350. y870. Should output point [350, 870]. Perhaps click center of tab [349,869]. Should respond concise JSON code block.",
+  "verdict": "hit",
+  "metric": 1.0,
+  "pred_text": "[350, 870]",
+  "gt_text": "show reviews",
+  "note": "click inside target",
+  "pred_point": [
+   350,
+   870
+  ],
+  "gt_box": [
+   224.0,
+   837.0000000000001,
+   474.0,
+   901.0
+  ],
+  "viz": "results/viz/screenspot__screenspot_988.jpg"
+ }
+]

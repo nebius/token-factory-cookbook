@@ -1,0 +1,24 @@
+[project]
+name = "gemma-4-agentic-coding"
+version = "0.1.0"
+description = "Post-train Gemma 4 31B for efficient agentic coding with a LoRA on Kimi-K3 and DeepSeek-V4.1-Flash trajectories from Nebius Token Factory"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "datasets>=3.0",
+    "jinja2>=3.1",
+    "openai>=1.99",
+    "transformers==5.13.1",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8",
+]
+train = [
+    "accelerate>=1.10",
+    "compressed-tensors==0.15.0.1",
+    "peft==0.21.2",
+    "safetensors>=0.5",
+    "torch==2.10.0",
+]

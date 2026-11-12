@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 292" width="960" height="292" font-family="Inter, Arial, sans-serif">
+<title>Gemma picked up the teachers' pace</title>
+<rect x="0" y="0" width="960" height="292" rx="16" fill="#001A2B"/>
+<text x="32.0" y="48.0" font-size="20" font-weight="600" fill="#FFFFFF" text-anchor="start">Gemma picked up the teachers' pace</text>
+<text x="32.0" y="74.0" font-size="14" font-weight="400" fill="rgba(255,255,255,0.68)" text-anchor="start">Medians per run on the 45 held-out bugs. The white line is the median of the teacher runs it was trained on.</text>
+<rect x="32" y="165.0" width="12" height="12" rx="2" fill="#C1C1FF"/>
+<text x="52.0" y="175.0" font-size="14" font-weight="400" fill="#FFFFFF" text-anchor="start">Base model</text>
+<rect x="32" y="201.0" width="12" height="12" rx="2" fill="#DAFF33"/>
+<text x="52.0" y="211.0" font-size="14" font-weight="400" fill="#FFFFFF" text-anchor="start">LoRA, epoch 1</text>
+<rect x="32" y="237.0" width="12" height="12" rx="2" fill="#31FCF6"/>
+<text x="52.0" y="247.0" font-size="14" font-weight="400" fill="#FFFFFF" text-anchor="start">LoRA, epoch 2</text>
+<text x="168.0" y="112.0" font-size="14" font-weight="600" fill="#FFFFFF" text-anchor="start">Tool call of the first edit</text>
+<line x1="168.0" y1="152" x2="168.0" y2="260" stroke="rgba(255,255,255,0.24)" stroke-width="1"/>
+<path d="M 168.0 160.0 H 448.4 Q 452.4 160.0 452.4 164.0 V 176.0 Q 452.4 180.0 448.4 180.0 H 168.0 Z" fill="#C1C1FF"/>
+<text x="460.4" y="175.0" font-size="14" font-weight="400" fill="#FFFFFF" text-anchor="start">9</text>
+<path d="M 168.0 196.0 H 353.6 Q 357.6 196.0 357.6 200.0 V 212.0 Q 357.6 216.0 353.6 216.0 H 168.0 Z" fill="#DAFF33"/>
+<text x="365.6" y="211.0" font-size="14" font-weight="400" fill="#FFFFFF" text-anchor="start">6</text>
+<path d="M 168.0 232.0 H 353.6 Q 357.6 232.0 357.6 236.0 V 248.0 Q 357.6 252.0 353.6 252.0 H 168.0 Z" fill="#31FCF6"/>
+<text x="365.6" y="247.0" font-size="14" font-weight="400" fill="#FFFFFF" text-anchor="start">6</text>
+<line x1="357.6" y1="146" x2="357.6" y2="260" stroke="#FFFFFF" stroke-width="2"/>
+<text x="357.6" y="138.0" font-size="12" font-weight="500" fill="#FFFFFF" text-anchor="middle">Teacher runs: 6</text>
+<text x="572.0" y="112.0" font-size="14" font-weight="600" fill="#FFFFFF" text-anchor="start">Tool calls after the last edit</text>
+<line x1="572.0" y1="152" x2="572.0" y2="260" stroke="rgba(255,255,255,0.24)" stroke-width="1"/>
+<path d="M 572.0 160.0 H 852.4 Q 856.4 160.0 856.4 164.0 V 176.0 Q 856.4 180.0 852.4 180.0 H 572.0 Z" fill="#C1C1FF"/>
+<text x="864.4" y="175.0" font-size="14" font-weight="400" fill="#FFFFFF" text-anchor="start">9</text>
+<path d="M 572.0 196.0 H 662.8 Q 666.8 196.0 666.8 200.0 V 212.0 Q 666.8 216.0 662.8 216.0 H 572.0 Z" fill="#DAFF33"/>
+<text x="674.8" y="211.0" font-size="14" font-weight="400" fill="#FFFFFF" text-anchor="start">3</text>
+<path d="M 572.0 232.0 H 726.0 Q 730.0 232.0 730.0 236.0 V 248.0 Q 730.0 252.0 726.0 252.0 H 572.0 Z" fill="#31FCF6"/>
+<text x="738.0" y="247.0" font-size="14" font-weight="400" fill="#FFFFFF" text-anchor="start">5</text>
+<line x1="666.8" y1="146" x2="666.8" y2="260" stroke="#FFFFFF" stroke-width="2"/>
+<text x="666.8" y="138.0" font-size="12" font-weight="500" fill="#FFFFFF" text-anchor="middle">Teacher runs: 3</text>
+</svg>

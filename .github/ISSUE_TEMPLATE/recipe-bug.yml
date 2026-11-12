@@ -1,0 +1,22 @@
+name: Recipe problem
+description: Report a reproducible problem with an example or guide.
+body:
+  - type: input
+    id: recipe
+    attributes:
+      label: Recipe path
+      description: Which directory or notebook is affected?
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Steps to reproduce
+      description: Include the command, expected result, and actual result. Remove credentials and private data.
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: Operating system, runtime version, cookbook revision, and model ID if relevant.

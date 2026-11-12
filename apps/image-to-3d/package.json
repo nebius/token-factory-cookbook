@@ -1,0 +1,13 @@
+{
+  "name": "kimi-image-to-3d",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Turn any image into an interactive 3D scene with Kimi K3.1 Pro on Nebius Token Factory.",
+  "type": "module",
+  "engines": { "node": ">=20.12" },
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "test": "node --test"
+  }
+}

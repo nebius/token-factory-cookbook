@@ -1,0 +1,1548 @@
+[
+ {
+  "task": "detection",
+  "id": "detection/coco_776",
+  "image": "data/detection/coco_776.jpg",
+  "width": 428,
+  "height": 640,
+  "gt": [
+   {
+    "label": "teddy bear",
+    "bbox": [
+     1.44,
+     56.22,
+     345.95,
+     527.57
+    ]
+   },
+   {
+    "label": "teddy bear",
+    "bbox": [
+     2.88,
+     278.2,
+     320.0,
+     632.79
+    ]
+   },
+   {
+    "label": "teddy bear",
+    "bbox": [
+     94.92,
+     5.75,
+     427.15000000000003,
+     550.83
+    ]
+   },
+   {
+    "label": "bed",
+    "bbox": [
+     1.43,
+     0.14,
+     428.0,
+     640.0
+    ]
+   }
+  ],
+  "source": "COCO val2017",
+  "coco_classes": [
+   "person",
+   "bicycle",
+   "car",
+   "motorcycle",
+   "airplane",
+   "bus",
+   "train",
+   "truck",
+   "boat",
+   "traffic light",
+   "fire hydrant",
+   "stop sign",
+   "parking meter",
+   "bench",
+   "bird",
+   "cat",
+   "dog",
+   "horse",
+   "sheep",
+   "cow",
+   "elephant",
+   "bear",
+   "zebra",
+   "giraffe",
+   "backpack",
+   "umbrella",
+   "handbag",
+   "tie",
+   "suitcase",
+   "frisbee",
+   "skis",
+   "snowboard",
+   "sports ball",
+   "kite",
+   "baseball bat",
+   "baseball glove",
+   "skateboard",
+   "surfboard",
+   "tennis racket",
+   "bottle",
+   "wine glass",
+   "cup",
+   "fork",
+   "knife",
+   "spoon",
+   "bowl",
+   "banana",
+   "apple",
+   "sandwich",
+   "orange",
+   "broccoli",
+   "carrot",
+   "hot dog",
+   "pizza",
+   "donut",
+   "cake",
+   "chair",
+   "couch",
+   "potted plant",
+   "bed",
+   "dining table",
+   "toilet",
+   "tv",
+   "laptop",
+   "mouse",
+   "remote",
+   "keyboard",
+   "cell phone",
+   "microwave",
+   "oven",
+   "toaster",
+   "sink",
+   "refrigerator",
+   "book",
+   "clock",
+   "vase",
+   "scissors",
+   "teddy bear",
+   "hair drier",
+   "toothbrush"
+  ]
+ },
+ {
+  "task": "detection",
+  "id": "detection/coco_8899",
+  "image": "data/detection/coco_8899.jpg",
+  "width": 640,
+  "height": 539,
+  "gt": [
+   {
+    "label": "fire hydrant",
+    "bbox": [
+     140.66,
+     398.37,
+     180.57,
+     493.85
+    ]
+   },
+   {
+    "label": "bicycle",
+    "bbox": [
+     23.63,
+     346.08,
+     73.48,
+     450.09
+    ]
+   }
+  ],
+  "source": "COCO val2017",
+  "coco_classes": [
+   "person",
+   "bicycle",
+   "car",
+   "motorcycle",
+   "airplane",
+   "bus",
+   "train",
+   "truck",
+   "boat",
+   "traffic light",
+   "fire hydrant",
+   "stop sign",
+   "parking meter",
+   "bench",
+   "bird",
+   "cat",
+   "dog",
+   "horse",
+   "sheep",
+   "cow",
+   "elephant",
+   "bear",
+   "zebra",
+   "giraffe",
+   "backpack",
+   "umbrella",
+   "handbag",
+   "tie",
+   "suitcase",
+   "frisbee",
+   "skis",
+   "snowboard",
+   "sports ball",
+   "kite",
+   "baseball bat",
+   "baseball glove",
+   "skateboard",
+   "surfboard",
+   "tennis racket",
+   "bottle",
+   "wine glass",
+   "cup",
+   "fork",
+   "knife",
+   "spoon",
+   "bowl",
+   "banana",
+   "apple",
+   "sandwich",
+   "orange",
+   "broccoli",
+   "carrot",
+   "hot dog",
+   "pizza",
+   "donut",
+   "cake",
+   "chair",
+   "couch",
+   "potted plant",
+   "bed",
+   "dining table",
+   "toilet",
+   "tv",
+   "laptop",
+   "mouse",
+   "remote",
+   "keyboard",
+   "cell phone",
+   "microwave",
+   "oven",
+   "toaster",
+   "sink",
+   "refrigerator",
+   "book",
+   "clock",
+   "vase",
+   "scissors",
+   "teddy bear",
+   "hair drier",
+   "toothbrush"
+  ]
+ },
+ {
+  "task": "detection",
+  "id": "detection/coco_1425",
+  "image": "data/detection/coco_1425.jpg",
+  "width": 640,
+  "height": 512,
+  "gt": [
+   {
+    "label": "sandwich",
+    "bbox": [
+     64.29,
+     184.96,
+     440.83000000000004,
+     403.08000000000004
+    ]
+   },
+   {
+    "label": "bowl",
+    "bbox": [
+     486.74,
+     182.53,
+     640.0,
+     383.43
+    ]
+   }
+  ],
+  "source": "COCO val2017",
+  "coco_classes": [
+   "person",
+   "bicycle",
+   "car",
+   "motorcycle",
+   "airplane",
+   "bus",
+   "train",
+   "truck",
+   "boat",
+   "traffic light",
+   "fire hydrant",
+   "stop sign",
+   "parking meter",
+   "bench",
+   "bird",
+   "cat",
+   "dog",
+   "horse",
+   "sheep",
+   "cow",
+   "elephant",
+   "bear",
+   "zebra",
+   "giraffe",
+   "backpack",
+   "umbrella",
+   "handbag",
+   "tie",
+   "suitcase",
+   "frisbee",
+   "skis",
+   "snowboard",
+   "sports ball",
+   "kite",
+   "baseball bat",
+   "baseball glove",
+   "skateboard",
+   "surfboard",
+   "tennis racket",
+   "bottle",
+   "wine glass",
+   "cup",
+   "fork",
+   "knife",
+   "spoon",
+   "bowl",
+   "banana",
+   "apple",
+   "sandwich",
+   "orange",
+   "broccoli",
+   "carrot",
+   "hot dog",
+   "pizza",
+   "donut",
+   "cake",
+   "chair",
+   "couch",
+   "potted plant",
+   "bed",
+   "dining table",
+   "toilet",
+   "tv",
+   "laptop",
+   "mouse",
+   "remote",
+   "keyboard",
+   "cell phone",
+   "microwave",
+   "oven",
+   "toaster",
+   "sink",
+   "refrigerator",
+   "book",
+   "clock",
+   "vase",
+   "scissors",
+   "teddy bear",
+   "hair drier",
+   "toothbrush"
+  ]
+ },
+ {
+  "task": "detection",
+  "id": "detection/coco_7386",
+  "image": "data/detection/coco_7386.jpg",
+  "width": 600,
+  "height": 400,
+  "gt": [
+   {
+    "label": "dog",
+    "bbox": [
+     180.91,
+     281.14,
+     219.31,
+     326.62
+    ]
+   },
+   {
+    "label": "motorcycle",
+    "bbox": [
+     51.12,
+     12.56,
+     600.0,
+     400.0
+    ]
+   },
+   {
+    "label": "bicycle",
+    "bbox": [
+     221.85,
+     100.97,
+     289.87,
+     166.2
+    ]
+   },
+   {
+    "label": "bicycle",
+    "bbox": [
+     218.68,
+     158.78,
+     279.73,
+     214.12
+    ]
+   },
+   {
+    "label": "truck",
+    "bbox": [
+     398.63,
+     144.76,
+     519.66,
+     235.04
+    ]
+   }
+  ],
+  "source": "COCO val2017",
+  "coco_classes": [
+   "person",
+   "bicycle",
+   "car",
+   "motorcycle",
+   "airplane",
+   "bus",
+   "train",
+   "truck",
+   "boat",
+   "traffic light",
+   "fire hydrant",
+   "stop sign",
+   "parking meter",
+   "bench",
+   "bird",
+   "cat",
+   "dog",
+   "horse",
+   "sheep",
+   "cow",
+   "elephant",
+   "bear",
+   "zebra",
+   "giraffe",
+   "backpack",
+   "umbrella",
+   "handbag",
+   "tie",
+   "suitcase",
+   "frisbee",
+   "skis",
+   "snowboard",
+   "sports ball",
+   "kite",
+   "baseball bat",
+   "baseball glove",
+   "skateboard",
+   "surfboard",
+   "tennis racket",
+   "bottle",
+   "wine glass",
+   "cup",
+   "fork",
+   "knife",
+   "spoon",
+   "bowl",
+   "banana",
+   "apple",
+   "sandwich",
+   "orange",
+   "broccoli",
+   "carrot",
+   "hot dog",
+   "pizza",
+   "donut",
+   "cake",
+   "chair",
+   "couch",
+   "potted plant",
+   "bed",
+   "dining table",
+   "toilet",
+   "tv",
+   "laptop",
+   "mouse",
+   "remote",
+   "keyboard",
+   "cell phone",
+   "microwave",
+   "oven",
+   "toaster",
+   "sink",
+   "refrigerator",
+   "book",
+   "clock",
+   "vase",
+   "scissors",
+   "teddy bear",
+   "hair drier",
+   "toothbrush"
+  ]
+ },
+ {
+  "task": "detection",
+  "id": "detection/coco_3501",
+  "image": "data/detection/coco_3501.jpg",
+  "width": 612,
+  "height": 612,
+  "gt": [
+   {
+    "label": "broccoli",
+    "bbox": [
+     125.28,
+     67.68,
+     263.52,
+     223.20000000000002
+    ]
+   },
+   {
+    "label": "broccoli",
+    "bbox": [
+     74.88,
+     174.24,
+     257.76,
+     361.44
+    ]
+   },
+   {
+    "label": "bowl",
+    "bbox": [
+     12.38,
+     8.25,
+     603.75,
+     583.12
+    ]
+   }
+  ],
+  "source": "COCO val2017",
+  "coco_classes": [
+   "person",
+   "bicycle",
+   "car",
+   "motorcycle",
+   "airplane",
+   "bus",
+   "train",
+   "truck",
+   "boat",
+   "traffic light",
+   "fire hydrant",
+   "stop sign",
+   "parking meter",
+   "bench",
+   "bird",
+   "cat",
+   "dog",
+   "horse",
+   "sheep",
+   "cow",
+   "elephant",
+   "bear",
+   "zebra",
+   "giraffe",
+   "backpack",
+   "umbrella",
+   "handbag",
+   "tie",
+   "suitcase",
+   "frisbee",
+   "skis",
+   "snowboard",
+   "sports ball",
+   "kite",
+   "baseball bat",
+   "baseball glove",
+   "skateboard",
+   "surfboard",
+   "tennis racket",
+   "bottle",
+   "wine glass",
+   "cup",
+   "fork",
+   "knife",
+   "spoon",
+   "bowl",
+   "banana",
+   "apple",
+   "sandwich",
+   "orange",
+   "broccoli",
+   "carrot",
+   "hot dog",
+   "pizza",
+   "donut",
+   "cake",
+   "chair",
+   "couch",
+   "potted plant",
+   "bed",
+   "dining table",
+   "toilet",
+   "tv",
+   "laptop",
+   "mouse",
+   "remote",
+   "keyboard",
+   "cell phone",
+   "microwave",
+   "oven",
+   "toaster",
+   "sink",
+   "refrigerator",
+   "book",
+   "clock",
+   "vase",
+   "scissors",
+   "teddy bear",
+   "hair drier",
+   "toothbrush"
+  ]
+ },
+ {
+  "task": "detection",
+  "id": "detection/coco_1503",
+  "image": "data/detection/coco_1503.jpg",
+  "width": 320,
+  "height": 240,
+  "gt": [
+   {
+    "label": "laptop",
+    "bbox": [
+     0.54,
+     99.78,
+     126.2,
+     235.69
+    ]
+   },
+   {
+    "label": "mouse",
+    "bbox": [
+     120.96,
+     177.97,
+     158.73,
+     200.03
+    ]
+   },
+   {
+    "label": "keyboard",
+    "bbox": [
+     161.13,
+     152.44,
+     315.44,
+     197.96
+    ]
+   },
+   {
+    "label": "tv",
+    "bbox": [
+     125.66,
+     11.46,
+     237.3,
+     100.99000000000001
+    ]
+   },
+   {
+    "label": "mouse",
+    "bbox": [
+     305.55,
+     154.39,
+     319.95,
+     164.04999999999998
+    ]
+   }
+  ],
+  "source": "COCO val2017",
+  "coco_classes": [
+   "person",
+   "bicycle",
+   "car",
+   "motorcycle",
+   "airplane",
+   "bus",
+   "train",
+   "truck",
+   "boat",
+   "traffic light",
+   "fire hydrant",
+   "stop sign",
+   "parking meter",
+   "bench",
+   "bird",
+   "cat",
+   "dog",
+   "horse",
+   "sheep",
+   "cow",
+   "elephant",
+   "bear",
+   "zebra",
+   "giraffe",
+   "backpack",
+   "umbrella",
+   "handbag",
+   "tie",
+   "suitcase",
+   "frisbee",
+   "skis",
+   "snowboard",
+   "sports ball",
+   "kite",
+   "baseball bat",
+   "baseball glove",
+   "skateboard",
+   "surfboard",
+   "tennis racket",
+   "bottle",
+   "wine glass",
+   "cup",
+   "fork",
+   "knife",
+   "spoon",
+   "bowl",
+   "banana",
+   "apple",
+   "sandwich",
+   "orange",
+   "broccoli",
+   "carrot",
+   "hot dog",
+   "pizza",
+   "donut",
+   "cake",
+   "chair",
+   "couch",
+   "potted plant",
+   "bed",
+   "dining table",
+   "toilet",
+   "tv",
+   "laptop",
+   "mouse",
+   "remote",
+   "keyboard",
+   "cell phone",
+   "microwave",
+   "oven",
+   "toaster",
+   "sink",
+   "refrigerator",
+   "book",
+   "clock",
+   "vase",
+   "scissors",
+   "teddy bear",
+   "hair drier",
+   "toothbrush"
+  ]
+ },
+ {
+  "task": "grounding",
+  "id": "grounding/refcoco_457142",
+  "image": "data/grounding/refcoco_457142.jpg",
+  "width": 640,
+  "height": 423,
+  "gt": [
+   124.58000183105469,
+   59.880001068115234,
+   361.19000244140625,
+   406.5800132751465
+  ],
+  "expression": "girl in blue coat",
+  "all_expressions": [
+   "girl in blue coat",
+   "girl in blue jacket on left",
+   "blue"
+  ],
+  "source": "RefCOCO val"
+ },
+ {
+  "task": "grounding",
+  "id": "grounding/refcoco_2125874",
+  "image": "data/grounding/refcoco_2125874.jpg",
+  "width": 640,
+  "height": 480,
+  "gt": [
+   119.43000030517578,
+   324.8599853515625,
+   461.0300064086914,
+   479.99998474121094
+  ],
+  "expression": "unoccupied bench bottom center",
+  "all_expressions": [
+   "unoccupied bench bottom center",
+   "front chair left of girl",
+   "front bench"
+  ],
+  "source": "RefCOCO val"
+ },
+ {
+  "task": "grounding",
+  "id": "grounding/refcoco_1219163",
+  "image": "data/grounding/refcoco_1219163.jpg",
+  "width": 640,
+  "height": 427,
+  "gt": [
+   0.07999999821186066,
+   36.9900016784668,
+   392.0099926739931,
+   423.3499870300293
+  ],
+  "expression": "guy on left with beard and guitar",
+  "all_expressions": [
+   "guy on left with beard and guitar",
+   "man left",
+   "guy in tan playing guitar"
+  ],
+  "source": "RefCOCO val"
+ },
+ {
+  "task": "grounding",
+  "id": "grounding/refcoco_500538",
+  "image": "data/grounding/refcoco_500538.jpg",
+  "width": 500,
+  "height": 333,
+  "gt": [
+   335.989990234375,
+   121.2300033569336,
+   459.4699935913086,
+   276.12999725341797
+  ],
+  "expression": "sitting guy",
+  "all_expressions": [
+   "sitting guy",
+   "right guy"
+  ],
+  "source": "RefCOCO val"
+ },
+ {
+  "task": "grounding",
+  "id": "grounding/refcoco_427086",
+  "image": "data/grounding/refcoco_427086.jpg",
+  "width": 500,
+  "height": 375,
+  "gt": [
+   0.0,
+   79.0199966430664,
+   138.4199981689453,
+   311.4000015258789
+  ],
+  "expression": "left dude",
+  "all_expressions": [
+   "left dude",
+   "guy on l",
+   "guy in white on left side"
+  ],
+  "source": "RefCOCO val"
+ },
+ {
+  "task": "grounding",
+  "id": "grounding/refcoco_1610050",
+  "image": "data/grounding/refcoco_1610050.jpg",
+  "width": 640,
+  "height": 425,
+  "gt": [
+   214.88999938964844,
+   181.4600067138672,
+   512.8700103759766,
+   415.45001220703125
+  ],
+  "expression": "flowers below the umbrella",
+  "all_expressions": [
+   "flowers below the umbrella",
+   "red flower things",
+   "Red flower"
+  ],
+  "source": "RefCOCO val"
+ },
+ {
+  "task": "counting",
+  "id": "counting/countbench_16",
+  "image": "data/counting/countbench_16.jpg",
+  "width": 465,
+  "height": 280,
+  "gt": 4,
+  "question": "How many outfits are there in the image?",
+  "source": "CountBench test"
+ },
+ {
+  "task": "counting",
+  "id": "counting/countbench_31",
+  "image": "data/counting/countbench_31.jpg",
+  "width": 326,
+  "height": 326,
+  "gt": 3,
+  "question": "How many pumpkin candles are there in the image?",
+  "source": "CountBench test"
+ },
+ {
+  "task": "counting",
+  "id": "counting/countbench_69",
+  "image": "data/counting/countbench_69.jpg",
+  "width": 600,
+  "height": 399,
+  "gt": 6,
+  "question": "How many chairs are there in the image?",
+  "source": "CountBench test"
+ },
+ {
+  "task": "counting",
+  "id": "counting/countbench_75",
+  "image": "data/counting/countbench_75.jpg",
+  "width": 240,
+  "height": 255,
+  "gt": 9,
+  "question": "How many photos of fruit are there in the image?",
+  "source": "CountBench test"
+ },
+ {
+  "task": "counting",
+  "id": "counting/countbench_339",
+  "image": "data/counting/countbench_339.jpg",
+  "width": 380,
+  "height": 285,
+  "gt": 10,
+  "question": "How many butterflies are there in the image?",
+  "source": "CountBench test"
+ },
+ {
+  "task": "counting",
+  "id": "counting/countbench_379",
+  "image": "data/counting/countbench_379.jpg",
+  "width": 480,
+  "height": 360,
+  "gt": 3,
+  "question": "How many tickets are there in the image?",
+  "source": "CountBench test"
+ },
+ {
+  "task": "textvqa",
+  "id": "textvqa/textvqa_36280",
+  "image": "data/textvqa/textvqa_36280.jpg",
+  "width": 1024,
+  "height": 683,
+  "gt": [
+   "phone",
+   "phone",
+   "phone",
+   "phone",
+   "phone",
+   "phone",
+   "phone",
+   "phone",
+   "phone",
+   "phone"
+  ],
+  "question": "what does the text on top of the telephone box say?",
+  "source": "TextVQA val"
+ },
+ {
+  "task": "textvqa",
+  "id": "textvqa/textvqa_36495",
+  "image": "data/textvqa/textvqa_36495.jpg",
+  "width": 593,
+  "height": 1024,
+  "gt": [
+   "het judasoog",
+   "het judasoog",
+   "het judasoog",
+   "het judasoog",
+   "het judasoog",
+   "het judasoog",
+   "het judasoog",
+   "het judasoog",
+   "het judasoog",
+   "het judasoog"
+  ],
+  "question": "what is the title of the book?",
+  "source": "TextVQA val"
+ },
+ {
+  "task": "textvqa",
+  "id": "textvqa/textvqa_37981",
+  "image": "data/textvqa/textvqa_37981.jpg",
+  "width": 1024,
+  "height": 782,
+  "gt": [
+   "rolex",
+   "rolex",
+   "rolex",
+   "rolex",
+   "rolex",
+   "rolex",
+   "rolex",
+   "rolex",
+   "rolex",
+   "rolex"
+  ],
+  "question": "what brand of watch is this?",
+  "source": "TextVQA val"
+ },
+ {
+  "task": "textvqa",
+  "id": "textvqa/textvqa_38269",
+  "image": "data/textvqa/textvqa_38269.jpg",
+  "width": 1024,
+  "height": 564,
+  "gt": [
+   "volvo 7900 hybride",
+   "volvo 7900 hybrid",
+   "volvo7900 hybride",
+   "volva 7900 hybride",
+   "volvo 7900 hybride",
+   "volvo 7900 hybride",
+   "7900",
+   "volvo 7900 hybride",
+   "volvo 7900 hybride",
+   "volvo 7900 hybrid"
+  ],
+  "question": "what does the orange letters on top of the bus say?",
+  "source": "TextVQA val"
+ },
+ {
+  "task": "textvqa",
+  "id": "textvqa/textvqa_38911",
+  "image": "data/textvqa/textvqa_38911.jpg",
+  "width": 1024,
+  "height": 768,
+  "gt": [
+   "chinatown",
+   "chinatown",
+   "chinatown",
+   "chinatown",
+   "chinatown",
+   "chinatown",
+   "chinatown",
+   "chinatown",
+   "chinatown",
+   "chinatown"
+  ],
+  "question": "where is this library?",
+  "source": "TextVQA val"
+ },
+ {
+  "task": "textvqa",
+  "id": "textvqa/textvqa_38990",
+  "image": "data/textvqa/textvqa_38990.jpg",
+  "width": 1024,
+  "height": 768,
+  "gt": [
+   "yes",
+   "yes",
+   "yes",
+   "yes",
+   "yes",
+   "yes",
+   "answering does not require reading text in the image",
+   "yes",
+   "answering does not require reading text in the image",
+   "yes"
+  ],
+  "question": "was the mystery machine van in the cartoon scooby doo?",
+  "source": "TextVQA val"
+ },
+ {
+  "task": "docvqa",
+  "id": "docvqa/docvqa_49398",
+  "image": "data/docvqa/docvqa_49398.jpg",
+  "width": 800,
+  "height": 1757,
+  "gt": [
+   "international congress of nutrition",
+   "International Congress of Nutrition",
+   "ix international congress of nutrition"
+  ],
+  "question": "What is the name of the Congress ?",
+  "source": "DocVQA val"
+ },
+ {
+  "task": "docvqa",
+  "id": "docvqa/docvqa_50367",
+  "image": "data/docvqa/docvqa_50367.jpg",
+  "width": 1749,
+  "height": 2251,
+  "gt": [
+   "\"Foetal damage and alcohol consumption\""
+  ],
+  "question": "What is the topic of the second session?",
+  "source": "DocVQA val"
+ },
+ {
+  "task": "docvqa",
+  "id": "docvqa/docvqa_50716",
+  "image": "data/docvqa/docvqa_50716.jpg",
+  "width": 2103,
+  "height": 1603,
+  "gt": [
+   "VLG REPLACEMENT",
+   "VLG Replacement",
+   "NMD3 = VLG Replacement"
+  ],
+  "question": "What does 'NMD3' stand for?",
+  "source": "DocVQA val"
+ },
+ {
+  "task": "docvqa",
+  "id": "docvqa/docvqa_53696",
+  "image": "data/docvqa/docvqa_53696.jpg",
+  "width": 1692,
+  "height": 2245,
+  "gt": [
+   "Tobacco company"
+  ],
+  "question": "What is written below RJReynolds logo?",
+  "source": "DocVQA val"
+ },
+ {
+  "task": "docvqa",
+  "id": "docvqa/docvqa_54490",
+  "image": "data/docvqa/docvqa_54490.jpg",
+  "width": 1692,
+  "height": 2245,
+  "gt": [
+   "$30.00",
+   "30.00"
+  ],
+  "question": "How much did the photographs of RJR foursome cost?",
+  "source": "DocVQA val"
+ },
+ {
+  "task": "docvqa",
+  "id": "docvqa/docvqa_64888",
+  "image": "data/docvqa/docvqa_64888.jpg",
+  "width": 1782,
+  "height": 2283,
+  "gt": [
+   "6"
+  ],
+  "question": "In Atlanta, what is the no. of stepped cases, whose living status is unknown?",
+  "source": "DocVQA val"
+ },
+ {
+  "task": "chartqa",
+  "id": "chartqa/chartqa_813",
+  "image": "data/chartqa/chartqa_813.jpg",
+  "width": 800,
+  "height": 557,
+  "gt": [
+   "39.27"
+  ],
+  "question": "What is the sum of United states and United kingdom in the pie chart?",
+  "human_written": true,
+  "source": "ChartQA test"
+ },
+ {
+  "task": "chartqa",
+  "id": "chartqa/chartqa_843",
+  "image": "data/chartqa/chartqa_843.jpg",
+  "width": 800,
+  "height": 557,
+  "gt": [
+   "2010"
+  ],
+  "question": "In which year, the estimated number of Christians in Global South exceed 1300 million?",
+  "human_written": true,
+  "source": "ChartQA test"
+ },
+ {
+  "task": "chartqa",
+  "id": "chartqa/chartqa_1352",
+  "image": "data/chartqa/chartqa_1352.jpg",
+  "width": 800,
+  "height": 557,
+  "gt": [
+   "519462"
+  ],
+  "question": "How many students were enrolled in Kenyan universities in 2018/19?",
+  "human_written": false,
+  "source": "ChartQA test"
+ },
+ {
+  "task": "chartqa",
+  "id": "chartqa/chartqa_1494",
+  "image": "data/chartqa/chartqa_1494.jpg",
+  "width": 800,
+  "height": 557,
+  "gt": [
+   "296.7"
+  ],
+  "question": "The coronavirus pandemic resulting in movie theater closures resulted in a box office decline to how much?",
+  "human_written": false,
+  "source": "ChartQA test"
+ },
+ {
+  "task": "chartqa",
+  "id": "chartqa/chartqa_1605",
+  "image": "data/chartqa/chartqa_1605.jpg",
+  "width": 800,
+  "height": 557,
+  "gt": [
+   "24.9"
+  ],
+  "question": "How many people aged 15 or above read women's monthly magazines?",
+  "human_written": false,
+  "source": "ChartQA test"
+ },
+ {
+  "task": "chartqa",
+  "id": "chartqa/chartqa_2444",
+  "image": "data/chartqa/chartqa_2444.jpg",
+  "width": 800,
+  "height": 1136,
+  "gt": [
+   "11.7"
+  ],
+  "question": "What percentage of families in Boston lived below the poverty level in 2019?",
+  "human_written": false,
+  "source": "ChartQA test"
+ },
+ {
+  "task": "mathvista",
+  "id": "mathvista/mathvista_216",
+  "image": "data/mathvista/mathvista_216.jpg",
+  "width": 448,
+  "height": 448,
+  "gt": "90",
+  "question": "Hint: Please answer the question requiring an integer answer and provide the final value, e.g., 1, 2, 3, at the end.\nQuestion: What percentage of people like the most preferred object in the whole chart?",
+  "choices": null,
+  "question_type": "free_form",
+  "answer_type": "integer",
+  "precision": null,
+  "category": "general-vqa",
+  "skills": [
+   "statistical reasoning"
+  ],
+  "source": "MathVista testmini"
+ },
+ {
+  "task": "mathvista",
+  "id": "mathvista/mathvista_223",
+  "image": "data/mathvista/mathvista_223.jpg",
+  "width": 1430,
+  "height": 776,
+  "gt": "Yes",
+  "question": "Hint: Please answer the question and provide the correct option letter, e.g., A, B, C, D, at the end.\nQuestion: Is this an even function?\nChoices:\n(A) Yes\n(B) No",
+  "choices": [
+   "Yes",
+   "No"
+  ],
+  "question_type": "multi_choice",
+  "answer_type": "text",
+  "precision": null,
+  "category": "math-targeted-vqa",
+  "skills": [
+   "algebraic reasoning"
+  ],
+  "source": "MathVista testmini"
+ },
+ {
+  "task": "mathvista",
+  "id": "mathvista/mathvista_253",
+  "image": "data/mathvista/mathvista_253.jpg",
+  "width": 448,
+  "height": 448,
+  "gt": "2",
+  "question": "Hint: Please answer the question requiring an integer answer and provide the final value, e.g., 1, 2, 3, at the end.\nQuestion: How many objects are preferred by more than 7 people in at least one category?",
+  "choices": null,
+  "question_type": "free_form",
+  "answer_type": "integer",
+  "precision": null,
+  "category": "general-vqa",
+  "skills": [
+   "statistical reasoning"
+  ],
+  "source": "MathVista testmini"
+ },
+ {
+  "task": "mathvista",
+  "id": "mathvista/mathvista_427",
+  "image": "data/mathvista/mathvista_427.jpg",
+  "width": 448,
+  "height": 448,
+  "gt": "7",
+  "question": "Hint: Please answer the question requiring an integer answer and provide the final value, e.g., 1, 2, 3, at the end.\nQuestion: How many people prefer the most preferred object?",
+  "choices": null,
+  "question_type": "free_form",
+  "answer_type": "integer",
+  "precision": null,
+  "category": "general-vqa",
+  "skills": [
+   "statistical reasoning"
+  ],
+  "source": "MathVista testmini"
+ },
+ {
+  "task": "mathvista",
+  "id": "mathvista/mathvista_742",
+  "image": "data/mathvista/mathvista_742.jpg",
+  "width": 438,
+  "height": 159,
+  "gt": "3",
+  "question": "Hint: Please answer the question requiring an integer answer and provide the final value, e.g., 1, 2, 3, at the end.\nQuestion: Move the ruler to measure the length of the twig to the nearest inch. The twig is about (_) inches long.",
+  "choices": null,
+  "question_type": "free_form",
+  "answer_type": "integer",
+  "precision": null,
+  "category": "math-targeted-vqa",
+  "skills": [
+   "numeric commonsense"
+  ],
+  "source": "MathVista testmini"
+ },
+ {
+  "task": "mathvista",
+  "id": "mathvista/mathvista_979",
+  "image": "data/mathvista/mathvista_979.jpg",
+  "width": 634,
+  "height": 279,
+  "gt": "9079",
+  "question": "Hint: Please answer the question requiring an integer answer and provide the final value, e.g., 1, 2, 3, at the end.\nQuestion: What number is shown?",
+  "choices": null,
+  "question_type": "free_form",
+  "answer_type": "integer",
+  "precision": null,
+  "category": "math-targeted-vqa",
+  "skills": [
+   "arithmetic reasoning"
+  ],
+  "source": "MathVista testmini"
+ },
+ {
+  "task": "vsr",
+  "id": "vsr/vsr_211",
+  "image": "data/vsr/vsr_211.jpg",
+  "width": 640,
+  "height": 480,
+  "gt": true,
+  "caption": "The bus is facing away from the cow.",
+  "relation": "facing away from",
+  "source": "VSR (random split) test"
+ },
+ {
+  "task": "vsr",
+  "id": "vsr/vsr_245",
+  "image": "data/vsr/vsr_245.jpg",
+  "width": 640,
+  "height": 490,
+  "gt": true,
+  "caption": "The truck is next to the motorcycle.",
+  "relation": "next to",
+  "source": "VSR (random split) test"
+ },
+ {
+  "task": "vsr",
+  "id": "vsr/vsr_551",
+  "image": "data/vsr/vsr_551.jpg",
+  "width": 640,
+  "height": 480,
+  "gt": false,
+  "caption": "The cat is touching the keyboard.",
+  "relation": "touching",
+  "source": "VSR (random split) test"
+ },
+ {
+  "task": "vsr",
+  "id": "vsr/vsr_736",
+  "image": "data/vsr/vsr_736.jpg",
+  "width": 612,
+  "height": 612,
+  "gt": true,
+  "caption": "The bird is away from the refrigerator.",
+  "relation": "away from",
+  "source": "VSR (random split) test"
+ },
+ {
+  "task": "vsr",
+  "id": "vsr/vsr_835",
+  "image": "data/vsr/vsr_835.jpg",
+  "width": 640,
+  "height": 480,
+  "gt": true,
+  "caption": "The suitcase is at the edge of the bed.",
+  "relation": "at the edge of",
+  "source": "VSR (random split) test"
+ },
+ {
+  "task": "vsr",
+  "id": "vsr/vsr_1456",
+  "image": "data/vsr/vsr_1456.jpg",
+  "width": 640,
+  "height": 429,
+  "gt": true,
+  "caption": "The truck is below the boat.",
+  "relation": "below",
+  "source": "VSR (random split) test"
+ },
+ {
+  "task": "pope",
+  "id": "pope/pope_605",
+  "image": "data/pope/pope_605.jpg",
+  "width": 640,
+  "height": 480,
+  "gt": "yes",
+  "question": "Is there a boat in the image?",
+  "source": "POPE adversarial (COCO val2014)"
+ },
+ {
+  "task": "pope",
+  "id": "pope/pope_1542",
+  "image": "data/pope/pope_1542.jpg",
+  "width": 640,
+  "height": 478,
+  "gt": "no",
+  "question": "Is there a chair in the image?",
+  "source": "POPE adversarial (COCO val2014)"
+ },
+ {
+  "task": "pope",
+  "id": "pope/pope_125",
+  "image": "data/pope/pope_125.jpg",
+  "width": 640,
+  "height": 480,
+  "gt": "yes",
+  "question": "Is there a sandwich in the image?",
+  "source": "POPE adversarial (COCO val2014)"
+ },
+ {
+  "task": "pope",
+  "id": "pope/pope_353",
+  "image": "data/pope/pope_353.jpg",
+  "width": 640,
+  "height": 480,
+  "gt": "yes",
+  "question": "Is there a bicycle in the image?",
+  "source": "POPE adversarial (COCO val2014)"
+ },
+ {
+  "task": "pope",
+  "id": "pope/pope_2176",
+  "image": "data/pope/pope_2176.jpg",
+  "width": 640,
+  "height": 480,
+  "gt": "no",
+  "question": "Is there a handbag in the image?",
+  "source": "POPE adversarial (COCO val2014)"
+ },
+ {
+  "task": "pope",
+  "id": "pope/pope_2668",
+  "image": "data/pope/pope_2668.jpg",
+  "width": 640,
+  "height": 425,
+  "gt": "no",
+  "question": "Is there a truck in the image?",
+  "source": "POPE adversarial (COCO val2014)"
+ },
+ {
+  "task": "screenspot",
+  "id": "screenspot/screenspot_0",
+  "image": "data/screenspot/screenspot_0.jpg",
+  "width": 960,
+  "height": 540,
+  "gt": [
+   0.9479166666666666,
+   0.14444444444444443,
+   0.99375,
+   0.2074074074074074
+  ],
+  "instruction": "close",
+  "data_type": "icon",
+  "platform": "windows",
+  "source": "ScreenSpot test",
+  "bbox_format": "normalized xyxy"
+ },
+ {
+  "task": "screenspot",
+  "id": "screenspot/screenspot_11",
+  "image": "data/screenspot/screenspot_11.jpg",
+  "width": 960,
+  "height": 540,
+  "gt": [
+   0.47708333333333336,
+   0.2462962962962963,
+   0.9479166666666666,
+   0.31296296296296294
+  ],
+  "instruction": "choose language for windows",
+  "data_type": "icon",
+  "platform": "windows",
+  "source": "ScreenSpot test",
+  "bbox_format": "normalized xyxy"
+ },
+ {
+  "task": "screenspot",
+  "id": "screenspot/screenspot_315",
+  "image": "data/screenspot/screenspot_315.jpg",
+  "width": 504,
+  "height": 1250,
+  "gt": [
+   0.003968253968253968,
+   0.6104,
+   0.9940476190476191,
+   0.6496
+  ],
+  "instruction": "set mirror display",
+  "data_type": "text",
+  "platform": "macos",
+  "source": "ScreenSpot test",
+  "bbox_format": "normalized xyxy"
+ },
+ {
+  "task": "screenspot",
+  "id": "screenspot/screenspot_608",
+  "image": "data/screenspot/screenspot_608.jpg",
+  "width": 2360,
+  "height": 1640,
+  "gt": [
+   0.6792372881355933,
+   0.6463414634146342,
+   0.9694915254237289,
+   0.7067073170731707
+  ],
+  "instruction": "clear browsing data",
+  "data_type": "text",
+  "platform": "ios",
+  "source": "ScreenSpot test",
+  "bbox_format": "normalized xyxy"
+ },
+ {
+  "task": "screenspot",
+  "id": "screenspot/screenspot_970",
+  "image": "data/screenspot/screenspot_970.jpg",
+  "width": 2560,
+  "height": 1440,
+  "gt": [
+   0.0234375,
+   0.23680555555555555,
+   0.07421875,
+   0.34791666666666665
+  ],
+  "instruction": "previous images",
+  "data_type": "icon",
+  "platform": "shop",
+  "source": "ScreenSpot test",
+  "bbox_format": "normalized xyxy"
+ },
+ {
+  "task": "screenspot",
+  "id": "screenspot/screenspot_988",
+  "image": "data/screenspot/screenspot_988.jpg",
+  "width": 2560,
+  "height": 1440,
+  "gt": [
+   0.0875,
+   0.58125,
+   0.18515625,
+   0.6256944444444444
+  ],
+  "instruction": "show reviews",
+  "data_type": "text",
+  "platform": "shop",
+  "source": "ScreenSpot test",
+  "bbox_format": "normalized xyxy"
+ }
+]

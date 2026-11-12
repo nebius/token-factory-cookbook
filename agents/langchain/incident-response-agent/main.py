@@ -96,11 +96,9 @@ def build_llm() -> Any:
     key = os.getenv("NEBIUS_API_KEY")
     if not key:
         raise RuntimeError("Set NEBIUS_API_KEY in the environment or this folder's .env file.")
-    model = os.getenv("NEBIUS_MODEL")
+    model = os.getenv("NEBIUS_MODEL", "").strip()
     if not model:
-        raise RuntimeError(
-            "Set NEBIUS_MODEL to a model currently available in your Token Factory project."
-        )
+        raise RuntimeError("Set NEBIUS_MODEL to a current model ID from your Token Factory project.")
     return ChatOpenAI(
         api_key=key,
         base_url="https://api.tokenfactory.nebius.com/v1/",

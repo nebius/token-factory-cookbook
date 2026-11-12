@@ -1,7 +1,7 @@
 # Stateless Responses API
 
-Token Factory exposes the OpenAI-compatible `POST /v1/responses` endpoint. The
-current supported contract is **stateless**: send each request as an independent
+Token Factory exposes the OpenAI-compatible `POST /v1/responses` endpoint. This
+example deliberately uses **stateless** requests: send each request as an independent
 first turn and keep any conversation history in your application.
 
 ## Run the example
@@ -18,22 +18,15 @@ python api/responses/responses_stateless.py "Why are stateless APIs easy to retr
 
 Add `--stream` to print streaming text deltas.
 
-## Current negative contract
+## Scope and validation
 
-Do not use `previous_response_id` for server-side conversation continuation, and
-do not replay prior assistant `output_text` or `reasoning_text` response items as
-new input. Those stateful patterns are not supported by the current Token
-Factory implementation even though fields may appear in the generated API
-schema.
+This example sets `store=False` and does not use `previous_response_id` or replay
+provider response items. Its offline tests verify request construction and text-delta
+handling; they do not establish the server's current support for conversation persistence.
 
-The optional probe below makes a second, billable request and passes only when
-`previous_response_id` is rejected with a client error:
-
-```bash
-python api/responses/responses_stateless.py --probe-unsupported
-```
-
-If that probe starts succeeding, the API contract has changed. Update this guide
-and its tests before recommending stateful usage.
+Install dependencies with `python -m pip install -r api/responses/requirements.txt`.
+Run offline tests with `python -m unittest discover -s api/responses -p "test_*.py"`.
+Both normal and streaming runs call a paid API; no authenticated inference was run
+for this refresh.
 
 See the [Responses API reference](https://docs.tokenfactory.nebius.com/api-reference/inference/create-a-response).

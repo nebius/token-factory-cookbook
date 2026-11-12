@@ -7,6 +7,7 @@
 - [Nemotron-3-Nano-30B-A3B](#nemotron-3-nano-30b-a3b)
   - [Table of Contents](#table-of-contents)
   - [Quickstart](#quickstart)
+  - [Reasoning replies truncated by `max_tokens`](#reasoning-replies-truncated-by-max_tokens)
   - [Try it Out](#try-it-out)
   - [TL;DR](#tldr)
     - [Key highlights](#key-highlights)
@@ -27,15 +28,29 @@ client = OpenAI(
 )
 
 response = client.chat.completions.create(
-    model="nvidia/nvidia-nemotron-3-nano-30b-a3b",
+    model="nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B",
     messages=[{"role": "user", "content": "Explain quantum computing in one sentence."}]
 )
 print(response.choices[0].message.content)
 ```
 
+## Reasoning replies truncated by `max_tokens`
+
+Nemotron-3-Nano-30B-A3B is a reasoning model. If `max_tokens` runs out while it is still thinking, the API returns HTTP 200 with `finish_reason: "length"` and `content: null`; the partial thinking text sits in a field named `reasoning` on the message object. Clients that fall back to `reasoning_content` (the field name some other providers use) find nothing and end up with an empty answer.
+
+Read the reply defensively and detect truncation:
+
+```python
+choice = response.choices[0]
+text = choice.message.content or getattr(choice.message, "reasoning", None)
+if choice.finish_reason == "length":
+    # reply was cut off mid-thought; retry with a larger max_tokens
+    ...
+```
+
 ## Try it Out
 
-[▶ Try it in the Token Factory Playground](https://tokenfactory.nebius.com/playground?models=nvidia/nvidia-nemotron-3-nano-30b-a3b)
+[▶ Try it in the Token Factory Playground](https://tokenfactory.nebius.com/playground?models=nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B)
 
 ## TL;DR
 
@@ -58,10 +73,10 @@ Nemotron-3-Nano-30B-A3B is a small, efficient MoE model from NVIDIA, designed fo
 
 ## Performance and Benchmarks
 
-See official benchmarks on the [Nemotron HuggingFace page](https://huggingface.co/nvidia/nvidia-nemotron-3-nano-30b-a3b).
+See official benchmarks on the [Nemotron HuggingFace page](https://huggingface.co/nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B-BF16).
 
 ---
 
 ## References
 
-- [Nemotron-3-Nano-30B-A3B on HuggingFace](https://huggingface.co/nvidia/nvidia-nemotron-3-nano-30b-a3b)
+- [Nemotron-3-Nano-30B-A3B on HuggingFace](https://huggingface.co/nvidia/NVIDIA-Nemotron-3-Nano-30B-A3B-BF16)

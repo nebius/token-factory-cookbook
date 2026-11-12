@@ -2,7 +2,7 @@
 
 ## Overview
 
-For overall spec see [game-spec.md](game-spec.md)
+For overall spec see [spec-snake-game.md](spec-snake-game.md)
 
 ## Demo mode
 

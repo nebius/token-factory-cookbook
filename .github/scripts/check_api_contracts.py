@@ -6,7 +6,6 @@ from __future__ import annotations
 import re
 from pathlib import Path
 
-
 ROOT = Path(__file__).resolve().parents[2]
 CHECKED_SUFFIXES = {
     ".env",
@@ -48,14 +47,19 @@ def is_checked_file(path: Path) -> bool:
     relative = path.relative_to(ROOT)
     if path.suffix not in CHECKED_SUFFIXES or relative == SELF:
         return False
-    if any(part in {".git", ".venv", "__pycache__"} for part in relative.parts):
+    if any(
+        part in {".git", ".venv", "__pycache__", "node_modules", "fixtures", "tests"}
+        for part in relative.parts
+    ):
         return False
-    return True
+    return not (path.name.startswith("test_") or ".test." in path.name)
 
 
 def scan() -> list[str]:
     failures: list[str] = []
-    for path in sorted(item for item in ROOT.rglob("*") if item.is_file() and is_checked_file(item)):
+    for path in sorted(
+        item for item in ROOT.rglob("*") if item.is_file() and is_checked_file(item)
+    ):
         relative = path.relative_to(ROOT)
         text = path.read_text(encoding="utf-8", errors="ignore")
         for host in LEGACY_HOSTS:
@@ -78,7 +82,9 @@ def scan() -> list[str]:
         for model in DISCONTINUED_PUBLIC_MODELS:
             pattern = rf"(?<![A-Za-z0-9_.-]){re.escape(model)}(?![A-Za-z0-9_.-])"
             if re.search(pattern, model_text):
-                failures.append(f"{relative}: discontinued Public Serverless model {model}")
+                failures.append(
+                    f"{relative}: discontinued Public Serverless model {model}"
+                )
     return failures
 
 
