@@ -1,0 +1,25 @@
+name: Snake game proxy
+
+on:
+  pull_request:
+    paths:
+      - 'fun/snake-game/**'
+      - '.github/workflows/snake-game.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'fun/snake-game/**'
+      - '.github/workflows/snake-game.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+      - run: python3 -m unittest discover -s fun/snake-game -p 'test_*.py' -v
