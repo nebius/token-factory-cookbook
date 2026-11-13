@@ -1,0 +1,21 @@
+{
+  "text": "",
+  "reasoning": "Now let me zoom into the bar chart portion to read the inventory change values.",
+  "toolCalls": [
+    {
+      "id": "call_ae26929e2aa741ddb7125ba0",
+      "name": "view_page",
+      "arguments": "{\"crop\": [0.1, 0.28, 0.75, 0.43], \"page\": 5}"
+    }
+  ],
+  "finishReason": "tool_calls",
+  "usage": {
+    "input": 14356,
+    "cachedInput": 13568,
+    "output": 68,
+    "reasoning": 16
+  },
+  "model": "thinkingmachines/Inkling-2-Small",
+  "ms": 3534,
+  "cost": 0.00111848
+}

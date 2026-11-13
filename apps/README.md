@@ -14,6 +14,7 @@ Explore complete applications and interactive coding examples for Nebius Token F
 | [Paper to interactive explainer](paper-to-interactive-explainer/) | Turn a research paper into a self-tested, interactive HTML explainer | Included in this repository |
 | [Napkin to 3D print](napkin-to-3d-print/) | Turn a hand-drawn sketch into a parametric CadQuery model and a printable STL | Included in this repository |
 | [Image to 3D](image-to-3d/) | Turn a photo into an interactive Three.js scene with Kimi, then refine it in plain language | Included in this repository |
+| [Footnote](footnote/) | Turn a report PDF into a spreadsheet model where every number links to its page, then check the report's claims | Included in this repository |
 | [WhatLLM](https://www.whatllm.org/) | Compare model responses | Hosted application |
 | [Allycat](https://github.com/The-AI-Alliance/allycat) | Search and chat over website content | External repository |
 | [Customer Support AI](https://github.com/amrrs/customer-support-ai) | Answer support questions with domain-restricted web retrieval | External repository |
@@ -146,5 +147,21 @@ users can bring their own key.
 |-
 
 Built by [Amrrs](https://github.com/amrrs).
+
+---
+
+## Footnote
+
+[Footnote](footnote/) is a Next.js app. Drop in a report PDF, a scanned
+document or two reports to compare, and Inkling 2 Small on Nebius Token Factory
+reads the pages, writes a spreadsheet model with live formulas and a source for
+every number, and checks the report's own claims with sandboxed Python. The app
+then verifies every number against the PDF text and recomputes every formula
+without the model, and stores runs in a local SQLite file you can search.
+
+| <img src="footnote/docs/footnote-run.png" width="400" alt="A Footnote run: the spreadsheet beside the report, with the cited line highlighted">
+|-
+
+Built by [Amitesh Anand](https://github.com/Astrodevil).
 
 ---

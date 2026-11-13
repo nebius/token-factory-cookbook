@@ -63,6 +63,7 @@ Prefer a notebook? Open the [native API example](api/api_native.ipynb). For mode
 | --- | --- | --- |
 | [OpenCrewBot](agents/mastra/opencrewbot/) | A chat app with model-specific bots, tools, memory, and shared rooms | Mastra · Next.js |
 | [Splitter Lite](apps/splitter-lite/) | A receipt reader that splits bills with vision and calculator tools | Nemotron 3.5 Super VL · Next.js |
+| [Footnote](apps/footnote/) | A report analyst that builds a sourced spreadsheet model from a PDF and checks the report's claims | Inkling 2 Small · Next.js |
 | [KubeTrace AI](agents/kubetrace-ai/) | A Kubernetes incident investigation and repair workflow with review controls | Beam · Python · React |
 | [Deep research agent](agents/langchain/deep-agent-example-1/) | A research workflow with planning and web search | LangChain · Tavily |
 | [Internal support agent](rag/support-agent-weaviate/) | A support workflow with retrieval and external tools | LangGraph · Weaviate |
