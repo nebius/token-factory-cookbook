@@ -1,5 +1,6 @@
 import json
 import re
+import tomllib
 import unittest
 from pathlib import Path
 
@@ -18,6 +19,11 @@ ENV_TEMPLATES = (
 
 
 class RecipeSecretHygieneTest(unittest.TestCase):
+    def test_leadguard_toml_template_contains_no_key(self) -> None:
+        template = ROOT / "apps/leadguard-event-ops/.streamlit/secrets.toml.example"
+        secrets = tomllib.loads(template.read_text())
+        self.assertEqual(secrets["NEBIUS_API_KEY"], "")
+
     def test_templates_exist_and_do_not_contain_secret_values(self) -> None:
         secret_assignment = re.compile(
             r"^(?:NEBIUS|OPENAI|CALCOM|COUCHBASE|EXA|GEMINI|OKAHU).*"
