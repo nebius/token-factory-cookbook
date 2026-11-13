@@ -14,6 +14,19 @@ SPEC.loader.exec_module(guard)
 
 
 class APIContractGuardTests(unittest.TestCase):
+    def test_checks_environment_files_and_templates(self):
+        for name in (".env", "example.env", "env.example", ".env.example"):
+            with self.subTest(name=name), tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                (root / name).write_text(
+                    "NEBIUS_BASE_URL=https://api.studio.nebius.ai/v1\n"
+                    "NEBIUS_MODEL=moonshotai/Kimi-K2.5\n"
+                )
+                with patch.object(guard, "ROOT", root):
+                    failures = guard.scan()
+                self.assertEqual(len(failures), 2)
+                self.assertTrue(all(failure.startswith(f"{name}:") for failure in failures))
+
     def test_rejects_legacy_host_in_runnable_recipe(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)

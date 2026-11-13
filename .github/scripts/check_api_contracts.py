@@ -45,7 +45,8 @@ SELF = Path(".github/scripts/check_api_contracts.py")
 
 def is_checked_file(path: Path) -> bool:
     relative = path.relative_to(ROOT)
-    if path.suffix not in CHECKED_SUFFIXES or relative == SELF:
+    is_environment_file = path.name in {".env", "env.example", ".env.example"}
+    if (path.suffix not in CHECKED_SUFFIXES and not is_environment_file) or relative == SELF:
         return False
     if any(
         part in {".git", ".venv", "__pycache__", "node_modules", "fixtures", "tests"}
