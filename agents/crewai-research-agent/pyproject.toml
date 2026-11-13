@@ -1,15 +1,19 @@
 [project]
-name = "starter-agent"
-version = "0.1.0"
-description = "Add your description here"
+name = "token-factory-crewai-research-agent"
+version = "0.2.0"
+description = "CrewAI multi-agent and tool recipe for Nebius Token Factory"
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
-    "crewai>=0.140.0",
-    "python-dotenv>=1.1.1",
+    "crewai>=1.15.3,<2",
+    "python-dotenv>=1.2.1,<2",
 ]
 
 [dependency-groups]
 dev = [
-    "ipykernel>=6.29.5",
+    "pytest>=8.4,<10",
 ]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
