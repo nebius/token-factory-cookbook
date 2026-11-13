@@ -22,7 +22,7 @@ In the bundled EIA run, Inkling viewed all 5 page images and zoomed into the Bre
 | --- | --- |
 | Finds its way with `list_pages` and `search_pages`, and reads pages with `view_page`: the page image plus its text, with zoom | Extracts each page's text with positions (pdf.js), renders the page images Inkling sees, builds the outline and runs the search |
 | Decides what to model and writes cells with `write_cells`: a value or formula, a label, and a source (document, page, quote) | Checks every number is on its cited page and every quote is real, and answers at once so the model can fix a citation on its next step |
-| Writes Python with `run_python` for arithmetic and chart reading | Runs it in a sandbox with no network and a 20 second limit |
+| Writes Python with `run_python` for arithmetic and chart reading | Runs it in a sandbox with no network, no access to your files and a 20 second limit (macOS; see below) |
 | Judges the report's claims with `submit_claims`: supported, contradicted or not checkable | Recomputes every formula, adds up totals, flags unsourced cells, marks chart readings as such |
 | Reads scanned pages from their images before the analysis starts | Labels those matches "the model's reading", never "PDF text" |
 
@@ -79,7 +79,7 @@ To try it without a key, `INKLING_PROVIDER=replay pnpm dev` replays the recorded
 
 Each live run makes paid Inkling 2 Small calls on your Token Factory project. The runs in [A real run](#a-real-run) cost $0.04 to $0.22 each; replay mode makes no calls.
 
-`run_python` runs under `sandbox-exec` on macOS and `unshare -rn` on Linux, with no network. Where neither is available the tool is off and the start page says so.
+`run_python` runs model-written code, so it only runs inside a sandbox. On macOS that is `sandbox-exec`: no network, writes only to its temp folder, and no reading files in your home folder apart from Python's own install, so a PDF with hidden instructions can't make it read `.env` or `~/.ssh`. On Linux and Windows the app has no comparable sandbox, so the tool is off and the start page says so. To turn it on there, run Footnote in a container and set `FOOTNOTE_PYTHON=unsandboxed`.
 
 ## Exact model and configuration
 

@@ -4,9 +4,10 @@ import os from "node:os";
 import path from "node:path";
 
 // run_python: the model's calculator. Code runs in a fresh temp folder with `python3 -I`, a time limit
-// and an output cap. On macOS, sandbox-exec blocks the network and writes outside that folder;
-// on Linux, `unshare -rn` gives the process an empty network namespace. Where neither exists the tool
-// is turned off unless FOOTNOTE_PYTHON=unsandboxed is set.
+// and an output cap. On macOS, sandbox-exec blocks the network, writes outside that folder, and reading
+// files in your home folder other than Python's own install, so a prompt-injected PDF can't make it read
+// .env or ~/.ssh. Elsewhere there is no comparable sandbox here (`unshare -rn` removes only the network,
+// not file access), so the tool is off unless FOOTNOTE_PYTHON=unsandboxed is set, for example in a container.
 
 type PythonResult = { ok: boolean; stdout: string; stderr: string; ms: number; timedOut: boolean; sandbox: string };
 
@@ -26,26 +27,35 @@ async function exists(p: string) {
   }
 }
 
-function profile(dir: string) {
-  const d = dir.replace(/"/g, "");
+function profile(dir: string, readable: string[]) {
+  const q = (p: string) => `"${p.replace(/["\\]/g, "")}"`;
+  const d = q(dir);
   return `(version 1)
 (allow default)
 (deny network*)
 (deny file-write*)
-(allow file-write* (subpath "${d}") (literal "/dev/null") (literal "/dev/stdout") (literal "/dev/stderr"))`;
+(allow file-write* (subpath ${d}) (literal "/dev/null") (literal "/dev/stdout") (literal "/dev/stderr"))
+(deny file-read-data (subpath ${q(os.homedir())}))
+(allow file-read-data (subpath ${d})${readable.map((p) => ` (subpath ${q(p)})`).join("")})`;
+}
+
+/** Where this Python lives (its prefixes and executable folder), so it can still load its own modules
+ * when they sit in the home folder (pyenv, uv, a virtualenv). */
+async function pythonDirs(python: string): Promise<string[]> {
+  return new Promise((resolve) => {
+    let out = "";
+    const p = spawn(python, ["-I", "-c", "import os, sys; print(sys.prefix); print(sys.base_prefix); print(os.path.dirname(os.path.realpath(sys.executable)))"], { stdio: ["ignore", "pipe", "ignore"] });
+    p.stdout.on("data", (d: Buffer) => (out += d.toString()));
+    p.on("error", () => resolve([]));
+    p.on("exit", () => resolve([...new Set(out.split("\n").map((l) => l.trim()).filter((l) => path.isAbsolute(l)))]));
+  });
 }
 
 async function pickRunner(): Promise<Runner | null> {
   const python = process.env.FOOTNOTE_PYTHON_BIN || "python3";
-  if (process.platform === "darwin" && (await exists("/usr/bin/sandbox-exec")))
-    return { name: "sandbox-exec (no network, writes only to its temp folder)", cmd: "/usr/bin/sandbox-exec", args: (dir, script) => ["-p", profile(dir), python, "-I", script] };
-  if (process.platform === "linux" && (await exists("/usr/bin/unshare"))) {
-    const ok = await new Promise<boolean>((resolve) => {
-      const p = spawn("/usr/bin/unshare", ["-rn", "true"]);
-      p.on("error", () => resolve(false));
-      p.on("exit", (code) => resolve(code === 0));
-    });
-    if (ok) return { name: "unshare -rn (no network)", cmd: "/usr/bin/unshare", args: (_dir, script) => ["-rn", python, "-I", script] };
+  if (process.platform === "darwin" && (await exists("/usr/bin/sandbox-exec"))) {
+    const readable = await pythonDirs(python);
+    return { name: "sandbox-exec (no network, writes only to its temp folder, no reading your home folder)", cmd: "/usr/bin/sandbox-exec", args: (dir, script) => ["-p", profile(dir, readable), python, "-I", script] };
   }
   if (process.env.FOOTNOTE_PYTHON === "unsandboxed") return { name: "unsandboxed (FOOTNOTE_PYTHON=unsandboxed)", cmd: python, args: (_dir, script) => ["-I", script] };
   return null;
