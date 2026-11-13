@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "defaultMode": "default",
+    "deny": ["WebSearch"]
+  },
+  "attribution": {
+    "commit": "",
+    "pr": ""
+  }
+}
