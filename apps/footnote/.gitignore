@@ -1,0 +1,9 @@
+node_modules/
+.next/
+.env*.local
+.env
+*.tsbuildinfo
+next-env.d.ts
+data/
+# The demo video is for sharing, not for the repository.
+docs/demo.mp4

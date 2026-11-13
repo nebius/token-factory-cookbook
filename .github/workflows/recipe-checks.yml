@@ -11,6 +11,7 @@ on:
       - 'apps/paper-to-interactive-explainer/**'
       - 'apps/napkin-to-3d-print/**'
       - 'apps/image-to-3d/**'
+      - 'apps/footnote/**'
       - 'post-training/gemma-4-agentic-coding/**'
       - 'models/kimi-k3.1-pro-vision-showcase/**'
       - '.github/workflows/recipe-checks.yml'
@@ -25,6 +26,7 @@ on:
       - 'apps/paper-to-interactive-explainer/**'
       - 'apps/napkin-to-3d-print/**'
       - 'apps/image-to-3d/**'
+      - 'apps/footnote/**'
       - 'post-training/gemma-4-agentic-coding/**'
       - 'models/kimi-k3.1-pro-vision-showcase/**'
       - '.github/workflows/recipe-checks.yml'
@@ -140,6 +142,26 @@ jobs:
       - run: npm test --if-present
       - run: npm run build
       - run: npm audit --omit=dev --audit-level=high
+
+  footnote:
+    name: Footnote tests and build
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: apps/footnote
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11.25.0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: pnpm
+          cache-dependency-path: apps/footnote/pnpm-lock.yaml
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm test && pnpm typecheck && pnpm build
+      - run: pnpm audit --prod --audit-level=high
 
   kimi-python-apps:
     name: ${{ matrix.app }} offline tests

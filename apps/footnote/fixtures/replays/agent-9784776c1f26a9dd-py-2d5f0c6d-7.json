@@ -1,0 +1,21 @@
+{
+  "text": "",
+  "reasoning": "Let me look at the chart on page 5 more closely to read values. Also check the table on page 4 (Table 1) - sum of shut-ins. Let me crop the chart on page 5.",
+  "toolCalls": [
+    {
+      "id": "call_23144d98f37d447ca06a50b4",
+      "name": "view_page",
+      "arguments": "{\"crop\": [0.1, 0.08, 0.75, 0.32], \"page\": 5}"
+    }
+  ],
+  "finishReason": "tool_calls",
+  "usage": {
+    "input": 13484,
+    "cachedInput": 11392,
+    "output": 98,
+    "reasoning": 46
+  },
+  "model": "thinkingmachines/Inkling-2-Small",
+  "ms": 1827,
+  "cost": 0.0014091199999999998
+}

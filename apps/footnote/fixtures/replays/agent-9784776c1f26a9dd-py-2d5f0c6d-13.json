@@ -1,0 +1,21 @@
+{
+  "text": "",
+  "reasoning": "Headers B1/C1/D1 need source? They are text headers — the error says \"No source page\" for B1, C1, D1. I need to add format text for headers maybe with source? The checker seems to want sources for those. I'll rewrite B1, C1, D1 as text with a source? Headers as text with source... maybe just give them source page 1 and quote? They are column headers \"2025\", \"2026\", \"2027\" — present on page 1 table. I'll add source page 1 quote \"2025 2026 2027\".",
+  "toolCalls": [
+    {
+      "id": "call_f974888a77734c5b89acaa15",
+      "name": "write_cells",
+      "arguments": "{\"cells\": [{\"label\": \"Header 2025\", \"ref\": \"B1\", \"source\": {\"page\": 1, \"quote\": \"2025 2026 2027\"}, \"value\": \"2025\"}, {\"label\": \"Header 2026\", \"ref\": \"C1\", \"source\": {\"page\": 1, \"quote\": \"2025 2026 2027\"}, \"value\": \"2026\"}, {\"label\": \"Header 2027\", \"ref\": \"D1\", \"source\": {\"page\": 1, \"quote\": \"2025 2026 2027\"}, \"value\": \"2027\"}], \"sheet\": \"Overview\"}"
+    }
+  ],
+  "finishReason": "tool_calls",
+  "usage": {
+    "input": 36200,
+    "cachedInput": 24064,
+    "output": 352,
+    "reasoning": 140
+  },
+  "model": "thinkingmachines/Inkling-2-Small",
+  "ms": 4201,
+  "cost": 0.0054366399999999995
+}
