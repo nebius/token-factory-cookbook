@@ -18,6 +18,7 @@ References:
   - [Claude Code](#claude-code)
   - [Codex](#codex)
   - [OpenCode](#opencode)
+  - [Qwen Code](#qwen-code)
 - [Proxies](#proxies)
 
 ## Prerequisites
@@ -33,7 +34,6 @@ For **Kimi K3.1 Pro**, start with the [Python quickstart](../models/kimi-k3.1-pr
 | --- | --- | --- |
 | `zai-org/GLM-5.3-Flash` | 1 M | 320 B (18 B active) |
 | `moonshotai/Kimi-K3` | 1M | 2.8T (104B active) |
-| `moonshotai/Kimi-K2.7-Code` | 256K | 1T (32B active) |
 | `zai-org/GLM-5.2` | 1M | 753B (17B active) |
 | `MiniMaxAI/MiniMax-M3` | 1M | 428B (23B active) |
 
@@ -47,6 +47,7 @@ For **Kimi K3.1 Pro**, start with the [Python quickstart](../models/kimi-k3.1-pr
 | Claude Code | - | - | ✅ | [instructions](#claude-code) |
 | Codex | - | - | ✅ | [instructions](#codex) |
 | OpenCode | ✅ | ✅ | ✅ | [instructions](opencode.md) |
+| Qwen Code | - | ✅ | - | [instructions](qwen-code/) |
 
 
 ## Cursor
@@ -93,3 +94,7 @@ These proxies support connecting coding agents to Token Factory.
 | Claude Codex proxy server | Claude Code, Codex | [GitHub](https://github.com/KiranChilledOut/claude-codex-nebius-proxy) |
 | Nebius TF Relay | Claude Code, Codex, OpenCode | [Nebius TF Relay](https://nebius-tf-relay.vercel.app/) · [how to video](https://www.youtube.com/watch?v=u8c_exTe2To) |
 
+
+## Qwen Code
+
+Use the [OpenAI-compatible setup recipe](qwen-code/) to connect Qwen Code to Token Factory and validate the configuration offline.
