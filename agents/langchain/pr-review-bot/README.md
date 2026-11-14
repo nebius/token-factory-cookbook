@@ -41,7 +41,7 @@ pytest
 | `GITHUB_APP_ID` | Recommended | GitHub App ID; must be paired with `GITHUB_APP_PRIVATE_KEY`. |
 | `GITHUB_APP_PRIVATE_KEY` | Recommended | PEM private key generated for the GitHub App. |
 | `GITHUB_TOKEN` | Alternative | Fine-grained token when no App credentials are configured. |
-| `NEBIUS_MODEL` | No | Token Factory model supporting tool calling; default `moonshotai/Kimi-K2.5`. |
+| `NEBIUS_MODEL` | Yes | Current tool-capable model ID from your Token Factory project. |
 | `NEBIUS_BASE_URL` | No | Default `https://api.tokenfactory.nebius.com/v1/`. |
 | `REVIEW_DRAFTS` | No | Set `true` to review drafts; default `false`. |
 | `MAX_FILES` | No | Files fetched per PR (1–100); default `40`. |
@@ -55,7 +55,7 @@ For a GitHub App, use **Pull requests: Read & write**, **Contents: Read-only**, 
 
 1. Push this repository to GitHub, then create a Railway project from that repository. The included `Dockerfile` and `railway.toml` are detected automatically.
 2. In the service's **Variables** tab, add `GITHUB_WEBHOOK_SECRET`, `NEBIUS_API_KEY`, `GITHUB_APP_ID`, and `GITHUB_APP_PRIVATE_KEY`. Paste the full PEM private key, including its `BEGIN` and `END` lines. As an alternative, set `GITHUB_TOKEN` and leave both App variables empty.
-3. Optionally set `NEBIUS_MODEL` to a tool-calling model enabled in the Token Factory project. Nebius exposes the configured model through its OpenAI-compatible `/v1/` API.
+3. Set `NEBIUS_MODEL` to a tool-calling model enabled in the Token Factory project. Nebius exposes the configured model through its OpenAI-compatible `/v1/` API.
 4. Deploy the service. In Railway **Settings → Networking**, generate a public domain and open `https://YOUR-DOMAIN/health`; it should return `{"status":"ok"}`.
 5. In GitHub **Settings → Developer settings → GitHub Apps**, create a GitHub App. Set its webhook URL to `https://YOUR-DOMAIN/webhooks/github`, use the same webhook secret, assign the permissions/events above, create the App, and generate a private key.
 6. Install the App on the target repository or organization. Open or update a non-draft PR. Railway logs will show the review result and GitHub will receive one inline review.

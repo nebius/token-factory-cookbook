@@ -11,7 +11,7 @@ class Settings(BaseSettings):
     github_app_id: str | None = None
     github_app_private_key: SecretStr | None = None
     github_token: SecretStr | None = None
-    nebius_model: str = "moonshotai/Kimi-K2.5"
+    nebius_model: str = Field(min_length=1)
     nebius_base_url: str = "https://api.tokenfactory.nebius.com/v1/"
     review_drafts: bool = False
     max_files: int = Field(default=40, ge=1, le=100)

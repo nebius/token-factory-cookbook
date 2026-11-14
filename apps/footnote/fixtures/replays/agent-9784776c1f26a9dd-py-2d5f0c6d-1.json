@@ -1,0 +1,21 @@
+{
+  "text": "",
+  "reasoning": "Let me start by listing the pages and viewing them.",
+  "toolCalls": [
+    {
+      "id": "call_57d4e231fc8348039b3a27a8",
+      "name": "list_pages",
+      "arguments": "{}"
+    }
+  ],
+  "finishReason": "tool_calls",
+  "usage": {
+    "input": 2359,
+    "cachedInput": 0,
+    "output": 38,
+    "reasoning": 11
+  },
+  "model": "thinkingmachines/Inkling-2-Small",
+  "ms": 1262,
+  "cost": 0.0007457
+}

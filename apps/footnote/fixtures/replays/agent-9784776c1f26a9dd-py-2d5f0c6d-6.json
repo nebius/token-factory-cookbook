@@ -1,0 +1,21 @@
+{
+  "text": "",
+  "reasoning": "",
+  "toolCalls": [
+    {
+      "id": "call_4c1fd97832e545d49d6965d9",
+      "name": "view_page",
+      "arguments": "{\"page\": 5}"
+    }
+  ],
+  "finishReason": "tool_calls",
+  "usage": {
+    "input": 11452,
+    "cachedInput": 9088,
+    "output": 27,
+    "reasoning": 0
+  },
+  "model": "thinkingmachines/Inkling-2-Small",
+  "ms": 1314,
+  "cost": 0.00128148
+}
