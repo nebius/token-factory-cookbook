@@ -33,7 +33,6 @@ For **Kimi K3.1 Pro**, start with the [Python quickstart](../models/kimi-k3.1-pr
 | --- | --- | --- |
 | `zai-org/GLM-5.3-Flash` | 1 M | 320 B (18 B active) |
 | `moonshotai/Kimi-K3` | 1M | 2.8T (104B active) |
-| `moonshotai/Kimi-K2.7-Code` | 256K | 1T (32B active) |
 | `zai-org/GLM-5.2` | 1M | 753B (17B active) |
 | `MiniMaxAI/MiniMax-M3` | 1M | 428B (23B active) |
 
@@ -81,6 +80,8 @@ Integrates using the following proxies:
 - [Nebius TF Relay](https://nebius-tf-relay.vercel.app/)
 
 ## OpenCode
+
+For configuration validation and lifecycle checks, use the [tested OpenCode setup recipe](../integrations/opencode/).
 
 See the [OpenCode integration guide](opencode.md) — setup walkthrough with screenshots, model picker, and what one real agent run costs.
 
