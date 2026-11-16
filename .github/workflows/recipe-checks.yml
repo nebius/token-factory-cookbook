@@ -5,7 +5,7 @@ on:
     paths:
       - 'agents/kubetrace-ai/**'
       - 'agents/langchain/proactive-oncall-agent/**'
-      - 'agents/langchain/agent-swarm/**'
+      - 'agents/langchain/multi-agent-orchestrator/**'
       - 'agents/mastra/opencrewbot/**'
       - 'agents/mastra/openduet/**'
       - 'apps/splitter-lite/**'
@@ -22,7 +22,7 @@ on:
     paths:
       - 'agents/kubetrace-ai/**'
       - 'agents/langchain/proactive-oncall-agent/**'
-      - 'agents/langchain/agent-swarm/**'
+      - 'agents/langchain/multi-agent-orchestrator/**'
       - 'agents/mastra/opencrewbot/**'
       - 'agents/mastra/openduet/**'
       - 'apps/splitter-lite/**'
@@ -173,7 +173,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        agent: [proactive-oncall-agent, agent-swarm]
+        agent: [proactive-oncall-agent, multi-agent-orchestrator]
     defaults:
       run:
         working-directory: agents/langchain/${{ matrix.agent }}

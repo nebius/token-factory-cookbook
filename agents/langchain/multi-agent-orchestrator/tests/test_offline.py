@@ -18,7 +18,7 @@ os.environ.pop("NEBIUS_API_KEY", None)  # make sure nothing here can reach the A
 from langchain_core.messages import AIMessage, AIMessageChunk  # noqa: E402
 
 import models  # noqa: E402
-import swarm  # noqa: E402
+import orchestrator  # noqa: E402
 import tools  # noqa: E402
 
 KIMI = "moonshotai/Kimi-K3.1-Pro"
@@ -34,7 +34,7 @@ def setUpModule():
 
 
 def settings(**overrides) -> dict:
-    return swarm.make_settings(orchestrator=KIMI, worker=INKLING, fast_worker=NEMOTRON, **overrides)
+    return orchestrator.make_settings(orchestrator=KIMI, worker=INKLING, fast_worker=NEMOTRON, **overrides)
 
 
 class FetchUrlGuardTests(unittest.TestCase):
@@ -82,20 +82,20 @@ class FetchUrlGuardTests(unittest.TestCase):
 class RoutingTests(unittest.TestCase):
     def test_clean_tasks_slugs_dedupes_and_limits(self):
         tasks = [
-            swarm.Subtask(id="Pricing Compare", title="a", brief="b", tier="fast"),
-            swarm.Subtask(id="pricing-compare", title="a", brief="b", tier="standard"),
-            swarm.Subtask(id="extra", title="a", brief="b", tier="standard"),
+            orchestrator.Subtask(id="Pricing Compare", title="a", brief="b", tier="fast"),
+            orchestrator.Subtask(id="pricing-compare", title="a", brief="b", tier="standard"),
+            orchestrator.Subtask(id="extra", title="a", brief="b", tier="standard"),
         ]
-        cleaned = swarm._clean_tasks(tasks, limit=2)
+        cleaned = orchestrator._clean_tasks(tasks, limit=2)
         self.assertEqual([t["id"] for t in cleaned], ["pricing-compare", "pricing-compare-2"])
 
     def test_fast_tasks_start_cheap_and_escalate_on_revision(self):
         state = {"goal": "g", "settings": settings()}
         fast = {"id": "f", "title": "t", "brief": "b", "tier": "fast"}
         standard = {"id": "s", "title": "t", "brief": "b", "tier": "standard"}
-        self.assertEqual(swarm._worker_input(state, fast)["model"], NEMOTRON)
-        self.assertEqual(swarm._worker_input(state, standard)["model"], INKLING)
-        retry = swarm._worker_input(state, fast, feedback="fix it", previous="old", attempt=2)
+        self.assertEqual(orchestrator._worker_input(state, fast)["model"], NEMOTRON)
+        self.assertEqual(orchestrator._worker_input(state, standard)["model"], INKLING)
+        retry = orchestrator._worker_input(state, fast, feedback="fix it", previous="old", attempt=2)
         self.assertEqual(retry["model"], INKLING)
         self.assertTrue(retry["escalated"])
 
@@ -105,7 +105,7 @@ class RoutingTests(unittest.TestCase):
         self.assertEqual(s["max_revisions"], 0)
 
     def test_text_strips_inline_reasoning(self):
-        self.assertEqual(swarm._text(AIMessage("<think>hmm</think>\nAnswer")), "Answer")
+        self.assertEqual(orchestrator._text(AIMessage("<think>hmm</think>\nAnswer")), "Answer")
 
 
 class CostTests(unittest.TestCase):
@@ -125,7 +125,7 @@ class CostTests(unittest.TestCase):
             {"role": "worker", "model": INKLING, "input_tokens": 10_000, "output_tokens": 2000,
              "cost": models.cost_usd(INKLING, 10_000, 2000)},
         ]
-        summary = swarm.cost_summary(ledger, KIMI)
+        summary = orchestrator.cost_summary(ledger, KIMI)
         self.assertAlmostEqual(summary["total"], 0.007 + 0.005)
         self.assertAlmostEqual(summary["all_orchestrator_total"], 0.007 + 0.04)
         self.assertGreater(summary["savings_pct"], 70)
@@ -142,26 +142,26 @@ class GraphRunTests(unittest.TestCase):
     """Runs the real LangGraph graph with the model calls stubbed out."""
 
     def test_plan_fan_out_review_escalation_and_synthesis(self):
-        plan = swarm.SwarmPlan(
+        plan = orchestrator.TaskPlan(
             approach="split by database",
             final_format="short report",
             tasks=[
-                swarm.Subtask(id="lookup", title="Lookup", brief="find limits", tier="fast"),
-                swarm.Subtask(id="analysis", title="Analysis", brief="compare", tier="standard"),
+                orchestrator.Subtask(id="lookup", title="Lookup", brief="find limits", tier="fast"),
+                orchestrator.Subtask(id="analysis", title="Analysis", brief="compare", tier="standard"),
             ],
         )
-        review = swarm.Review(
+        review = orchestrator.Review(
             summary="one claim is wrong",
             verdicts=[
-                swarm.Verdict(task_id="lookup", decision="revise", feedback="max document size is 16MB"),
-                swarm.Verdict(task_id="analysis", decision="accept"),
+                orchestrator.Verdict(task_id="lookup", decision="revise", feedback="max document size is 16MB"),
+                orchestrator.Verdict(task_id="analysis", decision="accept"),
             ],
         )
         calls = []
 
         def fake_structured(model, schema, system, user, role):
             record = {"role": role, "model": model, "input_tokens": 100, "output_tokens": 50, "cost": 0.001}
-            return (plan if schema is swarm.SwarmPlan else review), [record]
+            return (plan if schema is orchestrator.TaskPlan else review), [record]
 
         def fake_worker(inp, ledger, write):
             calls.append((inp["task"]["id"], inp["model"], inp["attempt"], inp["feedback"]))
@@ -170,11 +170,11 @@ class GraphRunTests(unittest.TestCase):
             return f"{inp['task']['id']} attempt {inp['attempt']}", 0
 
         with (
-            mock.patch.object(swarm, "_structured", side_effect=fake_structured),
-            mock.patch.object(swarm, "_run_worker", side_effect=fake_worker),
-            mock.patch.object(swarm, "chat", return_value=FakeStreamingChat()),
+            mock.patch.object(orchestrator, "_structured", side_effect=fake_structured),
+            mock.patch.object(orchestrator, "_run_worker", side_effect=fake_worker),
+            mock.patch.object(orchestrator, "chat", return_value=FakeStreamingChat()),
         ):
-            events = list(swarm.run("compare databases", settings(max_revisions=1)))
+            events = list(orchestrator.run("compare databases", settings(max_revisions=1)))
 
         kinds = [e["event"] for e in events]
         self.assertEqual(kinds[-1], "done")

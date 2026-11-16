@@ -93,7 +93,7 @@ print()
 - Read a whole paper with its figures: the [paper to interactive explainer app](../apps/paper-to-interactive-explainer/README.md) turns an arXiv paper into an interactive HTML lesson.
 - Turn a sketch into CAD: the [napkin to 3D print app](../apps/napkin-to-3d-print/README.md) writes and self-reviews a parametric CadQuery model.
 - Run an agent on a schedule: the [proactive on-call agent](../agents/langchain/proactive-oncall-agent/README.md) wakes Kimi from a cron server to triage incidents and schedule its own follow-ups.
-- Orchestrate cheaper models: the [agent swarm](../agents/langchain/agent-swarm/README.md) has Kimi plan, review and synthesize while low-cost workers do the legwork in parallel.
+- Orchestrate cheaper models: the [multi-agent orchestrator](../agents/langchain/multi-agent-orchestrator/README.md) has Kimi plan, review and synthesize while low-cost workers do the legwork in parallel.
 - Follow the [OpenCode setup guide](../coding/opencode.md#kimi-k31-pro) to use the model in a coding agent.
 - See the [API examples](../api/README.md) for more SDK integrations.
 - Read [Moonshot's technical overview](https://www.kimi.ai/blog/kimi-k3-1-pro) for model background.
