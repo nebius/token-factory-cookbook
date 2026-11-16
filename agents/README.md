@@ -41,6 +41,8 @@ Build agents with open models on Nebius Token Factory. Choose a starter example 
 | [Jev-Style Typed Decision Model](jev-style-decision-model-glm/) | Typed, probabilistic decisions (route, yes/no, score) read from GLM-5.3 Flash logprobs, with rotation debiasing and a confidence gate for human escalation | Nebius TF (GLM-5.3 Flash) + OpenAI SDK |
 | [KubeTrace AI: Kubernetes incident repair with Beam](kubetrace-ai/) | Investigate a checkout failure, patch code, run sandboxed tests and verify a deployed repair with hidden checks | Beam + Nebius TF + OpenAI SDK + Kubernetes |
 | [Python AI Agent With Reflection Beam](beam-python-ai-agent/) | A data analyst agent: Beam answers business questions about a sales CSV by writing and running pandas code through tool calls, with per-run cost tracking and a reasoning-effort sweep | Nebius TF (Reflection Beam) + OpenAI SDK + pandas |
+| [Proactive On-Call Agent](langchain/proactive-oncall-agent/) | A cron server wakes Kimi K3.1 Pro to triage an event stream, page a human, request an approved rollback and schedule its own follow-ups, with no chat box | LangChain + Nebius TF (Kimi K3.1 Pro) + croniter + Streamlit |
+| [Multi-Agent Orchestrator](langchain/multi-agent-orchestrator/) | Kimi K3.1 Pro plans, reviews and synthesizes while cheap parallel workers do the research, with tiered routing, escalation on revision and a live cost ledger | LangGraph + Nebius TF (Kimi K3.1 Pro + Inkling 2 Small + Nemotron 3.5 Lightning) + Streamlit |
 
 ## Agents by framework
 
@@ -99,6 +101,8 @@ Browse the [LangChain examples](langchain/README.md).
 | [Vendor Risk Compliance Agent](langchain/vendor-risk-compliance-agent/) | Vendor questionnaire review producing risk registers from contract evidence | LangChain + Nebius TF |
 | [Data Quality Ops Agent](langchain/data-quality-ops-agent/) | Data pipeline investigation with guarded read-only SQL and quality reports | LangChain + Nebius TF |
 | [Insurance Claims Assistant](langchain/insurance-claims-assistant/) | Drop-any-folder multimodal claims triage: reads PDFs + photos + forms, auto-classifies the documents, confirms the claim with the user, reconciles stated vs evidence, and emits an assessor verdict | LangChain + Nebius TF (Nemotron Ultra 253B + Cosmos3 VLM) + PyMuPDF + Streamlit |
+| [Proactive On-Call Agent](langchain/proactive-oncall-agent/) | A cron server wakes Kimi K3.1 Pro to triage an event stream, page a human, request an approved rollback and schedule its own follow-ups, with no chat box | LangChain + Nebius TF + croniter + Streamlit |
+| [Multi-Agent Orchestrator](langchain/multi-agent-orchestrator/) | Kimi K3.1 Pro plans, reviews and synthesizes while cheap parallel workers do the research, with tiered routing, escalation on revision and a live cost ledger | LangGraph + Nebius TF + Streamlit |
 
 ---
 
