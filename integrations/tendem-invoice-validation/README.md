@@ -2,9 +2,12 @@
 
 A vision model reading a blurred invoice does not stay silent. It produces a number.
 
-On the sample invoice in this cookbook, [Qwen2.5-VL-72B-Instruct](https://tokenfactory.nebius.com/models/catalog/image2text/Qwen%2FQwen2.5-VL-72B-Instruct) read a total of **$2,148.75** and rated its own confidence at **0.70**. A human expert then looked at the same image and returned `null`: the total was too blurred to confirm, and the invoice number and issue date were hidden behind a PAID stamp. The model had not misread the total. It had invented one.
+On the sample invoice that ships with the companion project, [Qwen2.5-VL-72B-Instruct](https://tokenfactory.nebius.com/models/catalog/image2text/Qwen%2FQwen2.5-VL-72B-Instruct) read a total of **$2,148.75** and rated its own confidence at **0.70**. A human expert then looked at the same image and returned `null`: the total was too blurred to confirm, and the invoice number and issue date were hidden behind a PAID stamp. The model had not misread the total. It had invented one.
 
 That gap is the entire subject of this cookbook. You will build a pipeline that treats a model's confidence as a routing decision rather than a footnote, and buys human judgment only for the documents that need it.
+
+> [!NOTE]
+> This folder contains only this guide. The runnable script, the sample invoice and the recorded run evidence live in the companion repository [amrrs/toloka-nebiustf-validation](https://github.com/amrrs/toloka-nebiustf-validation). Every path below (`use_cases/`, `documents/`) is relative to a clone of that repository, not to this cookbook.
 
 ## What you will build
 
@@ -25,7 +28,7 @@ The routing rule is deliberately boring code. That makes it deterministic, audit
 
 ## Run the cookbook
 
-1. Clone the project and install dependencies:
+1. Clone the companion project (the code is not in this cookbook) and install dependencies:
 
    ```bash
    git clone https://github.com/amrrs/toloka-nebiustf-validation.git
@@ -40,7 +43,7 @@ The routing rule is deliberately boring code. That makes it deterministic, audit
    export TENDEM_API_KEY="your-tendem-key"
    ```
 
-3. Put invoice images in `documents/inbox/`. A deliberately poor-quality sample is included, so you can run the escalation path without supplying your own documents.
+3. Put invoice images in `documents/inbox/`. The companion repo includes a deliberately poor-quality sample there, so you can run the escalation path without supplying your own documents.
 
 4. Run the recipe:
 
@@ -66,9 +69,9 @@ The script also keeps a journal in `documents/tendem-tasks.json` mapping each im
 
 ## Verify the result
 
-Open `documents/extracted.csv` and look at the `source` column. Rows finalized by the model read `nebius-vision`; rows a human corrected read `tendem-human`. On the bundled sample you should see one `tendem-human` row where `total_amount` is empty and the notes explain why the expert refused to guess.
+Open `documents/extracted.csv` and look at the `source` column. Rows finalized by the model read `nebius-vision`; rows a human corrected read `tendem-human`. On the companion repo's sample you should see one `tendem-human` row where `total_amount` is empty and the notes explain why the expert refused to guess.
 
-Compare that against `documents/run-evidence/vision-invoice-live-run.json`, which records a complete run: the model's `2148.75` at `0.80` confidence, the `escalate_to_human` decision, the $3.00 quote, and the human's corrected output.
+Compare that against the companion repo's `documents/run-evidence/vision-invoice-live-run.json`, which records a complete run: the model's `2148.75` at `0.80` confidence, the `escalate_to_human` decision, the $3.00 quote, and the human's corrected output.
 
 Reproducing the first stage on its own is fast and costs a fraction of a cent — a measured extraction on the sample used 342 prompt and 82 completion tokens, about **$0.000147**, in **3.8 seconds**.
 
@@ -91,12 +94,12 @@ The Nebius pass returns in seconds. Human validation does not — it is an async
 
 - **401 from Token Factory** — check `NEBIUS_API_KEY`, and that your account has access to the vision model.
 - **The run raises on a quote** — expected behavior, not a bug. The quote exceeded `MAX_HUMAN_PRICE_USD`. Review the task and raise the cap deliberately if the price is fair.
-- **Nothing escalates** — your invoices are clean and the model is confident. Lower `MIN_CONFIDENCE` or use the bundled low-quality sample to exercise the human path.
+- **Nothing escalates** — your invoices are clean and the model is confident. Lower `MIN_CONFIDENCE` or use the companion repo's low-quality sample to exercise the human path.
 - **A task seems stuck** — check `documents/tendem-tasks.json` for the task ID and inspect it in the Tendem console.
 
 ## Clean up
 
-Completed tasks remove themselves from the journal. To reset local state:
+Completed tasks remove themselves from the journal. To reset local state, run these from the root of your `toloka-nebiustf-validation` clone:
 
 ```bash
 rm -f documents/extracted.csv documents/tendem-tasks.json
@@ -104,11 +107,13 @@ rm -rf .venv
 unset NEBIUS_API_KEY TENDEM_API_KEY
 ```
 
+To remove everything, delete the clone itself (`cd .. && rm -rf toloka-nebiustf-validation`).
+
 Paid Tendem tasks that already settled cannot be refunded by deleting local files. If you want to stop spending, clear `documents/inbox/` before the next run.
 
 ## Links
 
-- [Source project](https://github.com/amrrs/toloka-nebiustf-validation/tree/main/use_cases)
+- [Companion project (code and samples)](https://github.com/amrrs/toloka-nebiustf-validation/tree/main/use_cases)
 - [Tendem by Toloka](https://nebius.com/solutions/tendem)
 - [Qwen2.5-VL-72B-Instruct in the Token Factory catalog](https://tokenfactory.nebius.com/models/catalog/image2text/Qwen%2FQwen2.5-VL-72B-Instruct)
 - [Token Factory documentation](https://docs.tokenfactory.nebius.com/)
