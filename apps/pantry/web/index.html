@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Occasions</title>
+<style>
+:root{--bg:#f6f4ef;--card:#fff;--ink:#1d1b16;--mut:#6f6a5f;--line:#e4dfd3;--ok:#1f7a4d;--bad:#b3261e;--warn:#9a6700;--acc:#3b4cca;--chip:#efece4}
+@media (prefers-color-scheme:dark){:root{--bg:#14130f;--card:#1d1c18;--ink:#f2efe7;--mut:#a39d90;--line:#33302a;--ok:#5cc28f;--bad:#ff8a80;--warn:#e3b341;--acc:#8d9bff;--chip:#2a2823}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Inter,sans-serif}
+header{display:flex;gap:12px;align-items:center;justify-content:space-between;padding:14px 20px;border-bottom:1px solid var(--line);flex-wrap:wrap}
+h1{font-size:19px;margin:0}h1 small{color:var(--mut);font-weight:400;margin-left:8px;font-size:13px}
+nav a{color:var(--mut);text-decoration:none;margin-right:14px}nav a.on{color:var(--ink);font-weight:600}
+select,button,input{font:inherit}button{background:var(--acc);color:#fff;border:0;border-radius:8px;padding:7px 12px;cursor:pointer}
+button.ghost{background:transparent;color:var(--acc);border:1px solid var(--line)}
+main{display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:20px;padding:20px;max-width:1240px;margin:0 auto}
+@media (max-width:900px){main{grid-template-columns:1fr;padding:16px}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;margin-bottom:14px}
+.row{display:flex;justify-content:space-between;gap:10px;align-items:flex-start;flex-wrap:wrap}
+.mut{color:var(--mut)}.ok{color:var(--ok)}.bad{color:var(--bad)}.warn{color:var(--warn)}
+.st{font-size:12px;font-weight:600;padding:3px 8px;border-radius:99px;background:var(--chip);white-space:nowrap}
+.chips{display:flex;gap:6px;flex-wrap:wrap}.chip{font-size:12px;padding:2px 8px;border-radius:99px;background:var(--chip);color:var(--mut)}
+.chip.live{color:var(--ok)}
+h2{font-size:16px;margin:0 0 4px}h3{font-size:13px;letter-spacing:.04em;color:var(--mut);margin:16px 0 6px;font-weight:600}
+table{width:100%;border-collapse:collapse;font-size:14px}td{padding:7px 6px;border-top:1px solid var(--line);vertical-align:top}
+.v{font-size:12px;display:block}.steps li{margin:4px 0}.steps{padding-left:18px;margin:6px 0}
+.sp{font-size:11px;color:var(--mut);border:1px solid var(--line);border-radius:6px;padding:0 5px;margin-left:6px}
+#chatlog{height:380px;overflow:auto;display:flex;flex-direction:column;gap:8px;margin-bottom:10px}
+.msg{padding:8px 10px;border-radius:10px;max-width:92%;white-space:pre-wrap;font-size:14px}
+.msg.you{align-self:flex-end;background:var(--acc);color:#fff}.msg.agent{background:var(--chip)}
+#chatform{display:flex;gap:6px}#chatform input{flex:1;padding:8px;border-radius:8px;border:1px solid var(--line);background:var(--card);color:var(--ink)}
+.big{font-size:28px;font-weight:700}
+</style>
+</head>
+<body>
+<header>
+  <h1>Occasions <small>your family's shopping agent, with receipts</small></h1>
+  <nav><a href="#/" id="n-home">Coming up</a><a href="#/memory" id="n-mem">Memory</a><a href="#/activity" id="n-act">Activity</a></nav>
+  <div class="row" style="align-items:center">
+    <span class="mut" id="today"></span>
+    <label class="mut">Signed in as <select id="who"></select></label>
+  </div>
+</header>
+<main>
+  <section id="view"></section>
+  <aside>
+    <div class="card">
+      <h2>Chat with your agent</h2>
+      <p class="mut" style="margin:0 0 8px;font-size:13px">Try: "Mom is into watercolor now", "what's coming up?", "get flowers for Mom", "approve"</p>
+      <div id="chatlog"></div>
+      <form id="chatform"><input id="chatin" placeholder="Message your agent…" autocomplete="off"><button>Send</button></form>
+    </div>
+    <div class="card"><h3 style="margin-top:0">Connected</h3><div class="chips" id="ints"></div></div>
+  </aside>
+</main>
+<script>
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+let S = null, member = "shivay";
+try { member = localStorage.getItem("member") || "shivay"; } catch (e) {}
+const api = (p, o = {}) => fetch(p + (p.includes("?") ? "&" : "?") + "member=" + member, o).then(r => r.json());
+const ICON = {birthday:"🎂", dinner:"🍽️", trip:"⛺", delegated:"🎁"};
+const STATUS = {bought:["Bought","ok"], planning:["Planning…","warn"], needs_you:["Needs you","bad"], too_early:["Too early","mut"], covered:["Covered by family","ok"]};
+
+async function load() {
+  S = await api("/api/state");
+  $("#today").textContent = "Today " + S.today;
+  $("#who").innerHTML = Object.entries(S.members).map(([k, m]) => `<option value="${k}" ${k===member?"selected":""}>${m.name}</option>`).join("");
+  $("#ints").innerHTML = Object.entries(S.integrations).map(([k, v]) => `<span class="chip ${v==="live"?"live":""}" title="${esc(v)}">${v==="live"?"●":"○"} ${esc(k)} <b>${esc(v)}</b></span>`).join("");
+  route();
+}
+
+function route() {
+  const h = location.hash || "#/";
+  ["n-home","n-mem","n-act"].forEach(id => $("#"+id).classList.remove("on"));
+  if (h.startsWith("#/receipt/")) return receipt(h.split("/")[2]);
+  if (h === "#/memory") { $("#n-mem").classList.add("on"); return mem(); }
+  if (h === "#/activity") { $("#n-act").classList.add("on"); return activity(); }
+  $("#n-home").classList.add("on"); home();
+}
+
+function home() {
+  const me = S.members[member], v = S.verified;
+  let html = "";
+  if (!v.verified) {
+    html += `<div class="card"><h2>Set up ${esc(me.name)}'s agent</h2>
+      <p class="mut">Your rules (the mandate): gifts up to <b>$${me.mandate.gift}</b>, groceries up to <b>$${me.mandate.groceries}</b>, gear up to <b>$${me.mandate.gear}</b>. Acts ${me.act_days_before} days before an event. Anything above a limit, it asks you once.</p>
+      <button onclick="verify()">Verify with Persona and start</button>
+      ${v.link ? `<p><a href="${esc(v.link)}" target="_blank">Complete Persona verification →</a> then reload.</p>` : ""}</div>`;
+  } else {
+    html += `<div class="card row"><div><b>${esc(me.name)}'s agent is running.</b> <span class="mut">Verified (${esc(v.engine)}). It watches the family calendar and acts on its own.</span></div>
+      <button class="ghost" onclick="scan()">Check calendar now</button></div>`;
+  }
+  const occ = S.occasions;
+  if (!occ.length) html += `<div class="card mut">No occasions yet. The agent picks them up from the calendar.</div>`;
+  for (const o of occ) {
+    const [label, cls] = STATUS[o.status] || [o.status, "mut"];
+    const bought = Object.values(o.results || {}).filter(r => r.order).map(r => `✅ ${esc(r.order.item)} · $${r.order.price.toFixed(2)}`);
+    html += `<div class="card"><div class="row"><div><h2>${ICON[o.kind]||"📅"} ${esc(o.title)}</h2>
+      <div class="mut">${esc(o.date)}${o.person ? " · for " + esc(o.person) : ""}${o.created_by && o.created_by!=="calendar" ? " · asked by " + esc(o.created_by) : ""}</div></div>
+      <span class="st ${cls}">${label}</span></div>
+      ${bought.length ? `<div style="margin-top:8px">${bought.join("<br>")}</div>` : ""}
+      ${o.needs ? `<div class="bad" style="margin-top:8px">⚠ ${esc(o.needs.text)}</div>` : ""}
+      <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap">
+        ${o.steps && o.steps.length ? `<button class="ghost" onclick="location.hash='#/receipt/${o.id}'">See why →</button>` : ""}
+        ${o.needs && o.needs.type==="approve" ? `<button onclick="approve('${o.id}')">Approve once</button>` : ""}
+        ${o.status==="too_early" ? `<button class="ghost" onclick="runNow('${o.id}')">Plan it now</button>` : ""}
+      </div></div>`;
+  }
+  $("#view").innerHTML = html;
+}
+
+async function receipt(id) {
+  const o = await api("/api/occasions/" + id);
+  let html = `<div class="card"><a href="#/" class="mut">← back</a><h2 style="margin-top:8px">${ICON[o.kind]||"📅"} ${esc(o.title)}: why</h2>`;
+  html += `<h3>WHAT I KNEW</h3><ul class="steps">${(o.knew||[]).map(k => `<li>${esc(k.about)}: ${esc(k.fact)} <span class="mut">(${esc(k.source)}${k.dataset!=="household" ? ", private" : ""})</span></li>`).join("") || "<li class='mut'>nothing recalled</li>"}</ul>`;
+  for (const [slot, r] of Object.entries(o.results || {})) {
+    html += `<h3>WHAT I CHECKED · ${esc(slot)} (${(r.checked||[]).length} listings)</h3><table>`;
+    for (const c of r.checked || []) {
+      const mark = c.decision==="ok" ? (r.chosen && r.chosen.id===c.id ? "✅ chosen" : "✓ safe") : c.decision==="over_budget" ? "💲 over budget" : (c.flag==="injection" ? "🚩 rejected" : "✗ rejected");
+      const cls = c.decision==="ok" ? "ok" : c.decision==="over_budget" ? "warn" : "bad";
+      html += `<tr><td style="width:46%"><b>${esc(c.title)}</b> · $${c.price.toFixed(2)}<br><span class="mut" style="font-size:12px">${esc(c.seller)}</span></td>
+        <td><span class="${cls}">${mark}</span>${c.reason ? ` <span class="mut">${esc(c.reason)}</span>` : ""}
+        ${(c.verdicts||[]).map(x => `<span class="v">“${esc(x.claim)}” → <span class="${x.verdict==="supported"?"ok":x.verdict==="contradicted"?"bad":"warn"}">${x.verdict}</span> <span class="mut">${esc(x.why)} · ${esc(x.source)}</span><span class="sp">${esc(x.engine)}</span></span>`).join("")}</td></tr>`;
+    }
+    html += `</table>`;
+    if (r.chosen) html += `<p><b>Decision:</b> ${esc(r.chosen.title)}: ${esc(r.reason||"")} <span class="sp">${esc(r.model?.model||"")}</span></p>`;
+    if (r.order && r.order.ok) html += `<p><b>Order ${esc(r.order.order_id)}</b> · $${r.order.price.toFixed(2)} · payment ${esc(r.order.payment.provider)} ${esc(r.order.payment.id)}<br>
+      <span class="mut" style="font-size:12px">Signed Poppy request: session ${esc(r.order.signed["Poppy-Session"])}, store user ${esc(r.order.signed["Poppy-User"])}, speaker ${esc(r.order.signed["Poppy-Speaker"])}, signature ${esc(r.order.signed["Poppy-Signature"])} · scopes ${esc(r.order.scopes.join(", "))}</span></p>`;
+  }
+  html += `<h3>WHAT I DID, STEP BY STEP</h3><ol class="steps">${(o.steps||[]).map(s => `<li><span class="mut">${esc(s.t)}</span> ${esc(s.text)}${s.sponsor?`<span class="sp">${esc(s.sponsor)}</span>`:""}</li>`).join("")}</ol></div>`;
+  $("#view").innerHTML = html;
+}
+
+async function mem() {
+  const m = await api("/api/memory");
+  const by = {};
+  m.visible.forEach(f => (by[f.about] = by[f.about] || []).push(f));
+  let html = `<div class="card"><h2>What ${esc(S.members[member].name)}'s agent can see</h2>
+    <p class="mut">Shared facts are visible to every family member's agent. Private facts only to yours. <b>${m.hidden_count}</b> private fact(s) belong to other family members and are hidden from your agent. The server enforces this, not the model.</p>`;
+  for (const [who, fs] of Object.entries(by)) html += `<h3>${esc(who.toUpperCase())}</h3><ul class="steps">${fs.map(f => `<li>${esc(f.fact)} <span class="mut">(${esc(f.source)})</span> <span class="sp">${f.dataset==="household"?"shared":"private"}</span></li>`).join("")}</ul>`;
+  html += `<h3>WHO READ WHAT (ACCESS LOG)</h3><table>${m.access_log.slice().reverse().map(a => `<tr><td class="mut" style="width:80px">${esc(a.at)}</td><td>${esc(S.members[a.member]?.name||a.member)}'s agent read ${a.facts.length} fact(s) about ${esc(a.about)}: <span class="mut">${esc(a.purpose)}</span></td></tr>`).join("") || "<tr><td class='mut'>No reads yet.</td></tr>"}</table></div>`;
+  $("#view").innerHTML = html;
+}
+
+async function activity() {
+  const ev = await fetch("/api/events").then(r => r.json());
+  const n = t => ev.filter(e => e.event_type===t).length;
+  const spent = ev.filter(e => e.event_type==="purchase_made").reduce((a,e)=>a+(e.event_properties.price||0),0);
+  $("#view").innerHTML = `<div class="card"><h2>Agent activity</h2><p class="mut">Events also go to Amplitude when it's connected.</p>
+    <div class="row" style="margin:12px 0"><div><div class="big">${n("trigger_detected")}</div><span class="mut">triggers</span></div>
+    <div><div class="big">${n("listing_rejected")}</div><span class="mut">listings rejected</span></div>
+    <div><div class="big">${n("purchase_made")}</div><span class="mut">purchases</span></div>
+    <div><div class="big">$${spent.toFixed(2)}</div><span class="mut">spent within mandates</span></div></div>
+    <table>${ev.slice().reverse().slice(0,40).map(e => `<tr><td class="mut">${new Date(e.time).toLocaleTimeString()}</td><td>${esc(e.event_type)}</td><td class="mut">${esc(e.user_id)} · ${esc(JSON.stringify(e.event_properties))}</td></tr>`).join("")}</table></div>`;
+}
+
+async function verify() { await api("/api/verify", {method:"POST"}); await load(); }
+async function scan() { await fetch("/api/scan", {method:"POST"}); await load(); }
+async function runNow(id) { await api(`/api/occasions/${id}/run`, {method:"POST"}); await load(); }
+async function approve(id) { await api(`/api/occasions/${id}/approve`, {method:"POST"}); await load(); }
+
+async function loadChat() {
+  const h = await api("/api/chat");
+  $("#chatlog").innerHTML = h.map(m => `<div class="msg ${m.who}">${esc(m.text)}</div>`).join("") || `<div class="msg agent">Hi ${esc(S?.members[member]?.name||"")}! I'll handle the family's occasions. Tell me anything I should know.</div>`;
+  $("#chatlog").scrollTop = 1e9;
+}
+$("#chatform").onsubmit = async e => {
+  e.preventDefault(); const t = $("#chatin").value.trim(); if (!t) return; $("#chatin").value = "";
+  await api("/api/chat", {method:"POST", headers:{"Content-Type":"application/json"}, body: JSON.stringify({text:t})});
+  await loadChat(); await load();
+};
+$("#who").onchange = e => { member = e.target.value; try { localStorage.setItem("member", member); } catch (er) {} load(); loadChat(); };
+window.onhashchange = route;
+load().then(loadChat);
+setInterval(() => { if (!location.hash.startsWith("#/receipt")) load(); }, 4000);
+</script>
+</body>
+</html>

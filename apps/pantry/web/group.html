@@ -1,0 +1,411 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Pantry · Group run</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Urbanist:wght@500;600;700;800&display=swap">
+<style>
+:root{color-scheme:light;--bg:#FBF6EE;--card:#FFFFFF;--ink:#2B211B;--mut:#6B5E55;--mut2:#5A4A33;--line:#EFE6DA;--tint:#F7EFE4;--field:#E0D3C5;--acc:#C4471F;--accd:#A63A17;--soft:#E6EED8;--softink:#2F6B2A;--sun:#FCEFC9;--sunk:#F2B441;--peach:#FBE3D6;--ok:#2F6B2A;--bad:#B3261E;--warn:#7A4E00;--warnbg:#FCEFC9;--focus:#2B211B;--sh:0 12px 32px rgba(70,45,20,.07)}
+*{box-sizing:border-box}html{background:var(--bg)}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.45 "Urbanist",system-ui,-apple-system,"Segoe UI",sans-serif}
+a{color:var(--ink);font-weight:700}a:hover{color:#6B4A3A}
+:focus-visible{outline:3px solid var(--focus);outline-offset:3px}
+select,button,input{font:inherit}
+button{min-height:48px;background:var(--acc);color:#fff;border:0;border-radius:16px;padding:0 20px;font-weight:700;cursor:pointer;box-shadow:0 10px 22px rgba(196,71,31,.18)}
+button:hover:not(:disabled){background:var(--accd)}
+button.ghost{background:var(--tint);color:var(--ink);box-shadow:none}button.ghost:hover:not(:disabled){background:#EFE6DA}
+button.danger{background:#fff;color:var(--bad);border:2px solid #F0CDBB;box-shadow:none}button.danger:hover:not(:disabled){background:#FDEBE1}
+button.sm{min-height:38px;padding:0 14px;font-size:14px;border-radius:12px}
+button:disabled{opacity:.45;cursor:not-allowed;box-shadow:none}
+input,select{min-height:48px;padding:0 14px;border-radius:14px;border:2px solid var(--field);background:#fff;color:var(--ink)}
+input[type=checkbox],input[type=radio]{min-height:0;accent-color:var(--acc);width:18px;height:18px;vertical-align:-3px;margin:0 6px 0 0}
+.wrap{max-width:860px;margin:0 auto;padding:0 24px}
+header.top .wrap{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap;padding-top:20px;padding-bottom:6px}
+.brand{display:inline-flex;align-items:center;gap:10px;font-size:24px;font-weight:800;letter-spacing:-.01em;color:var(--ink);text-decoration:none}
+.logo{width:40px;height:40px;border-radius:13px;background:var(--acc);display:flex;align-items:center;justify-content:center;flex:none}
+h1{font-size:15px;font-weight:600;margin:0;color:var(--mut)}h1 small{color:var(--mut);font-weight:600;font-size:15px}
+.pill{display:inline-flex;align-items:center;gap:8px;min-height:40px;padding:0 14px;border-radius:14px;background:#fff;box-shadow:var(--sh);font-size:14px;font-weight:600;color:var(--mut)}
+.who{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:600;color:var(--mut);background:#fff;border-radius:16px;padding:4px 6px 4px 4px;box-shadow:var(--sh)}
+.av{width:36px;height:36px;border-radius:12px;background:var(--sunk);color:var(--ink);font-size:15px;font-weight:800;display:inline-flex;align-items:center;justify-content:center;flex:none}
+.who select{min-height:40px;max-width:210px;border:0;background:var(--tint)}
+nav.tabs{position:sticky;top:0;z-index:5;background:var(--bg);padding:14px 0 10px}
+.seg{display:flex;gap:6px;padding:5px;background:#fff;border-radius:18px;box-shadow:var(--sh)}
+.seg button{flex:1;min-width:0;min-height:44px;background:transparent;color:var(--mut);font-weight:600;padding:0 8px;white-space:nowrap;border-radius:14px;box-shadow:none}
+.seg button:hover:not(:disabled){background:var(--tint)}
+.seg button[aria-selected=true]{background:var(--ink);color:#fff;font-weight:700}
+.seg .n{font-size:12px;opacity:.8;margin-left:4px}
+main{padding-bottom:48px}
+.panel[hidden]{display:none}
+.card{background:var(--card);border:0;border-radius:28px;padding:22px 24px;margin:0 0 18px;box-shadow:var(--sh)}
+.card.hero{border:2px solid #F0CDBB}
+.agent{background:transparent;box-shadow:none;padding:12px 4px 6px;text-align:center}
+.eyebrow{display:inline-block;margin:0 0 10px;padding:4px 12px;border-radius:8px;background:var(--sunk);font-size:14px;font-weight:700;color:var(--ink)}
+.say{margin:0;font-size:40px;font-weight:700;line-height:1.08;letter-spacing:-.02em}
+.row{display:flex;justify-content:space-between;gap:10px;align-items:flex-start;flex-wrap:wrap}
+.inl{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.mut{color:var(--mut)}.ok{color:var(--ok)}.bad{color:var(--bad)}.warn{color:var(--warn)}
+.st{display:inline-block;font-size:13px;font-weight:700;padding:3px 10px;border-radius:8px;background:var(--soft);color:var(--softink);white-space:nowrap}
+.chips{display:flex;gap:6px;flex-wrap:wrap}.chip{display:inline-block;font-size:13px;font-weight:600;padding:4px 11px;border-radius:10px;background:var(--tint);color:var(--mut2)}
+.chip.ok{background:var(--soft);color:var(--softink)}
+.v{display:block}
+h2{font-size:22px;font-weight:700;margin:0 0 10px;letter-spacing:-.01em}h3{font-size:13px;letter-spacing:.05em;text-transform:uppercase;color:var(--mut);margin:22px 0 8px;font-weight:700}
+.tw{overflow-x:auto;-webkit-overflow-scrolling:touch}table{width:100%;border-collapse:collapse;font-size:14px}
+td,th{padding:10px 8px;border-top:1px solid var(--line);vertical-align:top;text-align:left}th{font-size:12px;color:var(--mut);font-weight:700;border-top:0;text-transform:uppercase;letter-spacing:.04em}
+.big{font-size:28px;font-weight:700;margin-top:4px;letter-spacing:-.01em}.sm{font-size:14px}
+.banner{background:var(--warnbg);border-left:6px solid var(--sunk);border-radius:14px;padding:10px 14px;color:var(--warn);font-size:14px;font-weight:700;margin:10px 0}
+.err{color:var(--bad);font-size:14px;font-weight:700;margin-top:6px}.err:empty,.busy:empty{display:none}
+.busy{color:var(--ink);background:var(--sun);display:inline-block;border-radius:12px;padding:5px 12px;font-size:14px;font-weight:600;margin-top:10px}
+.grp{background:var(--card);border-radius:24px;padding:8px 20px;margin-bottom:12px;box-shadow:var(--sh)}.grp>b{display:inline-block;margin:12px 0 4px;padding:4px 12px;border-radius:10px;background:var(--peach);font-size:16px;text-transform:capitalize}
+.grp:nth-child(3n+2)>b{background:var(--soft)}.grp:nth-child(3n)>b{background:var(--sun)}
+.req{padding:12px 0;border-top:1px solid var(--line)}.grp>b+.req{border-top:0}
+ul.plain{list-style:none;padding:0;margin:0}ul.plain li{padding:12px 0;border-top:1px solid var(--line)}ul.plain li:first-child{border-top:0}
+details{margin-top:14px;background:var(--tint);border-radius:18px;padding:12px 16px}summary{cursor:pointer;font-weight:700;min-height:28px}
+.item{padding:12px 0;border-top:1px solid var(--field);font-size:15px}
+.ev{font-size:13px;color:var(--mut);margin-top:2px}
+form.stack{display:grid;gap:10px;margin-top:14px}
+.composer{display:flex;gap:8px;align-items:center}.composer input{flex:1;min-width:0;min-height:52px;border-radius:16px}.composer button{min-height:52px}
+.hint{min-height:40px;padding:0 14px;border:0;background:var(--peach);color:var(--ink);font-size:14px;font-weight:600;text-align:left;border-radius:12px;box-shadow:none}
+.hint:nth-child(3n+2){background:var(--soft)}.hint:nth-child(3n){background:var(--sun)}
+.hint:hover:not(:disabled){background:#F0CDBB}
+.sumlink{display:flex;align-items:center;gap:12px;width:100%;padding:22px 24px;border-radius:28px;background:var(--card);color:var(--ink);text-align:left;font-weight:400;min-height:0;box-shadow:var(--sh)}
+.sumlink:hover:not(:disabled){background:#fff;box-shadow:0 14px 36px rgba(70,45,20,.12)}
+.sumlink b{font-weight:700;font-size:20px}
+.sumlink.sun{background:var(--sun);box-shadow:none}.sumlink.sun:hover:not(:disabled){background:#F9E6B0}
+.tiles{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:12px}
+.tile{padding:14px 16px;border-radius:20px;background:var(--tint)}
+fieldset label{display:flex;align-items:center;flex-wrap:wrap;gap:6px;padding:8px 0}
+.pay label select{margin-left:4px}
+.dots{position:fixed;inset:0;pointer-events:none;z-index:0}header.top,main{position:relative;z-index:1}.dots i{position:absolute;border-radius:999px}
+@media (max-width:480px){.wrap{padding:0 16px}.say{font-size:30px}.seg button{font-size:14px;padding:0 4px}.who select{max-width:150px}.who>span:not(.av){display:none}.card{padding:18px;border-radius:24px}.big{font-size:24px}.brand{font-size:22px}}
+</style>
+</head>
+<body>
+<div class="dots" aria-hidden="true"><i style="left:6%;top:30%;width:14px;height:14px;background:#F2B441"></i><i style="left:88%;top:16%;width:12px;height:12px;background:#A9C58A"></i><i style="left:4%;top:86%;width:18px;height:18px;background:#F08A6C"></i></div>
+<header class="top"><div class="wrap">
+  <div style="min-width:0">
+    <a href="/" class="brand" aria-label="Pantry, back to Occasions"><span class="logo" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><rect x="7.5" y="2.5" width="9" height="3.2" rx="1.2" fill="#FFFFFF"/><path d="M6.5 7h11A2.5 2.5 0 0 1 20 9.5v9a2.5 2.5 0 0 1-2.5 2.5h-11A2.5 2.5 0 0 1 4 18.5v-9A2.5 2.5 0 0 1 6.5 7z" fill="#FFFFFF"/><path d="M9 12.8v2.9M12 11.2v6.1M15 12.8v2.9" stroke="#C4471F" stroke-width="1.8" stroke-linecap="round"/></svg></span>Pantry</a>
+    <div class="inl" style="margin-top:8px"><h1>Group run <small id="gname"></small></h1><span class="st" id="rstate" aria-live="polite"></span><span class="mut sm" id="rver"></span><a href="/" class="sm">Occasions</a></div>
+  </div>
+  <label class="who"><span class="av" id="whoav" aria-hidden="true">?</span><span>You are</span> <select id="who"></select></label>
+</div></header>
+<main class="wrap">
+  <nav class="tabs" aria-label="Sections"><div class="seg" role="tablist">
+    <button type="button" role="tab" id="t-home" aria-controls="p-home" data-tab="home">Home</button>
+    <button type="button" role="tab" id="t-list" aria-controls="p-list" data-tab="list">List &amp; prefs<span class="n" id="nlist"></span></button>
+    <button type="button" role="tab" id="t-basket" aria-controls="p-basket" data-tab="basket">Basket</button>
+    <button type="button" role="tab" id="t-activity" aria-controls="p-activity" data-tab="activity">Confirmed</button>
+  </div></nav>
+
+  <section class="panel" id="p-home" role="tabpanel" aria-labelledby="t-home">
+    <div class="card agent">
+      <p class="eyebrow">Next run</p>
+      <p class="say">What do we need this run?</p>
+      <p class="mut sm" id="hmeta" style="margin:8px 0 0"></p>
+    </div>
+    <div class="card">
+      <h2>Tell Pantry</h2>
+      <form id="addf" class="composer"><input id="addin" placeholder="What does the group need?" aria-label="Request text" autocomplete="off"><button>Add</button></form>
+      <p class="mut sm" style="margin:14px 0 8px;font-weight:600">Or try one of these</p>
+      <div class="chips" id="hints"></div>
+      <div id="addbusy" class="busy" aria-live="polite"></div><div id="adderr" class="err" role="alert"></div>
+    </div>
+    <button type="button" class="sumlink" data-go="list" style="margin-bottom:12px">
+      <span style="flex:1;min-width:0"><b id="sumcount" style="display:block">This run</b><span class="mut sm" id="sumtext" style="display:block;margin-top:3px"></span></span>
+      <span aria-hidden="true" class="mut">&rsaquo;</span>
+    </button>
+    <button type="button" class="sumlink sun" data-go="basket">
+      <span style="flex:1;min-width:0"><b style="display:block">Basket approval</b><span class="mut sm" id="sumbasket" style="display:block;margin-top:3px"></span></span>
+      <span aria-hidden="true" class="mut">&rsaquo;</span>
+    </button>
+  </section>
+
+  <section class="panel" id="p-list" role="tabpanel" aria-labelledby="t-list" hidden>
+    <h2 style="font-size:32px;margin:6px 0 12px;letter-spacing:-.02em">Grocery list</h2>
+    <div id="list"></div><div id="listerr" class="err" role="alert"></div>
+    <div class="card" style="margin-top:14px">
+      <h2>Your food preferences</h2><p class="mut sm" style="margin:-4px 0 8px">Tell me once. I won't ask again.</p>
+      <ul class="plain" id="prefs"></ul>
+      <form id="preff" class="stack">
+        <div class="inl"><input id="psub" placeholder="Subject (e.g. detergent)" required aria-label="Subject" style="flex:1;min-width:140px"><input id="pval" placeholder="Value (e.g. fragrance-free)" required aria-label="Value" style="flex:1;min-width:140px"></div>
+        <div class="inl"><label><input type="checkbox" id="phard" checked> Hard requirement</label>
+          <label>Visibility <select id="pvis"><option value="group">group</option><option value="private">private</option></select></label></div>
+        <input id="preason" placeholder="Private reason (optional, only you see it)" aria-label="Private reason">
+        <div><button>Save preference</button></div>
+      </form>
+      <div id="preferr" class="err" role="alert"></div>
+    </div>
+  </section>
+
+  <section class="panel" id="p-basket" role="tabpanel" aria-labelledby="t-basket" hidden>
+    <div class="card pay">
+      <div class="row"><h2>How we pay</h2><span class="mut sm" id="paycoord"></span></div>
+      <fieldset style="border:0;padding:0;margin:0" id="payfs">
+        <legend class="sm mut">How should this run be paid?</legend>
+        <label><input type="radio" name="pmode" value="group_payer"> One group payer
+          <select id="payer" aria-label="Group payer"></select></label>
+        <label><input type="radio" name="pmode" value="individual_shares"> Everyone pays their share</label>
+      </fieldset>
+      <div class="inl" style="margin-top:10px"><button id="savemode" class="ghost">Save payment mode</button><button id="build">Build plan</button></div>
+      <div id="planbusy" class="busy" aria-live="polite"></div><div id="payerr" class="err" role="alert"></div>
+    </div>
+    <div id="planv"></div>
+    <div id="apprv"></div>
+    <div id="execv"></div>
+  </section>
+
+  <section class="panel" id="p-activity" role="tabpanel" aria-labelledby="t-activity" hidden>
+    <div class="card"><h2>Tracking and activity</h2><p class="mut sm" style="margin:-4px 0 10px">Audit timeline of every decision. Orders here are synthetic demo orders, not real purchases.</p><div class="tw"><table><thead><tr><th>Time</th><th>Actor</th><th>Decision</th><th>Outcome</th></tr></thead><tbody id="audit"></tbody></table></div></div>
+  </section>
+</main>
+<script>
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const money = n => (n == null || isNaN(n)) ? "—" : "$" + Number(n).toFixed(2);
+const tm = t => { if (!t) return ""; const d = new Date(t); return isNaN(d) ? esc(t) : d.toLocaleString([], {month:"short",day:"numeric",hour:"2-digit",minute:"2-digit"}); };
+let S = null, member = "shivay", busy = false;
+try { member = localStorage.getItem("gmember") || "shivay"; } catch (e) {}
+const HINTS = ["We need laundry detergent, fragrance-free", "1 gallon of milk for me", "oat milk for me, 2 cartons", "a dozen eggs for the flat"];
+$("#hints").innerHTML = HINTS.map(h => `<button type="button" class="hint">${esc(h)}</button>`).join("");
+document.querySelectorAll(".hint").forEach(b => b.onclick = () => { $("#addin").value = b.textContent; $("#addin").focus(); });
+
+async function api(path, opts = {}) {
+  const url = path + (path.includes("?") ? "&" : "?") + "member=" + encodeURIComponent(member);
+  const o = {method: opts.method || "GET", headers: {}};
+  if (opts.body !== undefined) { o.headers["Content-Type"] = "application/json"; o.body = JSON.stringify(opts.body); }
+  const r = await fetch(url, o);
+  let data = null; try { data = await r.json(); } catch (e) {}
+  if (!r.ok) {
+    let d = data && data.detail; if (Array.isArray(d)) d = d.map(x => x.msg || JSON.stringify(x)).join("; ");
+    throw new Error(d || ("HTTP " + r.status));
+  }
+  return data;
+}
+const name = id => (S && S.group.members[id] && S.group.members[id].name) || id;
+
+// Run an action, show errors inline in errEl, reload after.
+async function act(errSel, fn, busySel, busyText) {
+  const err = $(errSel); if (err) err.textContent = "";
+  const bz = busySel && $(busySel); if (bz) bz.textContent = busyText;
+  busy = true;
+  try { await fn(); } catch (e) { if (err) err.textContent = e.message; }
+  finally { busy = false; if (bz) bz.textContent = ""; await load(); }
+}
+
+async function load() {
+  try { S = await api("/api/g/snapshot"); } catch (e) { $("#rstate").textContent = "Error: " + e.message; return; }
+  render();
+}
+
+function render() {
+  const g = S.group, run = S.run;
+  $("#gname").textContent = g.name || "";
+  $("#hmeta").innerHTML = `ZIP ${esc(g.zip)} · Deliver to ${esc(g.address)}${run.deadline ? " · Deadline " + esc(tm(run.deadline)) : ""}`;
+  $("#rstate").textContent = "Run: " + String(run.state || "").replace(/_/g, " ");
+  $("#rver").textContent = "version " + run.version;
+  const who = $("#who");
+  if (document.activeElement !== who)
+    who.innerHTML = Object.entries(g.members).map(([k, m]) => `<option value="${esc(k)}" ${k===member?"selected":""}>${esc(m.name)} (${esc((m.roles||[]).join(", "))})</option>`).join("");
+  const av = $("#whoav"); if (av) av.textContent = (name(member) || "?").trim().charAt(0).toUpperCase() || "?";
+  renderSummary();
+  renderList(); renderPrefs(); renderPay(); renderPlan(); renderApprovals(); renderExec(); renderAudit();
+}
+
+function renderSummary() {
+  const reqs = (S.requests || []).filter(r => r.status !== "cancelled");
+  const mine = reqs.filter(r => r.author === S.viewer).length;
+  const items = [...new Set(reqs.map(r => r.item || "unclear"))];
+  $("#nlist").textContent = reqs.length ? "· " + reqs.length : "";
+  $("#sumcount").innerHTML = `This run · ${reqs.length} request${reqs.length === 1 ? "" : "s"}${mine ? ` <span class="st" style="margin-left:4px">${mine} yours</span>` : ""}`;
+  $("#sumtext").textContent = items.length ? items.slice(0, 3).join(", ") + (items.length > 3 ? ` and ${items.length - 3} more` : "") : "Nothing yet. Add the first item above.";
+  const p = S.plan, a = S.approvals, x = S.execution;
+  $("#sumbasket").textContent = x ? "Execution: " + String(x.state || "").replace(/_/g, " ")
+    : !p ? "No plan yet. Build one from Basket."
+    : p.input_version !== S.run.version ? "Plan is out of date — rebuild."
+    : a && (a.pending || []).length ? "Waiting on: " + a.pending.map(name).join(", ") : "Plan ready.";
+}
+
+function renderList() {
+  const reqs = (S.requests || []).filter(r => r.status !== "cancelled");
+  if (!reqs.length) { $("#list").innerHTML = `<p class="mut">Nothing yet. Add the first item above.</p>`; return; }
+  const groups = {};
+  reqs.forEach(r => (groups[r.item || "unclear"] ||= []).push(r));
+  $("#list").innerHTML = Object.entries(groups).map(([item, rs]) => `<div class="grp"><b>${esc(item)}</b>${rs.map(r => `
+    <div class="req"><div class="row"><div class="inl"><span>${esc(name(r.author))}</span>
+      <span class="st">${r.allocation === "personal" ? "personal" : "shared"}</span>
+      <span>${r.quantity != null ? esc(r.quantity) + " " + esc(r.unit || "") : '<span class="mut">qty unknown</span>'}</span>
+      ${r.status && r.status !== "active" && r.status !== "open" ? `<span class="chip">${esc(r.status)}</span>` : ""}</div>
+      ${r.author === S.viewer ? `<button class="danger sm cancel" data-id="${esc(r.id)}" aria-label="Cancel request for ${esc(item)}">Cancel</button>` : ""}</div>
+      <div class="chips" style="margin-top:4px">${(r.constraints||[]).map(c => `<span class="chip">${esc(c)}</span>`).join("")}
+        ${r.brand ? `<span class="chip">brand: ${esc(r.brand)}</span>` : ""}${r.max_price != null ? `<span class="chip">max ${money(r.max_price)}</span>` : ""}
+        ${r.substitution ? `<span class="chip">subs: ${esc(r.substitution)}</span>` : ""}</div>
+      <div class="sm mut">"${esc(r.source_text)}" · extracted by ${esc(r.engine || "?")}</div></div>`).join("")}</div>`).join("");
+  document.querySelectorAll(".cancel").forEach(b => b.onclick = () =>
+    act("#listerr", () => api("/api/g/requests/" + encodeURIComponent(b.dataset.id), {method: "PATCH", body: {status: "cancelled"}})));
+}
+
+function renderPrefs() {
+  const ps = (S.preferences || []).filter(p => p.status !== "cancelled" && p.status !== "expired");
+  $("#prefs").innerHTML = ps.length ? ps.map(p => `<li><b>${esc(name(p.member))}</b>: ${esc(p.subject)} → ${esc(p.value)}
+    <span class="st">${p.hard ? "hard" : "soft"}</span> <span class="chip">${esc(p.visibility)}</span>
+    ${p.private_reason ? `<div class="sm mut">Lock: ${esc(p.private_reason)} (only you see this)</div>` : ""}</li>`).join("")
+    : `<li class="mut">No preferences yet.</li>`;
+}
+
+function renderPay() {
+  const run = S.run, g = S.group;
+  const coord = (g.members[S.viewer]?.roles || []).includes("coordinator");
+  $("#paycoord").textContent = coord ? "You are the coordinator" : "Only the coordinator can change this";
+  const payers = Object.entries(g.members).filter(([, m]) => (m.roles || []).includes("payer"));
+  const fs = $("#payfs");
+  if (!fs.contains(document.activeElement)) {
+    document.querySelectorAll('input[name=pmode]').forEach(r => r.checked = r.value === run.payment_mode);
+    $("#payer").innerHTML = payers.map(([k, m]) => `<option value="${esc(k)}" ${k===run.group_payer?"selected":""}>${esc(m.name)}${m.payment_linked ? "" : " (no payment linked)"}</option>`).join("");
+  }
+  $("#build").disabled = busy;
+}
+
+function renderPlan() {
+  const p = S.plan, el = $("#planv");
+  if (!p) { el.innerHTML = `<div class="card"><h2>Plan</h2><p class="mut">No plan yet. Add items, then press "Build plan".</p></div>`; return; }
+  const quotes = p.quotes || [];
+  const rec = quotes.find(q => q.source_key === p.recommended) || null;
+  const nItems = (p.lines || []).length;
+  const verif = [...new Set(quotes.map(q => q.verification).filter(Boolean))];
+  const stale = p.input_version !== S.run.version;
+  let h = `<div class="card hero"><div class="row"><h2>Your basket is ready</h2><span class="v mut sm" style="width:100%;order:3">Best among the sources checked</span><span class="mut sm">plan ${esc(p.id)} · built from version ${esc(p.input_version)}</span></div>`;
+  if (stale) h += `<p class="warn"><b>Plan is out of date — rebuild.</b> The list changed since this plan was built.</p>`;
+  verif.forEach(v => h += `<div class="banner" role="note">${esc(v)}</div>`);
+  if (rec) h += `<div class="big">${esc(rec.retailer)} <span class="mut sm">${esc(rec.platform)}</span></div>
+    <div class="tiles"><div class="tile"><div class="sm mut" style="font-weight:600">Whole order</div><div class="big" style="margin:2px 0 0">${money(rec.total)}</div><div class="sm mut">${esc(rec.total_certainty || "")}</div></div>
+    ${(() => { const m = (p.allocations || []).find(x => x.member === S.viewer); return m ? `<div class="tile" style="background:var(--soft);color:var(--softink)"><div class="sm" style="font-weight:700">Your share</div><div class="big" style="margin:2px 0 0">${money(m.amount)}</div></div>` : ""; })()}</div>
+    <div class="mut sm">Window: ${esc(p.window || rec.window)} · Deliver to ${esc(p.address)}</div>`;
+  else h += `<p class="bad">No source could fill this basket.</p>`;
+  h += `<h3>Comparison</h3><div class="tw"><table><thead><tr><th>Source</th><th>Feasible</th><th>Items</th><th>Subtotal</th><th>Discounts</th><th>Tax</th><th>Fees</th><th>Unknown</th><th>Total</th></tr></thead><tbody>`;
+  quotes.forEach(q => {
+    const fees = Object.entries(q.fees || {}).map(([k, v]) => `${esc(k)} ${money(v)}`).join("<br>") || "—";
+    h += `<tr${q.source_key === p.recommended ? ' style="font-weight:600"' : ""}><td>${esc(q.retailer)}<span class="v mut sm">${esc(q.platform)}${q.location ? " · " + esc(q.location) : ""}</span>${q.source_key === p.recommended ? '<span class="st">recommended</span>' : ""}</td>
+      <td>${q.feasible ? '<span class="ok">yes</span>' : '<span class="bad">no</span>'}${q.reason ? `<span class="v mut sm">${esc(q.reason)}</span>` : ""}</td>
+      <td>${(q.items || []).length}/${nItems}${(q.missing||[]).length ? `<span class="v mut sm">missing: ${q.missing.map(m => esc(m.item) + " (" + esc(m.why) + ")").join(", ")}</span>` : ""}</td>
+      <td>${money(q.subtotal)}</td><td>${q.discounts ? "−" + money(q.discounts) : "—"}</td><td>${money(q.tax)}</td><td>${fees}</td>
+      <td class="sm">${(q.unknown || []).map(esc).join("<br>") || "—"}</td><td><b>${money(q.total)}</b><span class="v mut sm">${esc(q.total_certainty || "")}</span></td></tr>`;
+  });
+  h += `</tbody></table></div>`;
+  if (rec) {
+    h += `<details><summary>Item details for ${esc(rec.retailer)} (${(rec.items||[]).length} items)</summary>`;
+    (rec.items || []).forEach(it => {
+      const o = it.offer || {}, c = it.coupon;
+      h += `<div class="item"><div class="row"><b style="text-transform:capitalize">${esc(it.item)}</b><span>${money(it.subtotal)}</span></div>
+        <div>${esc(o.product)} <span class="mut sm">SKU ${esc(o.sku)}</span></div>
+        <div class="sm">${esc(it.packages)} × ${esc(o.pack_qty)} ${esc(o.pack_unit)} at ${money(o.price)} · unit price ${money(it.unit_price)} · ${esc(it.allocation)} · need ${esc(it.quantity)}${o.stock ? " · stock: " + esc(o.stock) : ""}</div>
+        ${it.discount ? `<div class="sm ok">Discount −${money(it.discount)}</div>` : ""}
+        ${c ? `<div class="sm">Coupon <b>${esc(c.code)}</b> (${esc(c.source)}) −${money(c.discount)} · <span class="warn">${esc(c.state)}</span>${c.expires ? " · expires " + esc(c.expires) : ""}</div>` : ""}
+        ${(it.constraints_met||[]).length ? `<div class="chips">${it.constraints_met.map(x => `<span class="chip ok">✓ ${esc(x)}</span>`).join("")}</div>` : ""}
+        ${(it.rejected||[]).length ? `<div class="sm mut">Rejected: ${it.rejected.map(r => esc(r.product) + " — " + esc(r.why)).join("; ")}</div>` : ""}
+        ${it.surplus ? `<div class="sm mut">Surplus: ${esc(it.surplus)}</div>` : ""}
+        ${it.match ? `<div class="ev">Match: ${esc(it.match.label)}${it.match.score != null ? " · score " + esc(it.match.score) : ""}${it.match.engine ? " · " + esc(it.match.engine) : ""}</div>` : ""}
+        ${it.attribute_evidence ? `<div class="ev">Attribute evidence: ${esc(it.attribute_evidence)}</div>` : ""}
+        <div class="sm mut">${o.evidence_url ? `<a href="${esc(o.evidence_url)}" target="_blank" rel="noopener">evidence</a> · ` : ""}checked ${esc(o.checked_at)} · ${esc(o.verification)}</div></div>`;
+    });
+    h += `</details>`;
+  }
+  if ((p.why || []).length) h += `<h3>Why this basket?</h3><ul>${p.why.map(w => `<li>${esc(w)}</li>`).join("")}</ul>`;
+  if (p.guild_session) h += `<p class="ev" style="margin-top:14px">Guild review session: ${esc(p.guild_session)}</p>`;
+  if ((p.questions || []).length) h += `<h3>Questions</h3><ul>${p.questions.map(q => `<li class="warn">${esc(typeof q === "string" ? q : (q.text || q.question || JSON.stringify(q)))}</li>`).join("")}</ul>`;
+  el.innerHTML = h + `</div>`;
+}
+
+function renderApprovals() {
+  const p = S.plan, a = S.approvals, el = $("#apprv");
+  if (!p) { el.innerHTML = ""; return; }
+  const stale = p.input_version !== S.run.version;
+  const mine = (p.allocations || []).find(x => x.member === S.viewer);
+  const canAct = a && (a.required || []).includes(S.viewer) && !(a.approved || []).includes(S.viewer);
+  let h = `<div class="card"><div class="row"><h2>Approvals</h2><span class="mut sm">plan ${esc(p.id)} · v${esc(p.input_version)} · ${esc(String(p.payment_mode || "").replace(/_/g, " "))}</span></div>`;
+  if (stale) h += `<p class="warn"><b>Plan is out of date — rebuild.</b></p>`;
+  h += `<div class="tw"><table><thead><tr><th>Member</th><th>Role</th><th>Amount</th><th>Covers</th><th>Status</th></tr></thead><tbody>`;
+  (p.allocations || []).forEach(x => {
+    const st = !a ? "—" : (a.approved || []).includes(x.member) ? '<span class="ok">approved</span>'
+      : (a.pending || []).includes(x.member) ? '<span class="warn">pending</span>' : (a.required || []).includes(x.member) ? "required" : '<span class="mut">not required</span>';
+    const cov = Array.isArray(x.covers) ? x.covers.map(esc).join(", ") : esc(x.covers);
+    h += `<tr><td>${esc(name(x.member))}</td><td>${esc(x.role)}</td><td>${money(x.amount)}</td><td class="sm">${cov}</td><td>${st}</td></tr>`;
+  });
+  h += `</tbody></table></div>`;
+  if (a && (a.pending || []).length) h += `<p class="mut sm">Waiting on: ${a.pending.map(name).map(esc).join(", ")}</p>`;
+  if (canAct) h += `<div class="inl" style="margin-top:8px"><button id="appr" ${stale ? "disabled" : ""}>Approve ${money(mine ? mine.amount : 0)}</button><button id="decl" class="danger">Decline</button></div>`;
+  else if (a && (a.approved || []).includes(S.viewer)) h += `<p class="ok sm">You approved this plan.</p>`;
+  el.innerHTML = h + `<div id="apperr" class="err" role="alert"></div></div>`;
+  if (canAct) {
+    $("#appr").onclick = () => act("#apperr", () => api("/api/g/approve", {method: "POST", body: {plan_id: p.id, limit: mine ? mine.amount : 0}}));
+    $("#decl").onclick = () => act("#apperr", () => api("/api/g/decline", {method: "POST", body: {plan_id: p.id}}));
+  }
+}
+
+function renderExec() {
+  const p = S.plan, a = S.approvals, x = S.execution, el = $("#execv");
+  if (!p && !x) { el.innerHTML = ""; return; }
+  const ready = a && !(a.pending || []).length && p && p.input_version === S.run.version;
+  const done = x && ["order_placed_synthetic", "authorizing", "purchasing", "refunded"].includes(x.state);
+  let h = `<div class="card"><h2>Confirm and place order</h2><p class="mut sm" style="margin:-4px 0 10px">Orders in this demo are synthetic: no real purchase or delivery happens.</p>`;
+  if (!x || !done) h += `<div class="inl"><button id="exec" ${ready && !busy ? "" : "disabled"}>Authorize payments and place order</button>
+    <button id="execbad" class="ghost sm" ${ready && !busy ? "" : "disabled"}>Demo: simulate a declined card for Alex</button></div>
+    ${ready ? "" : `<p class="mut sm">Enabled once every required member has approved the current plan.</p>`}`;
+  if (x) {
+    h += `<h3>Execution</h3><p>State: <b>${esc(String(x.state).replace(/_/g, " "))}</b> <span class="mut sm">attempt ${esc(x.attempt)}</span></p>
+      <div class="tw"><table><thead><tr><th>Payer</th><th>Amount</th><th>State</th><th>Intent</th></tr></thead><tbody>`;
+    (x.payments || []).forEach(pm => {
+      const cls = pm.state === "failed" ? "bad" : ["captured", "authorized"].includes(pm.state) ? "ok" : "mut";
+      h += `<tr><td>${esc(name(pm.member))}</td><td>${money(pm.amount)}</td><td class="${cls}">${esc(pm.state)}${pm.error ? `<span class="v sm">${esc(pm.error)}</span>` : ""}</td><td class="sm mut">${esc(pm.intent)}</td></tr>`;
+    });
+    h += `</tbody></table></div>`;
+    if (x.order) h += `<h3>Order</h3><div>${esc(x.order.retailer)} <span class="mut sm">${esc(x.order.platform)}</span></div>
+      <div>Reference <b>${esc(x.order.reference)}</b></div><div>Status: ${esc(x.order.status)}</div>
+      <div class="mut sm">${esc(x.order.window)} · ${esc(x.order.address)}</div>`;
+    if ((x.payments || []).some(pm => pm.state === "captured")) h += `<div style="margin-top:8px"><button id="refund" class="danger">Refund</button></div>`;
+  }
+  el.innerHTML = h + `<div id="execbusy" class="busy" aria-live="polite"></div><div id="execerr" class="err" role="alert"></div></div>`;
+  const ex = q => act("#execerr", () => api("/api/g/execute" + q, {method: "POST"}), "#execbusy", "Authorizing payments…");
+  if ($("#exec")) { $("#exec").onclick = () => ex(""); $("#execbad").onclick = () => ex("?test_decline_for=dad"); }
+  if ($("#refund")) $("#refund").onclick = () => act("#execerr", () => api("/api/g/refund", {method: "POST"}), "#execbusy", "Refunding…");
+}
+
+function renderAudit() {
+  const rows = [...(S.audit || [])].sort((a, b) => String(b.at).localeCompare(String(a.at)));
+  $("#audit").innerHTML = rows.length ? rows.map(r => `<tr><td class="sm mut" style="white-space:nowrap">${tm(r.at)}</td><td>${esc(name(r.actor))}</td>
+    <td>${esc(r.decision)}${(r.evidence || []).length ? `<span class="v mut">${r.evidence.map(esc).join(" · ")}</span>` : ""}</td>
+    <td class="sm">${esc(r.outcome)}${r.action ? `<span class="v mut">${esc(r.action)}</span>` : ""}</td></tr>`).join("")
+    : `<tr><td colspan="4" class="mut">No activity yet.</td></tr>`;
+}
+
+$("#who").onchange = e => { member = e.target.value; try { localStorage.setItem("gmember", member); } catch (x) {} load(); };
+$("#addf").onsubmit = e => {
+  e.preventDefault(); const text = $("#addin").value.trim(); if (!text) return;
+  act("#adderr", async () => { await api("/api/g/requests", {method: "POST", body: {text}}); $("#addin").value = ""; }, "#addbusy", "Understanding your request…");
+};
+$("#preff").onsubmit = e => {
+  e.preventDefault();
+  const body = {subject: $("#psub").value.trim(), value: $("#pval").value.trim(), hard: $("#phard").checked, visibility: $("#pvis").value, private_reason: $("#preason").value.trim() || null};
+  act("#preferr", async () => { await api("/api/g/prefs", {method: "POST", body}); $("#psub").value = $("#pval").value = $("#preason").value = ""; });
+};
+$("#savemode").onclick = () => {
+  const m = document.querySelector('input[name=pmode]:checked'); if (!m) { $("#payerr").textContent = "Choose a payment mode."; return; }
+  act("#payerr", () => api("/api/g/mode", {method: "POST", body: {mode: m.value, payer: m.value === "group_payer" ? $("#payer").value : undefined}}));
+};
+$("#build").onclick = () => act("#payerr", () => api("/api/g/plan", {method: "POST"}), "#planbusy", "Comparing baskets across sources…");
+function showTab(t, focus) {
+  if (!["home", "list", "basket", "activity"].includes(t)) t = "home";
+  document.querySelectorAll(".seg [role=tab]").forEach(b => { const on = b.dataset.tab === t; b.setAttribute("aria-selected", on); b.tabIndex = on ? 0 : -1; if (on && focus) b.focus(); });
+  document.querySelectorAll(".panel").forEach(p => p.hidden = p.id !== "p-" + t);
+  try { history.replaceState(null, "", "#" + t); } catch (e) {}
+}
+document.querySelectorAll(".seg [role=tab]").forEach((b, i, all) => {
+  b.onclick = () => showTab(b.dataset.tab);
+  b.onkeydown = e => { const d = e.key === "ArrowRight" ? 1 : e.key === "ArrowLeft" ? -1 : 0; if (d) { e.preventDefault(); showTab(all[(i + d + all.length) % all.length].dataset.tab, true); } };
+});
+document.querySelectorAll("[data-go]").forEach(b => b.onclick = () => { showTab(b.dataset.go); window.scrollTo(0, 0); });
+showTab((location.hash || "").slice(1));
+setInterval(() => { if (!busy && !document.hidden) load(); }, 5000);
+load();
+</script>
+</body>
+</html>
