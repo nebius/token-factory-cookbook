@@ -1,6 +1,6 @@
 """Conversational grocery agent: one question at a time, profile-aware, remembers answers.
 
-Each turn: Nemotron (Nebius) reads the member's message into slots (category, brand, variant, quantity,
+Each turn: Kimi K3.1 Pro (Nebius) reads the member's message into slots (category, brand, variant, quantity,
 unit, allocation, timing, yes/no), merged into that member's draft. The member's profile chips fill
 what they imply ("milk" + dairy allergy + "always get unsweetened oat milk" -> Oatly unsweetened oat milk),
 tagged "From your preferences". Then the agent asks for the single most important missing detail, or

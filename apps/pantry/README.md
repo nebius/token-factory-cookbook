@@ -130,7 +130,7 @@ The Persona identity step is part of the occasions agent and was not exercised i
 
 ## Source and license
 
-Built by Shivay Lamba and team for the Personal Agents Hackathon. Source: [shivaylamba/occasions-agent](https://github.com/shivaylamba/occasions-agent) at revision `185250b`.
+Built by Shivay Lamba and team for the Personal Agents Hackathon. Source: [shivaylamba/occasions-agent](https://github.com/shivaylamba/occasions-agent) at revision `9bfaecb`.
 
 Cookbook changes:
 - Guild workspace and agent IDs moved to environment variables;
