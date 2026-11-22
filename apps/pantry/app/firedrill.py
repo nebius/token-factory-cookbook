@@ -82,6 +82,13 @@ def send_receipt(subject, body):
     return {"ok": r["ok"], "id": r["data"].get("id"), "to": to, "tool": r["tool"]}
 
 
+def send_invite(to, subject, body):
+    if not live("gmail"):
+        return {"ok": False}
+    r = call("gmail", "messages.send", {"userId": "me", "to": [to], "subject": subject, "body": body})
+    return {"ok": r["ok"], "id": r["data"].get("id"), "tool": r["tool"]}
+
+
 # ---------- slack ----------
 
 def family_channel():

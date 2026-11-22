@@ -15,7 +15,7 @@ Explore complete applications and interactive coding examples for Nebius Token F
 | [Napkin to 3D print](napkin-to-3d-print/) | Turn a hand-drawn sketch into a parametric CadQuery model and a printable STL | Included in this repository |
 | [Image to 3D](image-to-3d/) | Turn a photo into an interactive Three.js scene with Kimi, then refine it in plain language | Included in this repository |
 | [Footnote](footnote/) | Turn a report PDF into a spreadsheet model where every number links to its page, then check the report's claims | Included in this repository |
-| [Pantry](pantry/) | Shared-home grocery agent with Kimi K3.1 Pro: each member's own agent joins over MCP, the bill splits to the cent, and nobody is charged until everyone approves | Included in this repository |
+| [Pantry](pantry/) | Shared-home grocery agent with Kimi K3.1 Pro: invite your household, talk or type what you need, each member's own agent joins over MCP, and nobody is charged until everyone approves their share | Included in this repository |
 | [WhatLLM](https://www.whatllm.org/) | Compare model responses | Hosted application |
 | [Allycat](https://github.com/The-AI-Alliance/allycat) | Search and chat over website content | External repository |
 | [Customer Support AI](https://github.com/amrrs/customer-support-ai) | Answer support questions with domain-restricted web retrieval | External repository |

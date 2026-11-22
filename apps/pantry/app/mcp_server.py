@@ -36,7 +36,11 @@ def _member(ctx: Context) -> str:
     except Exception:
         auth = ""
     if auth.lower().startswith("bearer "):
-        m = _tokens().get(auth[7:].strip())
+        tok = auth[7:].strip()
+        m = _tokens().get(tok)
+        if not m:  # members who joined through an invite link get a personal token stored with the household
+            from . import grocery
+            m = grocery.member_for_token(tok)
         if m:
             return m
         raise PermissionError("unknown token")
@@ -168,6 +172,23 @@ def save_plan(ctx: Context) -> dict:
     Approving and paying are human-only actions in the app; this tool cannot approve."""
     p = grocery.plan(_member(ctx))
     return {"id": p["id"], "recommended": p["recommended"], "why": p["why"], "allocations": p["allocations"]}
+
+
+@mcp.tool()
+def talk_to_pantry(message: str, ctx: Context) -> dict:
+    """Talk to the household grocery agent in plain words ("We need milk", "Oatly, one carton, just for me").
+    It asks one follow-up question at a time when something is missing, uses your saved profile, and adds the item."""
+    from . import gchat
+    r = gchat.handle(_member(ctx), message)
+    return {"reply": r["reply"], "tags": r["tags"], "added": bool(r.get("added"))}
+
+
+@mcp.tool()
+def set_profile(ctx: Context, allergies: list[str] | None = None, diet: list[str] | None = None,
+                always_get: list[str] | None = None, share_with_household: bool = True) -> dict:
+    """Save your grocery profile: allergies (e.g. dairy), diet (e.g. gluten-free), things you always get."""
+    p = grocery.set_profile(_member(ctx), allergies, diet, always_get, share_with_household)
+    return {"rules": grocery.profile_constraints(p["member"]), "always_get": p["always_get"], "shared": p["share_with_group"]}
 
 
 @mcp.tool()

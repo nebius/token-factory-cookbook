@@ -24,16 +24,52 @@ CENT = Decimal("0.01")
 # ---------------------------------------------------------------- group + run
 
 GROUP = {
-    "id": "grp-mission-flat",
-    "name": "Mission St flat",
-    "members": {
-        "shivay": {"name": "Shivay", "roles": ["coordinator", "payer", "member"], "payment_linked": True},
-        "dad": {"name": "Alex", "roles": ["payer", "member"], "payment_linked": True},
+    "id": "grp-maple-house",
+    "name": "Maple House",
+    "members": {  # listed order matters: the first member takes any leftover cent when shares are rounded
+        "ann": {"name": "Ann", "roles": ["coordinator", "payer", "member"], "payment_linked": True},
+        "shivay": {"name": "Shivay", "roles": ["payer", "member"], "payment_linked": True},
+        "yash": {"name": "Yash", "roles": ["payer", "member"], "payment_linked": True},
+        "shane": {"name": "Shane", "roles": ["payer", "member"], "payment_linked": True},
     },
     "address": "Demo address, San Francisco, CA 94110",  # synthetic; real address entered at setup
     "zip": "94110",
+    "schedule": {"how_often": "Weekly, Saturday", "requests_close": "Friday 5:00 PM", "window": "Saturday 10 AM-12 PM"},
 }
-# Note: member id "dad" is reused from the family demo for auth tokens; it is shown as "Alex", a roommate.
+
+
+# ---------------------------------------------------------------- member profiles (chips)
+
+ALLERGY_CHIPS = ["dairy", "gluten", "nuts", "eggs", "soy", "shellfish"]
+DIET_CHIPS = ["gluten-free", "vegan", "vegetarian", "low-sugar"]
+
+
+def get_profile(member):
+    require_member(member)
+    return db.get("claims", f"profile:{member}") or {"member": member, "allergies": [], "diet": [], "always_get": [],
+                                                      "share_with_group": True}
+
+
+def set_profile(member, allergies=None, diet=None, always_get=None, share_with_group=True):
+    """Profile chips become hard rules. Shared with the household only if the member says so."""
+    p = get_profile(member)
+    p.update(allergies=[a for a in (allergies or []) if a], diet=[d for d in (diet or []) if d],
+             always_get=[g.strip() for g in (always_get or []) if g and g.strip()], share_with_group=bool(share_with_group),
+             at=_now())
+    db.put("claims", f"profile:{member}", p, grp="profiles")
+    rules = profile_constraints(member)
+    ds = "household" if p["share_with_group"] else f"{member}_private"
+    memory._cognee_add(ds, f"{member_name(member)} grocery rules: {', '.join(rules) or 'none'}; always gets: "
+                           f"{', '.join(p['always_get']) or 'nothing specific'}")
+    run = get_run()
+    audit(run["id"], member_name(member), f"Profile saved: {', '.join(rules) or 'no restrictions'}"
+          + (f"; always get {', '.join(p['always_get'])}" if p["always_get"] else ""), action="set_profile")
+    return p
+
+
+def profile_constraints(member):
+    p = get_profile(member)
+    return sorted({f"{a}-free" for a in p["allergies"]} | set(p["diet"]))
 
 
 def member_name(m):
@@ -41,9 +77,111 @@ def member_name(m):
 
 
 def require_member(m):
-    if m not in GROUP["members"]:
-        raise PermissionError("not a member of this group")
+    _load_household()
+    v = GROUP["members"].get(m)
+    if not v:
+        raise PermissionError("not a member of this household")
+    if v.get("status", "joined") != "joined":
+        raise PermissionError("accept your invite first")
     return m
+
+
+# ---------------------------------------------------------------- household, invites, join
+
+import copy as _copy  # noqa: E402
+
+_DEFAULT_GROUP = _copy.deepcopy(GROUP)
+for _v in _DEFAULT_GROUP["members"].values():
+    _v.setdefault("status", "joined")
+
+
+_HH = {"at": 0.0}
+
+
+def _load_household(force=False):
+    if not force and time.time() - _HH["at"] < 1.0:
+        return
+    d = db.get("claims", "household")
+    if d:
+        GROUP.clear()
+        GROUP.update(d)
+    _HH["at"] = time.time()
+
+
+def _save_household():
+    db.put("claims", "household", GROUP, grp="household")
+    _HH["at"] = time.time()
+
+
+def joined_members():
+    _load_household()
+    return [m for m, v in GROUP["members"].items() if v.get("status", "joined") == "joined"]
+
+
+def create_household(member, name, address=None, zip_code=None, how_often=None, requests_close=None, window=None,
+                     payment_mode=None):
+    """The creator becomes coordinator and payer. Everyone else joins by invite."""
+    _load_household()
+    me = GROUP["members"].get(member) or {"name": member.capitalize()}
+    GROUP.clear()
+    GROUP.update({"id": f"grp-{re.sub(r'[^a-z0-9]+', '-', name.lower()).strip('-') or 'home'}", "name": name,
+                  "members": {member: {"name": me["name"], "roles": ["coordinator", "payer", "member"],
+                                       "payment_linked": True, "status": "joined"}},
+                  "address": address or _DEFAULT_GROUP["address"], "zip": zip_code or _DEFAULT_GROUP["zip"],
+                  "schedule": {"how_often": how_often or "Weekly, Saturday", "requests_close": requests_close or "Friday 5:00 PM",
+                               "window": window or "Saturday 10 AM-12 PM"}})
+    _save_household()
+    run = get_run()
+    run["group"] = GROUP["id"]
+    if payment_mode:
+        run["payment_mode"] = payment_mode
+    save_run(run)
+    audit(run["id"], GROUP["members"][member]["name"], f"Created household {name}", action="create_household")
+    return GROUP
+
+
+def invite(member, name, email):
+    """Coordinator invites someone. A join link is created and an invite email goes out (Firedrill Gmail)."""
+    require_member(member)
+    if "coordinator" not in GROUP["members"][member]["roles"]:
+        raise PermissionError("only the coordinator can invite people")
+    mid = re.sub(r"[^a-z0-9]+", "", name.lower())[:20] or f"m{uuid.uuid4().hex[:4]}"
+    code = uuid.uuid4().hex[:12]
+    GROUP["members"][mid] = {"name": name.strip(), "roles": ["payer", "member"], "payment_linked": True,
+                             "status": "invited", "email": email}
+    _save_household()
+    db.put("claims", f"invite:{code}", {"code": code, "member": mid, "at": _now()}, grp="invites")
+    link = f"{env('PUBLIC_BASE_URL', 'http://localhost:8700')}/group?join={code}"
+    sent = firedrill.send_invite(email, f"{member_name(member)} invited you to {GROUP['name']} on Pantry",
+                                 f"Join {GROUP['name']} to add what you need for our shared grocery runs:\n{link}")
+    run = get_run()
+    audit(run["id"], member_name(member), f"Invited {name}" + (" (email sent)" if sent.get("ok") else " (copy the link)"),
+          action="invite", audience="group")
+    return {"member": mid, "name": name, "status": "invited", "join_link": link, "email_sent": bool(sent.get("ok"))}
+
+
+def join(code):
+    """Accept an invite. Returns the member id and their personal MCP token for their own agent."""
+    inv = db.get("claims", f"invite:{code}")
+    if not inv:
+        raise PermissionError("this invite link is not valid")
+    _load_household(force=True)
+    m = inv["member"]
+    if m not in GROUP["members"]:
+        raise PermissionError("this invite was withdrawn")
+    GROUP["members"][m]["status"] = "joined"
+    _save_household()
+    token = uuid.uuid4().hex
+    db.put("claims", f"mcptoken:{token}", {"member": m, "at": _now()}, grp="mcptokens")
+    db.delete("claims", f"invite:{code}")
+    run = get_run()
+    audit(run["id"], member_name(m), "Joined the household", action="join")
+    return {"member": m, "name": member_name(m), "mcp_token": token}
+
+
+def member_for_token(token):
+    t = db.get("claims", f"mcptoken:{token}")
+    return t["member"] if t else None
 
 
 def _now():
@@ -147,11 +285,21 @@ def add_request(member, text, audience="group"):
     if run["state"] in ("authorizing", "purchasing", "order_confirmed"):
         raise PermissionError("this run is already being purchased; start a new run")
     s = extract(text)
+    return add_structured(member, s, text, audience, engine=s.get("_engine"))
+
+
+def add_structured(member, s, text, audience="group", engine=None, from_preferences=None, channel="app"):
+    """Save one structured request (used by the composer and by the conversational agent)."""
+    require_member(member)
+    run = get_run()
+    if run["state"] in ("authorizing", "purchasing", "order_confirmed", "order_placed_synthetic"):
+        raise PermissionError("this run is already being purchased; start a new run")
     rid = f"rq-{uuid.uuid4().hex[:8]}"
     req = {"id": rid, "group": GROUP["id"], "run": run["id"], "author": member, "source_text": text, "audience": audience,
            "at": _now(), "status": "active", "version": 1, **{k: s.get(k) for k in
-           ("item", "quantity", "unit", "allocation", "constraints", "max_price", "brand", "substitution", "deadline")},
-           "engine": s.get("_engine")}
+           ("item", "quantity", "unit", "allocation", "constraints", "max_price", "brand", "substitution", "deadline",
+            "category", "variant", "product")},
+           "engine": engine, "from_preferences": from_preferences or [], "channel": channel}
     db.put("requests", rid, req, grp=run["id"], seq=int(time.time() * 1000))
     bump(run, f"request added by {member_name(member)}", member)
     audit(run["id"], member_name(member), f"Added request: {req['item']} ({req['allocation']})",
@@ -225,36 +373,58 @@ def prefs_for(viewer, include_private_reason=False):
 
 # No live California retailer API is accessible to this team today (see README capability matrix),
 # so offers come from a labelled fixture. Every offer keeps the PRD's evidence fields.
-FIXTURE_NOTE = "demo fixture: no live retailer API access; prices are illustrative, not live quotes"
-CHECKED_AT = "2026-11-20T14:00:00-08:00"
-RETAILERS = {
-    "safeway-94110": {"retailer": "Safeway", "platform": "safeway.com", "location": "Safeway, Mission St, SF 94110",
-                      "delivery_fee": Decimal("9.95"), "service_fee_pct": None, "min_order": Decimal("30"),
-                      "bag_fee": Decimal("0.10"), "window": "Sat 10:00-12:00"},
-    "ralphs-94110": {"retailer": "Ralphs", "platform": "ralphs.com", "location": "not serviceable at 94110 (SoCal only)",
-                     "serviceable": False},
-    "costco-sameday": {"retailer": "Costco", "platform": "Costco Same-Day (Instacart)", "location": "Costco SF, 10th St",
-                       "delivery_fee": Decimal("3.99"), "service_fee_pct": Decimal("0.05"), "min_order": Decimal("35"),
-                       "bag_fee": None, "window": "Sat 09:00-11:00", "membership": "required"},
+FIXTURE_NOTE = ("price snapshot from search results on 2026-11-21 (approximate, not live quotes; "
+                "no live retailer API access); prices change by ZIP and day")
+CHECKED_AT = "2026-11-21 (search-result snapshot)"
+RETAILERS = {  # delivery fees were not returned by any store, so they are unknown, never zero
+    "walmart": {"retailer": "Walmart", "platform": "walmart.com", "location": "Walmart delivery, 94110",
+                "delivery_fee": None, "service_fee_pct": None, "min_order": None, "bag_fee": None, "window": "Sat 10 AM-12 PM"},
+    "target": {"retailer": "Target", "platform": "target.com (Shipt)", "location": "Target same-day, 94110",
+               "delivery_fee": None, "service_fee_pct": None, "min_order": None, "bag_fee": None, "window": "Sat 10 AM-12 PM"},
+    "safeway": {"retailer": "Safeway", "platform": "safeway.com", "location": "Safeway delivery, 94110",
+                "delivery_fee": None, "service_fee_pct": None, "min_order": None, "bag_fee": None, "window": "Sat 10 AM-12 PM"},
+    "wholefoods": {"retailer": "Whole Foods Market", "platform": "amazon.com (Whole Foods)", "location": "Whole Foods delivery, 94110",
+                   "delivery_fee": None, "service_fee_pct": None, "min_order": None, "bag_fee": None, "window": "Sat 10 AM-12 PM"},
 }
-OFFERS = [
-    # retailer, sku, product, matches item, pack_qty, pack_unit, price, attrs, taxable, stock, coupon
-    ("safeway-94110", "SW-1001", "Lucerne whole milk 1 gal", "milk", 1, "gal", "4.99", [], False, "in_stock", None),
-    ("safeway-94110", "SW-1002", "Oatly oat milk 64 oz", "oat milk", 0.5, "gal", "4.79", ["oat", "vegan", "dairy-free"], False, "in_stock", None),
-    ("safeway-94110", "SW-2001", "Tide Free & Gentle detergent 92 oz", "laundry detergent", 1, "bottle", "15.99", ["fragrance-free"], True, "in_stock",
-     {"code": "SW-TIDE3", "source": "Safeway for U digital coupon", "discount": "3.00", "expires": "2026-11-26",
-      "eligible": "Tide 84 oz+", "min_spend": None, "limit": 1, "state": "discovered"}),
-    ("safeway-94110", "SW-2002", "Tide Original detergent 92 oz", "laundry detergent", 1, "bottle", "13.99", [], True, "in_stock", None),
-    ("safeway-94110", "SW-3001", "Signature Select eggs 12 ct", "eggs", 12, "ct", "4.49", [], False, "in_stock", None),
-    ("safeway-94110", "SW-4001", "Bananas, per lb", "bananas", 1, "lb", "0.69", [], False, "in_stock", None),
-    ("safeway-94110", "SW-5001", "Dave's Killer Bread 27 oz", "bread", 1, "loaf", "6.99", ["organic"], False, "in_stock", None),
-    ("costco-sameday", "CO-1001", "Kirkland whole milk 2 x 1 gal", "milk", 2, "gal", "7.49", [], False, "in_stock", None),
-    ("costco-sameday", "CO-1002", "Oatly oat milk 6 x 64 oz", "oat milk", 3, "gal", "17.99", ["oat", "vegan", "dairy-free"], False, "in_stock", None),
-    ("costco-sameday", "CO-2001", "Kirkland Free & Clear detergent 194 oz", "laundry detergent", 1, "bottle", "19.99", ["fragrance-free"], True, "in_stock", None),
-    ("costco-sameday", "CO-3001", "Kirkland eggs 24 ct", "eggs", 24, "ct", "7.99", [], False, "in_stock", None),
-    ("costco-sameday", "CO-4001", "Bananas 3 lb bag", "bananas", 3, "lb", "1.99", [], False, "in_stock", None),
-    ("costco-sameday", "CO-5001", "Dave's Killer Bread 2 x 27 oz", "bread", 2, "loaf", "9.99", ["organic"], False, "out_of_stock", None),
+_P = {  # product: category, pack, attributes (the verified facts Senso holds)
+    "oatly": ("Oatly Unsweetened Oatmilk, 64 fl oz", "oat milk", 1, "carton",
+              ["oat", "unsweetened", "dairy-free", "vegan", "gluten-free", "oatly"]),
+    "canyon": ("Canyon Bakehouse Gluten Free Mountain White Bread, 18 oz", "bread", 1, "loaf",
+               ["gluten-free", "dairy-free", "white", "canyon bakehouse"]),
+    "vital": ("Vital Farms Pasture-Raised Large Eggs, 12 count", "eggs", 12, "ct",
+              ["pasture-raised", "large", "dairy-free", "gluten-free", "vital farms"]),
+    "chobani": ("Chobani Non-Fat Plain Greek Yogurt, 32 oz", "greek yogurt", 1, "tub",
+                ["non-fat", "plain", "gluten-free", "chobani"]),
+    "peets": ("Peet's Coffee Major Dickason's Blend, ground, 10.5 oz", "ground coffee", 1, "bag",
+              ["ground", "dairy-free", "gluten-free", "peet's", "major dickason's"]),
+}
+# (store, product, price or None, stock, note). None price = listed but no price seen; absent row = no listing found.
+_SNAP = [
+    ("walmart", "oatly", "5.23", "in_stock", None), ("walmart", "canyon", "6.47", "in_stock", None),
+    ("walmart", "vital", "6.57", "in_stock", None), ("walmart", "chobani", "5.97", "in_stock", None),
+    ("walmart", "peets", "11.56", "in_stock", None),
+    ("target", "oatly", "5.49", "variant_unconfirmed", "variant unconfirmed in snapshot"),
+    ("target", "vital", "7.69", "in_stock", "another snapshot showed $4.99"),
+    ("target", "chobani", None, "in_stock", "listed, no price seen"), ("target", "peets", None, "in_stock", "listed, no price seen"),
+    ("safeway", "oatly", "6.99", "in_stock", None), ("safeway", "canyon", "9.99", "in_stock", "sale price $6.99 seen in one snapshot"),
+    ("safeway", "vital", "10.99", "in_stock", None), ("safeway", "chobani", None, "in_stock", "listed, no price seen"),
+    ("safeway", "peets", None, "in_stock", "listed, no price seen"),
+    ("wholefoods", "canyon", None, "in_stock", "listed, no price seen"), ("wholefoods", "vital", "7.39", "in_stock", None),
+    ("wholefoods", "chobani", "6.99", "in_stock", None), ("wholefoods", "peets", "13.99", "in_stock", None),
 ]
+_SKU_PREFIX = {"walmart": "WM", "target": "TG", "safeway": "SW", "wholefoods": "WF"}
+NOTES = {}
+OFFERS = []
+for _rk, _pk, _price, _stock, _note in _SNAP:
+    _name, _cat, _pq, _pu, _attrs = _P[_pk]
+    _sku = f"{_SKU_PREFIX[_rk]}-{_pk.upper()}"
+    _coupon = None
+    if _note and _note.startswith("sale price"):
+        _coupon = {"code": None, "source": "sale price in one search snapshot", "discount": "3.00", "expires": None,
+                   "eligible": _name, "min_spend": None, "limit": None, "state": "discovered (not verified)", "counted": False}
+    OFFERS.append((_rk, _sku, _name, _cat, _pq, _pu, _price, list(_attrs), False, _stock, _coupon))
+    NOTES[_sku] = _note
+CATEGORY_QUESTIONS = {"greek yogurt": ("variant", ["non-fat", "whole milk"], "Non-fat or whole milk?")}
 # ---------------------------------------------------------------- Senso: verified product attributes
 
 def _senso_doc(o):
@@ -262,23 +432,26 @@ def _senso_doc(o):
     return (f"Grocery product facts: {name} (SKU {sku})",
             f"# {name} (SKU {sku}), {RETAILERS[rk]['retailer']}\nCategory: {match}\nPack: {pq} {pu}\n"
             f"Verified attributes: {', '.join(attrs) if attrs else 'none'}.\n"
-            + ("This product is fragrance-free.\n" if "fragrance-free" in attrs else
-               ("This product is NOT fragrance-free (it contains added fragrance).\n" if match == "laundry detergent" else "")))
+            + "".join(f"This product is {a}.\n" for a in attrs if a.endswith("-free")))
 
 
 def sync_grocery_kb():
     """Load verified grocery product attributes into Senso once."""
     from . import mcpcall, senso
-    if not senso.live() or db.get("claims", "senso_grocery_kb"):
+    if not senso.live() or db.get("claims", "senso_grocery_kb_v2"):
         return 0
     n = 0
+    seen = set()
     for o in OFFERS:
+        if o[2] in seen:  # one fact sheet per product (same product at several stores)
+            continue
+        seen.add(o[2])
         title, text = _senso_doc(o)
         r = mcpcall.call(env("SENSO_MCP_URL"), "senso_create_doc", {"title": title, "text": text,
                                                                      "summary": f"Verified attributes for SKU {o[1]}"}, senso._h())
         n += 1 if r["ok"] else 0
         time.sleep(1.2)  # stay under Senso's rate limit
-    db.put("claims", "senso_grocery_kb", {"docs": n, "at": _now()}, grp="system")
+    db.put("claims", "senso_grocery_kb_v2", {"docs": n, "at": _now()}, grp="system")
     return n
 
 
@@ -290,17 +463,20 @@ def senso_attributes(sku, name):
     c = db.get("claims", f"senso_g:{sku}")
     if c:
         return c["attrs"], c["evidence"]
-    r = mcpcall.call(env("SENSO_MCP_URL"), "senso_search", {"query": f"Grocery product facts: {name} (SKU {sku}) verified attributes",
+    c = db.get("claims", f"senso_g:{name}")
+    if c:
+        return c["attrs"], c["evidence"]
+    r = mcpcall.call(env("SENSO_MCP_URL"), "senso_search", {"query": f"Grocery product facts: {name} verified attributes",
                                                             "mode": "context", "max_results": 3}, senso._h(), timeout=45)
     if not r["ok"]:
         return None, None
-    hit = next((h for h in r["data"].get("results") or [] if f"(SKU {sku})" in (h.get("text") or "")), None)
+    hit = next((h for h in r["data"].get("results") or [] if name in (h.get("text") or "")), None)
     if not hit:
         return None, None
     m = re.search(r"Verified attributes: (.+?)\.", hit["text"])
     attrs = [] if not m or m.group(1) == "none" else [a.strip() for a in m.group(1).split(",")]
     ev = f"Senso KB \"{hit.get('title')}\" (score {round(hit.get('score') or 0, 3)})"
-    db.put("claims", f"senso_g:{sku}", {"attrs": attrs, "evidence": ev}, grp="senso_cache")
+    db.put("claims", f"senso_g:{name}", {"attrs": attrs, "evidence": ev}, grp="senso_cache")
     return attrs, ev
 
 
@@ -320,8 +496,8 @@ def offers_for(item, retailer):
                         "location": RETAILERS[rk]["location"], "source_key": rk, "sku": sku, "product": name,
                         "pack_qty": pq, "pack_unit": pu, "price": price, "currency": "USD", "attributes": attrs,
                         "taxable": taxable, "stock": stock, "coupon": coupon, "fulfillment": "delivery",
-                        "evidence_url": f"https://{RETAILERS[rk]['platform']}/ (fixture)", "checked_at": CHECKED_AT,
-                        "verification": FIXTURE_NOTE})
+                        "evidence_url": f"https://{RETAILERS[rk]['platform'].split(' ')[0]}/ (search snapshot)",
+                        "checked_at": CHECKED_AT, "verification": FIXTURE_NOTE, "note": NOTES.get(sku)})
     return out
 
 
@@ -351,22 +527,23 @@ def consolidate(run_id):
     personal requests become per-member allocations. Ambiguous shared quantities produce a question."""
     lines, questions = {}, []
     for r in active_requests(run_id):
-        key = (_norm(r["item"]), r["allocation"])
-        ln = lines.setdefault(key, {"item": _norm(r["item"]), "allocation": r["allocation"], "requests": [],
-                                    "constraints": set(), "unit": r.get("unit"), "per_member": {}})
+        key = (_norm(r.get("category") or r["item"]), r["allocation"], (r.get("brand") or "").lower())
+        ln = lines.setdefault(key, {"item": _norm(r.get("category") or r["item"]), "allocation": r["allocation"], "requests": [],
+                                    "constraints": set(), "unit": r.get("unit"), "per_member": {},
+                                    "brand": r.get("brand"), "variant": r.get("variant"), "product": r.get("product")})
         ln["requests"].append({"id": r["id"], "author": r["author"], "text": r["source_text"], "quantity": r.get("quantity")})
         ln["constraints"].update(c.lower() for c in (r.get("constraints") or []))
         q = r.get("quantity") or 1
         if r["allocation"] == "personal":
             ln["per_member"][r["author"]] = ln["per_member"].get(r["author"], 0) + q
     out = []
-    for (item, alloc), ln in lines.items():
+    for (item, alloc, _brand), ln in lines.items():
         if alloc == "shared":
             qs = [x["quantity"] for x in ln["requests"] if x["quantity"]]
             ln["quantity"] = max(qs) if qs else 1
             if len(set(qs)) > 1:
                 questions.append(f"Shared {item}: requests say {', '.join(str(q) for q in qs)}. Using {ln['quantity']}; is that right?")
-            ln["participants"] = sorted({x["author"] for x in ln["requests"]} | set(GROUP["members"]))
+            ln["participants"] = sorted({x["author"] for x in ln["requests"]} | set(joined_members()))
         else:
             ln["quantity"] = sum(ln["per_member"].values())
         ln["constraints"] = sorted(ln["constraints"])
@@ -381,13 +558,28 @@ def _d(x):
 
 
 def hard_constraints(line):
-    """Request constraints + confirmed hard preferences of the people this line is for."""
+    """Request constraints + confirmed hard preferences + profile rules of the people this line is for.
+    On a shared line, a member's profile rules apply only if they chose to share them with the household."""
     cons = set(line["constraints"])
-    who = set(line["per_member"]) if line["allocation"] == "personal" else set(line.get("participants", []))
+    personal = line["allocation"] == "personal"
+    who = set(line["per_member"]) if personal else set(line.get("participants", []))
     for p in db.list("prefs", grp=GROUP["id"]):
         if p["status"] == "confirmed" and p["hard"] and p["member"] in who and _norm(p["subject"]) == line["item"]:
             cons.add(p["value"].lower())
+    for m in who:
+        if m in GROUP["members"] and (personal or get_profile(m)["share_with_group"]):
+            cons.update(profile_constraints(m))
     return sorted(cons)
+
+
+def brand_ok(line, offer):
+    """Requested brand/variant must match the product; a different product is never swapped in silently."""
+    name = offer["product"].lower()
+    for field in ("brand", "variant"):
+        want = (line.get(field) or "").lower().strip()
+        if want and want not in name and want not in [a.lower() for a in offer["attributes"]]:
+            return False, f"not the requested {field} ({line.get(field)})"
+    return True, ""
 
 
 MEASURE = {"gal": ("gal", 1), "gallon": ("gal", 1), "gallons": ("gal", 1), "lb": ("lb", 1), "lbs": ("lb", 1),
@@ -424,13 +616,28 @@ def quote_retailer(rk, lines):
                     o["attributes"], o["attribute_evidence"] = attrs, ev
                 else:
                     o["attribute_evidence"] = "fixture attributes (Senso unavailable)"
-        cands = [o for o in all_offers if o["stock"] == "in_stock" and all(c in o["attributes"] for c in cons)]
-        rejected = [{"product": o["product"], "why": "out of stock" if o["stock"] != "in_stock" else
-                     f"missing required: {', '.join(c for c in cons if c not in o['attributes'])}"}
-                    for o in all_offers if o not in cands]
+        cands, rejected = [], []
+        for o in all_offers:
+            ok_b, why_b = brand_ok(ln, o)
+            miss = [c for c in cons if c not in o["attributes"]]
+            if o["stock"] == "variant_unconfirmed":
+                rejected.append({"product": o["product"], "why": "variant unconfirmed in snapshot (uncertain match)"})
+            elif o["stock"] != "in_stock":
+                rejected.append({"product": o["product"], "why": "out of stock"})
+            elif not ok_b:
+                rejected.append({"product": o["product"], "why": why_b})
+            elif miss:
+                rejected.append({"product": o["product"], "why": f"missing required: {', '.join(miss)}"})
+            else:
+                cands.append(o)
         if not cands:
-            missing.append({"item": ln["item"], "why": "; ".join(r["why"] for r in rejected) or "not carried"})
+            missing.append({"item": ln["item"], "why": "; ".join(r["why"] for r in rejected) or "not available at this store"})
             continue
+        priced = [o for o in cands if o["price"] is not None]
+        if not priced:
+            missing.append({"item": ln["item"], "why": "listed, but no price seen (can't compare)", "price_unknown": True})
+            continue
+        cands = priced
 
         def cost(o):
             return packages(need, ln["unit"], o), _d(o["price"]) * packages(need, ln["unit"], o)
@@ -440,8 +647,10 @@ def quote_retailer(rk, lines):
         disc = Decimal("0")
         if coupon:
             coupon = dict(coupon)
-            coupon["state"] = "eligibility checked (fixture terms)"  # never "applied" until checkout confirms
-            disc = _d(coupon["discount"])
+            if coupon.get("counted", True):
+                coupon["state"] = "eligibility checked (fixture terms)"  # never "applied" until checkout confirms
+                disc = _d(coupon["discount"])
+            # discovered-but-unverified savings are shown, never counted
         # Superlinked SIE: how well the chosen product matches what people actually asked for.
         req_text = "; ".join(x["text"] for x in ln["requests"])[:300]
         sc = models.sie_scores(req_text, [best["product"]])
@@ -461,7 +670,11 @@ def quote_retailer(rk, lines):
     disc = sum((_d(i["discount"]) for i in items), Decimal("0"))
     taxable = sum((_d(i["subtotal"]) - _d(i["discount"]) for i in items if i["offer"]["taxable"]), Decimal("0"))
     tax = (taxable * CA_SALES_TAX).quantize(CENT, ROUND_HALF_UP)
-    fees = {"delivery": R["delivery_fee"]}
+    fees = {}
+    if R.get("delivery_fee") is not None:
+        fees["delivery"] = R["delivery_fee"]
+    else:
+        unknown.append("delivery fee (store didn't return one)")
     if R.get("service_fee_pct"):
         fees["service"] = (sub * R["service_fee_pct"]).quantize(CENT, ROUND_HALF_UP)
     if R.get("bag_fee") is not None:
@@ -470,21 +683,25 @@ def quote_retailer(rk, lines):
     if R.get("membership"):
         unknown.append(f"membership {R['membership']}: cost not included")
     total = sub - disc + tax + sum(fees.values(), Decimal("0"))
-    below_min = sub - disc < R["min_order"]
+    below_min = R.get("min_order") is not None and sub - disc < R["min_order"]
     feasible = not missing and not below_min
+    price_gap = [m["item"] for m in missing if m.get("price_unknown")]
+    reason = "" if feasible else (f"price unknown for {', '.join(price_gap)}" if price_gap and len(price_gap) == len(missing)
+                                  else ("missing items" if missing else f"below ${R['min_order']} minimum"))
     return {"source_key": rk, "retailer": R["retailer"], "platform": R["platform"], "location": R["location"],
             "window": R["window"], "items": items, "missing": missing, "subtotal": str(sub), "discounts": str(disc),
-            "tax": str(tax), "fees": {k: str(v) for k, v in fees.items()}, "unknown": unknown,
-            "total": str(total.quantize(CENT)), "total_certainty": "estimate (fixture prices; confirm at checkout)",
-            "feasible": feasible, "reason": "" if feasible else ("missing items" if missing else f"below ${R['min_order']} minimum"),
-            "checked_at": CHECKED_AT, "verification": FIXTURE_NOTE}
+            "tax": str(tax), "tax_note": "California grocery food is tax-exempt", "fees": {k: str(v) for k, v in fees.items()},
+            "unknown": unknown, "total": str(total.quantize(CENT)),
+            "total_certainty": "items only; delivery fee and tip unknown (snapshot prices, confirm at checkout)",
+            "covered": f"{len(items)} of {len(lines)}",
+            "feasible": feasible, "reason": reason, "checked_at": CHECKED_AT, "verification": FIXTURE_NOTE}
 
 
 def allocate(quote, mode, group_payer):
     """Per-member shares. Personal items -> requester; shared items -> equal split among participants;
     item discounts follow their item; tax follows taxable items; fees split equally. Largest-remainder
     rounding so member totals reconcile exactly to the order total."""
-    members = list(GROUP["members"])
+    members = joined_members()
     raw = {m: Decimal("0") for m in members}
     detail = {m: [] for m in members}
     for it in quote["items"]:
@@ -508,7 +725,7 @@ def allocate(quote, mode, group_payer):
     target = _d(quote["total"])
     floors = {m: raw[m].quantize(CENT, rounding="ROUND_FLOOR") for m in members}
     remainder = int(((target - sum(floors.values())) / CENT).to_integral_value(ROUND_HALF_UP))
-    order = sorted(members, key=lambda m: raw[m] - floors[m], reverse=True)
+    order = members  # leftover cents go to members in listed order (the coordinator first)
     for i in range(abs(remainder)):
         floors[order[i % len(order)]] += CENT if remainder > 0 else -CENT
     assert sum(floors.values()) == target, "allocation must reconcile exactly"
@@ -517,6 +734,35 @@ def allocate(quote, mode, group_payer):
                  "covers": "entire basket", "allocation_view": {m: str(floors[m]) for m in members}}]
     return [{"member": m, "role": "pays own share", "amount": str(floors[m]), "covers": detail[m] + ["fees: equal split"]}
             for m in members if floors[m] > 0]
+
+
+def split_option(quotes, lines, best):
+    """Cheapest compliant, priced offer per item across every store checked. A split basket is recommended only
+    when it is cheaper after fees; when a store's fees are unknown the agent says so and keeps the single store."""
+    picks = {}
+    for q in quotes:
+        for it in q.get("items", []):
+            k = (it["item"], it["allocation"])
+            net = _d(it["subtotal"]) - _d(it["discount"])
+            if k not in picks or net < picks[k]["net"]:
+                picks[k] = {"item": it["item"], "store": q["retailer"], "net": net, "product": it["offer"]["product"]}
+    if len(picks) < len(lines):
+        return {"possible": False, "note": "No combination of the stores checked covers every item."}
+    stores = sorted({v["store"] for v in picks.values()})
+    items_total = sum((v["net"] for v in picks.values()), Decimal("0"))
+    out = {"possible": True, "stores": stores, "items_total": str(items_total),
+           "picks": [{"item": v["item"], "store": v["store"], "price": str(v["net"]), "product": v["product"]} for v in picks.values()]}
+    if len(stores) == 1:
+        out.update(recommended=False, note=f"One store had the lowest price on all {len(picks)} items: {stores[0]}.")
+        return out
+    single = (_d(best["subtotal"]) - _d(best["discounts"])) if best else None
+    out.update(single_store=best["retailer"] if best else None, single_items_total=str(single) if single is not None else None,
+               items_saving=str(single - items_total) if single is not None else None,
+               extra_orders=len(stores) - 1, recommended=False,
+               note=(f"Splitting across {', '.join(stores)} saves ${single - items_total:.2f} on items, but each extra store adds "
+                     f"its own delivery fee and minimum, which the stores didn't return. Keeping one store."
+                     if single is not None else "Only a split basket covers every item; fees are unknown, so review it."))
+    return out
 
 
 def plan(member):
@@ -529,6 +775,7 @@ def plan(member):
     quotes = [quote_retailer(rk, lines) for rk in RETAILERS]
     feasible = [q for q in quotes if q["feasible"]]
     best = min(feasible, key=lambda q: _d(q["total"])) if feasible else None
+    split = split_option(quotes, lines, best)
     pid = f"plan-{run['id']}-v{run['version']}"
     why = []
     if best:
@@ -543,7 +790,7 @@ def plan(member):
     p = {"id": pid, "run": run["id"], "input_version": run["version"], "created": _now(), "lines": lines,
          "questions": questions, "quotes": quotes, "recommended": best["source_key"] if best else None,
          "why": why, "payment_mode": run["payment_mode"],
-         "allocations": allocate(best, run["payment_mode"], run["group_payer"]) if best else [],
+         "allocations": allocate(best, run["payment_mode"], run["group_payer"]) if best else [], "split": split,
          "address": run["address"], "window": best["window"] if best else None}
     db.put("plans", pid, p, grp=run["id"], seq=run["version"])
     run["plan_version"] = run["version"]
@@ -735,24 +982,105 @@ def refund(member, reason="cancelled"):
     return act
 
 
+def coordinator():
+    return next(m for m, v in GROUP["members"].items() if "coordinator" in v["roles"])
+
+
+def _agent_msg(member, text):
+    from . import gchat
+    gchat._say(member, "agent", text)
+
+
+def start_last_call(member, minutes=2):
+    """Coordinator brings the cutoff forward (demo clock). Everyone gets the last call; nobody has to reply."""
+    require_member(member)
+    if "coordinator" not in GROUP["members"][member]["roles"]:
+        raise PermissionError("only the coordinator can call last call")
+    run = get_run()
+    run["requests_close_ts"] = time.time() + float(minutes) * 60
+    run["requests_close"] = time.strftime("%H:%M:%S", time.localtime(run["requests_close_ts"]))
+    run["done"] = []
+    run["state"] = "last_call"
+    save_run(run)
+    msg = "Last call. Anything else before I shop? No reply needed."
+    for m in joined_members():
+        _agent_msg(m, msg)
+    s = firedrill.post(f":shopping_trolley: {GROUP['name']}: {msg} Requests close in {minutes:g} min.")
+    audit(run["id"], "agent", f"Last call sent to all {len(joined_members())}; requests close at {run['requests_close']}",
+          evidence=["Firedrill Slack" if s.get("ok") else "in-app only"], action="last_call")
+    return run
+
+
+def mark_done(member):
+    require_member(member)
+    run = get_run()
+    if member not in run.get("done", []):
+        run.setdefault("done", []).append(member)
+        save_run(run)
+        audit(run["id"], member_name(member), "I'm done adding", action="done")
+    return run
+
+
+def check_cutoff():
+    """Called on a timer: once requests close, the agent shops without waiting for anyone who didn't reply."""
+    run = get_run()
+    if run.get("state") != "last_call" or not run.get("requests_close_ts") or time.time() < run["requests_close_ts"]:
+        return None
+    silent = [member_name(m) for m in joined_members() if m not in run.get("done", [])]
+    run["state"] = "collecting"
+    run.pop("requests_close", None)
+    run.pop("requests_close_ts", None)
+    save_run(run)
+    n = len(active_requests(run["id"]))
+    stores = ", ".join(r["retailer"] for r in RETAILERS.values())
+    audit(run["id"], "agent", f"Requests closed. Starting the shop" + (f" without waiting for {', '.join(silent)} (no reply)" if silent else ""),
+          action="cutoff")
+    for m in joined_members():
+        _agent_msg(m, f"Checking {stores} for {n} items.")
+    p = plan(coordinator())
+    for m in joined_members():
+        _agent_msg(m, "Your Saturday basket is ready. Open Basket to review your share.")
+    return p
+
+
 def snapshot(viewer):
     require_member(viewer)
     run = get_run()
     p = current_plan()
     reqs = db.list("requests", grp=run["id"])
+    profiles = {}
+    for m in joined_members():
+        pr = get_profile(m)
+        if m == viewer:
+            profiles[m] = pr
+        elif pr["share_with_group"]:  # others see only the rules they shared, never more
+            profiles[m] = {"member": m, "rules": profile_constraints(m), "share_with_group": True}
     return {"group": {"id": GROUP["id"], "name": GROUP["name"], "zip": GROUP["zip"], "address": GROUP["address"],
-                      "members": {k: {"name": v["name"], "roles": v["roles"], "payment_linked": v["payment_linked"]}
-                                  for k, v in GROUP["members"].items()}},
+                      "schedule": GROUP.get("schedule"), "stores": [r["retailer"] for r in RETAILERS.values()],
+                      "members": {k: {"name": v["name"], "roles": v["roles"], "payment_linked": v["payment_linked"],
+                                      "status": v.get("status", "joined")} for k, v in GROUP["members"].items()},
+                      "chips": {"allergies": ALLERGY_CHIPS, "diet": DIET_CHIPS}},
             "run": run, "viewer": viewer, "requests": reqs, "preferences": prefs_for(viewer, include_private_reason=True),
-            "plan": p, "approvals": approvals_status(p) if p else None,
+            "profiles": profiles, "plan": p, "approvals": approvals_status(p) if p else None,
             "execution": _action(f"exec-{p['id']}") if p else None,
             "audit": [a for a in db.list("audit", grp=run["id"]) if a["audience"] == "group" or a["actor"] == member_name(viewer)][-60:]}
 
 
-def reset_run():
+def reset_run(fresh=False):
+    GROUP.clear(); GROUP.update(_copy.deepcopy(_DEFAULT_GROUP))
+    if fresh:
+        coord = next(m for m, v in GROUP["members"].items() if "coordinator" in v["roles"])
+        GROUP["members"] = {coord: GROUP["members"][coord]}
+    _save_household()
+    for row in db._exec("SELECT id FROM claims WHERE grp IN ('invites','mcptokens')"):
+        db.delete("claims", row[0])
     for t in ("runs", "requests", "plans", "approvals", "actions", "audit"):
         for row in db.list(t):
             db.delete(t, row["id"])
     for p in db.list("prefs"):
         db.delete("prefs", p["id"])
+    for row in db._exec(f"SELECT id FROM claims WHERE grp IN ('profiles','drafts')"):
+        db.delete("claims", row[0])
+    for row in db._exec(f"SELECT id FROM chat WHERE grp LIKE 'g:%'"):
+        db.delete("chat", row[0])
     get_run()

@@ -8,7 +8,7 @@
 <style>
 :root{color-scheme:light;--bg:#FBF6EE;--card:#FFFFFF;--ink:#2B211B;--mut:#6B5E55;--mut2:#5A4A33;--line:#EFE6DA;--tint:#F7EFE4;--field:#E0D3C5;--acc:#C4471F;--accd:#A63A17;--soft:#E6EED8;--softink:#2F6B2A;--sun:#FCEFC9;--sunk:#F2B441;--peach:#FBE3D6;--ok:#2F6B2A;--bad:#B3261E;--warn:#7A4E00;--warnbg:#FCEFC9;--focus:#2B211B;--sh:0 12px 32px rgba(70,45,20,.07)}
 *{box-sizing:border-box}html{background:var(--bg)}
-body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.45 "Urbanist",system-ui,-apple-system,"Segoe UI",sans-serif}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.45 "Urbanist",system-ui,-apple-system,"Segoe UI",sans-serif;overflow-x:hidden}
 a{color:var(--ink);font-weight:700}a:hover{color:#6B4A3A}
 :focus-visible{outline:3px solid var(--focus);outline-offset:3px}
 select,button,input{font:inherit}
@@ -18,25 +18,27 @@ button.ghost{background:var(--tint);color:var(--ink);box-shadow:none}button.ghos
 button.danger{background:#fff;color:var(--bad);border:2px solid #F0CDBB;box-shadow:none}button.danger:hover:not(:disabled){background:#FDEBE1}
 button.sm{min-height:38px;padding:0 14px;font-size:14px;border-radius:12px}
 button:disabled{opacity:.45;cursor:not-allowed;box-shadow:none}
-input,select{min-height:48px;padding:0 14px;border-radius:14px;border:2px solid var(--field);background:#fff;color:var(--ink)}
+input,select{min-height:48px;padding:0 14px;border-radius:14px;border:2px solid var(--field);background:#fff;color:var(--ink);max-width:100%}
 input[type=checkbox],input[type=radio]{min-height:0;accent-color:var(--acc);width:18px;height:18px;vertical-align:-3px;margin:0 6px 0 0}
 .wrap{max-width:860px;margin:0 auto;padding:0 24px}
 header.top .wrap{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap;padding-top:20px;padding-bottom:6px}
 .brand{display:inline-flex;align-items:center;gap:10px;font-size:24px;font-weight:800;letter-spacing:-.01em;color:var(--ink);text-decoration:none}
 .logo{width:40px;height:40px;border-radius:13px;background:var(--acc);display:flex;align-items:center;justify-content:center;flex:none}
-h1{font-size:15px;font-weight:600;margin:0;color:var(--mut)}h1 small{color:var(--mut);font-weight:600;font-size:15px}
-.pill{display:inline-flex;align-items:center;gap:8px;min-height:40px;padding:0 14px;border-radius:14px;background:#fff;box-shadow:var(--sh);font-size:14px;font-weight:600;color:var(--mut)}
+h1{font-size:15px;font-weight:600;margin:0;color:var(--mut)}
 .who{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:600;color:var(--mut);background:#fff;border-radius:16px;padding:4px 6px 4px 4px;box-shadow:var(--sh)}
 .av{width:36px;height:36px;border-radius:12px;background:var(--sunk);color:var(--ink);font-size:15px;font-weight:800;display:inline-flex;align-items:center;justify-content:center;flex:none}
-.who select{min-height:40px;max-width:210px;border:0;background:var(--tint)}
+.avbtn{min-height:36px;width:36px;padding:0;border-radius:12px;background:var(--sunk);color:var(--ink);box-shadow:none;font-weight:800}
+.avbtn:hover:not(:disabled){background:#E9A52C}
+.who select{min-height:40px;max-width:180px;border:0;background:var(--tint)}
 nav.tabs{position:sticky;top:0;z-index:5;background:var(--bg);padding:14px 0 10px}
-.seg{display:flex;gap:6px;padding:5px;background:#fff;border-radius:18px;box-shadow:var(--sh)}
-.seg button{flex:1;min-width:0;min-height:44px;background:transparent;color:var(--mut);font-weight:600;padding:0 8px;white-space:nowrap;border-radius:14px;box-shadow:none}
+.seg{display:flex;gap:6px;padding:5px;background:#fff;border-radius:18px;box-shadow:var(--sh);overflow-x:auto;scrollbar-width:none}
+.seg::-webkit-scrollbar{display:none}
+.seg button{flex:1 0 auto;min-height:44px;background:transparent;color:var(--mut);font-weight:600;padding:0 12px;white-space:nowrap;border-radius:14px;box-shadow:none}
 .seg button:hover:not(:disabled){background:var(--tint)}
 .seg button[aria-selected=true]{background:var(--ink);color:#fff;font-weight:700}
 .seg .n{font-size:12px;opacity:.8;margin-left:4px}
 main{padding-bottom:48px}
-.panel[hidden]{display:none}
+.panel[hidden],[hidden]{display:none!important}
 .card{background:var(--card);border:0;border-radius:28px;padding:22px 24px;margin:0 0 18px;box-shadow:var(--sh)}
 .card.hero{border:2px solid #F0CDBB}
 .agent{background:transparent;box-shadow:none;padding:12px 4px 6px;text-align:center}
@@ -46,15 +48,23 @@ main{padding-bottom:48px}
 .inl{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
 .mut{color:var(--mut)}.ok{color:var(--ok)}.bad{color:var(--bad)}.warn{color:var(--warn)}
 .st{display:inline-block;font-size:13px;font-weight:700;padding:3px 10px;border-radius:8px;background:var(--soft);color:var(--softink);white-space:nowrap}
+.st.wait{background:var(--sun);color:var(--warn)}.st.grey{background:var(--tint);color:var(--mut2)}
 .chips{display:flex;gap:6px;flex-wrap:wrap}.chip{display:inline-block;font-size:13px;font-weight:600;padding:4px 11px;border-radius:10px;background:var(--tint);color:var(--mut2)}
 .chip.ok{background:var(--soft);color:var(--softink)}
+.tog{min-height:40px;padding:0 16px;border-radius:12px;background:var(--tint);color:var(--ink);font-weight:600;box-shadow:none;border:2px solid transparent}
+.tog:hover:not(:disabled){background:#EFE6DA}
+.tog[aria-pressed=true]{background:var(--ink);color:#fff}.tog[aria-pressed=true]:hover:not(:disabled){background:#3d2f26}
+.rm{display:inline-flex;align-items:center;gap:6px;font-size:14px;font-weight:600;padding:4px 4px 4px 12px;border-radius:12px;background:var(--soft);color:var(--softink)}
+.rm button{min-height:28px;width:28px;padding:0;border-radius:9px;background:#fff;color:var(--softink);box-shadow:none;font-size:16px;line-height:1}
 .v{display:block}
 h2{font-size:22px;font-weight:700;margin:0 0 10px;letter-spacing:-.01em}h3{font-size:13px;letter-spacing:.05em;text-transform:uppercase;color:var(--mut);margin:22px 0 8px;font-weight:700}
+.ptitle{font-size:32px;margin:6px 0 12px;letter-spacing:-.02em}
 .tw{overflow-x:auto;-webkit-overflow-scrolling:touch}table{width:100%;border-collapse:collapse;font-size:14px}
 td,th{padding:10px 8px;border-top:1px solid var(--line);vertical-align:top;text-align:left}th{font-size:12px;color:var(--mut);font-weight:700;border-top:0;text-transform:uppercase;letter-spacing:.04em}
 .big{font-size:28px;font-weight:700;margin-top:4px;letter-spacing:-.01em}.sm{font-size:14px}
 .banner{background:var(--warnbg);border-left:6px solid var(--sunk);border-radius:14px;padding:10px 14px;color:var(--warn);font-size:14px;font-weight:700;margin:10px 0}
-.err{color:var(--bad);font-size:14px;font-weight:700;margin-top:6px}.err:empty,.busy:empty{display:none}
+.err{color:var(--bad);font-size:14px;font-weight:700;margin-top:6px}.err:empty,.busy:empty,.okmsg:empty{display:none}
+.okmsg{color:var(--ok);font-size:14px;font-weight:700;margin-top:6px}
 .busy{color:var(--ink);background:var(--sun);display:inline-block;border-radius:12px;padding:5px 12px;font-size:14px;font-weight:600;margin-top:10px}
 .grp{background:var(--card);border-radius:24px;padding:8px 20px;margin-bottom:12px;box-shadow:var(--sh)}.grp>b{display:inline-block;margin:12px 0 4px;padding:4px 12px;border-radius:10px;background:var(--peach);font-size:16px;text-transform:capitalize}
 .grp:nth-child(3n+2)>b{background:var(--soft)}.grp:nth-child(3n)>b{background:var(--sun)}
@@ -63,21 +73,37 @@ ul.plain{list-style:none;padding:0;margin:0}ul.plain li{padding:12px 0;border-to
 details{margin-top:14px;background:var(--tint);border-radius:18px;padding:12px 16px}summary{cursor:pointer;font-weight:700;min-height:28px}
 .item{padding:12px 0;border-top:1px solid var(--field);font-size:15px}
 .ev{font-size:13px;color:var(--mut);margin-top:2px}
-form.stack{display:grid;gap:10px;margin-top:14px}
+.stack{display:grid;gap:12px;margin-top:14px}
+.stack label.f{display:grid;gap:4px;font-size:14px;font-weight:700;color:var(--mut2)}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.invgrid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr) auto;align-items:end}
 .composer{display:flex;gap:8px;align-items:center}.composer input{flex:1;min-width:0;min-height:52px;border-radius:16px}.composer button{min-height:52px}
-.hint{min-height:40px;padding:0 14px;border:0;background:var(--peach);color:var(--ink);font-size:14px;font-weight:600;text-align:left;border-radius:12px;box-shadow:none}
-.hint:nth-child(3n+2){background:var(--soft)}.hint:nth-child(3n){background:var(--sun)}
-.hint:hover:not(:disabled){background:#F0CDBB}
-.sumlink{display:flex;align-items:center;gap:12px;width:100%;padding:22px 24px;border-radius:28px;background:var(--card);color:var(--ink);text-align:left;font-weight:400;min-height:0;box-shadow:var(--sh)}
+.mic{background:var(--ink);box-shadow:none;display:inline-flex;align-items:center;gap:6px}.mic:hover:not(:disabled){background:#3d2f26}
+.mic[aria-pressed=true]{background:var(--bad)}
+.sumlink{display:flex;align-items:center;gap:12px;width:100%;padding:22px 24px;border-radius:28px;background:var(--card);color:var(--ink);text-align:left;font-weight:400;min-height:0;box-shadow:var(--sh);margin-bottom:12px}
 .sumlink:hover:not(:disabled){background:#fff;box-shadow:0 14px 36px rgba(70,45,20,.12)}
 .sumlink b{font-weight:700;font-size:20px}
 .sumlink.sun{background:var(--sun);box-shadow:none}.sumlink.sun:hover:not(:disabled){background:#F9E6B0}
 .tiles{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:12px}
 .tile{padding:14px 16px;border-radius:20px;background:var(--tint)}
+fieldset{border:0;padding:0;margin:0;min-width:0}
 fieldset label{display:flex;align-items:center;flex-wrap:wrap;gap:6px;padding:8px 0}
-.pay label select{margin-left:4px}
+.thread{display:flex;flex-direction:column;gap:10px;max-height:420px;overflow-y:auto;padding:4px 2px 8px}
+.bub{max-width:85%;padding:12px 16px;border-radius:20px;font-size:15px;overflow-wrap:anywhere}
+.bub.you{align-self:flex-end;background:var(--ink);color:#fff;border-bottom-right-radius:6px}
+.bub.agent{align-self:flex-start;background:var(--tint);border-bottom-left-radius:6px}
+.bub .chip{margin-top:6px;background:var(--soft);color:var(--softink)}
+.typing{align-self:flex-start;background:var(--tint);border-radius:20px;padding:12px 16px;color:var(--mut);font-size:14px;font-weight:600}
+.typing i{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--mut);margin:0 2px;animation:bl 1.2s infinite}
+.typing i:nth-child(2){animation-delay:.2s}.typing i:nth-child(3){animation-delay:.4s}
+@keyframes bl{0%,80%,100%{opacity:.25}40%{opacity:1}}
+@media (prefers-reduced-motion:reduce){.typing i{animation:none}}
+.person{display:flex;align-items:center;gap:12px;padding:12px 0;border-top:1px solid var(--line)}.person:first-child{border-top:0}
+.person .nm{flex:1;min-width:0}
+.cd{font-size:48px;font-weight:800;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.link{font-size:13px;word-break:break-all;background:var(--tint);border-radius:10px;padding:8px 10px;margin:6px 0;display:block}
 .dots{position:fixed;inset:0;pointer-events:none;z-index:0}header.top,main{position:relative;z-index:1}.dots i{position:absolute;border-radius:999px}
-@media (max-width:480px){.wrap{padding:0 16px}.say{font-size:30px}.seg button{font-size:14px;padding:0 4px}.who select{max-width:150px}.who>span:not(.av){display:none}.card{padding:18px;border-radius:24px}.big{font-size:24px}.brand{font-size:22px}}
+@media (max-width:480px){.wrap{padding:0 16px}.say{font-size:30px}.ptitle{font-size:26px}.seg button{font-size:14px;padding:0 10px}.who select{max-width:120px}.who>.lbl{display:none}.card{padding:18px;border-radius:24px}.big{font-size:24px}.brand{font-size:22px}.grid2,.invgrid{grid-template-columns:1fr}.composer{flex-wrap:wrap}.composer input{flex-basis:100%}.composer button{flex:1}.cd{font-size:40px}}
 </style>
 </head>
 <body>
@@ -85,92 +111,174 @@ fieldset label{display:flex;align-items:center;flex-wrap:wrap;gap:6px;padding:8p
 <header class="top"><div class="wrap">
   <div style="min-width:0">
     <a href="/" class="brand" aria-label="Pantry, back to Occasions"><span class="logo" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><rect x="7.5" y="2.5" width="9" height="3.2" rx="1.2" fill="#FFFFFF"/><path d="M6.5 7h11A2.5 2.5 0 0 1 20 9.5v9a2.5 2.5 0 0 1-2.5 2.5h-11A2.5 2.5 0 0 1 4 18.5v-9A2.5 2.5 0 0 1 6.5 7z" fill="#FFFFFF"/><path d="M9 12.8v2.9M12 11.2v6.1M15 12.8v2.9" stroke="#C4471F" stroke-width="1.8" stroke-linecap="round"/></svg></span>Pantry</a>
-    <div class="inl" style="margin-top:8px"><h1>Group run <small id="gname"></small></h1><span class="st" id="rstate" aria-live="polite"></span><span class="mut sm" id="rver"></span><a href="/" class="sm">Occasions</a></div>
+    <div class="inl" style="margin-top:8px"><h1 id="gname">Household</h1><span class="st" id="rstate" aria-live="polite"></span></div>
   </div>
-  <label class="who"><span class="av" id="whoav" aria-hidden="true">?</span><span>You are</span> <select id="who"></select></label>
+  <div class="who"><button type="button" class="avbtn" id="whoav" aria-label="Open your profile">?</button><label class="inl" style="gap:8px"><span class="lbl">You are</span> <select id="who" aria-label="You are"></select></label></div>
 </div></header>
 <main class="wrap">
+  <div id="joincard" class="card hero" hidden style="margin-top:14px"></div>
+
   <nav class="tabs" aria-label="Sections"><div class="seg" role="tablist">
     <button type="button" role="tab" id="t-home" aria-controls="p-home" data-tab="home">Home</button>
-    <button type="button" role="tab" id="t-list" aria-controls="p-list" data-tab="list">List &amp; prefs<span class="n" id="nlist"></span></button>
+    <button type="button" role="tab" id="t-household" aria-controls="p-household" data-tab="household">Household</button>
+    <button type="button" role="tab" id="t-profile" aria-controls="p-profile" data-tab="profile">Profile</button>
+    <button type="button" role="tab" id="t-list" aria-controls="p-list" data-tab="list">List<span class="n" id="nlist"></span></button>
+    <button type="button" role="tab" id="t-lastcall" aria-controls="p-lastcall" data-tab="lastcall">Last call</button>
     <button type="button" role="tab" id="t-basket" aria-controls="p-basket" data-tab="basket">Basket</button>
-    <button type="button" role="tab" id="t-activity" aria-controls="p-activity" data-tab="activity">Confirmed</button>
+    <button type="button" role="tab" id="t-order" aria-controls="p-order" data-tab="order">Order</button>
   </div></nav>
 
+  <!-- HOME / CHAT -->
   <section class="panel" id="p-home" role="tabpanel" aria-labelledby="t-home">
     <div class="card agent">
-      <p class="eyebrow">Next run</p>
-      <p class="say">What do we need this run?</p>
+      <p class="eyebrow" id="homeeye">Next run</p>
+      <p class="say" id="greet">What do we need for Saturday?</p>
       <p class="mut sm" id="hmeta" style="margin:8px 0 0"></p>
     </div>
     <div class="card">
-      <h2>Tell Pantry</h2>
-      <form id="addf" class="composer"><input id="addin" placeholder="What does the group need?" aria-label="Request text" autocomplete="off"><button>Add</button></form>
-      <p class="mut sm" style="margin:14px 0 8px;font-weight:600">Or try one of these</p>
-      <div class="chips" id="hints"></div>
-      <div id="addbusy" class="busy" aria-live="polite"></div><div id="adderr" class="err" role="alert"></div>
+      <div class="thread" id="thread" aria-live="polite" aria-label="Conversation with Pantry"></div>
+      <form id="chatf" class="composer" style="margin-top:10px">
+        <input id="chatin" placeholder="Tell Pantry what you need" aria-label="Message to Pantry" autocomplete="off">
+        <button type="button" id="mic" class="mic" aria-pressed="false" aria-label="Talk to Pantry"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3" fill="currentColor"/><path d="M6 11a6 6 0 0 0 12 0M12 17v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Talk</button>
+        <button id="send">Send</button>
+      </form>
+      <div id="chatbusy" class="busy" aria-live="polite"></div><div id="chaterr" class="err" role="alert"></div>
+      <details><summary>Or add an item directly</summary>
+        <form id="addf" class="composer" style="margin-top:10px"><input id="addin" placeholder="e.g. a dozen eggs for everyone" aria-label="Item to add" autocomplete="off"><button class="ghost">Add</button></form>
+        <div id="addbusy" class="busy" aria-live="polite"></div><div id="adderr" class="err" role="alert"></div>
+      </details>
     </div>
-    <button type="button" class="sumlink" data-go="list" style="margin-bottom:12px">
-      <span style="flex:1;min-width:0"><b id="sumcount" style="display:block">This run</b><span class="mut sm" id="sumtext" style="display:block;margin-top:3px"></span></span>
+    <button type="button" class="sumlink" data-go="list">
+      <span style="flex:1;min-width:0"><b id="sumcount" style="display:block">Grocery list</b><span class="mut sm" id="sumtext" style="display:block;margin-top:3px"></span></span>
       <span aria-hidden="true" class="mut">&rsaquo;</span>
     </button>
     <button type="button" class="sumlink sun" data-go="basket">
-      <span style="flex:1;min-width:0"><b style="display:block">Basket approval</b><span class="mut sm" id="sumbasket" style="display:block;margin-top:3px"></span></span>
+      <span style="flex:1;min-width:0"><b style="display:block">Basket</b><span class="mut sm" id="sumbasket" style="display:block;margin-top:3px"></span></span>
       <span aria-hidden="true" class="mut">&rsaquo;</span>
     </button>
   </section>
 
-  <section class="panel" id="p-list" role="tabpanel" aria-labelledby="t-list" hidden>
-    <h2 style="font-size:32px;margin:6px 0 12px;letter-spacing:-.02em">Grocery list</h2>
-    <div id="list"></div><div id="listerr" class="err" role="alert"></div>
-    <div class="card" style="margin-top:14px">
-      <h2>Your food preferences</h2><p class="mut sm" style="margin:-4px 0 8px">Tell me once. I won't ask again.</p>
-      <ul class="plain" id="prefs"></ul>
-      <form id="preff" class="stack">
-        <div class="inl"><input id="psub" placeholder="Subject (e.g. detergent)" required aria-label="Subject" style="flex:1;min-width:140px"><input id="pval" placeholder="Value (e.g. fragrance-free)" required aria-label="Value" style="flex:1;min-width:140px"></div>
-        <div class="inl"><label><input type="checkbox" id="phard" checked> Hard requirement</label>
-          <label>Visibility <select id="pvis"><option value="group">group</option><option value="private">private</option></select></label></div>
-        <input id="preason" placeholder="Private reason (optional, only you see it)" aria-label="Private reason">
-        <div><button>Save preference</button></div>
+  <!-- HOUSEHOLD -->
+  <section class="panel" id="p-household" role="tabpanel" aria-labelledby="t-household" hidden>
+    <div id="setup" hidden>
+      <div class="card agent"><p class="eyebrow">Step 1 of 2</p><p class="say">Make your household.</p></div>
+      <form class="card" id="setupf">
+        <h2>Who's in?</h2>
+        <div class="stack" style="margin-top:4px">
+          <label class="f">Household name<input id="hname" value="Maple House" autocomplete="off"></label>
+        </div>
+        <h3>How we shop</h3>
+        <fieldset><legend class="sm mut" style="font-weight:700">Who pays?</legend>
+          <div class="inl" style="margin-top:6px">
+            <label><input type="radio" name="hpay" value="individual_shares" checked> Split our shares</label>
+            <label><input type="radio" name="hpay" value="group_payer"> One person pays</label>
+          </div>
+        </fieldset>
+        <div class="stack grid2">
+          <label class="f">How often?<input id="hoften" value="Weekly, Saturday" autocomplete="off"></label>
+          <label class="f">Requests close<input id="hclose" value="Friday 5:00 PM" autocomplete="off"></label>
+          <label class="f">Delivery window<input id="hwin" value="Saturday 10 AM-12 PM" autocomplete="off"></label>
+          <label class="f">ZIP<input id="hzip" inputmode="numeric" autocomplete="postal-code"></label>
+        </div>
+        <div class="stack"><label class="f">Deliver to<input id="haddr" autocomplete="street-address"></label></div>
+        <div class="inl" style="margin-top:16px"><button id="hsave">Save household</button></div>
+        <div id="hbusy" class="busy" aria-live="polite"></div><div id="hok" class="okmsg" role="status"></div><div id="herr" class="err" role="alert"></div>
       </form>
-      <div id="preferr" class="err" role="alert"></div>
+    </div>
+    <div id="hhview"></div>
+    <div class="card" id="invitecard" hidden>
+      <h2>Invite someone</h2>
+      <p class="mut sm" style="margin:-4px 0 6px" id="invitehint">They get a link to join. You can also copy it and send it yourself.</p>
+      <form id="invf" class="stack invgrid">
+        <label class="f">Name<input id="iname" required autocomplete="off"></label>
+        <label class="f">Email<input id="iemail" type="email" autocomplete="off"></label>
+        <button>Invite</button>
+      </form>
+      <div id="ibusy" class="busy" aria-live="polite"></div><div id="ierr" class="err" role="alert"></div>
+      <div id="invres"></div>
     </div>
   </section>
 
+  <!-- PROFILE -->
+  <section class="panel" id="p-profile" role="tabpanel" aria-labelledby="t-profile" hidden>
+    <h2 class="ptitle" id="proftitle">Your food rules</h2>
+    <div class="card">
+      <p class="mut sm" style="margin:-4px 0 8px">Tell me once. I won't ask again. These become hard rules when I shop.</p>
+      <h3>Allergies</h3><div class="chips" id="pallergy" role="group" aria-label="Allergies"></div>
+      <h3>Diet</h3><div class="chips" id="pdiet" role="group" aria-label="Diet"></div>
+      <h3>Always get me</h3><div class="chips" id="palways"></div>
+      <form id="alwf" class="composer" style="margin-top:10px"><input id="alwin" placeholder="e.g. unsweetened oat milk" aria-label="Add something to always get" autocomplete="off"><button class="ghost">Add</button></form>
+      <h3>Privacy</h3>
+      <label class="inl" style="padding:4px 0"><input type="checkbox" id="pshare"> <span id="psharelbl">Share with the household</span></label>
+      <p class="mut sm" style="margin:2px 0 0">When off, only you and the shopping agent see your rules.</p>
+      <div class="inl" style="margin-top:16px"><button id="psave">Save profile</button></div>
+      <div id="pbusy" class="busy" aria-live="polite"></div><div id="pok" class="okmsg" role="status"></div><div id="perr" class="err" role="alert"></div>
+    </div>
+    <div class="card"><h2>What others shared</h2><ul class="plain" id="others"></ul></div>
+  </section>
+
+  <!-- LIST -->
+  <section class="panel" id="p-list" role="tabpanel" aria-labelledby="t-list" hidden>
+    <div class="row" style="align-items:center"><h2 class="ptitle">Grocery list</h2>
+      <div class="seg" role="group" aria-label="Filter list" style="flex:none"><button type="button" id="fall" aria-pressed="true" class="flt">Everyone</button><button type="button" id="fmine" aria-pressed="false" class="flt">Mine</button></div></div>
+    <div id="list"></div><div id="listerr" class="err" role="alert"></div>
+  </section>
+
+  <!-- LAST CALL -->
+  <section class="panel" id="p-lastcall" role="tabpanel" aria-labelledby="t-lastcall" hidden>
+    <div class="card agent"><p class="eyebrow" id="lceye">Last call</p><p class="say" id="lcsay">Anything else before I shop?</p><p class="mut sm" id="lcsub" style="margin:8px 0 0"></p>
+      <div class="cd" id="cd" aria-live="off"></div></div>
+    <div class="card" id="lccoord" hidden>
+      <h2>Send last call</h2><p class="mut sm" style="margin:-4px 0 8px">Everyone gets a nudge. When time is up I shop with what's on the list. No one has to reply.</p>
+      <form id="lcf" class="inl"><label class="f inl">Minutes <input id="lcmin" type="number" min="1" max="120" value="2" style="width:90px"></label><button>Send last call</button></form>
+      <div id="lcbusy" class="busy" aria-live="polite"></div><div id="lcerr" class="err" role="alert"></div>
+    </div>
+    <div class="card">
+      <div class="row" style="align-items:center"><h2 style="margin:0">Who's done</h2><button type="button" id="done">I'm done</button></div>
+      <div id="doneerr" class="err" role="alert"></div>
+      <div id="donelist" style="margin-top:8px"></div>
+      <div class="inl" style="margin-top:12px"><button type="button" class="ghost sm" data-go="home">Add something</button><button type="button" class="ghost sm" data-go="list">See the list</button></div>
+    </div>
+  </section>
+
+  <!-- BASKET -->
   <section class="panel" id="p-basket" role="tabpanel" aria-labelledby="t-basket" hidden>
+    <div id="planv"></div>
+    <div id="apprv"></div>
+    <div id="execv"></div>
     <div class="card pay">
       <div class="row"><h2>How we pay</h2><span class="mut sm" id="paycoord"></span></div>
-      <fieldset style="border:0;padding:0;margin:0" id="payfs">
+      <fieldset id="payfs">
         <legend class="sm mut">How should this run be paid?</legend>
-        <label><input type="radio" name="pmode" value="group_payer"> One group payer
-          <select id="payer" aria-label="Group payer"></select></label>
-        <label><input type="radio" name="pmode" value="individual_shares"> Everyone pays their share</label>
+        <label><input type="radio" name="pmode" value="individual_shares"> Split our shares</label>
+        <label><input type="radio" name="pmode" value="group_payer"> One person pays
+          <select id="payer" aria-label="Who pays"></select></label>
       </fieldset>
       <div class="inl" style="margin-top:10px"><button id="savemode" class="ghost">Save payment mode</button><button id="build">Build plan</button></div>
       <div id="planbusy" class="busy" aria-live="polite"></div><div id="payerr" class="err" role="alert"></div>
     </div>
-    <div id="planv"></div>
-    <div id="apprv"></div>
-    <div id="execv"></div>
   </section>
 
-  <section class="panel" id="p-activity" role="tabpanel" aria-labelledby="t-activity" hidden>
-    <div class="card"><h2>Tracking and activity</h2><p class="mut sm" style="margin:-4px 0 10px">Audit timeline of every decision. Orders here are synthetic demo orders, not real purchases.</p><div class="tw"><table><thead><tr><th>Time</th><th>Actor</th><th>Decision</th><th>Outcome</th></tr></thead><tbody id="audit"></tbody></table></div></div>
+  <!-- ORDER -->
+  <section class="panel" id="p-order" role="tabpanel" aria-labelledby="t-order" hidden>
+    <div id="orderv"></div>
+    <div class="card"><h2>Tracking and activity</h2><p class="mut sm" style="margin:-4px 0 10px">Every decision the agent and the household made this run.</p><div class="tw"><table><thead><tr><th>Time</th><th>Who</th><th>Decision</th><th>Outcome</th></tr></thead><tbody id="audit"></tbody></table></div></div>
   </section>
 </main>
 <script>
 const $ = s => document.querySelector(s);
+const $$ = s => [...document.querySelectorAll(s)];
 const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-const money = n => (n == null || isNaN(n)) ? "—" : "$" + Number(n).toFixed(2);
+const money = n => (n == null || n === "" || isNaN(n)) ? "—" : "$" + Number(n).toFixed(2);
 const tm = t => { if (!t) return ""; const d = new Date(t); return isNaN(d) ? esc(t) : d.toLocaleString([], {month:"short",day:"numeric",hour:"2-digit",minute:"2-digit"}); };
-let S = null, member = "shivay", busy = false;
-try { member = localStorage.getItem("gmember") || "shivay"; } catch (e) {}
-const HINTS = ["We need laundry detergent, fragrance-free", "1 gallon of milk for me", "oat milk for me, 2 cartons", "a dozen eggs for the flat"];
-$("#hints").innerHTML = HINTS.map(h => `<button type="button" class="hint">${esc(h)}</button>`).join("");
-document.querySelectorAll(".hint").forEach(b => b.onclick = () => { $("#addin").value = b.textContent; $("#addin").focus(); });
+const human = s => String(s || "").replace(/_/g, " ");
+let S = null, member = "ann", busy = false, chatBusy = false, filter = "all", prevState = null, chatSig = "", profFor = null, setupFilled = false, hhSaved = false;
+const invites = {}; // member id -> invite result (kept across polls)
+let prof = {allergies: [], diet: [], always_get: [], share_with_group: true};
+try { member = localStorage.getItem("gmember") || "ann"; } catch (e) {}
 
 async function api(path, opts = {}) {
-  const url = path + (path.includes("?") ? "&" : "?") + "member=" + encodeURIComponent(member);
+  const url = opts.noMember ? path : path + (path.includes("?") ? "&" : "?") + "member=" + encodeURIComponent(member);
   const o = {method: opts.method || "GET", headers: {}};
   if (opts.body !== undefined) { o.headers["Content-Type"] = "application/json"; o.body = JSON.stringify(opts.body); }
   const r = await fetch(url, o);
@@ -182,8 +290,12 @@ async function api(path, opts = {}) {
   return data;
 }
 const name = id => (S && S.group.members[id] && S.group.members[id].name) || id;
+const joined = () => S ? Object.entries(S.group.members).filter(([, m]) => (m.status || "joined") === "joined").map(([k]) => k) : [];
+const isCoord = () => !!(S && (S.group.members[member]?.roles || []).includes("coordinator"));
+const coordId = () => S && Object.keys(S.group.members).find(k => (S.group.members[k].roles || []).includes("coordinator"));
+const setMember = m => { member = m; try { localStorage.setItem("gmember", m); } catch (e) {} };
 
-// Run an action, show errors inline in errEl, reload after.
+// Run an action, show errors inline, reload after.
 async function act(errSel, fn, busySel, busyText) {
   const err = $(errSel); if (err) err.textContent = "";
   const bz = busySel && $(busySel); if (bz) bz.textContent = busyText;
@@ -193,219 +305,453 @@ async function act(errSel, fn, busySel, busyText) {
 }
 
 async function load() {
-  try { S = await api("/api/g/snapshot"); } catch (e) { $("#rstate").textContent = "Error: " + e.message; return; }
+  try { S = await api("/api/g/snapshot"); }
+  catch (e) {
+    $("#rstate").textContent = "Error: " + e.message;
+    if (member !== "ann" && /member/i.test(e.message)) { setMember("ann"); return load(); }
+    return;
+  }
+  const j = joined();
+  if (!j.includes(member) && j.length) { setMember(j.includes("ann") ? "ann" : (coordId() || j[0])); return load(); }
   render();
 }
 
 function render() {
-  const g = S.group, run = S.run;
-  $("#gname").textContent = g.name || "";
-  $("#hmeta").innerHTML = `ZIP ${esc(g.zip)} · Deliver to ${esc(g.address)}${run.deadline ? " · Deadline " + esc(tm(run.deadline)) : ""}`;
-  $("#rstate").textContent = "Run: " + String(run.state || "").replace(/_/g, " ");
-  $("#rver").textContent = "version " + run.version;
+  const g = S.group, run = S.run, j = joined();
+  $("#gname").textContent = `${g.name || "Household"} · ${j.length} ${j.length === 1 ? "person" : "people"}`;
+  $("#rstate").textContent = human(run.state) || "";
   const who = $("#who");
   if (document.activeElement !== who)
-    who.innerHTML = Object.entries(g.members).map(([k, m]) => `<option value="${esc(k)}" ${k===member?"selected":""}>${esc(m.name)} (${esc((m.roles||[]).join(", "))})</option>`).join("");
-  const av = $("#whoav"); if (av) av.textContent = (name(member) || "?").trim().charAt(0).toUpperCase() || "?";
-  renderSummary();
-  renderList(); renderPrefs(); renderPay(); renderPlan(); renderApprovals(); renderExec(); renderAudit();
+    who.innerHTML = j.map(k => `<option value="${esc(k)}" ${k === member ? "selected" : ""}>${esc(name(k))}</option>`).join("");
+  $("#whoav").textContent = (name(member) || "?").trim().charAt(0).toUpperCase() || "?";
+  $("#whoav").setAttribute("aria-label", `Open ${name(member)}'s profile`);
+  renderHome(); renderHousehold(); renderProfileShared(); renderList(); renderLastCall();
+  renderPay(); renderPlan(); renderApprovals(); renderExec(); renderOrder(); renderAudit();
+  if (profFor !== member) loadProfile();
+  // Auto-jump to Basket when the cutoff builds the plan.
+  if (prevState && prevState !== run.state && run.state === "awaiting_approvals" && S.plan && ["last_call", "collecting"].includes(prevState)) showTab("basket");
+  prevState = run.state;
 }
 
-function renderSummary() {
-  const reqs = (S.requests || []).filter(r => r.status !== "cancelled");
-  const mine = reqs.filter(r => r.author === S.viewer).length;
-  const items = [...new Set(reqs.map(r => r.item || "unclear"))];
+/* ---------- Home / chat ---------- */
+function renderHome() {
+  const g = S.group, sc = g.schedule || {}, run = S.run;
+  const first = String(name(member)).split(" ")[0];
+  const day = (String(sc.window || "Saturday").match(/^\w+/) || ["Saturday"])[0];
+  $("#greet").textContent = `Hi ${first}. What do we need for ${day}?`;
+  $("#homeeye").textContent = run.state === "last_call" ? "Last call is open" : "Next run";
+  $("#hmeta").textContent = [sc.window && "Delivery " + sc.window, (run.requests_close || sc.requests_close) && "Add by " + (run.requests_close || sc.requests_close)].filter(Boolean).join(" · ");
+  const reqs = active(), mine = reqs.filter(r => r.author === member).length;
   $("#nlist").textContent = reqs.length ? "· " + reqs.length : "";
-  $("#sumcount").innerHTML = `This run · ${reqs.length} request${reqs.length === 1 ? "" : "s"}${mine ? ` <span class="st" style="margin-left:4px">${mine} yours</span>` : ""}`;
-  $("#sumtext").textContent = items.length ? items.slice(0, 3).join(", ") + (items.length > 3 ? ` and ${items.length - 3} more` : "") : "Nothing yet. Add the first item above.";
+  $("#sumcount").innerHTML = `Grocery list · ${reqs.length} item${reqs.length === 1 ? "" : "s"}${mine ? ` <span class="st" style="margin-left:4px">${mine} yours</span>` : ""}`;
+  const items = [...new Set(reqs.map(r => r.product || r.item || "unclear"))];
+  $("#sumtext").textContent = items.length ? items.slice(0, 3).join(", ") + (items.length > 3 ? ` and ${items.length - 3} more` : "") : "Nothing yet. Tell Pantry the first thing.";
   const p = S.plan, a = S.approvals, x = S.execution;
-  $("#sumbasket").textContent = x ? "Execution: " + String(x.state || "").replace(/_/g, " ")
-    : !p ? "No plan yet. Build one from Basket."
-    : p.input_version !== S.run.version ? "Plan is out of date — rebuild."
-    : a && (a.pending || []).length ? "Waiting on: " + a.pending.map(name).join(", ") : "Plan ready.";
+  $("#sumbasket").textContent = x ? "Order: " + human(x.state)
+    : !p ? "No basket yet. I'll build one when requests close."
+    : p.input_version !== run.version ? "The list changed. Rebuild the basket."
+    : a && (a.pending || []).length ? `${(a.approved || []).length} of ${(a.required || []).length} approved · waiting on ${a.pending.map(name).join(", ")}` : "Everyone approved. Ready to order.";
+}
+function renderThread(hist) {
+  const sig = JSON.stringify(hist.map(h => [h.who, h.text, h.at])) + chatBusy;
+  if (sig === chatSig) return; chatSig = sig;
+  const th = $("#thread");
+  th.innerHTML = (hist.length ? hist.map(h => `<div class="bub ${h.who === "you" ? "you" : "agent"}"><span class="v">${esc(h.text)}</span>${
+      h.who !== "you" && (h.tags || []).length ? `<span class="chips">${h.tags.map(t => `<span class="chip">${esc(t)}</span>`).join("")}</span>` : ""}</div>`).join("")
+    : `<div class="bub agent">Hi, I'm Pantry. Tell me what you need, like "oat milk for me" or "eggs for everyone".</div>`)
+    + (chatBusy ? `<div class="typing" aria-label="Pantry is typing">Pantry is thinking <i></i><i></i><i></i></div>` : "");
+  th.scrollTop = th.scrollHeight;
+}
+let chatHist = [];
+async function loadChat() {
+  if (chatBusy) return;
+  const m = member;
+  try { const h = await api("/api/g/chat"); if (m === member) { chatHist = h || []; renderThread(chatHist); } } catch (e) {}
+}
+async function sendChat(text) {
+  text = (text || "").trim(); if (!text || chatBusy) return;
+  $("#chaterr").textContent = "";
+  chatBusy = true; $("#send").disabled = true;
+  chatHist = chatHist.concat([{who: "you", text}]); renderThread(chatHist);
+  $("#chatin").value = "";
+  try { const r = await api("/api/g/chat", {method: "POST", body: {text}}); chatHist = r.history || chatHist.concat([{who: "agent", text: r.reply, tags: r.tags}]); }
+  catch (e) { $("#chaterr").textContent = e.message; if (!$("#chatin").value) $("#chatin").value = text; }
+  finally { chatBusy = false; $("#send").disabled = false; chatSig = ""; renderThread(chatHist); load(); }
+}
+$("#chatf").onsubmit = e => { e.preventDefault(); sendChat($("#chatin").value); };
+$("#addf").onsubmit = e => {
+  e.preventDefault(); const text = $("#addin").value.trim(); if (!text) return;
+  act("#adderr", async () => { await api("/api/g/requests", {method: "POST", body: {text}}); $("#addin").value = ""; }, "#addbusy", "Understanding your request…");
+};
+// Voice
+(function () {
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition, mic = $("#mic");
+  const fail = () => { $("#chaterr").textContent = "Voice isn't available in this browser. Type instead."; mic.setAttribute("aria-pressed", "false"); $("#chatin").focus(); };
+  let rec = null, listening = false;
+  mic.onclick = () => {
+    if (!SR) return fail();
+    if (listening && rec) { try { rec.stop(); } catch (e) {} return; }
+    try {
+      rec = new SR(); rec.lang = "en-US"; rec.interimResults = false; rec.maxAlternatives = 1;
+      rec.onresult = ev => { const t = ev.results[0][0].transcript; $("#chatin").value = t; sendChat(t); };
+      rec.onerror = () => { listening = false; fail(); };
+      rec.onend = () => { listening = false; mic.setAttribute("aria-pressed", "false"); $("#chatbusy").textContent = ""; };
+      rec.start(); listening = true; mic.setAttribute("aria-pressed", "true"); $("#chaterr").textContent = ""; $("#chatbusy").textContent = "Listening…";
+    } catch (e) { listening = false; fail(); }
+  };
+})();
+
+/* ---------- Join ---------- */
+(function () {
+  let code = null; try { code = new URLSearchParams(location.search).get("join"); } catch (e) {}
+  if (!code) return;
+  const c = $("#joincard"); c.hidden = false;
+  c.innerHTML = `<p class="eyebrow">You're invited</p><h2>Join <span id="jname">the household</span></h2><p class="mut sm" style="margin:-4px 0 12px">Add what you need to the shared grocery run. Your share is yours to approve.</p>
+    <button id="jbtn">Join</button><div id="jbusy" class="busy" aria-live="polite"></div><div id="jerr" class="err" role="alert"></div>`;
+  fetch("/api/g/snapshot?member=ann").then(r => r.json()).then(d => { if (d && d.group && d.group.name) $("#jname").textContent = d.group.name; }).catch(() => {});
+  $("#jbtn").onclick = async () => {
+    $("#jerr").textContent = ""; $("#jbusy").textContent = "Joining…"; $("#jbtn").disabled = true;
+    try {
+      const r = await api("/api/g/join", {method: "POST", body: {code}, noMember: true});
+      setMember(r.member);
+      try { const u = new URL(location.href); u.searchParams.delete("join"); history.replaceState(null, "", u.pathname + u.search + u.hash); } catch (e) {}
+      c.innerHTML = `<p class="eyebrow">Welcome</p><h2>You joined, ${esc(r.name)}.</h2>` + (r.mcp_url ? `<p class="sm" style="margin:0">Your personal agent link</p>
+        <code class="link" id="mcpl">${esc(r.mcp_url)}</code><div class="inl"><button type="button" class="ghost sm" id="mcpc">Copy link</button><span class="okmsg" id="mcpok" role="status"></span></div>
+        <p class="mut sm" style="margin:8px 0 0">Add this as a custom connector in Claude to let your own agent add items.</p>` : `<p class="mut sm">Tell Pantry what you need on the Home tab.</p>`)
+        + `<div style="margin-top:12px"><button type="button" class="ghost sm" id="jclose">Got it</button></div>`;
+      if (r.mcp_url) $("#mcpc").onclick = () => copy(r.mcp_url, "#mcpok");
+      $("#jclose").onclick = () => { c.hidden = true; };
+      profFor = null; chatSig = ""; await load(); loadChat(); showTab("profile");
+    } catch (e) { $("#jerr").textContent = e.message; $("#jbtn").disabled = false; }
+    finally { const b = $("#jbusy"); if (b) b.textContent = ""; }
+  };
+})();
+async function copy(text, okSel) {
+  try { await navigator.clipboard.writeText(text); $(okSel).textContent = "Copied"; }
+  catch (e) { $(okSel).textContent = "Select the link and copy it"; }
 }
 
+/* ---------- Household ---------- */
+function renderHousehold() {
+  const g = S.group, sc = g.schedule || {}, j = joined(), coord = isCoord();
+  const setup = j.length <= 1 && coord;
+  $("#setup").hidden = !setup;
+  if (setup && !setupFilled) {
+    setupFilled = true;
+    if (g.name) $("#hname").value = g.name;
+    $("#hzip").value = g.zip || ""; $("#haddr").value = g.address || "";
+    if (sc.how_often) $("#hoften").value = sc.how_often;
+    if (sc.requests_close) $("#hclose").value = sc.requests_close;
+    if (sc.window) $("#hwin").value = sc.window;
+    $$('input[name=hpay]').forEach(r => r.checked = r.value === (S.run.payment_mode || "individual_shares"));
+  }
+  $("#invitecard").hidden = !coord;
+  $("#invitehint").textContent = setup && !hhSaved && !Object.values(g.members).some(m => m.status === "invited")
+    ? "Inviting saves your household first. They get a link to join, or you can copy it." : "They get a link to join. You can also copy it and send it yourself.";
+  renderInvites();
+  const ppl = Object.entries(g.members).map(([k, m]) => `<div class="person"><span class="av" aria-hidden="true">${esc(String(m.name || k).charAt(0).toUpperCase())}</span>
+    <span class="nm"><b>${esc(m.name)}</b>${k === member ? ' <span class="mut sm">(you)</span>' : ""}<span class="v mut sm">${esc((m.roles || []).filter(r => r !== "member").join(", ") || "member")}${m.payment_linked ? " · payment linked" : ""}</span></span>
+    ${(m.status || "joined") === "joined" ? '<span class="st">Joined</span>' : '<span class="st wait">Invite sent</span>'}</div>`).join("");
+  const facts = `<div class="tiles"><div class="tile"><div class="sm mut" style="font-weight:700">How often</div><div>${esc(sc.how_often || "—")}</div></div>
+      <div class="tile"><div class="sm mut" style="font-weight:700">Requests close</div><div>${esc(sc.requests_close || "—")}</div></div>
+      <div class="tile"><div class="sm mut" style="font-weight:700">Delivery window</div><div>${esc(sc.window || "—")}</div></div>
+      <div class="tile"><div class="sm mut" style="font-weight:700">Deliver to</div><div>${esc(g.address || "—")}${g.zip ? " · " + esc(g.zip) : ""}</div></div></div>
+    <h3>Stores checked</h3><div class="chips">${(g.stores || []).map(s => `<span class="chip">${esc(s)}</span>`).join("") || '<span class="mut sm">None yet</span>'}</div>`;
+  $("#hhview").innerHTML = setup
+    ? (Object.keys(g.members).length > 1 ? `<div class="card"><h2>People</h2>${ppl}</div>` : "")
+    : `<h2 class="ptitle">${esc(g.name)}</h2><div class="card"><h2>People</h2>${ppl}</div><div class="card"><h2>Schedule</h2>${facts}</div>`;
+}
+function renderInvites() {
+  const rows = Object.entries(invites);
+  $("#invres").innerHTML = rows.map(([k, r]) => {
+    const st = S && S.group.members[k] && S.group.members[k].status;
+    return `<div class="person"><span class="nm"><b>${esc(r.name)}</b><span class="v sm ${st === "joined" ? "ok" : "mut"}">${st === "joined" ? "Joined" : r.email_sent ? "Invite sent" : "Copy this link and send it"}</span>
+      ${st !== "joined" ? `<code class="link">${esc(r.join_link)}</code>` : ""}</span>
+      ${st !== "joined" ? `<button type="button" class="ghost sm cpinv" data-k="${esc(k)}">Copy link</button><span class="okmsg" id="ok-${esc(k)}" role="status"></span>` : ""}</div>`;
+  }).join("");
+  $$(".cpinv").forEach(b => b.onclick = () => copy(invites[b.dataset.k].join_link, "#ok-" + CSS.escape(b.dataset.k)));
+}
+function householdBody() {
+  const pm = document.querySelector('input[name=hpay]:checked');
+  return {name: $("#hname").value.trim() || "Maple House", address: $("#haddr").value.trim() || null, zip: $("#hzip").value.trim() || null,
+    how_often: $("#hoften").value.trim() || null, requests_close: $("#hclose").value.trim() || null, window: $("#hwin").value.trim() || null,
+    payment_mode: pm ? pm.value : "individual_shares"};
+}
+$("#setupf").onsubmit = e => {
+  e.preventDefault(); $("#hok").textContent = "";
+  act("#herr", async () => { await api("/api/g/household", {method: "POST", body: householdBody()}); hhSaved = true; $("#hok").textContent = "Saved. Now invite your people."; $("#iname").focus(); }, "#hbusy", "Saving…");
+};
+$("#invf").onsubmit = e => {
+  e.preventDefault();
+  const nm = $("#iname").value.trim(), em = $("#iemail").value.trim(); if (!nm) return;
+  act("#ierr", async () => {
+    // Creating the household resets members, so save it before the first invite.
+    if (!$("#setup").hidden && !hhSaved && !Object.values(S.group.members).some(m => m.status === "invited")) {
+      await api("/api/g/household", {method: "POST", body: householdBody()}); hhSaved = true;
+    }
+    const r = await api("/api/g/invite", {method: "POST", body: {name: nm, email: em}});
+    invites[r.member] = r; $("#iname").value = ""; $("#iemail").value = ""; renderInvites();
+  }, "#ibusy", "Sending invite…");
+};
+
+/* ---------- Profile ---------- */
+async function loadProfile() {
+  profFor = member;
+  try { const p = await api("/api/g/profile"); if (profFor === member) { prof = {allergies: p.allergies || [], diet: p.diet || [], always_get: p.always_get || [], share_with_group: p.share_with_group !== false}; renderProfile(); } }
+  catch (e) { $("#perr").textContent = e.message; }
+}
+function renderProfile() {
+  const chips = (S && S.group.chips) || {allergies: [], diet: []};
+  const tog = (key, list) => list.map(v => `<button type="button" class="tog" data-k="${key}" data-v="${esc(v)}" aria-pressed="${prof[key].includes(v)}">${esc(v)}</button>`).join("");
+  $("#pallergy").innerHTML = tog("allergies", [...new Set([...(chips.allergies || []), ...prof.allergies])]);
+  $("#pdiet").innerHTML = tog("diet", [...new Set([...(chips.diet || []), ...prof.diet])]);
+  $("#palways").innerHTML = prof.always_get.length ? prof.always_get.map((v, i) => `<span class="rm">${esc(v)}<button type="button" data-i="${i}" aria-label="Remove ${esc(v)}">&times;</button></span>`).join("") : '<span class="mut sm">Nothing yet.</span>';
+  $("#pshare").checked = prof.share_with_group;
+  $$("#p-profile .tog").forEach(b => b.onclick = () => {
+    const k = b.dataset.k, v = b.dataset.v, l = prof[k];
+    prof[k] = l.includes(v) ? l.filter(x => x !== v) : l.concat([v]); b.setAttribute("aria-pressed", prof[k].includes(v));
+  });
+  $$("#palways .rm button").forEach(b => b.onclick = () => { prof.always_get.splice(+b.dataset.i, 1); renderProfile(); $("#alwin").focus(); });
+}
+function renderProfileShared() {
+  const hh = S.group.name || "the household";
+  $("#psharelbl").textContent = "Share with " + hh;
+  $("#proftitle").textContent = name(member) + "'s food rules";
+  const others = Object.entries(S.profiles || {}).filter(([k]) => k !== member);
+  $("#others").innerHTML = others.length ? others.map(([k, p]) => `<li><b>${esc(name(k))}</b> <div class="chips" style="margin-top:4px">${
+      (p.rules || []).map(r => `<span class="chip">${esc(r)}</span>`).join("") || '<span class="mut sm">No restrictions</span>'}</div></li>`).join("")
+    : `<li class="mut">Nobody else has shared rules yet.</li>`;
+}
+$("#alwf").onsubmit = e => { e.preventDefault(); const v = $("#alwin").value.trim(); if (!v) return; if (!prof.always_get.includes(v)) prof.always_get.push(v); $("#alwin").value = ""; renderProfile(); };
+$("#pshare").onchange = e => { prof.share_with_group = e.target.checked; };
+$("#psave").onclick = () => {
+  $("#pok").textContent = "";
+  act("#perr", async () => { const p = await api("/api/g/profile", {method: "POST", body: prof}); prof = {allergies: p.allergies || [], diet: p.diet || [], always_get: p.always_get || [], share_with_group: p.share_with_group !== false}; renderProfile(); $("#pok").textContent = "Saved. I'll use these every run."; }, "#pbusy", "Saving…");
+};
+$("#whoav").onclick = () => { showTab("profile"); window.scrollTo(0, 0); };
+
+/* ---------- List ---------- */
+const active = () => (S.requests || []).filter(r => r.status !== "cancelled");
 function renderList() {
-  const reqs = (S.requests || []).filter(r => r.status !== "cancelled");
-  if (!reqs.length) { $("#list").innerHTML = `<p class="mut">Nothing yet. Add the first item above.</p>`; return; }
+  const all = active(), mine = all.filter(r => r.author === member), reqs = filter === "mine" ? mine : all, n = joined().length;
+  $("#fall").textContent = `Everyone · ${all.length}`; $("#fmine").textContent = `Mine · ${mine.length}`;
+  $("#fall").setAttribute("aria-pressed", filter === "all"); $("#fmine").setAttribute("aria-pressed", filter === "mine");
+  $("#fall").setAttribute("aria-selected", filter === "all"); $("#fmine").setAttribute("aria-selected", filter === "mine");
+  if (!reqs.length) { $("#list").innerHTML = `<div class="card"><p class="mut" style="margin:0">${filter === "mine" ? "You haven't added anything yet." : "Nothing yet. Tell Pantry the first thing on Home."}</p></div>`; return; }
   const groups = {};
-  reqs.forEach(r => (groups[r.item || "unclear"] ||= []).push(r));
-  $("#list").innerHTML = Object.entries(groups).map(([item, rs]) => `<div class="grp"><b>${esc(item)}</b>${rs.map(r => `
-    <div class="req"><div class="row"><div class="inl"><span>${esc(name(r.author))}</span>
-      <span class="st">${r.allocation === "personal" ? "personal" : "shared"}</span>
-      <span>${r.quantity != null ? esc(r.quantity) + " " + esc(r.unit || "") : '<span class="mut">qty unknown</span>'}</span>
-      ${r.status && r.status !== "active" && r.status !== "open" ? `<span class="chip">${esc(r.status)}</span>` : ""}</div>
-      ${r.author === S.viewer ? `<button class="danger sm cancel" data-id="${esc(r.id)}" aria-label="Cancel request for ${esc(item)}">Cancel</button>` : ""}</div>
-      <div class="chips" style="margin-top:4px">${(r.constraints||[]).map(c => `<span class="chip">${esc(c)}</span>`).join("")}
-        ${r.brand ? `<span class="chip">brand: ${esc(r.brand)}</span>` : ""}${r.max_price != null ? `<span class="chip">max ${money(r.max_price)}</span>` : ""}
-        ${r.substitution ? `<span class="chip">subs: ${esc(r.substitution)}</span>` : ""}</div>
-      <div class="sm mut">"${esc(r.source_text)}" · extracted by ${esc(r.engine || "?")}</div></div>`).join("")}</div>`).join("");
-  document.querySelectorAll(".cancel").forEach(b => b.onclick = () =>
+  reqs.forEach(r => (groups[r.category || r.item || "other"] ||= []).push(r));
+  $("#list").innerHTML = Object.entries(groups).map(([cat, rs]) => `<div class="grp"><b>${esc(cat)}</b>${rs.map(r => {
+    const forWho = r.allocation === "personal" ? `${name(r.author)} only` : `Shared by all ${n}`;
+    const qty = r.quantity != null ? `${r.quantity} ${r.unit || ""}`.trim() : "";
+    return `<div class="req"><div class="row"><div style="min-width:0;flex:1"><b>${esc(r.product || r.item || r.source_text)}</b>${r.brand ? ` <span class="mut sm">${esc(r.brand)}</span>` : ""}
+        <div class="inl sm" style="margin-top:2px">${qty ? `<span>${esc(qty)}</span>` : '<span class="mut">qty unknown</span>'}<span class="st ${r.allocation === "personal" ? "grey" : ""}">${esc(forWho)}</span>
+        ${r.status && !["active", "open"].includes(r.status) ? `<span class="chip">${esc(r.status)}</span>` : ""}</div></div>
+      ${r.author === member ? `<button class="danger sm cancel" data-id="${esc(r.id)}" aria-label="Cancel ${esc(r.product || r.item)}">Cancel</button>` : ""}</div>
+      ${(r.from_preferences || []).length ? `<div class="chips" style="margin-top:6px">${r.from_preferences.map(c => `<span class="chip ok">From preferences: ${esc(c)}</span>`).join("")}</div>` : ""}
+      <div class="sm mut" style="margin-top:4px">Added by ${esc(name(r.author))}${r.channel ? " via " + esc(r.channel) : ""}${r.source_text ? ` · "${esc(r.source_text)}"` : ""}</div></div>`;
+  }).join("")}</div>`).join("");
+  $$(".cancel").forEach(b => b.onclick = () =>
     act("#listerr", () => api("/api/g/requests/" + encodeURIComponent(b.dataset.id), {method: "PATCH", body: {status: "cancelled"}})));
 }
+$("#fall").onclick = () => { filter = "all"; renderList(); };
+$("#fmine").onclick = () => { filter = "mine"; renderList(); };
 
-function renderPrefs() {
-  const ps = (S.preferences || []).filter(p => p.status !== "cancelled" && p.status !== "expired");
-  $("#prefs").innerHTML = ps.length ? ps.map(p => `<li><b>${esc(name(p.member))}</b>: ${esc(p.subject)} → ${esc(p.value)}
-    <span class="st">${p.hard ? "hard" : "soft"}</span> <span class="chip">${esc(p.visibility)}</span>
-    ${p.private_reason ? `<div class="sm mut">Lock: ${esc(p.private_reason)} (only you see this)</div>` : ""}</li>`).join("")
-    : `<li class="mut">No preferences yet.</li>`;
+/* ---------- Last call ---------- */
+function tickCountdown() {
+  if (!S) return;
+  const run = S.run, el = $("#cd");
+  if (run.state === "last_call" && run.requests_close_ts) {
+    const s = Math.max(0, Math.round(run.requests_close_ts - Date.now() / 1000));
+    el.textContent = `${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")}`;
+    $("#lceye").textContent = s > 0 ? `Last call · ${Math.ceil(s / 60)} min left` : "Requests closed";
+    $("#lcsay").textContent = s > 0 ? "Anything else before I shop?" : "Shopping now…";
+  } else el.textContent = "";
 }
+function renderLastCall() {
+  const run = S.run, j = joined(), done = run.done || [], open = run.state === "last_call";
+  $("#lccoord").hidden = !isCoord();
+  $("#lcsub").textContent = open ? `No reply needed. I'll go ahead at ${run.requests_close || "the cutoff"}.`
+    : run.state === "awaiting_approvals" ? "Requests are closed. Your basket is ready to review."
+    : `Requests close ${(S.group.schedule || {}).requests_close || "before the run"}. The coordinator can send a last call early.`;
+  if (!open) { $("#lceye").textContent = "Last call"; $("#lcsay").textContent = run.state === "awaiting_approvals" ? "Requests closed." : "Anything else before I shop?"; }
+  $("#done").disabled = !open || done.includes(member) || busy;
+  $("#done").textContent = done.includes(member) ? "You're done" : "I'm done";
+  $("#donelist").innerHTML = j.map(k => `<div class="person"><span class="av" aria-hidden="true">${esc(String(name(k)).charAt(0).toUpperCase())}</span><span class="nm"><b>${esc(name(k))}</b>${k === member ? ' <span class="mut sm">(you)</span>' : ""}</span>
+    ${done.includes(k) ? '<span class="st">Done</span>' : '<span class="st grey">No reply yet</span>'}</div>`).join("");
+  tickCountdown();
+}
+$("#lcf").onsubmit = e => { e.preventDefault(); const m = Number($("#lcmin").value) || 2; act("#lcerr", () => api("/api/g/lastcall", {method: "POST", body: {minutes: m}}), "#lcbusy", "Sending last call…"); };
+$("#done").onclick = () => act("#doneerr", () => api("/api/g/done", {method: "POST"}));
 
+/* ---------- Basket ---------- */
 function renderPay() {
-  const run = S.run, g = S.group;
-  const coord = (g.members[S.viewer]?.roles || []).includes("coordinator");
-  $("#paycoord").textContent = coord ? "You are the coordinator" : "Only the coordinator can change this";
-  const payers = Object.entries(g.members).filter(([, m]) => (m.roles || []).includes("payer"));
+  const run = S.run, g = S.group, coord = isCoord();
+  $("#paycoord").textContent = coord ? "You're the coordinator" : "Only the coordinator can change this";
+  let payers = joined().filter(k => (g.members[k].roles || []).includes("payer")); if (!payers.length) payers = joined();
   const fs = $("#payfs");
   if (!fs.contains(document.activeElement)) {
-    document.querySelectorAll('input[name=pmode]').forEach(r => r.checked = r.value === run.payment_mode);
-    $("#payer").innerHTML = payers.map(([k, m]) => `<option value="${esc(k)}" ${k===run.group_payer?"selected":""}>${esc(m.name)}${m.payment_linked ? "" : " (no payment linked)"}</option>`).join("");
+    $$('input[name=pmode]').forEach(r => { r.checked = r.value === run.payment_mode; r.disabled = !coord; });
+    $("#payer").innerHTML = payers.map(k => `<option value="${esc(k)}" ${k === run.group_payer ? "selected" : ""}>${esc(name(k))}${g.members[k].payment_linked ? "" : " (no payment linked)"}</option>`).join("");
+    $("#payer").disabled = !coord;
   }
+  $("#savemode").disabled = !coord || busy;
   $("#build").disabled = busy;
 }
-
+const recQuote = p => (p.quotes || []).find(q => q.source_key === p.recommended) || null;
 function renderPlan() {
   const p = S.plan, el = $("#planv");
-  if (!p) { el.innerHTML = `<div class="card"><h2>Plan</h2><p class="mut">No plan yet. Add items, then press "Build plan".</p></div>`; return; }
-  const quotes = p.quotes || [];
-  const rec = quotes.find(q => q.source_key === p.recommended) || null;
-  const nItems = (p.lines || []).length;
+  if (!p) { el.innerHTML = `<div class="card agent"><p class="eyebrow">Basket</p><p class="say">No basket yet.</p><p class="mut sm" style="margin:8px 0 0">I'll build one when requests close, or press "Build plan" below.</p></div>`; return; }
+  const quotes = p.quotes || [], rec = recQuote(p), a = S.approvals;
   const verif = [...new Set(quotes.map(q => q.verification).filter(Boolean))];
   const stale = p.input_version !== S.run.version;
-  let h = `<div class="card hero"><div class="row"><h2>Your basket is ready</h2><span class="v mut sm" style="width:100%;order:3">Best among the sources checked</span><span class="mut sm">plan ${esc(p.id)} · built from version ${esc(p.input_version)}</span></div>`;
-  if (stale) h += `<p class="warn"><b>Plan is out of date — rebuild.</b> The list changed since this plan was built.</p>`;
+  const day = (String((S.group.schedule || {}).window || "Saturday").match(/^\w+/) || ["Saturday"])[0];
+  const mine = (p.allocations || []).find(x => x.member === member);
+  let h = `<div class="card agent"><p class="eyebrow">Basket</p><p class="say">Your ${esc(day)} basket is ready.</p></div><div class="card hero">`;
+  if (stale) h += `<p class="warn"><b>The list changed since this basket was built. Rebuild it.</b></p>`;
   verif.forEach(v => h += `<div class="banner" role="note">${esc(v)}</div>`);
-  if (rec) h += `<div class="big">${esc(rec.retailer)} <span class="mut sm">${esc(rec.platform)}</span></div>
-    <div class="tiles"><div class="tile"><div class="sm mut" style="font-weight:600">Whole order</div><div class="big" style="margin:2px 0 0">${money(rec.total)}</div><div class="sm mut">${esc(rec.total_certainty || "")}</div></div>
-    ${(() => { const m = (p.allocations || []).find(x => x.member === S.viewer); return m ? `<div class="tile" style="background:var(--soft);color:var(--softink)"><div class="sm" style="font-weight:700">Your share</div><div class="big" style="margin:2px 0 0">${money(m.amount)}</div></div>` : ""; })()}</div>
-    <div class="mut sm">Window: ${esc(p.window || rec.window)} · Deliver to ${esc(p.address)}</div>`;
-  else h += `<p class="bad">No source could fill this basket.</p>`;
-  h += `<h3>Comparison</h3><div class="tw"><table><thead><tr><th>Source</th><th>Feasible</th><th>Items</th><th>Subtotal</th><th>Discounts</th><th>Tax</th><th>Fees</th><th>Unknown</th><th>Total</th></tr></thead><tbody>`;
+  if (rec) {
+    h += `<div class="row" style="align-items:center"><div><div class="big" style="margin:0">${esc(rec.retailer)}</div><div class="mut sm">${rec.covered ? "Covers " + esc(rec.covered) + " items · " : ""}Best among the ${quotes.length} sources checked</div></div>
+      ${a ? `<span class="st ${(a.pending || []).length ? "wait" : ""}">${(a.approved || []).length} of ${(a.required || []).length} approved</span>` : ""}</div>
+      <div class="tiles"><div class="tile"><div class="sm mut" style="font-weight:700">Household total</div><div class="big" style="margin:2px 0 0">${money(rec.total)}</div><div class="sm mut">${esc(rec.total_certainty || "")}</div></div>
+      <div class="tile" style="background:var(--soft);color:var(--softink)"><div class="sm" style="font-weight:700">Your share</div><div class="big" style="margin:2px 0 0">${mine ? money(mine.amount) : "—"}</div><div class="sm">${mine ? esc(human(mine.role)) : "Nothing allocated to you"}</div></div></div>
+      <div class="mut sm" style="margin-top:8px">Arrives ${esc(p.window || rec.window || "")} · ${esc(p.address || S.group.address || "")}</div>`;
+  } else h += `<p class="bad">No store checked could fill this basket.</p>`;
+  h += `<h3>Best among the sources checked</h3><div class="tw"><table><thead><tr><th>Store</th><th>Covered</th><th>Items</th><th>Discounts</th><th>Tax</th><th>Fees</th><th>Unknown costs</th><th>Total</th></tr></thead><tbody>`;
   quotes.forEach(q => {
-    const fees = Object.entries(q.fees || {}).map(([k, v]) => `${esc(k)} ${money(v)}`).join("<br>") || "—";
-    h += `<tr${q.source_key === p.recommended ? ' style="font-weight:600"' : ""}><td>${esc(q.retailer)}<span class="v mut sm">${esc(q.platform)}${q.location ? " · " + esc(q.location) : ""}</span>${q.source_key === p.recommended ? '<span class="st">recommended</span>' : ""}</td>
-      <td>${q.feasible ? '<span class="ok">yes</span>' : '<span class="bad">no</span>'}${q.reason ? `<span class="v mut sm">${esc(q.reason)}</span>` : ""}</td>
-      <td>${(q.items || []).length}/${nItems}${(q.missing||[]).length ? `<span class="v mut sm">missing: ${q.missing.map(m => esc(m.item) + " (" + esc(m.why) + ")").join(", ")}</span>` : ""}</td>
-      <td>${money(q.subtotal)}</td><td>${q.discounts ? "−" + money(q.discounts) : "—"}</td><td>${money(q.tax)}</td><td>${fees}</td>
+    const fees = Object.entries(q.fees || {}).map(([k, v]) => `${esc(human(k))} ${money(v)}`).join("<br>") || "—";
+    h += `<tr${q.source_key === p.recommended ? ' style="font-weight:600"' : ""}><td>${esc(q.retailer)}<span class="v mut sm">${esc(q.platform)}</span>${q.source_key === p.recommended ? '<span class="st">recommended</span>' : ""}${!q.feasible ? `<span class="v bad sm">${esc(q.reason || "not feasible")}</span>` : ""}</td>
+      <td>${esc(q.covered || "—")}${(q.missing || []).length ? `<span class="v mut sm">missing: ${q.missing.map(m => typeof m === "string" ? esc(m) : esc(m.item) + " (" + esc(m.why) + ")").join(", ")}</span>` : ""}</td>
+      <td>${money(q.subtotal)}</td><td>${Number(q.discounts) ? "−" + money(q.discounts) : "—"}</td><td>${money(q.tax)}${q.tax_note ? `<span class="v mut sm">${esc(q.tax_note)}</span>` : ""}</td><td>${fees}</td>
       <td class="sm">${(q.unknown || []).map(esc).join("<br>") || "—"}</td><td><b>${money(q.total)}</b><span class="v mut sm">${esc(q.total_certainty || "")}</span></td></tr>`;
   });
   h += `</tbody></table></div>`;
   if (rec) {
-    h += `<details><summary>Item details for ${esc(rec.retailer)} (${(rec.items||[]).length} items)</summary>`;
+    h += `<h3>Items at ${esc(rec.retailer)}</h3>`;
     (rec.items || []).forEach(it => {
-      const o = it.offer || {}, c = it.coupon;
-      h += `<div class="item"><div class="row"><b style="text-transform:capitalize">${esc(it.item)}</b><span>${money(it.subtotal)}</span></div>
-        <div>${esc(o.product)} <span class="mut sm">SKU ${esc(o.sku)}</span></div>
-        <div class="sm">${esc(it.packages)} × ${esc(o.pack_qty)} ${esc(o.pack_unit)} at ${money(o.price)} · unit price ${money(it.unit_price)} · ${esc(it.allocation)} · need ${esc(it.quantity)}${o.stock ? " · stock: " + esc(o.stock) : ""}</div>
-        ${it.discount ? `<div class="sm ok">Discount −${money(it.discount)}</div>` : ""}
-        ${c ? `<div class="sm">Coupon <b>${esc(c.code)}</b> (${esc(c.source)}) −${money(c.discount)} · <span class="warn">${esc(c.state)}</span>${c.expires ? " · expires " + esc(c.expires) : ""}</div>` : ""}
-        ${(it.constraints_met||[]).length ? `<div class="chips">${it.constraints_met.map(x => `<span class="chip ok">✓ ${esc(x)}</span>`).join("")}</div>` : ""}
-        ${(it.rejected||[]).length ? `<div class="sm mut">Rejected: ${it.rejected.map(r => esc(r.product) + " — " + esc(r.why)).join("; ")}</div>` : ""}
-        ${it.surplus ? `<div class="sm mut">Surplus: ${esc(it.surplus)}</div>` : ""}
-        ${it.match ? `<div class="ev">Match: ${esc(it.match.label)}${it.match.score != null ? " · score " + esc(it.match.score) : ""}${it.match.engine ? " · " + esc(it.match.engine) : ""}</div>` : ""}
-        ${it.attribute_evidence ? `<div class="ev">Attribute evidence: ${esc(it.attribute_evidence)}</div>` : ""}
-        <div class="sm mut">${o.evidence_url ? `<a href="${esc(o.evidence_url)}" target="_blank" rel="noopener">evidence</a> · ` : ""}checked ${esc(o.checked_at)} · ${esc(o.verification)}</div></div>`;
+      const o = it.offer || {}, c = it.coupon, mt = it.match ? (typeof it.match === "string" ? it.match : it.match.label) : null;
+      h += `<div class="item"><div class="row"><b style="text-transform:capitalize">${esc(it.item)}</b><span><b>${money(it.subtotal)}</b></span></div>
+        <div>${esc(o.product)} <span class="mut sm">· ${esc(rec.retailer)}</span></div>
+        <div class="sm">${esc(it.packages)} × ${money(o.price)} · ${esc(it.unit_price || "")} · ${esc(it.allocation)}</div>
+        ${o.note ? `<div class="sm warn">${esc(o.note)}</div>` : ""}
+        ${Number(it.discount) ? `<div class="sm ok">Discount −${money(it.discount)}</div>` : ""}
+        ${c ? `<div class="sm">Coupon <b>${esc(c.code)}</b>${c.discount ? " −" + money(c.discount) : ""} · <span class="warn">${esc(c.state || "not verified, not counted")}</span></div>` : ""}
+        <div class="chips" style="margin-top:4px">${mt ? `<span class="chip ${/exact/.test(mt) ? "ok" : ""}">${esc(mt)}</span>` : ""}${(it.constraints_met || []).map(x => `<span class="chip ok">${esc(x)}</span>`).join("")}</div>
+        ${it.attribute_evidence ? `<div class="ev">Evidence: ${esc(typeof it.attribute_evidence === "string" ? it.attribute_evidence : JSON.stringify(it.attribute_evidence))}</div>` : ""}
+        ${(it.rejected || []).length ? `<div class="ev">Passed on: ${it.rejected.map(r => esc(r.product) + " (" + esc(r.why) + ")").join("; ")}</div>` : ""}
+        <div class="ev">Price checked ${esc(o.checked_at || "")}</div></div>`;
     });
-    h += `</details>`;
   }
-  if ((p.why || []).length) h += `<h3>Why this basket?</h3><ul>${p.why.map(w => `<li>${esc(w)}</li>`).join("")}</ul>`;
-  if (p.guild_session) h += `<p class="ev" style="margin-top:14px">Guild review session: ${esc(p.guild_session)}</p>`;
-  if ((p.questions || []).length) h += `<h3>Questions</h3><ul>${p.questions.map(q => `<li class="warn">${esc(typeof q === "string" ? q : (q.text || q.question || JSON.stringify(q)))}</li>`).join("")}</ul>`;
+  const sp = p.split;
+  if (sp && sp.note) {
+    h += `<h3>Split across stores?</h3><p class="sm" style="margin:0 0 6px">${esc(sp.note)}</p>`;
+    if ((sp.stores || []).length >= 2) {
+      h += `<div class="tw"><table><thead><tr><th>Item</th><th>Cheapest at</th><th>Product</th><th>Price</th></tr></thead><tbody>${(sp.picks || []).map(x =>
+        `<tr><td style="text-transform:capitalize">${esc(x.item)}</td><td>${esc(x.store)}</td><td class="sm">${esc(x.product)}</td><td>${money(x.price)}</td></tr>`).join("")}</tbody></table></div>
+        <div class="tiles"><div class="tile"><div class="sm mut" style="font-weight:700">Split, items only</div><div class="big" style="margin:2px 0 0">${money(sp.items_total)}</div><div class="sm mut">${esc((sp.stores || []).join(" + "))}</div></div>
+        <div class="tile"><div class="sm mut" style="font-weight:700">One store, items only</div><div class="big" style="margin:2px 0 0">${money(sp.single_items_total)}</div><div class="sm mut">${esc(sp.single_store || "")}</div></div></div>`;
+    }
+  }
+  if ((p.why || []).length) h += `<details><summary>Why this basket?</summary><ul>${p.why.map(w => `<li>${esc(w)}</li>`).join("")}</ul>${p.guild_session ? `<p class="ev">Review session: ${esc(p.guild_session)}</p>` : ""}</details>`;
   el.innerHTML = h + `</div>`;
 }
-
 function renderApprovals() {
   const p = S.plan, a = S.approvals, el = $("#apprv");
   if (!p) { el.innerHTML = ""; return; }
   const stale = p.input_version !== S.run.version;
-  const mine = (p.allocations || []).find(x => x.member === S.viewer);
-  const canAct = a && (a.required || []).includes(S.viewer) && !(a.approved || []).includes(S.viewer);
-  let h = `<div class="card"><div class="row"><h2>Approvals</h2><span class="mut sm">plan ${esc(p.id)} · v${esc(p.input_version)} · ${esc(String(p.payment_mode || "").replace(/_/g, " "))}</span></div>`;
-  if (stale) h += `<p class="warn"><b>Plan is out of date — rebuild.</b></p>`;
-  h += `<div class="tw"><table><thead><tr><th>Member</th><th>Role</th><th>Amount</th><th>Covers</th><th>Status</th></tr></thead><tbody>`;
+  const mine = (p.allocations || []).find(x => x.member === member);
+  const canAct = a && (a.required || []).includes(member) && !(a.approved || []).includes(member);
+  let h = `<div class="card"><div class="row" style="align-items:center"><h2 style="margin:0">Approvals</h2>${a ? `<span class="st ${(a.pending || []).length ? "wait" : ""}">${(a.approved || []).length} of ${(a.required || []).length} approved</span>` : ""}</div>`;
+  if (canAct) h += `<div class="inl" style="margin:14px 0 6px"><button id="appr" ${stale ? "disabled" : ""}>Approve my share ${money(mine ? mine.amount : 0)}</button><button id="decl" class="danger">Decline</button></div><p class="mut sm" style="margin:0 0 6px">I'll order once everyone approves.</p>`;
+  else if (a && (a.approved || []).includes(member)) h += `<p class="ok sm">You approved this basket.</p>`;
   (p.allocations || []).forEach(x => {
-    const st = !a ? "—" : (a.approved || []).includes(x.member) ? '<span class="ok">approved</span>'
-      : (a.pending || []).includes(x.member) ? '<span class="warn">pending</span>' : (a.required || []).includes(x.member) ? "required" : '<span class="mut">not required</span>';
-    const cov = Array.isArray(x.covers) ? x.covers.map(esc).join(", ") : esc(x.covers);
-    h += `<tr><td>${esc(name(x.member))}</td><td>${esc(x.role)}</td><td>${money(x.amount)}</td><td class="sm">${cov}</td><td>${st}</td></tr>`;
+    const st = !a ? "" : (a.approved || []).includes(x.member) ? '<span class="st">Approved</span>'
+      : (a.pending || []).includes(x.member) ? `<span class="st wait">${x.member === member ? "Waiting for you" : "Waiting"}</span>` : '<span class="st grey">Not required</span>';
+    const cov = Array.isArray(x.covers) ? x.covers.join(", ") : (x.covers || "");
+    h += `<div class="person"><span class="av" aria-hidden="true">${esc(String(name(x.member)).charAt(0).toUpperCase())}</span><span class="nm"><b>${esc(name(x.member))}</b> <span class="mut sm">${esc(human(x.role))}</span>${cov ? `<span class="v mut sm">${esc(cov)}</span>` : ""}</span><b>${money(x.amount)}</b> ${st}</div>`;
   });
-  h += `</tbody></table></div>`;
-  if (a && (a.pending || []).length) h += `<p class="mut sm">Waiting on: ${a.pending.map(name).map(esc).join(", ")}</p>`;
-  if (canAct) h += `<div class="inl" style="margin-top:8px"><button id="appr" ${stale ? "disabled" : ""}>Approve ${money(mine ? mine.amount : 0)}</button><button id="decl" class="danger">Decline</button></div>`;
-  else if (a && (a.approved || []).includes(S.viewer)) h += `<p class="ok sm">You approved this plan.</p>`;
   el.innerHTML = h + `<div id="apperr" class="err" role="alert"></div></div>`;
   if (canAct) {
     $("#appr").onclick = () => act("#apperr", () => api("/api/g/approve", {method: "POST", body: {plan_id: p.id, limit: mine ? mine.amount : 0}}));
     $("#decl").onclick = () => act("#apperr", () => api("/api/g/decline", {method: "POST", body: {plan_id: p.id}}));
   }
 }
-
 function renderExec() {
   const p = S.plan, a = S.approvals, x = S.execution, el = $("#execv");
   if (!p && !x) { el.innerHTML = ""; return; }
   const ready = a && !(a.pending || []).length && p && p.input_version === S.run.version;
   const done = x && ["order_placed_synthetic", "authorizing", "purchasing", "refunded"].includes(x.state);
-  let h = `<div class="card"><h2>Confirm and place order</h2><p class="mut sm" style="margin:-4px 0 10px">Orders in this demo are synthetic: no real purchase or delivery happens.</p>`;
-  if (!x || !done) h += `<div class="inl"><button id="exec" ${ready && !busy ? "" : "disabled"}>Authorize payments and place order</button>
-    <button id="execbad" class="ghost sm" ${ready && !busy ? "" : "disabled"}>Demo: simulate a declined card for Alex</button></div>
-    ${ready ? "" : `<p class="mut sm">Enabled once every required member has approved the current plan.</p>`}`;
+  const victim = joined().find(k => k !== member) || member;
+  let h = `<div class="card"><h2>Place the order</h2>`;
+  if (!done) h += `<div class="inl"><button id="exec" ${ready && !busy ? "" : "disabled"}>Authorize payments and place order</button>
+    <button id="execbad" class="ghost sm" ${ready && !busy ? "" : "disabled"}>Simulate a declined card (${esc(name(victim))})</button></div>
+    ${ready ? "" : `<p class="mut sm">Unlocks once everyone required has approved the current basket.</p>`}`;
   if (x) {
-    h += `<h3>Execution</h3><p>State: <b>${esc(String(x.state).replace(/_/g, " "))}</b> <span class="mut sm">attempt ${esc(x.attempt)}</span></p>
-      <div class="tw"><table><thead><tr><th>Payer</th><th>Amount</th><th>State</th><th>Intent</th></tr></thead><tbody>`;
-    (x.payments || []).forEach(pm => {
-      const cls = pm.state === "failed" ? "bad" : ["captured", "authorized"].includes(pm.state) ? "ok" : "mut";
-      h += `<tr><td>${esc(name(pm.member))}</td><td>${money(pm.amount)}</td><td class="${cls}">${esc(pm.state)}${pm.error ? `<span class="v sm">${esc(pm.error)}</span>` : ""}</td><td class="sm mut">${esc(pm.intent)}</td></tr>`;
-    });
-    h += `</tbody></table></div>`;
-    if (x.order) h += `<h3>Order</h3><div>${esc(x.order.retailer)} <span class="mut sm">${esc(x.order.platform)}</span></div>
-      <div>Reference <b>${esc(x.order.reference)}</b></div><div>Status: ${esc(x.order.status)}</div>
-      <div class="mut sm">${esc(x.order.window)} · ${esc(x.order.address)}</div>`;
-    if ((x.payments || []).some(pm => pm.state === "captured")) h += `<div style="margin-top:8px"><button id="refund" class="danger">Refund</button></div>`;
+    h += `<p style="margin:12px 0 0">State: <b>${esc(human(x.state))}</b></p>`;
+    if (x.state === "paused") h += `<div class="banner" role="note">A card was declined. Other authorizations were released; nobody was charged.</div>`;
+    if (done) h += `<button type="button" class="ghost sm" data-go="order" style="margin-top:8px">See the order</button>`;
+    if ((x.payments || []).some(pm => pm.state === "captured")) h += ` <button id="refund" class="danger sm" style="margin-top:8px">Refund</button>`;
   }
   el.innerHTML = h + `<div id="execbusy" class="busy" aria-live="polite"></div><div id="execerr" class="err" role="alert"></div></div>`;
-  const ex = q => act("#execerr", () => api("/api/g/execute" + q, {method: "POST"}), "#execbusy", "Authorizing payments…");
-  if ($("#exec")) { $("#exec").onclick = () => ex(""); $("#execbad").onclick = () => ex("?test_decline_for=dad"); }
+  const ex = q => act("#execerr", async () => { const r = await api("/api/g/execute" + q, {method: "POST"}); if (r && r.state === "order_placed_synthetic") setTimeout(() => showTab("order"), 0); }, "#execbusy", "Authorizing payments…");
+  if ($("#exec")) { $("#exec").onclick = () => ex(""); $("#execbad").onclick = () => ex("?test_decline_for=" + encodeURIComponent(victim)); }
   if ($("#refund")) $("#refund").onclick = () => act("#execerr", () => api("/api/g/refund", {method: "POST"}), "#execbusy", "Refunding…");
+  el.querySelectorAll("[data-go]").forEach(b => b.onclick = () => { showTab(b.dataset.go); window.scrollTo(0, 0); });
 }
 
+/* ---------- Order ---------- */
+function renderOrder() {
+  const x = S.execution, p = S.plan, el = $("#orderv");
+  if (!x) { el.innerHTML = `<div class="card agent"><p class="eyebrow">Order</p><p class="say">Nothing ordered yet.</p><p class="mut sm" style="margin:8px 0 0">Once everyone approves the basket, the order shows up here.</p></div>`; return; }
+  const o = x.order, notLive = o && /synthetic|not connected/i.test(String(o.status || ""));
+  const mine = p && (p.allocations || []).find(a => a.member === member), rec = p && recQuote(p);
+  let h = `<div class="card agent"><p class="eyebrow">${esc(human(x.state))}</p><p class="say">${
+    !o ? (x.state === "paused" ? "Paused: a card was declined." : "Working on it.") : notLive ? "Cart built." : "Order placed."}</p></div><div class="card hero">`;
+  if (o) {
+    h += `<div class="row"><div><div class="sm mut" style="font-weight:700">Store</div><div class="big" style="margin:0">${esc(o.retailer)}</div></div><div><div class="sm mut" style="font-weight:700">Reference</div><div><b>${esc(o.reference)}</b></div></div></div>`;
+    h += notLive ? `<div class="banner" role="note">Cart built; checkout for ${esc(o.retailer)} isn't connected yet. Nothing has been sent to the store.</div>`
+      : `<p class="sm">Status: ${esc(o.status)}</p>`;
+    h += `<div class="mut sm">Window ${esc(o.window || "")} · ${esc(o.address || "")}</div>`;
+  }
+  if (mine && rec) h += `<div class="tiles"><div class="tile" style="background:var(--soft);color:var(--softink)"><div class="sm" style="font-weight:700">Your share</div><div class="big" style="margin:2px 0 0">${money(mine.amount)}</div></div><div class="tile"><div class="sm mut" style="font-weight:700">Household total</div><div class="big" style="margin:2px 0 0">${money(rec.total)}</div></div></div>`;
+  h += `<h3>Payments</h3><div class="tw"><table><thead><tr><th>Who</th><th>Amount</th><th>State</th><th>Reference</th></tr></thead><tbody>`;
+  (x.payments || []).forEach(pm => {
+    const cls = pm.state === "failed" ? "bad" : ["captured", "authorized"].includes(pm.state) ? "ok" : "mut";
+    h += `<tr><td>${esc(name(pm.member))}</td><td>${money(pm.amount)}</td><td class="${cls}">${esc(human(pm.state))}${pm.error ? `<span class="v sm">${esc(pm.error)}</span>` : ""}</td><td class="sm mut">${esc(pm.intent)}</td></tr>`;
+  });
+  if (!(x.payments || []).length) h += `<tr><td colspan="4" class="mut">No payments yet.</td></tr>`;
+  el.innerHTML = h + `</tbody></table></div></div>`;
+}
 function renderAudit() {
   const rows = [...(S.audit || [])].sort((a, b) => String(b.at).localeCompare(String(a.at)));
   $("#audit").innerHTML = rows.length ? rows.map(r => `<tr><td class="sm mut" style="white-space:nowrap">${tm(r.at)}</td><td>${esc(name(r.actor))}</td>
-    <td>${esc(r.decision)}${(r.evidence || []).length ? `<span class="v mut">${r.evidence.map(esc).join(" · ")}</span>` : ""}</td>
-    <td class="sm">${esc(r.outcome)}${r.action ? `<span class="v mut">${esc(r.action)}</span>` : ""}</td></tr>`).join("")
+    <td>${esc(r.decision)}${(r.evidence || []).length ? `<span class="v mut sm">${r.evidence.map(e => esc(typeof e === "string" ? e : JSON.stringify(e))).join(" · ")}</span>` : ""}</td>
+    <td class="sm">${esc(r.outcome || "")}</td></tr>`).join("")
     : `<tr><td colspan="4" class="mut">No activity yet.</td></tr>`;
 }
 
-$("#who").onchange = e => { member = e.target.value; try { localStorage.setItem("gmember", member); } catch (x) {} load(); };
-$("#addf").onsubmit = e => {
-  e.preventDefault(); const text = $("#addin").value.trim(); if (!text) return;
-  act("#adderr", async () => { await api("/api/g/requests", {method: "POST", body: {text}}); $("#addin").value = ""; }, "#addbusy", "Understanding your request…");
-};
-$("#preff").onsubmit = e => {
-  e.preventDefault();
-  const body = {subject: $("#psub").value.trim(), value: $("#pval").value.trim(), hard: $("#phard").checked, visibility: $("#pvis").value, private_reason: $("#preason").value.trim() || null};
-  act("#preferr", async () => { await api("/api/g/prefs", {method: "POST", body}); $("#psub").value = $("#pval").value = $("#preason").value = ""; });
-};
+/* ---------- Wiring ---------- */
+$("#who").onchange = e => { setMember(e.target.value); profFor = null; chatSig = ""; chatHist = []; $("#pok").textContent = ""; load(); loadChat(); };
 $("#savemode").onclick = () => {
-  const m = document.querySelector('input[name=pmode]:checked'); if (!m) { $("#payerr").textContent = "Choose a payment mode."; return; }
+  const m = document.querySelector('input[name=pmode]:checked'); if (!m) { $("#payerr").textContent = "Choose how to pay."; return; }
   act("#payerr", () => api("/api/g/mode", {method: "POST", body: {mode: m.value, payer: m.value === "group_payer" ? $("#payer").value : undefined}}));
 };
-$("#build").onclick = () => act("#payerr", () => api("/api/g/plan", {method: "POST"}), "#planbusy", "Comparing baskets across sources…");
+$("#build").onclick = () => act("#payerr", () => api("/api/g/plan", {method: "POST"}), "#planbusy", "Comparing baskets across stores…");
+const TABS = ["home", "household", "profile", "list", "lastcall", "basket", "order"];
 function showTab(t, focus) {
-  if (!["home", "list", "basket", "activity"].includes(t)) t = "home";
-  document.querySelectorAll(".seg [role=tab]").forEach(b => { const on = b.dataset.tab === t; b.setAttribute("aria-selected", on); b.tabIndex = on ? 0 : -1; if (on && focus) b.focus(); });
-  document.querySelectorAll(".panel").forEach(p => p.hidden = p.id !== "p-" + t);
-  try { history.replaceState(null, "", "#" + t); } catch (e) {}
+  if (!TABS.includes(t)) t = "home";
+  $$(".tabs .seg [role=tab]").forEach(b => { const on = b.dataset.tab === t; b.setAttribute("aria-selected", on); b.tabIndex = on ? 0 : -1; if (on) { if (focus) b.focus(); try { b.scrollIntoView({block: "nearest", inline: "nearest"}); } catch (e) {} } });
+  $$(".panel").forEach(p => p.hidden = p.id !== "p-" + t);
+  try { history.replaceState(null, "", location.pathname + location.search + "#" + t); } catch (e) {}
 }
-document.querySelectorAll(".seg [role=tab]").forEach((b, i, all) => {
+$$(".tabs .seg [role=tab]").forEach((b, i, all) => {
   b.onclick = () => showTab(b.dataset.tab);
   b.onkeydown = e => { const d = e.key === "ArrowRight" ? 1 : e.key === "ArrowLeft" ? -1 : 0; if (d) { e.preventDefault(); showTab(all[(i + d + all.length) % all.length].dataset.tab, true); } };
 });
-document.querySelectorAll("[data-go]").forEach(b => b.onclick = () => { showTab(b.dataset.go); window.scrollTo(0, 0); });
+$$("[data-go]").forEach(b => b.onclick = () => { showTab(b.dataset.go); window.scrollTo(0, 0); });
 showTab((location.hash || "").slice(1));
-setInterval(() => { if (!busy && !document.hidden) load(); }, 5000);
-load();
+setInterval(() => { if (!busy && !document.hidden) { load(); loadChat(); } }, 4000);
+setInterval(tickCountdown, 1000);
+load().then(loadChat);
 </script>
 </body>
 </html>

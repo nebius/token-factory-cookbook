@@ -49,13 +49,13 @@ class DB:
         with _lock:
             cur = self.conn.cursor()
             try:
-                cur.execute(sql, args)
+                cur.execute(sql, args) if args else cur.execute(sql)
             except Exception:
                 if self.kind != "singlestore":
                     raise
                 self.conn.ping(reconnect=True)  # dropped connection: reconnect once and retry
                 cur = self.conn.cursor()
-                cur.execute(sql, args)
+                cur.execute(sql, args) if args else cur.execute(sql)
             rows = cur.fetchall() if cur.description else []
             if self.kind == "sqlite":
                 self.conn.commit()
