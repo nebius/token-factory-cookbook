@@ -18,12 +18,13 @@ References:
   - [Claude Code](#claude-code)
   - [Codex](#codex)
   - [OpenCode](#opencode)
+  - [Factory Droid](#factory-droid)
 - [Proxies](#proxies)
 
 ## Prerequisites
 
 - A [Token Factory](https://tokenfactory.nebius.com/) account and API key.
-- A supported coding agent installed (Cursor, Cline, Claude Code, Codex, or OpenCode).
+- A supported coding agent installed (Cursor, Cline, Claude Code, Codex, OpenCode, or Factory Droid).
 
 ## Top Coding Models @ Token Factory
 
@@ -47,6 +48,7 @@ For **Kimi K3.1 Pro**, start with the [Python quickstart](../models/kimi-k3.1-pr
 | Claude Code | - | - | ✅ | [instructions](#claude-code) |
 | Codex | - | - | ✅ | [instructions](#codex) |
 | OpenCode | ✅ | ✅ | ✅ | [instructions](opencode.md) |
+| Factory Droid | - | ✅ | - | [instructions](factory-droid/README.md) |
 
 
 ## Cursor
@@ -83,6 +85,10 @@ Integrates using the following proxies:
 ## OpenCode
 
 See the [OpenCode integration guide](opencode.md) — setup walkthrough with screenshots, model picker, and what one real agent run costs.
+
+## Factory Droid
+
+See the [Factory Droid recipe](factory-droid/README.md) for a tested setup with no proxy: Droid's custom-model settings generated from the live catalog, a smoke test that makes Droid fix a real bug, and a [per-model record](factory-droid/RESULTS.md) of what works and what does not.
 
 ## Proxies
 
