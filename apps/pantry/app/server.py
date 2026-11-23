@@ -1,6 +1,8 @@
 """HTTP API + web app + Poppy store + background trigger loop.
 
-Run: uvicorn app.server:app --host 0.0.0.0 --port 8700
+Run: uvicorn app.server:app --host 127.0.0.1 --port 8700
+
+There is no sign-in (the member is a query parameter), so listen on another address only on a network you trust.
 """
 import asyncio
 import os
@@ -16,7 +18,7 @@ from .seed import MEMBERS
 
 app = FastAPI(title="Occasions")
 WEB = Path(__file__).resolve().parent.parent / "web"
-SCAN_EVERY = int(os.environ.get("SCAN_EVERY_SECONDS", "0"))  # 0 = only on demand (demo control)
+SCAN_EVERY = int(os.environ.get("SCAN_EVERY_SECONDS") or "0")  # 0 = only on demand (demo control)
 
 
 def _member(m):
@@ -220,9 +222,13 @@ async def g_invite(req: Request, member: str = "ann"):
 async def g_join(req: Request):
     b = await req.json()
     r = await asyncio.to_thread(_g, grocery.join, b.get("code", ""))
-    mcp_base = os.environ.get("PUBLIC_MCP_URL", "")
-    r["mcp_url"] = f"{mcp_base.rstrip('/')}/mcp?token={r['mcp_token']}" if mcp_base else None
+    r["mcp_url"] = f"{mcp_base_url()}/mcp?token={r['mcp_token']}"
     return r
+
+
+def mcp_base_url():
+    """Where members' own agents reach the MCP server: PUBLIC_MCP_URL, else this machine's MCP port."""
+    return (os.environ.get("PUBLIC_MCP_URL") or f"http://localhost:{os.environ.get('MCP_PORT') or '8701'}").rstrip("/")
 
 
 @app.get("/api/g/profile")

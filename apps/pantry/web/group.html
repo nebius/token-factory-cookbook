@@ -417,7 +417,7 @@ $("#addf").onsubmit = e => {
       try { const u = new URL(location.href); u.searchParams.delete("join"); history.replaceState(null, "", u.pathname + u.search + u.hash); } catch (e) {}
       c.innerHTML = `<p class="eyebrow">Welcome</p><h2>You joined, ${esc(r.name)}.</h2>` + (r.mcp_url ? `<p class="sm" style="margin:0">Your personal agent link</p>
         <code class="link" id="mcpl">${esc(r.mcp_url)}</code><div class="inl"><button type="button" class="ghost sm" id="mcpc">Copy link</button><span class="okmsg" id="mcpok" role="status"></span></div>
-        <p class="mut sm" style="margin:8px 0 0">Add this as a custom connector in Claude to let your own agent add items.</p>` : `<p class="mut sm">Tell Pantry what you need on the Home tab.</p>`)
+        <p class="mut sm" style="margin:8px 0 0">Add this as an MCP server in your own agent (Claude, ChatGPT, Codex) to let it add items.</p>` : `<p class="mut sm">Tell Pantry what you need on the Home tab.</p>`)
         + `<div style="margin-top:12px"><button type="button" class="ghost sm" id="jclose">Got it</button></div>`;
       if (r.mcp_url) $("#mcpc").onclick = () => copy(r.mcp_url, "#mcpok");
       $("#jclose").onclick = () => { c.hidden = true; };

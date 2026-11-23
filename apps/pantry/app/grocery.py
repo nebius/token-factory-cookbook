@@ -145,7 +145,13 @@ def invite(member, name, email):
     require_member(member)
     if "coordinator" not in GROUP["members"][member]["roles"]:
         raise PermissionError("only the coordinator can invite people")
-    mid = re.sub(r"[^a-z0-9]+", "", name.lower())[:20] or f"m{uuid.uuid4().hex[:4]}"
+    base = re.sub(r"[^a-z0-9]+", "", name.lower())[:20] or f"m{uuid.uuid4().hex[:4]}"
+    mid, n = base, 2
+    while mid in GROUP["members"]:
+        held = GROUP["members"][mid]
+        if held.get("status") == "invited" and held.get("email") == email:
+            break  # the same pending invite sent again: reuse it
+        mid, n = f"{base}{n}", n + 1  # never replace someone already in the household (two people named Ann)
     code = uuid.uuid4().hex[:12]
     GROUP["members"][mid] = {"name": name.strip(), "roles": ["payer", "member"], "payment_linked": True,
                              "status": "invited", "email": email}
@@ -699,8 +705,9 @@ def quote_retailer(rk, lines):
 
 def allocate(quote, mode, group_payer):
     """Per-member shares. Personal items -> requester; shared items -> equal split among participants;
-    item discounts follow their item; tax follows taxable items; fees split equally. Largest-remainder
-    rounding so member totals reconcile exactly to the order total."""
+    item discounts follow their item; tax follows taxable items; fees split equally. Shares are rounded
+    down to the cent and the leftover cents go to members in listed order (the coordinator first), so
+    member totals reconcile exactly to the order total."""
     members = joined_members()
     raw = {m: Decimal("0") for m in members}
     detail = {m: [] for m in members}
