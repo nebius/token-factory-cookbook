@@ -25,10 +25,11 @@ _load_env()
 
 
 def env(name, default=""):
-    return os.environ.get(name, default)
+    """A variable that is set but blank (for example an unfilled line in .env) counts as unset."""
+    return os.environ.get(name) or default
 
 
-# Demo clock: pin "today" so the calendar triggers fire on stage. Empty = real date.
+# Demo clock: "today" is pinned so the seeded calendar always has something due. Set DEMO_TODAY to move it.
 TODAY = date.fromisoformat(env("DEMO_TODAY", "2026-11-20"))
 
 DB_PATH = Path(env("DB_PATH", str(ROOT / "data" / "occasions.db")))

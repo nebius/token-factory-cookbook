@@ -1,11 +1,14 @@
 """MCP server: lets each family member's own agent (Claude, ChatGPT, ...) use the family layer.
 
-Identity comes from the bearer token (MEMBER_TOKENS="shivay:<token>,dad:<token>") over HTTP, or
-OCCASIONS_MEMBER for a local stdio connection. The server enforces what each member can read and
-spend; the calling model never decides that.
+Identity comes from the bearer token (MEMBER_TOKENS="ann:<token>,shivay:<token>", or the personal
+token issued when someone joins by invite) over HTTP, or OCCASIONS_MEMBER for a local stdio
+connection. The server enforces what each member can read and spend; the calling model never decides that.
 
-Run (HTTP): python -m app.mcp_server            -> http://0.0.0.0:8701/mcp
+Run (HTTP): python -m app.mcp_server            -> http://127.0.0.1:8701/mcp
 Run (stdio): OCCASIONS_MEMBER=dad python -m app.mcp_server stdio
+
+The HTTP server listens on 127.0.0.1 unless PANTRY_HOST is set. On a loopback address the MCP library
+also rejects requests whose Host header is not localhost, so set PANTRY_HOST=0.0.0.0 behind a tunnel.
 """
 import os
 import sys
@@ -15,7 +18,8 @@ from mcp.server.fastmcp import Context, FastMCP
 from . import agent, memory
 from .seed import MEMBERS
 
-mcp = FastMCP("occasions-family", host="0.0.0.0", port=int(os.environ.get("MCP_PORT", "8701")))
+mcp = FastMCP("occasions-family", host=os.environ.get("PANTRY_HOST") or "127.0.0.1",
+              port=int(os.environ.get("MCP_PORT") or "8701"))
 
 
 def _tokens():

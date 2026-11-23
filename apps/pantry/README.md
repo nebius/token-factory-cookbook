@@ -59,10 +59,12 @@ From this directory:
 
 ```bash
 uv sync
-cp .env.example .env
+cp env.example .env
 chmod 600 .env
 # Fill in NEBIUS_API_KEY and any optional integrations you want to use.
 ```
+
+[`env.example`](env.example) lists every variable the app reads. Only `NEBIUS_API_KEY` is needed for live model calls; a line left commented out or blank uses the default.
 
 ## Run
 
@@ -70,7 +72,7 @@ chmod 600 .env
 ./run.sh
 ```
 
-`run.sh` starts the web app on port 8700 and the MCP server on port 8701, and generates a personal MCP token for each demo member in `.env` on first start.
+`run.sh` starts the web app on port 8700 and the MCP server on port 8701. Both listen on `127.0.0.1` only, because the app has no sign-in. On first start it also writes a personal MCP token to `MEMBER_TOKENS` in `.env` for each member of the default household (Ann, Shivay, Yash and Shane) and for Dad, who belongs to the occasions agent.
 
 1. Reset to an empty household: `curl -X POST "localhost:8700/api/g/reset?fresh=1"`.
 2. Open `http://localhost:8700/group`. On **Household**, create the household and invite people. Open each join link to join as that person.
@@ -78,10 +80,24 @@ chmod 600 .env
 4. On **Last call**, send a two-minute last call. At the cutoff the basket is built automatically.
 5. On **Basket**, each person approves their own share using the **You are** menu. Then click **Authorize payments and place order**.
 
-To connect a member's own agent, add `http://<host>:8701/mcp?token=<that member's token>` as a custom connector in Claude, or run:
+To connect a member's own agent, you need that member's token:
+
+- Someone who joins by invite sees a personal agent link (`http://localhost:8701/mcp?token=...`) on the welcome card.
+- Ann, the coordinator, never joins by invite. Her token is the `ann:` entry of `MEMBER_TOKENS` in `.env`, as are the tokens of the other default members.
+
+Then add the server to the agent, for example in Claude Code:
 
 ```bash
 claude mcp add --transport http pantry-ann "http://localhost:8701/mcp" --header "Authorization: Bearer <token>"
+```
+
+A hosted agent, such as a custom connector in Claude, can't reach `localhost`. For that, put the MCP port behind a tunnel, set `PANTRY_HOST=0.0.0.0` and set `PUBLIC_MCP_URL` to the tunnel's URL so the personal agent links point at it.
+
+To watch a scripted agent use the tools, run it as a member who has joined. Here it adds a dozen eggs for the house as Shivay:
+
+```bash
+set -a; . ./.env; set +a
+uv run python scripts/member_agent.py http://localhost:8701 shivay
 ```
 
 To run the whole household script against a running server (live calls to every configured service):
@@ -98,9 +114,9 @@ Credential-free checks:
 uv run pytest -q tests
 ```
 
-The 25 tests cover:
+The 28 tests cover:
 - the conversation's follow-up questions;
-- household invites and single-use join links;
+- household invites, single-use join links and personal agent links, including two people with the same name;
 - shared and personal allocation, with exact reconciliation in both payment modes;
 - the split-basket check, last-call cutoff, approval versioning and duplicate execution;
 - a declined card releasing other holds, and refunds;
@@ -121,7 +137,7 @@ The Persona identity step is part of the occasions agent and was not exercised i
 
 - **Prices are a snapshot.** Store prices come from a dated search-result snapshot of five national products at Walmart, Target, Safeway and Whole Foods Market. They aren't live quotes. Listings that weren't found, prices that weren't seen and fees that weren't returned are labelled, never treated as zero.
 - **No real checkout.** No live retailer API was available, so orders are marked synthetic and never shown as purchased or delivered. There is no delivery tracking.
-- **No sign-in.** The web app uses a demo member switcher. MCP access uses a personal token per member.
+- **No sign-in.** The web app uses a demo member switcher, so anyone who can reach port 8700 can act as any member, reset the run or start the payment flow. Both servers therefore listen on `127.0.0.1` by default. Set `PANTRY_HOST=0.0.0.0` only on a network you trust. MCP access uses a personal token per member.
 - **Firedrill is temporary.** Its URLs point to a local bridge tied to a temporary session.
 - **Cleanup:**
   - Stop the servers with `pkill -f "uvicorn app.server:app"` and `pkill -f "python -m app.mcp_server"`.
@@ -135,6 +151,12 @@ Built by Shivay Lamba and team for the Personal Agents Hackathon. Source: [shiva
 Cookbook changes:
 - Guild workspace and agent IDs moved to environment variables;
 - `pyproject.toml` and `uv.lock` added;
-- an environment template.
+- an environment template, [`env.example`](env.example);
+- both servers listen on `127.0.0.1` by default;
+- personal MCP tokens for the whole default household, and a personal agent link on every join;
+- an invite never replaces an existing member with the same name;
+- `scripts/member_agent.py`, a scripted MCP client for a household member.
 
 The upstream project already uses Kimi K3.1 Pro as its default model.
+
+MIT, under this cookbook's [LICENSE](../../LICENSE).

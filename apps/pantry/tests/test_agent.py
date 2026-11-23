@@ -5,7 +5,11 @@ import tempfile
 os.environ["DB_PATH"] = os.path.join(tempfile.mkdtemp(), "t.db")
 os.environ["OCCASIONS_NO_DOTENV"] = "1"  # tests run offline against the fixtures
 for k in ("SINGLESTORE_URL", "LLM_API_KEY", "ARCEE_API_KEY", "SENSO_API_KEY", "PERSONA_API_KEY",
-          "STATSIG_SERVER_SECRET", "AMPLITUDE_API_KEY", "STRIPE_SECRET_KEY", "COGNEE_API_KEY"):
+          "STATSIG_SERVER_SECRET", "AMPLITUDE_API_KEY", "STRIPE_SECRET_KEY", "COGNEE_API_KEY",
+          # Without these, running this file on its own with keys exported would make live, paid calls.
+          "NEBIUS_API_KEY", "SIE_API_KEY", "GUILD_API_KEY", "TOKENS_OBSERVE_API_KEY",
+          "FIREDRILL_GOOGLE_CALENDAR_MCP_URL", "FIREDRILL_GMAIL_MCP_URL", "FIREDRILL_SLACK_MCP_URL",
+          "FIREDRILL_STRIPE_MCP_URL"):
     os.environ.pop(k, None)
 
 import pytest  # noqa: E402

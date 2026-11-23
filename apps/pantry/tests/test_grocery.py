@@ -180,6 +180,48 @@ def test_create_invite_join_flow():
         grocery.join(code)  # single use
 
 
+def test_invite_never_replaces_an_existing_member():
+    grocery.reset_run(fresh=True)
+    grocery.create_household("ann", "Maple House")
+    inv = grocery.invite("ann", "Ann", "other.ann@example.test")
+    assert inv["member"] != "ann"  # a second Ann gets her own id
+    members = grocery.snapshot("ann")["group"]["members"]
+    assert "coordinator" in members["ann"]["roles"] and members["ann"]["status"] == "joined"
+    assert members[inv["member"]]["status"] == "invited"
+    again = grocery.invite("ann", "Ann", "other.ann@example.test")
+    assert again["member"] == inv["member"]  # sending the same pending invite again reuses it
+    assert grocery.join(again["join_link"].split("join=")[1])["member"] == inv["member"]
+    third = grocery.invite("ann", "Ann", "third.ann@example.test")
+    assert third["member"] not in ("ann", inv["member"])
+
+
+def test_join_always_returns_a_personal_agent_link(monkeypatch):
+    from fastapi.testclient import TestClient
+
+    from app import server
+    monkeypatch.delenv("PUBLIC_MCP_URL", raising=False)
+    monkeypatch.delenv("MCP_PORT", raising=False)
+    grocery.reset_run(fresh=True)
+    grocery.create_household("ann", "Maple House")
+    client = TestClient(server.app)  # not entered as a context manager, so no startup tasks run
+
+    def join(name):
+        code = grocery.invite("ann", name, f"{name.lower()}@example.test")["join_link"].split("join=")[1]
+        return client.post("/api/g/join", json={"code": code}).json()
+    j = join("Shivay")
+    assert j["mcp_url"] == f"http://localhost:8701/mcp?token={j['mcp_token']}"
+    monkeypatch.setenv("PUBLIC_MCP_URL", "https://pantry.example.test/")
+    assert join("Yash")["mcp_url"].startswith("https://pantry.example.test/mcp?token=")
+
+
+def test_blank_env_values_fall_back_to_defaults(monkeypatch):
+    from app import config
+    monkeypatch.setenv("LLM_MODEL", "")  # an unfilled line in .env
+    assert config.env("LLM_MODEL", "moonshotai/Kimi-K3.1-Pro") == "moonshotai/Kimi-K3.1-Pro"
+    monkeypatch.setenv("LLM_MODEL", "moonshotai/Kimi-K3")
+    assert config.env("LLM_MODEL", "moonshotai/Kimi-K3.1-Pro") == "moonshotai/Kimi-K3"
+
+
 def test_split_basket_reported_honestly():
     full_list()
     p = grocery.plan("ann")
