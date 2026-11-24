@@ -11,6 +11,7 @@ ENV_TEMPLATES = (
     ROOT / "rag/chat-with-pdf/env.example",
     ROOT / "apps/image-to-3d/.env.example",
     ROOT / "apps/pantry/env.example",
+    ROOT / "coding/factory-droid/env.example",
     ROOT / "agents/langchain/nebius_travel_planner/env.example",
     ROOT / "workshops/deep-research-writing-agents-nebius-okahu/.env.example",
     ROOT
@@ -62,6 +63,7 @@ class RecipeSecretHygieneTest(unittest.TestCase):
             "agents/agno-agents-examples/README.md",
             "agents/agno-hacker-news-agent/README.md",
             "agents/camel-ai-model-comparison-agent/README.md",
+            "coding/factory-droid/README.md",
             "rag/chat-with-pdf/README.md",
             "workshops/deep-research-writing-agents-nebius-okahu/README.md",
             "workshops/deep-research-writing-agents-nebius-okahu/implement_yourself/README.md",

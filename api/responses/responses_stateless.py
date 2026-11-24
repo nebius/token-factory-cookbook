@@ -4,9 +4,10 @@ from __future__ import annotations
 
 import argparse
 import os
+import sys
 from typing import Any
 
-from openai import OpenAI
+from openai import OpenAI, OpenAIError
 
 DEFAULT_BASE_URL = "https://api.tokenfactory.nebius.com/v1/"
 
@@ -18,28 +19,43 @@ def create_client(api_key: str, base_url: str = DEFAULT_BASE_URL) -> OpenAI:
 
 def create_stateless_response(client: Any, model: str, prompt: str) -> Any:
     """Create an independent first-turn response without server-side state."""
-    return client.responses.create(
+    response = client.responses.create(
         model=model,
         input=prompt,
         store=False,
     )
+    require_completed(response)
+    return response
+
+
+def require_completed(response: Any) -> None:
+    status = getattr(response, "status", None)
+    if status != "completed":
+        raise RuntimeError(f"Response did not complete (status: {status}).")
 
 
 def stream_stateless_response(client: Any, model: str, prompt: str) -> str:
     """Stream text deltas from an independent first-turn response."""
     chunks: list[str] = []
-    events = client.responses.create(
+    completed = False
+    with client.responses.create(
         model=model,
         input=prompt,
         store=False,
         stream=True,
-    )
-    for event in events:
-        if getattr(event, "type", None) == "response.output_text.delta":
-            delta = getattr(event, "delta", "")
-            chunks.append(delta)
-            print(delta, end="", flush=True)
+    ) as events:
+        for event in events:
+            if event.type == "response.output_text.delta":
+                chunks.append(event.delta)
+                print(event.delta, end="", flush=True)
+            elif event.type == "response.completed":
+                require_completed(event.response)
+                completed = True
+            elif event.type in {"response.failed", "response.incomplete", "error"}:
+                raise RuntimeError(f"Response stream failed ({event.type}).")
     print()
+    if not completed:
+        raise RuntimeError("Response stream ended before response.completed.")
     return "".join(chunks)
 
 
@@ -66,14 +82,19 @@ def main() -> int:
     parser.add_argument("--stream", action="store_true", help="Stream text deltas.")
     args = parser.parse_args()
 
-    api_key, model = required_environment()
-    client = create_client(api_key, os.getenv("NEBIUS_BASE_URL", DEFAULT_BASE_URL))
-    if args.stream:
-        stream_stateless_response(client, model, args.prompt)
-        return 0
-
-    response = create_stateless_response(client, model, args.prompt)
-    print(response.output_text)
+    try:
+        api_key, model = required_environment()
+        with create_client(
+            api_key, os.getenv("NEBIUS_BASE_URL", DEFAULT_BASE_URL)
+        ) as client:
+            if args.stream:
+                stream_stateless_response(client, model, args.prompt)
+            else:
+                response = create_stateless_response(client, model, args.prompt)
+                print(response.output_text)
+    except (OpenAIError, RuntimeError) as exc:
+        print(f"Error: {exc}", file=sys.stderr)
+        return 1
     return 0
 
 
