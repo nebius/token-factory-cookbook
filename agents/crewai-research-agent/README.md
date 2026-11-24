@@ -1,121 +1,59 @@
-# CrewAI Starter Agent
+# CrewAI with Nebius Token Factory
 
-A simple yet powerful AI research crew built with CrewAI that leverages multiple specialized agents to discover and analyze groundbreaking technologies. 
+This example enriches the existing CrewAI integration with a runnable two-agent crew and a deterministic local tool. It uses CrewAI's built-in custom OpenAI-compatible route, so it does **not** add or require a Nebius provider class.
 
-## References and Acknowledgements
+The recipe calls the supported OpenAI-compatible **Chat Completions** interface at `https://api.tokenfactory.nebius.com/v1`. It does not use or claim stateful Responses API behavior.
 
-- [CrewAI documentation](https://docs.crewai.com/)
-- [CrewAI + Nebius](https://docs.crewai.com/en/concepts/llms#nebius-ai-studio)
-- [CrewAI examples](https://github.com/crewAIInc/crewAI)
-- [Nebius Token Factory documentation](https://docs.tokenfactory.nebius.com//inference/quickstart)
-- This example is contributed from [Arindam200/awesome-ai-apps](https://github.com/Arindam200/awesome-ai-apps)
+## What it demonstrates
 
+- explicit Token Factory base URL and `NEBIUS_API_KEY` authentication;
+- a current Token Factory model ID passed unchanged to the API;
+- CrewAI's native `custom_openai=True` route rather than a duplicated provider;
+- two sequential agents sharing one configured LLM;
+- a deterministic local lookup tool and an evidence-bounded final task; and
+- offline tests for configuration, tool behavior, crew wiring, and the outgoing Chat Completions request.
 
+## Run it
 
-## Features
-
-- 🔬 **Specialized Research**: Dedicated researcher agent focused on discovering groundbreaking technologies
-- 🤖 **Intelligent Analysis**: Powered by Meta-Llama-3.1-70B-Instruct model for deep insights
-- 📊 **Structured Output**: Well-defined tasks with clear expected outputs
-- ⚡ **Sequential Processing**: Organized task execution for optimal results
-- 💡 **Customizable Crew**: Easy to extend with additional agents and tasks
-
-## Prerequisites
-
-- Nebius API key (get it from [Nebius Token Factory](http://tokenfactory.nebius.com/))
-- If running locally, python 3.10 or higher dev environment.
-
-## Tech Stack
-
-- CrewAI agent framework
-- Nebius AI for LLM inference
-
-## Task Structure
-
-Tasks are defined with:
-
-- Clear description
-- Expected output format
-- Assigned agent
-- Sequential processing
-
-## Example Tasks
-
-- "Identify the next big trend in AI"
-- "Analyze emerging technologies in quantum computing"
-- "Research breakthroughs in sustainable tech"
-- "Investigate future of human-AI collaboration"
-- "Explore cutting-edge developments in robotics"
-
-## Setup
-
-The code can be run locally or on Google colab.  Colab is recommended, as it doesn't need any setup.
-
-### Local env setup
-
-1. Clone the repository:
+Python 3.11 or newer and a [Token Factory API key](https://tokenfactory.nebius.com/project/api-keys) are required.
 
 ```bash
-git clone   https://github.com/nebius/token-factory-cookbook/
-cd  agents/crewai-research-agent
-```
-2. Install dependencies:
-
-if using `uv` package manager
-```bash
+cd agents/crewai-research-agent
+cp env.example .env
+# Edit .env and set NEBIUS_API_KEY.
 uv sync
-```
-
-If using conda/pip
-
-```bash
-pip  install  -r requirements.txt
-```
-
-
-1. Create a `.env` file in the project root and add your Nebius API key:
-
-```
-NEBIUS_API_KEY=your_api_key_here
-```
-
-## Video
-
-🎥 [Video tutorial](https://www.youtube.com/watch?v=jth10qwoMq0)
-
-## Code
-
-[agent.ipynb](agent.ipynb) notebook can be run locally or Google Colab.
-- [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/nebius/token-factory-cookbook/blob/main/agents/crewai-research-agent/agent.ipynb)
-- run locally:  
-    `uv run --with jupyter jupyter lab agent.ipynb`
-
-[agent.py](agent.py) python script can be run locally.
-
-```bash
-# using uv
 uv run python agent.py
-
-# or 
-python agent.py
 ```
 
-## Dev Notes
+The default topic is `tool-using agents`. Change the `topic` input in `main()` to try another subject. The example tool deliberately uses a small local evidence map so its behavior is easy to inspect and test; replace it with your own validated data source for production use.
 
-How the uv project was created.
+## Why `custom_openai=True`?
+
+CrewAI already supports arbitrary OpenAI-compatible Chat Completions endpoints:
+
+```python
+llm = LLM(
+    model="Qwen/Qwen3-30B-A3B-Instruct-2507",
+    custom_openai=True,
+    base_url="https://api.tokenfactory.nebius.com/v1",
+    api_key=os.environ["NEBIUS_API_KEY"],
+)
+```
+
+This keeps the provider-owned model ID intact and forces CrewAI's existing native OpenAI client to the Token Factory endpoint. There is no need for another CrewAI provider or adapter.
+
+CrewAI also exposes a LiteLLM-based `nebius/...` shortcut. Use that shortcut only with a LiteLLM release containing [LiteLLM PR #36777](https://github.com/BerriAI/litellm/pull/36777), which repairs the Nebius default endpoint and catalog. The explicit `custom_openai=True` configuration above is independent of that release and is the path tested here.
+
+## Test offline
 
 ```bash
-uv init .
-uv add -r requirements.txt
-uv add --dev ipykernel   # for jupyter kernel
-uv sync
-
-# create a kernel to use uv env within vscode
-source  .venv/bin/activate
-uv run python -m ipykernel install --user --name=$(basename $(pwd)) --display-name "$(basename $(pwd))"
-jupyter kernelspec list  # verify kernel is successfully created
+uv run pytest -q
 ```
 
+The tests install a mocked OpenAI transport and make no network calls. They assert that CrewAI sends bearer-authenticated `POST /v1/chat/completions` requests with the raw Token Factory model ID.
 
+## References
 
-
+- [CrewAI OpenAI-compatible endpoint documentation](https://docs.crewai.com/en/concepts/llms#openai)
+- [Token Factory inference quickstart](https://docs.tokenfactory.nebius.com/inference/quickstart)
+- [Token Factory model catalog](https://tokenfactory.nebius.com/)
