@@ -33,6 +33,8 @@ The honest trade-off: you get Jev's interface and most of its reliability with a
 
 ## Prerequisites
 
+Setting this up with a coding agent? Point it at [AGENTS.md](AGENTS.md).
+
 - Python 3.11 or newer and [uv](https://docs.astral.sh/uv/)
 - A Token Factory API key with access to [`zai-org/GLM-5.3-Flash`](https://tokenfactory.nebius.com/models/catalog/image2text/zai-org%2FGLM-5.3-Flash). See the [setup guide](../../start-here/setup.md) if you don't have one yet.
 

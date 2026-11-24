@@ -10,7 +10,7 @@ Runnable examples for building applications with open models on [Nebius Token Fa
 
 ## Start building
 
-**New to Token Factory?** Follow the [quick tour](start-here/README.md) and [environment setup](start-here/setup.md). Each recipe has its own dependencies and run instructions.
+**New to Token Factory?** Follow the [quick tour](start-here/README.md) and [environment setup](start-here/setup.md). Each recipe has its own dependencies and run instructions. Using a coding agent? Point it at [AGENTS.md](AGENTS.md).
 
 ```bash
 git clone https://github.com/nebius/token-factory-cookbook.git

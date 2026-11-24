@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 import os
+import re
 import sys
 import tempfile
 import unittest
@@ -84,6 +85,10 @@ class EnvFileTest(unittest.TestCase):
             self.load('export TF_MODELS="a/one, b/two"\n  TF_MAX_OUTPUT_TOKENS = 32000  \nnot a setting\n')
             self.assertEqual(tf_models.requested_models(), ["a/one", "b/two"])
             self.assertEqual(os.environ["TF_MAX_OUTPUT_TOKENS"], "32000")
+
+    def test_last_line_wins_so_appending_changes_a_value(self) -> None:
+        self.load("TF_MODELS=\nTF_MODELS=a/one\n\nTF_MODELS=b/two\n")
+        self.assertEqual(os.environ["TF_MODELS"], "b/two")
 
     def test_missing_file_is_fine(self) -> None:
         tf_models.load_env_file(Path("/nonexistent/.env"))
@@ -236,6 +241,15 @@ class RecipeFilesTest(unittest.TestCase):
             if line and not line.startswith("#"):
                 name, _, value = line.partition("=")
                 self.assertEqual(value, "", f"{name} must be blank in env.example")
+
+    def test_docs_name_only_scripts_and_settings_that_exist(self) -> None:
+        template = (RECIPE_DIR / "env.example").read_text(encoding="utf-8")
+        for name in ("README.md", "AGENTS.md"):
+            text = (RECIPE_DIR / name).read_text(encoding="utf-8")
+            for script in set(re.findall(r"\b(\w+\.py)\b", text)):
+                self.assertTrue((RECIPE_DIR / "scripts" / script).is_file(), f"{name}: {script}")
+            for setting in set(re.findall(r"\b(?:TF_[A-Z_]+|NEBIUS_API_KEY)\b", text)):
+                self.assertIn(f"\n{setting}=\n", "\n" + template, f"{name}: {setting}")
 
     def test_scripts_name_no_model(self) -> None:
         for script in sorted((RECIPE_DIR / "scripts").glob("*.py")):

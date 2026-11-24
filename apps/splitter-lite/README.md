@@ -49,6 +49,8 @@ The tools work in integer cents with largest-remainder rounding ([`src/lib/money
 
 ## Setup
 
+Setting this up with a coding agent? Point it at [AGENTS.md](AGENTS.md).
+
 Requirements: Node.js 22.13 or newer, and a [Nebius Token Factory](https://tokenfactory.nebius.com) API key.
 
 ```bash

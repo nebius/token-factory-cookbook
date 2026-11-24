@@ -4,6 +4,8 @@ Beam is Reflection AI's first open-weight model, a 501B-parameter mixture-of-exp
 
 In this project you build a data analyst agent you can run on a laptop. You give Beam a sales dataset, three business questions, and three tools. Beam writes and runs pandas code to answer each question, and you measure what each run costs.
 
+Setting this up with a coding agent? Point it at [AGENTS.md](AGENTS.md).
+
 Here are the data and the questions:
 
 ![The task for seed 7: orders.csv holds 3,000 orders with columns from order_id to status. Question 1 asks for the top region by Q2 net revenue, and Beam groups completed Q2 orders by region to get Asia Pacific. Question 2 asks how online net revenue changed from May to June, and Beam compares the two months to get minus 32.6 percent. Question 3 asks for the Q2 refund rate of the region from question 1, and Beam gets 2.8 percent. An arrow shows question 3 building on the answer to question 1](images/three-questions.png)

@@ -24,6 +24,8 @@ Keep each runnable recipe self-contained in a descriptive, lowercase directory. 
 
 Use the [recipe README template](.github/RECIPE_TEMPLATE.md). Document the outcome, prerequisites, exact setup and run commands, expected output, and limitations. Specify the model and endpoint actually used; distinguish recorded results from a new validation run.
 
+Add an `AGENTS.md` next to the README from the [agent instructions template](.github/AGENTS_TEMPLATE.md), and link it from the README. It tells a coding agent how to set the recipe up for a reader: the exact commands, every step that needs the reader (keys, paid runs, changes outside the folder), and the output that proves it works. Have an agent follow it in a clean copy before you submit.
+
 Keep dependencies in the recipe directory. Commit the appropriate lockfile for an application. Describe which commands work without credentials and which call paid services or change external systems. Explain how to clean up resources created by the example.
 
 Never commit credentials, local databases, kubeconfigs, dependency folders, or generated build output. Environment templates contain blank values or obvious placeholders. Clear notebook execution output and execution counts before submitting.
