@@ -2,6 +2,8 @@
 
 Describe the outcome and how this example uses Nebius Token Factory.
 
+Add agent setup instructions next to this file from the [agent instructions template](AGENTS_TEMPLATE.md), and link them from here in one line.
+
 ## What you will build
 
 Explain the workflow and link to an architecture diagram or screenshot when it helps. Identify the model, framework, and tools used.
