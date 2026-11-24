@@ -5,7 +5,7 @@
 > can't confidently resolve the issue.
 
 Built with **LangChain** for the agent + tool-calling layer and
-**Nebius Token Factory** for both the LLM (`Qwen/Qwen3-30B-A3B`) and
+**Nebius Token Factory** for both the LLM (`Qwen/Qwen3-30B-A3B-Instruct-2507`) and
 the embedding model (`Qwen/Qwen3-Embedding-8B`).
 
 ## 🚀 Features

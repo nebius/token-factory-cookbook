@@ -106,7 +106,7 @@ meeting_briefing_agent/
 
 ## 🔍 Technical Notes
 
-- **Default model:** `Qwen/Qwen3-30B-A3B-Instruct-2507` on Nebius Token Factory (an economical MoE model with structured-output support). Switch to `Qwen/Qwen3.5-397B-A17B`, `deepseek-ai/DeepSeek-V4-Pro`, or `zai-org/GLM-5.2` in the sidebar for higher-quality reasoning and writing, or set `NEBIUS_MODEL`.
+- **Default model:** `Qwen/Qwen3-30B-A3B-Instruct-2507` on Nebius Token Factory (an economical MoE model with structured-output support). Switch to `Qwen/Qwen3.8-27B`, `deepseek-ai/DeepSeek-V4-Pro-0813`, or `zai-org/GLM-5.2` in the sidebar for higher-quality reasoning and writing, or set `NEBIUS_MODEL`.
 - **Iteration budget:** the reflect→research loop runs at most `max_iterations` times (default 2, configurable) so a run always terminates.
 - **Evidence dedupe:** sources are deduplicated by URL across all research passes.
 

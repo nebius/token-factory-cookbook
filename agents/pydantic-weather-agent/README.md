@@ -15,7 +15,7 @@ A powerful AI agent built with PydanticAI that provides real-time weather inform
 ## Tech Stack
 
 - **PydanticAI** framework for AI agent development
-- **Nebius AI's** Meta-Llama-3.1-70B-Instruct model
+- A **Nebius Token Factory** model that supports tool calling: `Qwen/Qwen3-30B-A3B-Instruct-2507` by default, or the ID in `NEBIUS_MODEL`
 - **DuckDuckGo Search Tool** for weather information
 
 ## Prerequisites

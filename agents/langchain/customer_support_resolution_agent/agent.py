@@ -11,7 +11,7 @@ from tools import ALL_TOOLS
 
 load_dotenv()
 
-DEFAULT_MODEL = os.getenv("NEBIUS_MODEL", "Qwen/Qwen3-30B-A3B")
+DEFAULT_MODEL = os.getenv("NEBIUS_MODEL", "Qwen/Qwen3-30B-A3B-Instruct-2507")
 
 SYSTEM_PROMPT = """You are NimbusCart's customer support resolution agent.
 

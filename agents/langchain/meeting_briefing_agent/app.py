@@ -61,8 +61,8 @@ def _merge_stream_update(state: dict, update: dict) -> dict:
 
 MODEL_CHOICES = [
     "Qwen/Qwen3-30B-A3B-Instruct-2507",
-    "Qwen/Qwen3.5-397B-A17B",
-    "deepseek-ai/DeepSeek-V4-Pro",
+    "Qwen/Qwen3.8-27B",
+    "deepseek-ai/DeepSeek-V4-Pro-0813",
     "zai-org/GLM-5.2",
 ]
 

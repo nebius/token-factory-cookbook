@@ -12,7 +12,7 @@ from tools import TRAVEL_TOOLS
 
 load_dotenv()
 
-DEFAULT_MODEL = os.getenv("NEBIUS_MODEL", "Qwen/Qwen3-30B-A3B")
+DEFAULT_MODEL = os.getenv("NEBIUS_MODEL", "Qwen/Qwen3-30B-A3B-Instruct-2507")
 
 
 def _system_prompt() -> str:

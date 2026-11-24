@@ -8,16 +8,42 @@ import tempfile
 import shutil
 import base64
 import io
+import json
 import re
+import urllib.request
 
 # Load environment variables
 load_dotenv()
+
+# Token Factory retires models and does not reroute retired IDs, so the sidebar
+# lists what is served now. NEBIUS_MODEL picks the one selected at start.
+DEFAULT_MODEL = "Qwen/Qwen3-30B-A3B-Instruct-2507"
+MODELS_URL = "https://api.tokenfactory.nebius.com/v1/models?verbose=true"
+
+
+@st.cache_data(ttl=3600, show_spinner=False)
+def live_text_models() -> list[str]:
+    """IDs of the text models Token Factory serves now; empty if the catalog cannot be read."""
+    request = urllib.request.Request(
+        MODELS_URL, headers={"Authorization": f"Bearer {os.getenv('NEBIUS_API_KEY', '')}"}
+    )
+    try:
+        with urllib.request.urlopen(request, timeout=10) as response:
+            models = json.load(response)["data"]
+    except (OSError, ValueError, KeyError):
+        return []
+    return sorted(
+        model["id"]
+        for model in models
+        if (model.get("architecture") or {}).get("modality", "").endswith("->text")
+    )
+
 
 def run_rag_completion(
     documents,
     query_text: str,
     embedding_model: str = "Qwen/Qwen3-Embedding-8B",
-    generative_model: str = "Qwen/Qwen3-235B-A22B"
+    generative_model: str = DEFAULT_MODEL
 ) -> str:
     """Run RAG completion using Nebius models."""
     llm = NebiusLLM(
@@ -129,10 +155,12 @@ def main():
         st.image("https://img.shields.io/badge/Powered%20by-Nebius%20AI-orange?style=flat&labelColor=orange&color=green", width=150)
         
         # Model selection
+        preferred = os.getenv("NEBIUS_MODEL", DEFAULT_MODEL)
+        choices = live_text_models() or [preferred]
         generative_model = st.selectbox(
             "Generative Model",
-            ["Qwen/Qwen3-235B-A22B", "deepseek-ai/DeepSeek-V3"],
-            index=0
+            choices,
+            index=choices.index(preferred) if preferred in choices else 0
         )
         
         st.divider()

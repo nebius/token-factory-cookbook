@@ -7,9 +7,10 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-# Set up the model with the user-provided API key
+# Token Factory retires models, so the ID comes from NEBIUS_MODEL when set.
+# Pick a current one from https://tokenfactory.nebius.com/models
 model = OpenAIModel(
-    model_name='meta-llama/Meta-Llama-3.1-70B-Instruct',
+    model_name=os.environ.get('NEBIUS_MODEL', 'Qwen/Qwen3-30B-A3B-Instruct-2507'),
     provider=OpenAIProvider(
         base_url='https://api.tokenfactory.nebius.com/v1/',
         api_key=os.environ['NEBIUS_API_KEY']
