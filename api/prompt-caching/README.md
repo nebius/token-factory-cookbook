@@ -133,7 +133,7 @@ measured calls plus about $0.069 for its anti-pattern miss.
 .venv/bin/python -m pytest -q -p no:cacheprovider
 ```
 
-Fifteen tests run against a fake client and a fixture catalog. None of them call the network.
+Sixteen tests run against a fake client and a fixture catalog. None of them call the network.
 
 ## Troubleshooting
 

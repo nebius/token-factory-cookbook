@@ -19,6 +19,8 @@ from dataclasses import dataclass
 DEFAULT_BASE_URL = "https://api.tokenfactory.nebius.com/v1"
 DEFAULT_MODELS = "moonshotai/Kimi-K3.1-Pro,zai-org/GLM-5.3-Flash,deepseek-ai/DeepSeek-V4.1-Flash-1017"
 DEFAULT_CATALOG_URL = "https://tokenfactory.nebius.com/api/public/models_info"
+# The catalog answers 403 to urllib's default "Python-urllib/x.y" user agent.
+USER_AGENT = "token-factory-cookbook/prompt-caching"
 SENTENCE = (
     "The Northwind parts catalog lists item {i} with its unit price, warehouse shelf, "
     "supplier code, reorder point and preferred shipping lane. "
@@ -96,8 +98,9 @@ def parse_catalog(data: list[dict]) -> list[dict]:
 
 
 def fetch_catalog(url: str, timeout: float = 10) -> list[dict]:
+    request = urllib.request.Request(url, headers={"User-Agent": USER_AGENT})
     try:
-        with urllib.request.urlopen(url, timeout=timeout) as response:
+        with urllib.request.urlopen(request, timeout=timeout) as response:
             data = json.load(response)
     except (OSError, ValueError) as exc:
         raise CatalogError(f"could not read {url}: {exc}") from exc
