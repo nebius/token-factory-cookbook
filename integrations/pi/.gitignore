@@ -1,0 +1,4 @@
+.env
+models.json
+.pi-agent/
+__pycache__/

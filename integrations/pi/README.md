@@ -1,88 +1,138 @@
-# pi coding agent + Nebius Token Factory
+# pi coding agent with Nebius Token Factory
 
-[pi](https://github.com/earendil-works/pi) is a terminal coding agent with a built-in custom-provider configuration path. Nebius Token Factory works through pi's existing `openai-completions` API mode, so no provider adapter or extension is required.
+Run [pi](https://pi.dev), the open-source terminal coding agent, on open models
+from [Nebius Token Factory](https://tokenfactory.nebius.com). pi has no built-in
+Nebius provider, so this recipe writes one into pi's `models.json` from the
+live Token Factory catalog. No model ID is hardcoded.
 
-This recipe uses OpenAI-compatible Chat Completions. It does not select pi's separate `openai-responses` mode.
+Tested on 2026-11-24 with pi 1.6.0 on macOS. Per-model results are in
+[RESULTS.md](RESULTS.md).
 
-## Prerequisites
+Setting this up with a coding agent? Point it at [AGENTS.md](AGENTS.md).
 
-- Node.js and the [pi coding agent](https://www.npmjs.com/package/@earendil-works/pi-coding-agent).
-- A Nebius Token Factory API key from [tokenfactory.nebius.com](https://tokenfactory.nebius.com/).
-- A model available to your Token Factory account. The sample uses the current `zai-org/GLM-5.1`; verify it, or choose another tool-capable model, in the [live model catalog](https://tokenfactory.nebius.com/model-catalog.md).
+## Requirements
 
-## 1. Install pi
+- pi (`pi --version`). Tested with 1.6.0. Install: `npm install -g --ignore-scripts @earendil-works/pi-coding-agent`.
+- Python 3.10 or newer. There are no packages to install.
+- A Token Factory API key. See [Getting started](../../start-here/setup.md).
 
-```bash
-npm install -g --ignore-scripts @earendil-works/pi-coding-agent
+Every prompt is a paid Token Factory request.
+
+## Setup
+
+Run everything from this folder.
+
+1. Create `.env` and put your key in `NEBIUS_API_KEY`.
+
+   ```bash
+   cp env.example .env
+   ```
+
+2. See the live models that support tool calling.
+
+   ```bash
+   python3 scripts/make_models.py --list
+   ```
+
+   Skip any model with a
+   [deprecation notice](https://docs.tokenfactory.nebius.com/llms.txt). To give
+   pi only some models, put their IDs in `TF_MODELS` in `.env`, comma
+   separated. Left empty, pi gets all of them.
+
+3. Add the models to pi.
+
+   ```bash
+   python3 scripts/make_models.py --install
+   ```
+
+   This writes `models.json` here and merges a `nebius-token-factory` provider
+   into `~/.pi/agent/models.json`, keeping your other providers. If that file
+   already exists, the old one is saved as `models.json.bak`. Without `--install`, only the file here is
+   written. Run it again whenever the Token Factory catalog changes.
+
+The provider entry looks like this. The key is referred to by name, never
+written:
+
+```json
+{
+  "name": "Nebius Token Factory",
+  "baseUrl": "https://api.tokenfactory.nebius.com/v1",
+  "apiKey": "$NEBIUS_API_KEY",
+  "api": "openai-completions",
+  "compat": { "supportsDeveloperRole": false, "maxTokensField": "max_tokens" },
+  "models": [{ "id": "<a live Token Factory model ID>", "...": "..." }]
+}
 ```
 
-## 2. Configure the provider
+Each model carries its context window, thinking and image support, and its
+input, cached-input and output prices from the catalog, so pi's cost display is
+right.
 
-Pi reads custom providers from `~/.pi/agent/models.json`. On a fresh setup, copy [`models.example.json`](models.example.json) there. If the file already exists, merge the `nebius-token-factory` entry into its existing `providers` object instead of replacing the file.
+## Run
 
-```bash
-mkdir -p ~/.pi/agent
-cp models.example.json ~/.pi/agent/models.json
-```
-
-The important fields are:
-
-- `baseUrl`: Token Factory's canonical API root, including `/v1`.
-- `apiKey`: `$NEBIUS_API_KEY`, which tells pi to resolve the environment variable at request time. Do not remove the `$`.
-- `api`: `openai-completions`, pi's Chat Completions compatibility mode.
-- `models`: explicit model entries; pi does not copy Token Factory's catalog into this local file automatically.
-
-The compatibility overrides keep the baseline request aligned with Token Factory's Chat Completions schema: use `system` rather than `developer`, send `max_tokens` rather than `max_completion_tokens`, and do not request OpenAI long-cache retention.
-
-## 3. Set the API key
+pi reads the key from the terminal's environment, not from `.env`. Load it in
+each terminal, or export `NEBIUS_API_KEY` in your shell profile.
 
 ```bash
-export NEBIUS_API_KEY=your_key_here
+set -a; source .env; set +a
 ```
 
-Keep the key in your shell or secret manager. Do not paste a working key into `models.json` or commit one to source control.
-
-## 4. Select the model
-
-Confirm pi loaded the custom entry:
+Then, from the project you want to work on:
 
 ```bash
-pi --list-models "GLM-5.1"
+pi --provider nebius-token-factory --model <model-id>
 ```
 
-Then start pi in the project you want it to work on:
+Inside pi, `/model` opens the model selector. For a one-off answer, add
+`-p "<prompt>"`. In a script, also add `< /dev/null`: when its input is a
+pipe that never closes, pi waits for it and does not start.
+
+## Validate
+
+Offline, with no key and no pi:
 
 ```bash
-pi --provider nebius-token-factory --model zai-org/GLM-5.1
+python3 -m unittest discover -s tests
 ```
 
-You can also select the model from `/model` in an interactive pi session.
-
-The sample keeps pi's extended-thinking controls off and declares text input only. That is the conservative coding-agent baseline validated by this recipe. Tool calling remains available because pi's normal coding tools use the Chat Completions `tools` field. Enable model-specific reasoning controls or image input only after validating the exact current model and route.
-
-## Validate the sample offline
-
-The included test checks the provider schema, canonical URL, environment-key reference, current model entry, compatibility overrides, and absence of Responses mode without making an API request:
+Live, a few paid requests per model:
 
 ```bash
-cd integrations/pi
-python3 -m unittest -v test_recipe.py
+python3 scripts/smoke_test.py <model-id>
 ```
+
+pi gets a throwaway Python project with one failing test. The script then runs
+the tests itself and prints `ok` only if they pass and the test file is
+unchanged. It uses its own settings folder (`.pi-agent` here), so it does not
+read or change your pi configuration. `--runs 3` repeats each model.
+
+## A package instead of a script
+
+If you would rather have pi fetch the model list by itself on every start, the
+community package [`tokenfactory-pi`](https://github.com/mosquito/tokenfactory-pi)
+does that: `pi install npm:tokenfactory-pi`. It registers a provider named
+`nebius`. It passed the same test on three models on 2026-11-24. It is not
+maintained in this cookbook, and it counts cached input as free in pi's cost
+display.
 
 ## Troubleshooting
 
-- **Model does not appear** — ensure the file is exactly `~/.pi/agent/models.json`, export `NEBIUS_API_KEY` in the shell that starts pi, then reopen `/model`. Pi reloads the file when the model selector opens.
-- **Authentication error** — the JSON value must be `"$NEBIUS_API_KEY"`, including the `$`. `"NEBIUS_API_KEY"` is treated as a literal key.
-- **404 / model not found** — compare the exact, case-sensitive model ID with the live catalog and the models available to your key. Update the single model entry rather than copying a static catalog.
-- **Request mentions `developer` or `max_completion_tokens`** — confirm the `compat` object from the sample is present and nested under `nebius-token-factory`.
-- **Wrong endpoint** — use `https://api.tokenfactory.nebius.com/v1`. Do not append `/chat/completions`; pi adds the route.
-- **Tool calls fail** — first test a plain prompt, then verify that the selected model currently advertises function calling. Tool support is model-specific even when the API route is compatible.
-- **Context or cost display looks wrong** — model metadata changes over time. Recheck the live catalog before changing `contextWindow`; pi's cost display is zero unless you add current rates, so use Token Factory billing as the source of truth.
-- **You need Responses-specific features** — this recipe intentionally uses Chat Completions. Token Factory's Responses-compatible surface is stateless and requires separate model/workflow validation; changing `api` is not a drop-in persistence guarantee.
+| Symptom | Fix |
+| --- | --- |
+| `404 ... does not exist` | The model was retired. Run `make_models.py --install` again and pick a current ID. |
+| `Unknown provider "nebius-token-factory"` | Run `make_models.py --install`. Without `--install`, pi does not see the file. |
+| `No API key found` or a `401` | Load `.env` in that terminal as shown under [Run](#run). |
+| pi prints nothing and never returns in a script | Close its input: add `< /dev/null`. |
+| A script reports success after a failed request | pi exits 0 even when the API rejects a request. Use `--mode json` and read `errorMessage`, as `smoke_test.py` does. |
+| A model is missing from the list | It does not advertise tool calling, or your key cannot use it. |
 
-## Resources
+To remove everything, delete the `nebius-token-factory` entry from
+`~/.pi/agent/models.json`, and delete `models.json`, `.pi-agent` and `.env`
+here.
 
-- [pi custom models documentation](https://github.com/earendil-works/pi/blob/main/packages/coding-agent/docs/models.md)
-- [pi provider documentation](https://github.com/earendil-works/pi/blob/main/packages/coding-agent/docs/providers.md)
-- [Token Factory model catalog](https://tokenfactory.nebius.com/model-catalog.md)
-- [Token Factory Chat Completions API](https://docs.tokenfactory.nebius.com/api-reference/inference/chat-completion)
+## Source and license
+
+Written for this cookbook. pi is a project of
+[Earendil](https://github.com/earendil-works/pi). Its model configuration is
+documented at
+[Models](https://github.com/earendil-works/pi/blob/main/packages/coding-agent/docs/models.md).
