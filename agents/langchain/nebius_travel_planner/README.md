@@ -25,7 +25,7 @@ Edit `.env` and add your Nebius API key:
 
 ```bash
 NEBIUS_API_KEY=your-nebius-api-key
-NEBIUS_MODEL=Qwen/Qwen3-30B-A3B
+NEBIUS_MODEL=Qwen/Qwen3-30B-A3B-Instruct-2507
 ```
 
 For a deployed app, configure the key in the server environment or Streamlit

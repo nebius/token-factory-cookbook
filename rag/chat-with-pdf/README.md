@@ -2,14 +2,14 @@
 
 ![demo](./assets/demo.gif)
 
-A powerful RAG (Retrieval-Augmented Generation) chat application built with Streamlit, LlamaIndex, and Nebius AI's Qwen3 model. This application allows users to upload PDF documents and interact with them through an AI-powered chat interface.
+A powerful RAG (Retrieval-Augmented Generation) chat application built with Streamlit, LlamaIndex, and open models on Nebius Token Factory. This application allows users to upload PDF documents and interact with them through an AI-powered chat interface.
 
 
 ## Features
 
 - 📄 PDF Document Upload and Preview
 - 💬 Interactive Chat Interface
-- 🤖 Powered by Qwen3-235B-A22B Model
+- 🤖 Any text model Token Factory serves, picked from a live list in the sidebar
 - 🔍 Advanced RAG Implementation using LlamaIndex
 - 🎯 High-quality Embeddings with Qwen/Qwen3-Embedding-8B
 - 🔄 Real-time Document Processing
@@ -91,8 +91,7 @@ streamlit run main.py
 
 ### Model Options
 
-- Primary: Qwen3-235B-A22B
-- Alternative: DeepSeek-V3
+- Generative model: chosen in the sidebar from the live Token Factory catalog. `NEBIUS_MODEL` sets the one selected at start (default `Qwen/Qwen3-30B-A3B-Instruct-2507`).
 - Embedding Model: Qwen/Qwen3-Embedding-8B
 
 ## Architecture

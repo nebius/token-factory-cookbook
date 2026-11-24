@@ -39,7 +39,7 @@ Edit `.env` and add your Nebius key:
 
 ```bash
 NEBIUS_API_KEY=your-nebius-token-factory-key
-NEBIUS_MODEL=Qwen/Qwen3-30B-A3B
+NEBIUS_MODEL=Qwen/Qwen3-30B-A3B-Instruct-2507
 ```
 
 ## Run the Streamlit UI

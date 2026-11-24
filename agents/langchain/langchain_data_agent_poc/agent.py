@@ -18,7 +18,7 @@ from visualization import suggest_chart
 
 load_dotenv()
 
-DEFAULT_MODEL = os.getenv("NEBIUS_MODEL", "Qwen/Qwen3-30B-A3B")
+DEFAULT_MODEL = os.getenv("NEBIUS_MODEL", "Qwen/Qwen3-30B-A3B-Instruct-2507")
 
 
 class DataAgentState(TypedDict, total=False):
