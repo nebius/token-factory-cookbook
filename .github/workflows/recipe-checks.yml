@@ -10,6 +10,7 @@ on:
       - 'apps/sketch-to-walkthrough/**'
       - 'apps/paper-to-interactive-explainer/**'
       - 'apps/napkin-to-3d-print/**'
+      - 'apps/leadguard-event-ops/**'
       - 'apps/image-to-3d/**'
       - 'apps/footnote/**'
       - 'apps/pantry/**'
@@ -27,6 +28,7 @@ on:
       - 'apps/sketch-to-walkthrough/**'
       - 'apps/paper-to-interactive-explainer/**'
       - 'apps/napkin-to-3d-print/**'
+      - 'apps/leadguard-event-ops/**'
       - 'apps/image-to-3d/**'
       - 'apps/footnote/**'
       - 'apps/pantry/**'
@@ -173,7 +175,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        app: [paper-to-interactive-explainer, napkin-to-3d-print]
+        app: [paper-to-interactive-explainer, napkin-to-3d-print, leadguard-event-ops]
     defaults:
       run:
         working-directory: apps/${{ matrix.app }}
