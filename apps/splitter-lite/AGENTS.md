@@ -87,7 +87,6 @@ version for people.
 | `401` | The key is wrong. Go back to step 4. |
 | `404` or model not found | The model in `.env` has been retired or the key cannot use it on that endpoint. Stop and tell the user. |
 | A line that starts with `✗` | Rerun once; reading a bill varies a little between runs. If it fails again, show the user that line with its `model:` and `answer:` lines. |
-| `npm run dev` exits after a notice about a known security vulnerability in Next.js | Run `npm run dev` again; it starts the second time. Tell the user about the notice. Do not run the upgrade command it suggests unless the user asks. |
 | `npm run dev` reports that port 3100 is in use | Something else is on that port. **Ask the user** before stopping it. |
 
 ## Hand back to the user

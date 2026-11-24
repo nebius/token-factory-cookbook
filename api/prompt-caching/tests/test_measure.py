@@ -1,3 +1,5 @@
+import io
+import json
 import sys
 from pathlib import Path
 from types import SimpleNamespace
@@ -76,6 +78,29 @@ def test_catalog_helpers():
     system = measure.system_prompt("DOC")
     broken = measure.break_the_cache(system, "2026-01-01 00:00:00")
     assert broken == "Current time: 2026-01-01 00:00:00\n" + system
+
+
+def test_fetch_catalog_names_itself_to_the_catalog(monkeypatch):
+    # urllib's default user agent gets a 403 from the public catalog.
+    seen = {}
+
+    class Body(io.BytesIO):
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *exc):
+            return False
+
+    def fake_urlopen(request, timeout):
+        seen["url"] = request.full_url
+        seen["agent"] = request.get_header("User-agent")
+        return Body(json.dumps(CATALOG_DATA).encode())
+
+    monkeypatch.setattr(measure.urllib.request, "urlopen", fake_urlopen)
+    catalog = measure.fetch_catalog("https://catalog.example/models")
+    assert seen == {"url": "https://catalog.example/models", "agent": measure.USER_AGENT}
+    assert not measure.USER_AGENT.startswith("Python-urllib")
+    assert [row["model_id"] for row in catalog] == ["test/model", "test/flat"]
 
 
 def _response(prompt, cached, completion=10):
