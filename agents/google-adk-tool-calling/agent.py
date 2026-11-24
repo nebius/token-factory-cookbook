@@ -1,61 +1,33 @@
+from dotenv import load_dotenv
 from google.adk.agents import Agent
 from google.adk.models.lite_llm import LiteLlm
-from dotenv import load_dotenv
+
+from .config import load_token_factory_config
 
 
-load_dotenv() # load settings from .env file
-
-def convert_to_currency(currency: str, amount: float) -> float:
-    """
-    Converts a given amount in USD to the specified currency.
-    Currently, only conversion to EUR is supported.
-    It is just a placeholder for demonstration purposes.
-
-    Args:
-        currency (str): The target currency code. Only 'EUR' is supported.
-        amount (float): The amount in USD to convert.
-    
-    Returns:
-        dict: If the currency is supported, returns a dict with status 'success' and the converted amount.
-              If the currency is not supported, returns a dict with status 'error' and an error message.
-    """
-
-    if currency.lower() == 'eur':
+def convert_to_currency(currency: str, amount: float) -> dict[str, str | float]:
+    """Convert a USD amount to EUR for this tool-calling demonstration."""
+    if currency.upper() == "EUR":
         return {
             "status": "success",
-            "amount": amount * 2,
+            "amount": amount * 0.86,
+            "currency": "EUR",
         }
-    else:
-        return {
-            "status": "error",
-            "error_message": f"conversion for currency '{currency}' is not available.",
-        }
-## -----end : convert_to_currency ---------
+    return {
+        "status": "error",
+        "error_message": f"Conversion to {currency.upper()} is not available.",
+    }
 
 
+load_dotenv()
+token_factory = load_token_factory_config()
 
-llm = LiteLlm(
-    ## Choose a model from the list of available models in the Nebius Token Factory
-    model="nebius/openai/gpt-oss-120b",
-    # model="nebius/meta-llama/Llama-3.3-70B-Instruct",
-    # model="nebius/deepseek-ai/DeepSeek-V4-Pro",
-    # model="nebius/Qwen/Qwen3-235B-A22B",
-    
-    ## other settings you may want to use
-    # temperature=0.1,
-    # max_tokens=1000,
-    # top_p=0.95,
-    # top_k=40,
-)
+llm = LiteLlm(**token_factory.litellm_kwargs())
 
 root_agent = Agent(
     name="currency_agent",
-    model= llm,
-    description=(
-        "Agent to convert USD to other currencies. "
-    ),
-    instruction=(
-        "You are a helpful agent who can convert USD to other currency amounts."
-    ),
+    model=llm,
+    description="Converts USD amounts to supported currencies.",
+    instruction="Use the currency conversion tool for every conversion request.",
     tools=[convert_to_currency],
 )
