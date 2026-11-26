@@ -1,4 +1,4 @@
-# Fine-tuning Inkling 2 Mini for mobile landing-page repair
+# Fine-Tuning Inkling 2 Mini with Kimi K3.1 Pro for CSS Bug Fixes
 
 A correct CSS declaration can lose to a more specific rule. In the Fieldnote example below, both models tried to stack the hero on phones. Only the adapter included the parent selector needed to override the existing layout. Its patch brought the action buttons and chart back into view.
 
