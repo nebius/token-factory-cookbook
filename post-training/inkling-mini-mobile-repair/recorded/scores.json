@@ -1,0 +1,134 @@
+{
+  "primary": {
+    "arms": {
+      "broken": {
+        "pages": 24,
+        "pass": 0,
+        "desktop_unchanged": 24,
+        "defects_fixed": 0,
+        "total_defects": 72,
+        "per_check": {
+          "viewport": 0,
+          "visible": 0,
+          "heading": 6,
+          "actions": 6,
+          "layout": 12,
+          "cards": 12,
+          "art": 0,
+          "form": 12
+        }
+      },
+      "base": {
+        "pages": 24,
+        "pass": 18,
+        "desktop_unchanged": 24,
+        "defects_fixed": 55,
+        "total_defects": 72,
+        "per_check": {
+          "viewport": 18,
+          "visible": 18,
+          "heading": 22,
+          "actions": 19,
+          "layout": 23,
+          "cards": 20,
+          "art": 19,
+          "form": 22
+        },
+        "capped": 0,
+        "output_tokens": 4468
+      },
+      "tuned": {
+        "pages": 24,
+        "pass": 24,
+        "desktop_unchanged": 24,
+        "defects_fixed": 72,
+        "total_defects": 72,
+        "per_check": {
+          "viewport": 24,
+          "visible": 24,
+          "heading": 24,
+          "actions": 24,
+          "layout": 24,
+          "cards": 24,
+          "art": 24,
+          "form": 24
+        },
+        "capped": 0,
+        "output_tokens": 3029
+      }
+    },
+    "paired": {
+      "tuned_only": 6,
+      "base_only": 0,
+      "both": 18,
+      "neither": 0,
+      "exact_sign_test_two_sided": 0.03125
+    }
+  },
+  "external": {
+    "arms": {
+      "broken": {
+        "pages": 8,
+        "pass": 0,
+        "desktop_unchanged": 8,
+        "defects_fixed": 0,
+        "total_defects": 24,
+        "per_check": {
+          "viewport": 0,
+          "visible": 0,
+          "heading": 1,
+          "actions": 1,
+          "layout": 4,
+          "cards": 4,
+          "art": 3,
+          "form": 1
+        }
+      },
+      "base": {
+        "pages": 8,
+        "pass": 3,
+        "desktop_unchanged": 8,
+        "defects_fixed": 9,
+        "total_defects": 24,
+        "per_check": {
+          "viewport": 3,
+          "visible": 3,
+          "heading": 3,
+          "actions": 3,
+          "layout": 4,
+          "cards": 6,
+          "art": 4,
+          "form": 6
+        },
+        "capped": 0,
+        "output_tokens": 1744
+      },
+      "tuned": {
+        "pages": 8,
+        "pass": 8,
+        "desktop_unchanged": 8,
+        "defects_fixed": 24,
+        "total_defects": 24,
+        "per_check": {
+          "viewport": 8,
+          "visible": 8,
+          "heading": 8,
+          "actions": 8,
+          "layout": 8,
+          "cards": 8,
+          "art": 8,
+          "form": 8
+        },
+        "capped": 0,
+        "output_tokens": 920
+      }
+    },
+    "paired": {
+      "tuned_only": 5,
+      "base_only": 0,
+      "both": 3,
+      "neither": 0,
+      "exact_sign_test_two_sided": 0.0625
+    }
+  }
+}

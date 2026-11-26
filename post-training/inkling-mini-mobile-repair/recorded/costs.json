@@ -1,0 +1,26 @@
+{
+  "gpu_name": "NVIDIA H100 80GB HBM3",
+  "training_seconds": 560.0395661430011,
+  "training_usd": 0.7000494576787515,
+  "peak_allocated_gib": 24.65046739578247,
+  "h100_usd_per_hour": 4.5,
+  "gpu_phase_seconds": {
+    "training_run": 576.3703075369995,
+    "base": 210.56485760899886,
+    "adapted": 160.08263951799745,
+    "base-external": 97.99346105899895,
+    "tuned-external": 64.73133277599845
+  },
+  "gpu_usd": 1.3871782481237414,
+  "total_measured_gpu_seconds": 1109.7425984989932,
+  "kimi_calls": 237,
+  "kimi_tokens": {
+    "input": 317474,
+    "cached": 0,
+    "output": 15438
+  },
+  "kimi_usd": 0.789328,
+  "kimi_elapsed_seconds": 24.46213722229004,
+  "total_usd": 2.1765062481237414,
+  "excludes": "Idle VM time, environment setup, storage, uploads and previous experiments."
+}

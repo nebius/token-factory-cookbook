@@ -1,0 +1,12 @@
+.env
+.venv*/
+.browsers/
+__pycache__/
+.ipynb_checkpoints/
+data/*.jsonl
+data/manifest.json
+work/
+results/
+replay-results/
+adapter/
+trainer-tmp/
