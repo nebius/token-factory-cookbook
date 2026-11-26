@@ -1,0 +1,39 @@
+{
+  "model": "unsloth/Inkling-2-Mini-unsloth-bnb-4bit",
+  "revision": "22035f8bf3fd71a588d78591f8b3ec45c0994524",
+  "gpu": "NVIDIA H100 80GB HBM3",
+  "train_rows": 225,
+  "test_rows": 24,
+  "sha256": {
+    "data/train.jsonl": "94700ca671fba08a7d7d3a45de315d598392a46d0906e32bcb325c071696019a",
+    "data/test.jsonl": "eae2bdcae311859ee18193822448755d1f2d9b1d778a3152eb825344e8c3d144",
+    "data/system.txt": "858954d53f22430964943209c7cada9b307eec9e7103bf62dfaae15a8c4ed58d"
+  },
+  "training_context_limit": 4096,
+  "lora_rank": 8,
+  "lora_alpha": 8,
+  "epochs": 2,
+  "learning_rate": 0.0001,
+  "versions": {
+    "unsloth": "2026.11.12",
+    "torch": "2.11.0+cu128",
+    "transformers": "5.24.0",
+    "trl": "1.15.0",
+    "peft": "0.22.0"
+  },
+  "model_load_seconds": 8.59800044900112,
+  "training_max_sequence_tokens": 1875,
+  "trainable_parameters": 202555392,
+  "all_parameters": 26588967936,
+  "train_seconds": 560.0395661430011,
+  "peak_allocated_gib": 24.65046739578247,
+  "peak_reserved_gib": 25.181640625,
+  "trainer": {
+    "train_runtime": 559.2291,
+    "train_samples_per_second": 0.805,
+    "train_steps_per_second": 0.204,
+    "train_loss": 0.09007554148372851,
+    "epoch": 2.0
+  },
+  "run_seconds": 576.3703075369995
+}
