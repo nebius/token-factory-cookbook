@@ -29,6 +29,8 @@ Production-ready LangChain agent examples powered by [Nebius TF Token Factory](h
 | [Incident Response Agent](incident-response-agent/) | SRE incident triage via tool-driven log search, runbook lookup, deploy correlation, and typed mitigation plans | LangChain · Nebius TF · Pydantic |
 | [Vendor Risk Compliance Agent](vendor-risk-compliance-agent/) | Inspects vendor questionnaires and produces risk registers grounded in internal controls and contract evidence | LangChain · Nebius TF · Pydantic |
 | [Data Quality Ops Agent](data-quality-ops-agent/) | Investigates data pipeline issues with guarded read-only SQL, schema discovery, and reproducible quality reports | LangChain · Nebius TF · SQLite · Pydantic |
+| [Proactive On-Call Agent](proactive-oncall-agent/) | A cron server wakes Kimi K3.1 Pro to triage an event stream, page a human, request an approved rollback and schedule its own follow-ups, with no chat box | LangChain · Nebius TF · croniter · Streamlit |
+| [Multi-Agent Orchestrator](multi-agent-orchestrator/) | Kimi K3.1 Pro plans, reviews and synthesizes while cheap parallel workers do the research, with tiered routing, escalation on revision and a live cost ledger | LangGraph · langchain-nebius · Nebius TF · Streamlit |
 
 
 ## Common Patterns
