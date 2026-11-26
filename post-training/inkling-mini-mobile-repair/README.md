@@ -65,7 +65,7 @@ python independent.py
 
 ### Generate new training pairs
 
-Create a Nebius Token Factory API key. Copy the blank template and enter your key in the local file. The Jupyter login token serves a separate purpose.
+Create an API key in the Token Factory console. Copy the blank template and enter your key in the local file as `NEBIUS_API_KEY`. [Open Nebius Token Factory](https://tokenfactory.nebius.com/)
 
 ```bash
 cp -n env.example .env
@@ -74,6 +74,8 @@ set -a
 . ./.env
 set +a
 ```
+
+The page generator builds the broken pages and tickets. The teacher script sends each ticket and stylesheet to Kimi K3.1 Pro and saves the returned CSS patch and token usage. [Page and ticket generator](pages.py) · [Kimi synthetic-data generator](teacher.py)
 
 Check that the teacher model is available before making the 237 paid requests.
 
@@ -85,7 +87,7 @@ python browser_check.py teacher
 python freeze.py
 ```
 
-The teacher receives the ticket, existing stylesheet and markup. The grader checks the actual render. In the reference run all 237 responses passed. A new paid run can produce different targets and acceptance counts. The manifest records the bytes used in your run.
+The teacher receives the ticket, existing stylesheet and markup. The grader checks the actual render. In the reference run all 237 responses passed. A new paid run can produce different targets and acceptance counts. The manifest records the bytes used in your run. [Browser verification](browser_check.py) · [Dataset split and export](freeze.py)
 
 ### Train, reload and compare both checkpoints
 
